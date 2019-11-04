@@ -18,7 +18,7 @@ const CardS2 = props => {
                   哈囉你好
                 </a>
                 <span className="paddingLeft5px">發表於</span>
-                <a href="#2" className="paddingLeft5px">
+                <a href="#2" className="paddingLeft5px card-category-link">
                   商業理財
                 </a>
               </div>
@@ -43,7 +43,7 @@ const CardS2 = props => {
                   哈囉你好
                 </a>
                 <span className="paddingLeft5px">發表於</span>
-                <a href="#2" className="paddingLeft5px">
+                <a href="#2" className="paddingLeft5px  card-category-link">
                   商業理財
                 </a>
               </div>
@@ -68,7 +68,7 @@ const CardS2 = props => {
                   哈囉你好
                 </a>
                 <span className="paddingLeft5px">發表於</span>
-                <a href="#2" className="paddingLeft5px">
+                <a href="#2" className="paddingLeft5px card-category-link">
                   商業理財
                 </a>
               </div>

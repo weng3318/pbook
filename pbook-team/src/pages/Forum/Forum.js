@@ -38,14 +38,7 @@ class Forum extends React.Component {
         <div className="container">
           <div className="featured-title">精選文章</div>
           <div className="featured">
-            <CardS1
-              data={this.state.data}
-              img={
-                "require('../../../images/Forum/'" +
-                this.state.data.fm_demoImage +
-                ')'
-              }
-            />
+            <CardS1 data={this.state.data} />
             <CardS2 />
             <CardS1 />
           </div>
