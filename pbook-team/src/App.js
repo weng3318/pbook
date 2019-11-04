@@ -9,7 +9,6 @@ function App() {
   return (
     <>
       <Header />
-      {/* <Login /> */}
       <GoTop />
       <Footer />
     </>

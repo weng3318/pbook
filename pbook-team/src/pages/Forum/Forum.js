@@ -13,7 +13,7 @@ class Forum extends React.Component {
     }
   }
   componentDidMount() {
-    fetch('http://localhost:4000/forum/homepage', {
+    fetch('http://localhost:5555/forum/homepage', {
       method: 'GET',
     })
       .then(response => {

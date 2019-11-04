@@ -21,7 +21,7 @@ class CardS1 extends React.PureComponent {
           <img
             className="card-s1-img"
             alt=""
-            src={require('../../../images/Forum/2.jpg')}
+            src={require('../../../images/forum/1.jpg')}
             onClick={this.handleTitleClick}
           />
           <div className="card-body">
