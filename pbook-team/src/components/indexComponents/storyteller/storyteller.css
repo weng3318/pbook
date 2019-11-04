@@ -1,0 +1,13 @@
+.storyteller-body {
+  background-image: url('./images/big_storyteller.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 700px;
+  width: 100%;
+}
+
+@media screen and (max-width: 760px) {
+  .storyteller-body {
+    background-image: url('./images/small_storyteller.png') !important;
+  }
+}
