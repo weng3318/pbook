@@ -10,10 +10,11 @@ const Sidebar = () => {
           <Accordion defaultActiveKey="0">
             <div className="sidebar_card">
               <Accordion.Toggle
-                className="sidebar_title"
+                className="sider_title"
                 as={Button}
                 variant="link"
                 eventKey="0"
+                style={{ textDecoration: 'none' }}
               >
                 <h2>會員資料</h2>
               </Accordion.Toggle>

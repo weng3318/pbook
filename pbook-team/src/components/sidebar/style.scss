@@ -32,7 +32,11 @@ $black: #2D3A3A;
 .sidebar_title{
     font-size: 28px;
     color: $black;
-    text-decoration: none
+    
+
+    h2{
+        text-decoration: none !important;
+    }
 }
 
 .sidebar_item{

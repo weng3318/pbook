@@ -1,6 +1,7 @@
 import React from 'react'
 import Sidebar from '../../components/sidebar/Sidebar'
-import { Container } from 'react-bootstrap'
+import Edit from '../../components/memberContent/Edit'
+import { Container, Row, Col } from 'react-bootstrap'
 
 class Member extends React.Component {
   constructor() {
@@ -11,9 +12,12 @@ class Member extends React.Component {
   render() {
     return (
       <>
-        <Container>
+        <Row>
           <Sidebar />
-        </Container>
+          <div style={{ width: '1280px' }}>
+            <Edit />
+          </div>
+        </Row>
       </>
     )
   }
