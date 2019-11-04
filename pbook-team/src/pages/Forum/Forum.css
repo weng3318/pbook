@@ -1,0 +1,33 @@
+html {
+  font-size: 16px;
+}
+.navbar {
+  background-color: #cde2d0;
+}
+.container {
+  max-width: 1200px;
+}
+.F-nav-link {
+  color: #2d3a3a !important;
+  /* padding: 10px; */
+  border-radius: 5px;
+}
+.F-nav-link:hover {
+  background-color: #97979d;
+  color: #fff !important;
+}
+.featured {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 12px;
+}
+.featured-title {
+  font-size: 1.4rem;
+  margin: 12px 0 0 12px;
+}
+.featured-title::before {
+  content: '';
+  font-size: 1.1rem;
+  border: 3px solid #ffc408;
+  margin-right: 10px;
+}
