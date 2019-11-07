@@ -18,6 +18,8 @@ router.post('/register', (req, res, next) => {
 
         // 尋找是否有重複的email
         db.query(Member.queryEmail(), (err, rows) => {
+            console.log(rows);
+            
                 if(err){
                     res.status(404).json({
                        message: "伺服器錯誤，請稍後在試！"

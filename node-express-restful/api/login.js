@@ -4,18 +4,15 @@ import login from '../domain/login'
 const router = express.Router()
 
 router.post('/login', (req, res, next) => {
-    console.log(1);
     let Member = new login(req.body.email, req.body.password)
-    console.log(2);
-    console.log(Member.getLoginSql());
     
     db.query(Member.getLoginSql(), (err, rows) => {
-        console.log(rows);
+        // console.log(rows);
         
         if( rows.length == 0){
             res.json({
                 status:"登入失敗",
-                message:"沒有此帳號"
+                message:"請輸入正確的帳號或密碼"
             })
             return
         }else if(err){
@@ -25,17 +22,20 @@ router.post('/login', (req, res, next) => {
             })
             return
         }else{
+            res.locals.userId = rows[0].sid;
+            //設定session
+            req.session.sid = res.locals.userId; 
+            // console.log(req.session.sid);
+
             res.json({
                 status:"登入成功",
-                message:"歡迎你回來"
+                message:"歡迎" + rows[0].MR_name + "的登入!",
+                info: rows[0]
             })
         }
     })
 
 })
-    // router.post('/', function(req, res){
-
-    // })
 
 module.exports = router
 

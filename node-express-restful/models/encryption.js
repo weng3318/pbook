@@ -4,8 +4,7 @@ const crypto = require('crypto')
 module.exports =  function getEncryption(password) {
     let hashPassword = crypto.createHash('sha1')
     hashPassword.update(password)
-    const rePassword = hashPassword.digest('hex');
-    // console.log('rePassword: ' + rePassword);
+    const rePassword = hashPassword.digest('hex')
     return rePassword;
 }
 
