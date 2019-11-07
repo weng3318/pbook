@@ -1,10 +1,7 @@
 import express from "express";
 import bodyparser from "body-parser";
 import cors from "cors";
-import register from "./api/register"
-import login from "./api/login"
-import products from "./api/products";
-import orders from "./api/orders";
+import memberRouter from "./router/member/member"
 
 const app = express();
 const mysql = require("mysql");
@@ -49,26 +46,21 @@ app.use(
   })
 );
 
+
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: false }));
-
-app.use("/products", products);
-app.use("/orders", orders);
-app.use("/", require('./api/register'))
-app.use("/", require('./api/login'))
-app.use("/", require('./api/logout'))
-app.use("/", require('./api/queryMember'))
-
 app.use(express.static("public"));
+
+
+app.use("/member", memberRouter)
+app.use("/forum", require("./src/forum/homepage"));
+app.use("/nana_use", require("./src/nana_use/chatList"));
+app.use("/nana_use", require("./src/nana_use/chatMessage"));
 
 app.get("/", function (req, res) {
   res.send("Home");
 });
 
-app.use("/forum", require("./src/forum/homepage"));
-
-app.use("/nana_use", require("./src/nana_use/chatList"));
-app.use("/nana_use", require("./src/nana_use/chatMessage"));
 
 //if we are here then the specified request is not found
 app.use((req, res, next) => {

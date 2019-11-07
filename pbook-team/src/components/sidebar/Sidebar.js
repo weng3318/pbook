@@ -1,20 +1,20 @@
 import React from 'react'
 import { Accordion, Button } from 'react-bootstrap'
-import './style.scss'
+import './sidebar.scss'
 
 const Sidebar = () => {
   return (
     <>
-      <div className="side-menu">
+      <div className="side_menu">
         <nav className="sidebar">
           <Accordion defaultActiveKey="0">
             <div className="sidebar_card">
               <Accordion.Toggle
-                className="sider_title"
                 as={Button}
                 variant="link"
                 eventKey="0"
                 style={{ textDecoration: 'none' }}
+                className="sidebar_title"
               >
                 <h2>會員資料</h2>
               </Accordion.Toggle>

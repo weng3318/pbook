@@ -9,6 +9,7 @@ class Member extends React.Component {
         }
     }
 
+    //娜娜的聊天室
     render() {
         const {id} = this.props
         return (
