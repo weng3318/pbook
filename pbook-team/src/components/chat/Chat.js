@@ -31,7 +31,7 @@ class Chat extends React.Component {
 
 
     componentDidMount() {
-        axios.get(`http://localhost:5555/chatList`)
+        axios.get(`http://localhost:5555/nana_use/chatList`)
             .then(res => {
                 this.setState({ oldDataList: res.data })
             })
