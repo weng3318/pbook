@@ -15,7 +15,7 @@ class Member extends React.Component {
         <Row>
           <Sidebar />
           <div style={{ width: '1280px' }}>
-            <Edit />
+            {/* <Edit /> */}
           </div>
         </Row>
       </>
