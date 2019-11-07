@@ -14,7 +14,6 @@ router.get('/', (req, res, next) => {
     }
   })
 })
-
 router.post('/add', (req, res, next) => {
   //read product information from request
   let product = new Product(req.body.prd_name, req.body.prd_price)
