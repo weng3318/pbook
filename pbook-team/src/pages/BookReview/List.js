@@ -4,7 +4,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import styled from '@emotion/styled'
-import '../../Reviews.css'
+import './Reviews.css'
 
 //---------------------------------------------------------------------------------------------------------
 
