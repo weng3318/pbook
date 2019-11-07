@@ -1,6 +1,8 @@
 import express from "express";
 import bodyparser from "body-parser";
 import cors from "cors";
+import register from "./api/register"
+import login from "./api/login"
 
 import products from "./api/products";
 import orders from "./api/orders";
@@ -25,6 +27,8 @@ app.use(bodyparser.urlencoded({ extended: false }));
 
 app.use("/products", products);
 app.use("/orders", orders);
+app.post("/register", register)
+app.post("/login", login)
 
 app.use(express.static("public"));
 
