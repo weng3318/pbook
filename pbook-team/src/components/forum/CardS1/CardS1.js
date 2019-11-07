@@ -2,14 +2,20 @@ import React from 'react'
 import './CardS1.css'
 import UserDetails from '../UserDetails/UserDetails'
 
-class CardS1 extends React.PureComponent {
-  constructor() {
-    super()
-    this.state = {}
+//傳入props.data
+
+class CardS1 extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      user: [],
+    }
   }
+
   handleTitleClick = event => {
     console.log('title click')
   }
+
   render() {
     if (!this.props.data || this.props.data.length === 0) {
       return (
@@ -24,7 +30,7 @@ class CardS1 extends React.PureComponent {
             <div className="card-body">
               <div>
                 <div className="card-s-title" onClick={this.handleTitleClick}>
-                  {/* {this.props.data && data.fm_title} */}
+                  {/* {this.props.data && this.props.data.fm_title} */}
                 </div>
                 <div className="card-subTitle" onClick={this.handleTitleClick}>
                   {/* {this.props.data && data.fm_subTitle} */}
@@ -36,8 +42,9 @@ class CardS1 extends React.PureComponent {
         </>
       )
     } else {
-      let data = this.props.data
-      let image_name = data.fm_demoImage
+      let article = this.props.data
+      let image_name = article.fm_demoImage
+
       return (
         <>
           <figure className="card-figure">
@@ -52,12 +59,12 @@ class CardS1 extends React.PureComponent {
             <div className="card-body">
               <div>
                 <div className="card-s-title" onClick={this.handleTitleClick}>
-                  {data.fm_title}
+                  {article.fm_title}
                 </div>
                 <div className="card-subTitle" onClick={this.handleTitleClick}>
-                  {data.fm_subTitle}
+                  {article.fm_subTitle}
                 </div>
-                <UserDetails data={data} />
+                <UserDetails data={article} memberId={article.fm_memberId} />
               </div>
             </div>
           </figure>

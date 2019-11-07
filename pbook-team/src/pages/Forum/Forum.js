@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
+// import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 import ForumNavBar from './ForumNavBar'
 import CardS1 from '../../components/forum/CardS1/CardS1'
 import CardS2 from '../../components/forum/CardS2/CardS2'
@@ -9,6 +9,7 @@ class Forum extends React.Component {
   constructor() {
     super()
     this.state = {
+      update: false,
       data: [],
     }
   }
@@ -22,7 +23,8 @@ class Forum extends React.Component {
       })
       .then(async result => {
         await this.setState({
-          data: result[0],
+          data: result,
+          update: true,
         })
       })
       .catch(error => {
@@ -34,13 +36,22 @@ class Forum extends React.Component {
   render() {
     return (
       <>
-        <ForumNavBar />
-        <div className="container">
-          <div className="featured-title">精選文章</div>
-          <div className="featured">
-            <CardS1 data={this.state.data} />
-            <CardS2 />
-            <CardS1 />
+        <div className="forumpage">
+          <ForumNavBar />
+          <div className="container">
+            <div className="featured-title">精選文章</div>
+            <div className="featured">
+              <CardS1 data={this.state.data[0]} />
+              <CardS2
+                update={this.state.update}
+                data={[
+                  this.state.data[2],
+                  this.state.data[3],
+                  this.state.data[4],
+                ]}
+              />
+              <CardS1 data={this.state.data[1]} />
+            </div>
           </div>
         </div>
       </>
