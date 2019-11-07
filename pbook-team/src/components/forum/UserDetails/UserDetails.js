@@ -1,23 +1,27 @@
 import React from 'react'
-import './UserDetails.css'
+import './UserDetails.scss'
 //props : memberId={fm_memberId}
 
 class UserDetails extends React.Component {
   constructor() {
     super()
     this.state = {
+      update: false,
       user: [],
     }
   }
-  componentDidUpdate() {
+
+  componentDidMount() {
     // 用props傳入的userID在fetch一次
-    fetch('http://localhost:5555/forum/homepage/' + this.props.memberId)
-      .then(response => {
-        return response.json()
-      })
-      .then(result => {
-        this.setState({ user: result[0] })
-      })
+    if (!this.state.update) {
+      fetch('http://localhost:5555/forum/homepage/' + this.props.memberId)
+        .then(response => {
+          return response.json()
+        })
+        .then(async result => {
+          await this.setState({ user: result[0], update: true })
+        })
+    }
   }
   handleCategoryClick = event => {
     console.log('category click')
@@ -49,12 +53,13 @@ class UserDetails extends React.Component {
     })
   }
   render() {
-    if (!this.props.data) {
+    if (!this.state.update) {
       return <span>Loading</span>
     } else {
-      let data = this.props.data
+      let article = this.props.article
       let user = this.state.user
       let userImage = user.MR_pic
+
       // let userImage = user.MR_pic
       return (
         <>
@@ -74,7 +79,7 @@ class UserDetails extends React.Component {
                   onMouseEnter={this.handleUserMouseIn}
                   onMouseLeave={this.handleUserMouseOut}
                 >
-                  {this.state.user.MR_nickname}
+                  {this.state.user && this.state.user.MR_nickname}
                   <div
                     className={
                       'userFrame ' +
@@ -93,7 +98,7 @@ class UserDetails extends React.Component {
                   onMouseEnter={this.handleCategoryMouseIn}
                   onMouseLeave={this.handleCategoryMouseOut}
                 >
-                  {this.props.data && this.props.data.fm_category}
+                  {article.fm_category}
                   <div
                     className={
                       'userFrame ' +
@@ -109,8 +114,8 @@ class UserDetails extends React.Component {
                 </a>
               </div>
               <div>
-                <time>{data.fm_publishTime.slice(0, 10)} </time>
-                <span>{data.fm_read}人閱讀</span>
+                <time>{article.fm_publishTime.slice(0, 10)} </time>
+                <span>{article.fm_read}人閱讀</span>
                 <span className="card-response">16則留言</span>
               </div>
             </div>

@@ -1,5 +1,5 @@
 import React from 'react'
-import './CardS1.css'
+import './CardS1.scss'
 import UserDetails from '../UserDetails/UserDetails'
 
 //傳入props.data
@@ -27,17 +27,6 @@ class CardS1 extends React.Component {
               src={require('./2.jpg')}
               onClick={this.handleTitleClick}
             />
-            <div className="card-body">
-              <div>
-                <div className="card-s-title" onClick={this.handleTitleClick}>
-                  {/* {this.props.data && this.props.data.fm_title} */}
-                </div>
-                <div className="card-subTitle" onClick={this.handleTitleClick}>
-                  {/* {this.props.data && data.fm_subTitle} */}
-                </div>
-                <UserDetails />
-              </div>
-            </div>
           </figure>
         </>
       )
@@ -64,7 +53,7 @@ class CardS1 extends React.Component {
                 <div className="card-subTitle" onClick={this.handleTitleClick}>
                   {article.fm_subTitle}
                 </div>
-                <UserDetails data={article} memberId={article.fm_memberId} />
+                <UserDetails article={article} memberId={article.fm_memberId} />
               </div>
             </div>
           </figure>

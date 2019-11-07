@@ -3,7 +3,7 @@ import React from 'react'
 import ForumNavBar from './ForumNavBar'
 import CardS1 from '../../components/forum/CardS1/CardS1'
 import CardS2 from '../../components/forum/CardS2/CardS2'
-import './Forum.css'
+import './Forum.scss'
 
 class Forum extends React.Component {
   constructor() {
