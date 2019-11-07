@@ -2,9 +2,9 @@ const express = require("express");
 const router = express.Router();
 const mysql = require("mysql");
 const db = mysql.createConnection({
-    host: "localhost",
-    user: "Ruby",
-    password: "1010",
+    host: "192.168.27.186",
+    user: "root",
+    password: "root",
     database: "pbook"
   });
   db.connect();
