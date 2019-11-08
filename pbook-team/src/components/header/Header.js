@@ -8,9 +8,9 @@ import Reviewer from '../../pages/Reviewer'
 import Books from '../../pages/Books'
 import Activities from '../../pages/activities/Activities'
 import Reviews from '../../pages/Reviews'
-import Forum from '../../pages/Forum'
-import Login from '../../pages/Login'
-import Member from '../../pages/Member'
+import Forum from '../../pages/Forum/Forum'
+import Login from '../../pages/login/Login'
+import Member from '../../pages/member/Member'
 import Game from '../../pages/game/Game'
 import Logout from '../../pages/Logout'
 import Cart from '../../pages/Cart'
@@ -19,6 +19,7 @@ import NoPage from '../../pages/nopage/NoPage'
 import './header.css'
 
 export default class Header extends React.Component {
+
   constructor() {
     super()
     this.state = {
