@@ -8,7 +8,7 @@ import orders from "./api/orders";
 const app = express();
 const mysql = require("mysql");
 const db = mysql.createConnection({
-  host: "localhost",
+  host: "192.168.27.186",
   user: "root",
   password: "root",
   database: "pbook"
@@ -33,6 +33,7 @@ app.get("/", function(req, res) {
 });
 
 app.use("/forum", require("./src/forum/homepage"));
+app.use('/activities', require('./src/activities/acApi'))
 
 //if we are here then the specified request is not found
 app.use((req, res, next) => {

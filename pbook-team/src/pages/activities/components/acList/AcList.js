@@ -1,50 +1,38 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect } from 'react'
 import AcItem from './AcItem'
 import AcListHeader from './AcListHeader'
-import './acList.css'
+import './acList.scss'
 import { connect } from 'react-redux'
-import { GET_LIST } from '../../actions/ListActions'
+import { acFetch } from '../../AcActions'
 // import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 
 const AcList = props => {
-  let prevVisibilityFilterRef = useRef()
-  const prevVisibilityFilter = prevVisibilityFilterRef.current
   useEffect(() => {
-    async function fetchData() {
-      console.log('connect to db')
-      try {
-        const response = await fetch('http://localhost:5555/api/ac-list', {
-          method: 'GET',
-          headers: new Headers({
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          }),
-        })
-        let action = { type: GET_LIST, listData: await response.json() }
-        props.dispatch(action)
-      } catch (error) {
-        console.log('error', error)
-      }
-    }
-    if (!(props.visibilityFilter === prevVisibilityFilter)) fetchData()
-    prevVisibilityFilterRef.current = props.visibilityFilter
-  }, [prevVisibilityFilter, props])
+    props.dispatch(acFetch('discount'))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <>
-      <div className="container">
+      <div className="container acList">
         <AcListHeader />
         <div className="my-2 py-2" style={{ borderTop: '1px solid #ccc' }}>
-          {props.listData.map(v => (
-            <AcItem key={v.AC_sid} {...v} />
-          ))}
+          {props.acData.discount &&
+            props.acData.discount.items
+              .filter(v => {
+                return (
+                  +v.status === +props.visibilityFilter.value ||
+                  +props.visibilityFilter.value === 3
+                )
+              })
+              .map(v => <AcItem key={v.sid} {...v} />)}
         </div>
       </div>
     </>
   )
 }
 const mapStateToProps = state => ({
-  listData: state.listData,
   visibilityFilter: state.visibilityFilter,
+  acData: state.acData,
 })
 export default connect(mapStateToProps)(AcList)
