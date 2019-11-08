@@ -172,3 +172,13 @@
   background: #2d3a3a;
   color: #ffffff;
 }
+
+.chatMessageScroll{
+  height: 60vh;
+  overflow-y: scroll;
+}
+
+
+.show-inline-flex {
+  display: inline-flex !important;
+}
