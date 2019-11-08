@@ -22,6 +22,16 @@ $content: 24px;
     @extend .contentWrap;
 }
 
+
+
+
+
+
+//login的遮罩，但沒有效果
+.login_wrap{
+  background-color: #000;
+}
+
 //sidebar內樣式
 .side-menu{
     width: 320px;

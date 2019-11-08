@@ -8,7 +8,7 @@ import Reviewer from '../../pages/Reviewer'
 import Books from '../../pages/Books'
 import Activities from '../../pages/activities/Activities'
 import Reviews from '../../pages/Reviews'
-import Forum from '../../pages/Forum'
+import Forum from '../../pages/Forum/Forum'
 import Login from '../../pages/login/Login'
 import Member from '../../pages/member/Member'
 import Game from '../../pages/game/Game'
@@ -24,9 +24,9 @@ export default class Header extends React.Component {
         super()
         this.state = {
             hasData: false,
-            id: "MR00001",
-            name: "橫山裕",
-            level: "品書學徒",
+            id: "",
+            name: "",
+            level: "",
             loginImg: "./images/yoko.jpg",
         }
     }
