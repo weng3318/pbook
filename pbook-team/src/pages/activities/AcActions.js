@@ -1,3 +1,4 @@
+// set ac status filter
 export const SET_VISIBILITY_FILTER = 'SET_VISIBILITY_FILTER'
 export const VisibilityFilterType = {
   SHOW_ACTIVE: { type: 'SHOW_ACTIVE', value: 1 },
@@ -9,13 +10,15 @@ export const setVisibilityFilter = filter => ({
   type: SET_VISIBILITY_FILTER,
   filter: filter,
 })
-
-export const GET_LIST = 'GET_LIST'
-export const getList = listData => ({
-  type: GET_LIST,
-  listData: listData,
+// set ac type
+export const SET_AC_TYPE = 'SET_AC_TYPE'
+export const acTypeConst = { DISCOUNT: 'discount', OFFLINE: 'offline' }
+export const setAcType = acType => ({
+  type: SET_AC_TYPE,
+  acType: acType,
 })
 
+// fetch data list
 export const AC_REQUEST = 'AC_REQUEST'
 function acRequest(acType) {
   return {

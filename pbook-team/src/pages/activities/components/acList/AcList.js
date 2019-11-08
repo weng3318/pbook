@@ -25,7 +25,7 @@ const AcList = props => {
                   +props.visibilityFilter.value === 3
                 )
               })
-              .map(v => <AcItem key={v.sid} {...v} />)}
+              .map(v => <AcItem key={v.sid} {...v} acType={props.acType} />)}
         </div>
       </div>
     </>
@@ -33,6 +33,7 @@ const AcList = props => {
 }
 const mapStateToProps = state => ({
   visibilityFilter: state.visibilityFilter,
+  acType: state.acType,
   acData: state.acData,
 })
 export default connect(mapStateToProps)(AcList)
