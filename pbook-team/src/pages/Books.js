@@ -1,11 +1,14 @@
 import React from 'react'
+import Shop from '../components/shop/Shop'
 
-const Books = () => {
-  return (
-    <>
-      <h1>書籍商城</h1>
-    </>
-  )
+class Books extends React.Component {
+  render() {
+    return (
+      <>
+        <Shop />
+      </>
+    )
+  }
 }
 
 export default Books

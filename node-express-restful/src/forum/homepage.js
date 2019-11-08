@@ -2,14 +2,14 @@ const express = require("express");
 const router = express.Router();
 const mysql = require("mysql");
 const db = mysql.createConnection({
-  host: "192.168.27.186",
-  user: "root",
-  password: "root",
-  database: "pbook"
-});
-db.connect();
-const bluebird = require("bluebird");
-bluebird.promisifyAll(db);
+    host: "192.168.27.186",
+    user: "Ruby",
+    password: "1010",
+    database: "pbook"
+  });
+  db.connect();
+  const bluebird = require("bluebird");
+  bluebird.promisifyAll(db);
 
 //精選文章 card1
 router
