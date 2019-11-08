@@ -1,6 +1,5 @@
 import React from 'react'
 import './login.css'
-import { log } from 'util'
 
 class Login extends React.Component {
  
@@ -15,12 +14,10 @@ class Login extends React.Component {
   flipSingIn = () =>{
     let container_right = document.querySelector('.container_right')
     let container_front = document.querySelector('.container_front')
-    let container_left = document.querySelector('.container_left')
     let container_back = document.querySelector('.container_back')
     container_right.classList.add('flip-to-left')
     container_back.classList.remove('flip-to-right')
     container_front.classList.add('_invisible')
-    // container_left.classList.add('_invisible')
 
   }
   
@@ -72,11 +69,11 @@ class Login extends React.Component {
               placeholder="Password"
             />
             <button className="login_btn">登入</button>
-            <a href="#">Forgot your password?</a>
+            <a href="link">Forgot your password?</a>
             <div className="social-container">
               <div>快速登入</div>
-              <a href="#" className="social"></a>
-              <a href="#" className="social"></a>
+              <a href="link" className="social">FB</a>
+              <a href="link" className="social">GOOGLE</a>
             </div>
           </form>
 

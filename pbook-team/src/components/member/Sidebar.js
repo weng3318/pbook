@@ -26,11 +26,11 @@ const Sidebar = () => {
                 </Accordion.Toggle>
                 <Accordion.Collapse eventKey="0" className="sidebar_item">
                   <Link to="/edit">
-                    <a href="">編輯資料</a>
+                    <a href="css">編輯資料</a>
                   </Link>
                 </Accordion.Collapse>
                 <Accordion.Collapse eventKey="0" className="sidebar_item">
-                  <a href="">修改密碼</a>
+                  <a href="css">修改密碼</a>
                 </Accordion.Collapse>
               </div>
             </Accordion>
@@ -45,10 +45,10 @@ const Sidebar = () => {
                   訂單管理
                 </Accordion.Toggle>
                 <Accordion.Collapse eventKey="0" className="sidebar_item">
-                  <a href="">訂單查詢</a>
+                  <a href="css">訂單查詢</a>
                 </Accordion.Collapse>
                 <Accordion.Collapse eventKey="0" className="sidebar_item">
-                  <a href="">訂單修改</a>
+                  <a href="css">訂單修改</a>
                 </Accordion.Collapse>
               </div>
             </Accordion>
@@ -63,13 +63,13 @@ const Sidebar = () => {
                   個人書櫃
                 </Accordion.Toggle>
                 <Accordion.Collapse eventKey="0" className="sidebar_item">
-                  <a href="">收藏書籍</a>
+                  <a href="css">收藏書籍</a>
                 </Accordion.Collapse>
                 <Accordion.Collapse eventKey="0" className="sidebar_item">
-                  <a href="">收藏書評家</a>
+                  <a href="css">收藏書評家</a>
                 </Accordion.Collapse>
                 <Accordion.Collapse eventKey="0" className="sidebar_item">
-                  <a href="">收藏書評</a>
+                  <a href="css">收藏書評</a>
                 </Accordion.Collapse>
               </div>
             </Accordion>
@@ -84,10 +84,10 @@ const Sidebar = () => {
                   二手書管理
                 </Accordion.Toggle>
                 <Accordion.Collapse eventKey="0" className="sidebar_item">
-                  <a href="">配對書籍</a>
+                  <a href="css">配對書籍</a>
                 </Accordion.Collapse>
                 <Accordion.Collapse eventKey="0" className="sidebar_item">
-                  <a href="">配對列表</a>
+                  <a href="css">配對列表</a>
                 </Accordion.Collapse>
               </div>
             </Accordion>

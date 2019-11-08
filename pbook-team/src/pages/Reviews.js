@@ -7,7 +7,7 @@ import React, { useState, useEffect } from 'react'
 import styled from '@emotion/styled'
 import axios from 'axios'
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
-import './BookReview/Reviews.css'
+import './BookReview/Reviews.scss'
 
 // ------------------------------------------------------------------------------------
 //主要內容外框

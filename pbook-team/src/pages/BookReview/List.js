@@ -4,7 +4,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import styled from '@emotion/styled'
-import './Reviews.css'
+import './Reviews.scss'
 
 //---------------------------------------------------------------------------------------------------------
 
@@ -92,6 +92,7 @@ const List = () => {
   }
   return (
     <>
+      <div className="reviews">
       <Book>
         {List.map(data => (
           <h4>{data.sid}</h4>
@@ -110,6 +111,7 @@ const List = () => {
         <Member />
         <Text />
       </Review>
+      </div>
     </>
   )
 }
