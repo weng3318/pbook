@@ -1,0 +1,111 @@
+$main_color : #CDE2E0;
+$black: #2D3A3A;
+$yellow: #FFC408;
+$grey: #979D9D;
+$big_text: 32px;
+$title: 28px;
+$content: 24px;
+
+.contentWrap{
+  height: 80vw;
+  width: 1280px;
+}
+
+
+*{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.editWrap{
+    @extend .contentWrap;
+}
+
+//sidebar內樣式
+.side-menu{
+    width: 320px;
+    height: 80vw;
+    padding: 30px 0;
+    box-sizing: border-box;
+    background-color: $main_color;
+    opacity: .6;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 5px 0px 10px #9CC5A1;
+
+    .sidebar{
+        padding-left: 60px;
+    
+    }
+
+    .sidebar_title{
+        // border: 1px solid #000;
+        font-size: 28px;
+        color: $black;
+        
+        h2{
+            text-decoration: none !important;
+        }
+    }
+    
+
+    .sidebar_item{
+        padding: 5px 50px;
+        font-size: 24px;
+        
+        a{
+            color: $black;
+        }
+        a:hover{
+            color: chocolate;
+            text-decoration: none;
+        }
+    }
+}
+
+
+.navbarWrap {
+    height: 80px;
+    background-color: $main_color;
+    // box-shadow: 0px 5px 5px rgba(194, 212, 171, 0.5);
+    font-size: 24px; 
+
+    .breadcrumb {
+      width: 90%;
+      margin: auto;
+      padding: 20px;
+      color: #2d3a3a;
+      padding-left:250px;
+      background: $main_color;
+
+      li {
+        padding: 0 20px;
+      }
+
+      a {
+        text-decoration: none;
+        color: #2d3a3a;
+      }
+
+      a:hover,li:last-child a {
+          color: $grey;
+      }
+
+      li + li {
+        padding-left: 0;
+      }
+
+      li + li::before {
+        content: ">";
+        color: #2d3a3a;
+        margin-right: 20px;
+      }
+
+    }
+
+  }
+
+
+
+

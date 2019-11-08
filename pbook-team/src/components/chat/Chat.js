@@ -8,32 +8,30 @@ import {
 import './chat.css'
 
 import axios from 'axios'
+import moment from 'moment'
 import io from 'socket.io-client';
 
 
 
 const socket = io('ws://localhost:5000');
 
+var oldDataMessage = []
 
 class Chat extends React.Component {
     constructor() {
         super()
         this.state = {
-            oldDataList: []
+            oldDataList: [],
+            oldDataMessage: []
         }
     }
 
     handleMessage = (event) => {
-        this.myH1.classList.add('hide')
-
-
-    }
-
-
-    componentDidMount() {
-        axios.get(`http://localhost:5555/chatList`)
+        this.myDiv.classList.add('hide');
+        axios.get(`http://localhost:5555/nana_use/chatMessage`)
             .then(res => {
-                this.setState({ oldDataList: res.data })
+                oldDataMessage = res.data
+                this.setState({ oldDataMessage: res.data })
             })
 
         socket.emit('clientToSeverMsg', { name: '橫山' })
@@ -41,12 +39,38 @@ class Chat extends React.Component {
             console.log('客戶端接收服務端發的消息', data);
 
         })
-
     }
 
 
+    // shouldComponentUpdate(nextProps, nextState) {
+    //     if (nextState.oldDataMessage.length === 0) {
+    //         console.log("true1");
+    //         return true
+    //     } else {
+    //         if (nextState.oldDataMessage === oldDataMessage) {
+    //             console.log("false");
+    //             return false
+    //         } else {
+    //             console.log("true2");
+    //             return true
+    //         }
+    //     }
+    // }
+
+
+
+    componentDidMount() {
+        axios.get(`http://localhost:5555/nana_use/chatList`)
+            .then(res => {
+                this.setState({ oldDataList: res.data })
+            })
+    }
+
 
     render() {
+        console.log(this.state.oldDataList);
+        console.log(this.state.oldDataMessage);
+
         return (
             <>
                 <div className="chatWrap">
@@ -89,27 +113,47 @@ class Chat extends React.Component {
                             </Col>
                             <Col sm={8}>
                                 <Tab.Content>
-                                    <h1 ref={h1 => this.myH1 = h1}>點擊左側列表和朋友聊天吧^^</h1>
+                                    <div className="myDefault" ref={div => this.myDiv = div}>
+                                        <img alt="#" src={require("./images/admin_bg.png")}></img>
+                                    </div>
                                     {
                                         this.state.oldDataList.map((value, index) => {
                                             return (
                                                 <Tab.Pane key={index} eventKey={"#" + value.chat_id}>
-                                                    <div className="myContainer">
-                                                        <img src={require("./images/yoko2.jpg")} alt="Avatar" />
-                                                        <p>中央氣象局今（1日）早發布大雨特報，由於東北風影響，花蓮縣已有豪雨發生，宜蘭、花蓮、台東地區及恆春半島仍有局部大雨發生機率，請注意瞬間大雨，連日降雨，山區請慎防坍方、落石及溪水暴漲，低窪地區請慎防淹水。</p>
-                                                        <span className="time-right">11:00</span>
-                                                    </div>
+                                                    {this.state.oldDataMessage.map((value2, index2) => {
+                                                        {/* console.log("1", value.chat_id) */ }
+                                                        if (value.chat_id === value2.chat_id) {
+                                                            {/* console.log("2", value2.chat_id) */ }
+                                                            return (
+                                                                <div key={index2}>
+                                                                    {function () {
+                                                                        if (value.MR_number === value2.myFrom) {
+                                                                            return (
+                                                                                <div className="myContainer">
+                                                                                    <img src={value.MR_pic ? require("../../images/" + value.MR_pic) : require("../../images/yoko.jpg")} alt="Avatar" />
+                                                                                    <p>{value2.content}</p>
+                                                                                    <span className="time-right">{moment(value2.created_at).format('YYYY-MM-DD HH:mm:ss')}</span>
+                                                                                </div>
+                                                                            )
+                                                                        } else {
+                                                                            return (
+                                                                                <div className="myContainer darker">
+                                                                                    <img src={require("./images/yoko2.jpg")} alt="Avatar" className="right" />
+                                                                                    <p>{value2.content}</p>
+                                                                                    <span className="time-left">{moment(value2.created_at).format('YYYY-MM-DD HH:mm:ss')}</span>
+                                                                                </div>
+                                                                            )
+                                                                        }
+                                                                    }()}
+                                                                </div>
+                                                            )
+                                                        }
+                                                    })}
 
-                                                    <div className="myContainer darker">
-                                                        <img src={require("./images/yoko2.jpg")} alt="Avatar" className="right" />
-                                                        <p>中央氣象局今（1日）早發布大雨特報，由於東北風影響，花蓮縣已有豪雨發生，宜蘭、花蓮、台東地區及恆春半島仍有局部大雨發生機率，請注意瞬間大雨，連日降雨，山區請慎防坍方、落石及溪水暴漲，低窪地區請慎防淹水。</p>
-                                                        <span className="time-left">11:01</span>
-                                                    </div>
-
-                                                    <div className="input-group mb-3">
-                                                        <input type="text" className="form-control" placeholder="請輸入聊天訊息" aria-label="Recipient's username" aria-describedby="button-addon2" />
-                                                            <div className="input-group-append">
-                                                            <button className="btn btn-outline-success" type="button" id="button-addon2">送出</button>
+                                                    <div className="input-group md-form form-sm form-2 my-3">
+                                                        <input className="form-control my-0 py-1 lime-border" type="text" placeholder="Search" aria-label="Search" />
+                                                        <div className="input-group-append chatMessageSubmit">
+                                                            <span className="input-group-text lime lighten-2" id="basic-text1">送出</span>
                                                         </div>
                                                     </div>
                                                 </Tab.Pane>
