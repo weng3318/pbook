@@ -614,14 +614,14 @@ Table of Contents
   text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.1);
 }
 
-.yellow {
+/* .yellow {
   background-color: #f1c40f;
   background-image: -webkit-linear-gradient(top, #f1c40f 58%, #e7ba07 0%);
   background-image: -moz-linear-gradient(top, #f1c40f 58%, #e7ba07 0%);
   background-image: linear-gradient(top, #f1c40f 58%, #e7ba07 0%);
-}
+} */
 
-.blue {
+/* .blue {
   background-color: #3498db;
   background-image: -webkit-linear-gradient(top, #3498db 58%, #2a90d4 0%);
   background-image: -moz-linear-gradient(top, #3498db 58%, #2a90d4 0%);
@@ -633,7 +633,7 @@ Table of Contents
   background-image: -webkit-linear-gradient(top, #f8e9d1 58%, #e7d5b7 0%);
   background-image: -moz-linear-gradient(top, #f8e9d1 58%, #e7d5b7 0%);
   background-image: linear-gradient(top, #f8e9d1 58%, #e7d5b7 0%);
-}
+} */
 
 /* Basic ribbon */
 

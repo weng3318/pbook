@@ -10,12 +10,14 @@
   }
 }
 .book_wrapper {
-  height: 200vh;
   .book_categories {
     background-color: rgba($color-gray, 0.1);
     .d-flex {
       width: 100%;
       height: 50px;
+    }
+    .categories-color{
+      color: $color-gray;
     }
   }
   .books {

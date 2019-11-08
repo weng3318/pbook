@@ -26,12 +26,6 @@ class Categories extends React.Component {
       // if (!response.ok) throw new Error(response.statusText)
       const cate_data = await response.json()
       await this.setState({ categories: cate_data })
-      const text = this.state.categories.name
-      const id = this.state.categories.sid
-      const payload = { id: id, text: text }
-      const action = { type: 'ADD_TODO', payload }
-      this.props.dispatch(action)
-      this.setState({ categories: [] })
     } catch (e) {
       console.log(e)
     } finally {

@@ -153,7 +153,7 @@
 }
 
 .chatWrap .myDefault {
-  width: 60vw;
+  width: 50vw;
   margin: 0 auto;
 }
 
@@ -171,4 +171,14 @@
   border: #2d3a3a;
   background: #2d3a3a;
   color: #ffffff;
+}
+
+.chatMessageScroll{
+  height: 60vh;
+  overflow-y: scroll;
+}
+
+
+.show-inline-flex {
+  display: inline-flex !important;
 }

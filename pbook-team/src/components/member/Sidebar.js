@@ -3,9 +3,10 @@ import { Accordion, Button } from 'react-bootstrap'
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 import Info from '../../pages/member/Info'
 import Edit from '../../pages/member/Edit'
+import Chat from './chat/Chat'
 import '../../pages/member/lukeStyle.scss'
 
-const Sidebar = () => {
+const Sidebar = (props) => {
   return (
     <>
       <Router>
@@ -87,7 +88,7 @@ const Sidebar = () => {
                   <a href="css">配對書籍</a>
                 </Accordion.Collapse>
                 <Accordion.Collapse eventKey="0" className="sidebar_item">
-                  <a href="css">配對列表</a>
+                  <Link to="/member/chat">配對列表</Link>
                 </Accordion.Collapse>
               </div>
             </Accordion>
@@ -97,6 +98,7 @@ const Sidebar = () => {
         <Switch>
           <Route exact path="/info" component={Info} />
           <Route exact path="/edit" component={Edit} />
+          <Route path="/member/chat" component={()=><Chat id="MR00001"/>} />
         </Switch>
       </Router>
     </>
