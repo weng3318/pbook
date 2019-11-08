@@ -1,60 +1,81 @@
+/* eslint-disable jsx-a11y/anchor-has-content */
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react'
 import './acPage.scss'
 import { connect } from 'react-redux'
+import { acFetch } from '../../AcActions'
 // import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
-
+let count = 0
 const AcPage = props => {
+  let item
+  function getData(acType, acId) {
+    item =
+      props.acData[acType] &&
+      props.acData[acType].items.filter(v => {
+        return +v.sid === +acId
+      })
+    if (!item) props.dispatch(acFetch('discount'))
+  }
+  getData(props.acType, props.match.params.acId)
+
+  if (!item || !item.length) return <></>
+  item = item[0]
   return (
     <>
       <div className="container acPage">
         <div
-          class="banner"
-          style={{ 'background-image': "url('images/test.jpg');" }}
+          className="banner"
+          style={{
+            backgroundImage:
+              "url('http://localhost:5555/ac/images/" + item.img + "')",
+          }}
         ></div>
+        <div className="row">
+          <main className="col-md-9">
+            <div className="info">
+              <time>時間：{item.date.substr(0, 10)}</time>
+              <br />
+              <span>地點：{item.location}</span>
+            </div>
+            <header>
+              <h1>{item.title}</h1>
+            </header>
 
-        <header>
-          <h1>我是活動名稱</h1>
-        </header>
-
-        <div class="row">
-          <article class="col-md-8">
-            我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文
-            我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文
-            我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文我是內文
-          </article>
-          <aside class="col-md-4">
+            <article dangerouslySetInnerHTML={{ __html: item.intro }}></article>
+          </main>
+          <aside className="col-md-3">
             我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊
           </aside>
         </div>
 
-        <section class="recommend py-5">
-          <h4 class="text-center pb-2">其他推薦</h4>
-          <div class="row">
-            <figure class="col-md-3">
-              <h6 class="text-center">其他活動</h6>
+        <section className="recommend py-5">
+          <h4 className="text-center pb-2">其他推薦</h4>
+          <div className="row">
+            <figure className="col-md-3">
+              <h6 className="text-center">其他活動</h6>
               <a
-                style={{ 'background-image': "url('images/test.jpg');" }}
+                style={{ backgroundImage: "url('images/test.jpg')" }}
                 alt=""
               ></a>
             </figure>
-            <figure class="col-md-3">
-              <h6 class="text-center">其他活動</h6>
+            <figure className="col-md-3">
+              <h6 className="text-center">其他活動</h6>
               <a
-                style={{ 'background-image': "url('images/test.jpg');" }}
+                style={{ backgroundImage: "url('images/test.jpg')" }}
                 alt=""
               ></a>
             </figure>
-            <figure class="col-md-3">
-              <h6 class="text-center">其他活動</h6>
+            <figure className="col-md-3">
+              <h6 className="text-center">其他活動</h6>
               <a
-                style={{ 'background-image': "url('images/test.jpg');" }}
+                style={{ backgroundImage: "url('images/test.jpg')" }}
                 alt=""
               ></a>
             </figure>
-            <figure class="col-md-3">
-              <h6 class="text-center">其他活動</h6>
+            <figure className="col-md-3">
+              <h6 className="text-center">其他活動</h6>
               <a
-                style={{ 'background-image': "url('images/test.jpg');" }}
+                style={{ backgroundImage: "url('images/test.jpg')" }}
                 alt=""
               ></a>
             </figure>
@@ -65,6 +86,7 @@ const AcPage = props => {
   )
 }
 const mapStateToProps = state => ({
-  listData: state.listData,
+  acType: state.acType,
+  acData: state.acData,
 })
 export default connect(mapStateToProps)(AcPage)
