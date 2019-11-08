@@ -2,26 +2,29 @@ const express = require("express");
 const router = express.Router();
 const mysql = require("mysql");
 const db = mysql.createConnection({
-    host: "192.168.27.186",
-    user: "Ruby",
-    password: "1010",
-    database: "pbook"
-  });
-  db.connect();
-  const bluebird = require("bluebird");
-  bluebird.promisifyAll(db);
+  host: "192.168.27.186",
+  user: "Ruby",
+  password: "1010",
+  database: "pbook"
+});
+db.connect();
+const bluebird = require("bluebird");
+bluebird.promisifyAll(db);
 
-//精選文章 card1
+//精選文章
 router
   .route("/homepage/")
   .all((req, res, next) => {
     next();
   })
   .get((req, res) => {
+    let output = {};
     let sql = "SELECT * FROM `fm_article` WHERE `fm_featured`=1";
     db.query(sql, (error, results, fields) => {
       if (error) throw error;
-      res.json(results);
+      output.featured = results;
+      console.log(results);
+      res.json(output);
     });
   });
 

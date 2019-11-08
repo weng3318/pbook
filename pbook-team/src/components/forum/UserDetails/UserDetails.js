@@ -1,6 +1,6 @@
 import React from 'react'
 import './UserDetails.scss'
-//props : memberId={fm_memberId}
+//props : memberId={fm_memberId} read={true}//閱讀人數是否顯示 article={article} //文章資料
 
 class UserDetails extends React.Component {
   constructor() {

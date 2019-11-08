@@ -1,8 +1,10 @@
 import React from 'react'
 import './CardS1.scss'
 import UserDetails from '../UserDetails/UserDetails'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCat } from '@fortawesome/free-solid-svg-icons'
 
-//傳入props.data
+//傳入props.data (fm資料表))
 
 class CardS1 extends React.Component {
   constructor(props) {
@@ -36,7 +38,7 @@ class CardS1 extends React.Component {
 
       return (
         <>
-          <figure className="card-figure">
+          <figure className="card-figure card-module">
             <img
               className="card-s1-img"
               alt=""
@@ -47,10 +49,16 @@ class CardS1 extends React.Component {
             />
             <div className="card-body">
               <div>
-                <div className="card-s-title" onClick={this.handleTitleClick}>
+                <div
+                  className="card-title-font"
+                  onClick={this.handleTitleClick}
+                >
                   {article.fm_title}
                 </div>
-                <div className="card-subTitle" onClick={this.handleTitleClick}>
+                <div
+                  className="card-s1-subTitle card-subtitle-font"
+                  onClick={this.handleTitleClick}
+                >
                   {article.fm_subTitle}
                 </div>
                 <UserDetails

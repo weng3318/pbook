@@ -6,8 +6,11 @@ html {
   $season-green: #cde2d0;
   $grass-yellow: #ffc408;
   $grey-grey: #979d9d;
-  $Darjeeling:#ff525b;
+  $Darjeeling: #ff525b;
+  $deepsea: #58b2dc;
 
+  height: 2000px;
+  color: $black-tea;
   .displayBlock {
     display: block;
   }
@@ -17,9 +20,14 @@ html {
   .displayInlineBlock {
     display: inline-block;
   }
-
   .position-r {
     position: relative;
+  }
+  .position-a {
+    position: absolute;
+  }
+  .dis-flex {
+    display: flex;
   }
   .navbar {
     background-color: #cde2d0;
@@ -27,8 +35,23 @@ html {
   .container {
     max-width: 1200px;
   }
+  .card-module {
+    border-radius: 5px;
+    box-shadow: 3px 3px 10px #ccc;
+    background-color: #ffffff;
+  }
+  .card-title-font {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: $black-tea;
+  }
+  .card-subtitle-font {
+    font-size: 1rem;
+    color: $grey-grey;
+  }
+
   .F-nav-link {
-    color: #2d3a3a !important;
+    color: $black-tea !important;
     /* padding: 10px; */
     border-radius: 5px;
   }
@@ -50,5 +73,33 @@ html {
     font-size: 1.1rem;
     border: 3px solid #ffc408;
     margin-right: 10px;
+  }
+  .more-featured {
+    right: 10px;
+    bottom: 0;
+    font-size: 1.2rem;
+    color: $grey-grey;
+    text-decoration: underline;
+  }
+  .forum-list-wrapper {
+    min-width: 370px;
+    max-width: 740px;
+  }
+  .articleList-title {
+    font-size: 1.4rem;
+    margin: 12px 0 0 12px;
+    padding: 12px 0 4px 0;
+
+    &:before {
+      content: '';
+      font-size: 1.1rem;
+      border: 3px solid $deepsea;
+      margin-right: 10px;
+    }
+  }
+  .HotTopic-wrapper {
+    width: 370px;
+    right: 24px;
+    top: 0;
   }
 }

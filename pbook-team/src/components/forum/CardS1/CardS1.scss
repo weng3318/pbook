@@ -1,12 +1,8 @@
 .forumPage {
-  
   .card-figure {
     box-sizing: border-box;
     width: 360px;
     height: 370px;
-    border-radius: 5px;
-    box-shadow: 3px 3px 10px #ccc;
-    background-color: #ffffff;
   }
   .card-s1-img {
     width: 100%;
@@ -16,14 +12,8 @@
   .card-body {
     padding: 10px 12px 0 12px;
   }
-  .card-s-title {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: #2d3a3a;
-  }
-  .card-subTitle {
-    font-size: 0.8rem;
-    color: #2d3a3ab6;
+  
+  .card-s1-subTitle {
     margin-top: 4px;
     margin-bottom: 25px;
     height: 60px;
