@@ -12,7 +12,7 @@ import Forum from '../../pages/Forum/Forum'
 import Login from '../../pages/login/Login'
 import Member from '../../pages/member/Member'
 import Game from '../../pages/game/Game'
-import Logout from '../../pages/Logout'
+import Logout from '../../pages/login/Login'
 import Cart from '../../pages/Cart'
 import NoPage from '../../pages/nopage/NoPage'
 
@@ -24,9 +24,9 @@ export default class Header extends React.Component {
     super()
     this.state = {
       hasData: false,
-      id: 'MR00001',
-      name: '橫山裕',
-      level: '品書學徒',
+      id: '',
+      name: '',
+      level: '',
       loginImg: './images/yoko.jpg',
     }
   }
@@ -283,7 +283,6 @@ export default class Header extends React.Component {
             <Route exact path="/forum" component={Forum} />
             <Route exact path="/login" component={Login} />
             <Route
-              exact
               path="/member"
               component={() => <Member id={this.state.id} />}
             />

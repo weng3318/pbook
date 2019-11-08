@@ -31,9 +31,11 @@ class Member{
     
     getAddMemberSql(){
         //會員編號
-        // let querySid = `SELECT MAX(sid) FROM mr_information ORDER BY DESC `
-        // console.log(querySid.sid);
-        // let memberNum = "MR000" + i
+        let number_blank = "MR00000"
+        let count = `SELECT MAX(sid) FROM mr_information`
+        console.log(count);
+        let new_number = substr(number_blank, 0, strlen(number_blank))
+        
         //進行加密
         // this.MR_password = encryption(this.MR_password)
         //塞入資料

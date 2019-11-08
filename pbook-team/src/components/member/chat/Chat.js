@@ -167,7 +167,7 @@ class Chat extends React.Component {
                         >
                           <div className="d-flex">
                             <div className="chatImgWrap">
-                              <img
+                              {/* <img
                                 alt="會員大頭照"
                                 className="chatImg"
                                 src={
@@ -175,7 +175,7 @@ class Chat extends React.Component {
                                     ? require('../../images/' + value.MR_pic)
                                     : require('../../images/yoko.jpg')
                                 }
-                              ></img>
+                              ></img> */}
                             </div>
                             <div className="d-flex flex-column align-self-center chatTextWrap">
                               <span className="chatText">{value.MR_name}</span>
@@ -220,7 +220,7 @@ class Chat extends React.Component {
                                     if (value.MR_number === value2.myFrom) {
                                       return (
                                         <div className="myContainer">
-                                          <img
+                                          {/* <img
                                             src={
                                               value.MR_pic
                                                 ? require('../../images/' +
@@ -228,7 +228,7 @@ class Chat extends React.Component {
                                                 : require('../../images/yoko.jpg')
                                             }
                                             alt="Avatar"
-                                          />
+                                          /> */}
                                           <p>{value2.content}</p>
                                           <span className="time-right">
                                             {moment(value2.created_at).format(
@@ -240,11 +240,11 @@ class Chat extends React.Component {
                                     } else {
                                       return (
                                         <div className="myContainer darker">
-                                          <img
+                                          {/* <img
                                             src={require('./images/yoko2.jpg')}
                                             alt="Avatar"
                                             className="right"
-                                          />
+                                          /> */}
                                           <p>{value2.content}</p>
                                           <span className="time-left">
                                             {moment(value2.created_at).format(

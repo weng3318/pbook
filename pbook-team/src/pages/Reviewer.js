@@ -1,10 +1,11 @@
 import React from 'react'
+import Chat from '../components/member/chat/Chat'
 
-const Reviewer = (props) => {
+const Reviewer = () => {
     return (
         <>
         <h1>書評家12345</h1>
-        <h1>{props.id}</h1>
+        <Chat id="MR00001"/>
         </>
     )
 }
