@@ -20,7 +20,7 @@ class Member extends React.Component {
             <Navbar />
             <div className="row">
               <Sidebar />
-              {/* <Edit /> */}
+              <Edit />
               <Info />
             </div>
           </div>

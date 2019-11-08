@@ -1,8 +1,5 @@
-import React, { useState } from 'react'
-import {
-  SET_VISIBILITY_FILTER,
-  VisibilityFilterType,
-} from '../../actions/ListActions'
+import React from 'react'
+import { SET_VISIBILITY_FILTER, VisibilityFilterType } from '../../AcActions'
 import { connect } from 'react-redux'
 
 function AcListHeader(props) {
@@ -17,13 +14,13 @@ function AcListHeader(props) {
       case '1':
         action.visibilityFilter = VisibilityFilterType.SHOW_ACTIVE
         break
-      case '2':
-        action.visibilityFilter = VisibilityFilterType.SHOW_ALL
-        break
-      case '3':
+      case '0':
         action.visibilityFilter = VisibilityFilterType.SHOW_COMING_SOON
         break
-      case '4':
+      case '3':
+        action.visibilityFilter = VisibilityFilterType.SHOW_ALL
+        break
+      case '2':
         action.visibilityFilter = VisibilityFilterType.SHOW_COMPLETED
         break
       default:
@@ -41,11 +38,13 @@ function AcListHeader(props) {
         <div className="tagContainer d-flex">
           <ul className="nav">
             <li className="nav-item">
+              {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
               <a className="nav-link active" href="#">
                 優惠活動
               </a>
             </li>
             <li className="nav-item">
+              {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
               <a className="nav-link" href="#">
                 線下活動
               </a>
@@ -59,9 +58,9 @@ function AcListHeader(props) {
               onChange={selectHandler}
             >
               <option value="1">進行中</option>
-              <option value="2">顯示全部</option>
-              <option value="3">尚未開始</option>
-              <option value="4">已結束</option>
+              <option value="0">尚未開始</option>
+              <option value="3">顯示全部</option>
+              <option value="2">已結束</option>
             </select>
           </div>
         </div>
