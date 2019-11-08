@@ -53,7 +53,11 @@ class CardS1 extends React.Component {
                 <div className="card-subTitle" onClick={this.handleTitleClick}>
                   {article.fm_subTitle}
                 </div>
-                <UserDetails article={article} memberId={article.fm_memberId} />
+                <UserDetails
+                  read={true}
+                  article={article}
+                  memberId={article.fm_memberId}
+                />
               </div>
             </div>
           </figure>

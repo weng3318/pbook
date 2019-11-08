@@ -115,7 +115,13 @@ class UserDetails extends React.Component {
               </div>
               <div>
                 <time>{article.fm_publishTime.slice(0, 10)} </time>
-                <span>{article.fm_read}人閱讀</span>
+                <span
+                  className={
+                    this.props.read ? 'displayInlineBlock' : 'displayNone'
+                  }
+                >
+                  {article.fm_read}人閱讀
+                </span>
                 <span className="card-response">16則留言</span>
               </div>
             </div>

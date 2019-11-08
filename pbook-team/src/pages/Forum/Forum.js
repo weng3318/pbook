@@ -36,7 +36,7 @@ class Forum extends React.Component {
   render() {
     return (
       <>
-        <div className="forumpage">
+        <div className="forumPage">
           <ForumNavBar />
           <div className="container">
             <div className="featured-title">精選文章</div>

@@ -1,7 +1,26 @@
 html {
   font-size: 16px;
 }
-.forumpage {
+.forumPage {
+  $black-tea: #2d3a3a;
+  $season-green: #cde2d0;
+  $grass-yellow: #ffc408;
+  $grey-grey: #979d9d;
+  $Darjeeling:#ff525b;
+
+  .displayBlock {
+    display: block;
+  }
+  .displayNone {
+    display: none;
+  }
+  .displayInlineBlock {
+    display: inline-block;
+  }
+
+  .position-r {
+    position: relative;
+  }
   .navbar {
     background-color: #cde2d0;
   }

@@ -26,7 +26,13 @@ const CardS2 = props => {
                 />
                 <div className="card-s2-list-details">
                   <div className="card-s2-title">{value.fm_title}</div>
-                  <UserDetails memberId={value.fm_memberId} article={value} />
+                  <div className="card-s2-font">
+                    <UserDetails
+                      read={false}
+                      memberId={value.fm_memberId}
+                      article={value}
+                    />
+                  </div>
                 </div>
               </div>
             )
