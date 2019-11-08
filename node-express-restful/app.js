@@ -1,11 +1,7 @@
 import express from "express";
 import bodyparser from "body-parser";
 import cors from "cors";
-import register from "./api/register"
-import login from "./api/login"
-
-import products from "./api/products";
-import orders from "./api/orders";
+import memberRouter from "./router/member/member"
 
 const app = express();
 const mysql = require("mysql");
@@ -22,15 +18,16 @@ bluebird.promisifyAll(db);
 
 app.use(cors());
 
+
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: false }));
-
-app.use("/products", products);
-app.use("/orders", orders);
-app.post("/register", register)
-app.post("/login", login)
-
 app.use(express.static("public"));
+
+
+app.use("/member", memberRouter)
+app.use("/forum", require("./src/forum/homepage"));
+app.use("/nana_use", require("./src/nana_use/chatList"));
+app.use("/nana_use", require("./src/nana_use/chatMessage"));
 
 app.get("/", function(req, res) {
   res.send("Home");

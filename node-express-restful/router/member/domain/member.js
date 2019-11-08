@@ -4,6 +4,7 @@ class Member{
     constructor(name, email, password){
         this.MR_name = name
         this.MR_email = email
+        // this.MR_password = encryption(password)
         this.MR_password = password
         console.log(this.MR_name, this.MR_email, this.MR_password)
     }
@@ -22,6 +23,11 @@ class Member{
         let sql = `SELECT MR_email FROM mr_information WHERE MR_email = '${this.MR_email}'`
         return sql
     }
+
+    getAllMemberSql(){
+        let sql = `SELECT * FROM mr_information WHERE 1`
+        return sql
+    }
     
     getAddMemberSql(){
         //會員編號
@@ -29,19 +35,19 @@ class Member{
         // console.log(querySid.sid);
         // let memberNum = "MR000" + i
         //進行加密
-        this.MR_password = encryption(this.MR_password)
+        // this.MR_password = encryption(this.MR_password)
         //塞入資料
         let sql = `INSERT INTO mr_information(MR_name, MR_email, MR_password, MR_personLevel, MR_createdDate) 
                         VALUES('${this.MR_name}', '${this.MR_email}', '${this.MR_password}', 1, now()) `
         return sql
     }
 
+    
     getLoginSql(){
-        let sql = `SELECT * FROM 'mr_information' WHERE MR_email = '${this.MR_email}' && MR_password = '${this.MR_password}'`
+        let sql = `SELECT * FROM 'mr_information' WHERE MR_email = '${this.MR_email}' AND MR_password = '${this.MR_password}'`
         return sql
     }
-
-
+    
 }
 
 export default Member
