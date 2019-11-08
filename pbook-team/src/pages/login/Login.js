@@ -20,17 +20,16 @@ class Login extends React.Component {
 
 
   handleChange(e){
-    // const name = e.target.name
-    // const obj = {};
-    // obj[name] = e.target.value;
-    // this.setState(obj, ()=>{
-    //   console.log(this.state)
-    // });
+    const name = e.target.name
+    const obj = {};
+    obj[name] = e.target.value;
+    this.setState(obj, ()=>{
+      console.log(this.state)
+    });
 
     //解構賦值
-    const {name, value} = e.target
-    console.log(name, value);
-    this.setState({name: value})
+    // const {name, value} = e.target
+    // console.log(name, value);
   }
 
   handleLogin (e){
