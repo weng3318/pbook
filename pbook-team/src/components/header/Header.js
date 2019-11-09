@@ -6,7 +6,7 @@ import swal from '@sweetalert/with-react'
 import Home from '../../pages/Home'
 import Reviewer from '../../pages/Reviewer'
 import Books from '../../pages/Books'
-import Activities from '../../pages/activities/Activities'
+// import Activities from '../../pages/activities/Activities'
 import Reviews from '../../pages/Reviews'
 import Forum from '../../pages/Forum/Forum'
 import Login from '../../pages/login/Login'
@@ -197,11 +197,11 @@ export default class Header extends React.Component {
               <br />
               <span className="titleEn">BOOKS</span>
             </Link>
-            <Link to="/activities" className="myHeaderTextCenter mx-4 pointer">
+            {/* <Link to="/activities" className="myHeaderTextCenter mx-4 pointer">
               <span className="titleZh">品書活動</span>
               <br />
               <span className="titleEn">ACTIVITIES</span>
-            </Link>
+            </Link> */}
             <Link to="/reviews" className="myHeaderTextCenter mx-4 pointer">
               <span className="titleZh">品書書評</span>
               <br />
@@ -250,11 +250,11 @@ export default class Header extends React.Component {
                     書籍商城
                   </Link>
                 </li>
-                <li>
+                {/* <li>
                   <Link to="/activities" className="myHeaderA">
                     品書活動
                   </Link>
-                </li>
+                </li> */}
                 <li>
                   <Link to="/reviews" className="myHeaderA">
                     品書書評
@@ -278,7 +278,7 @@ export default class Header extends React.Component {
             <Route exact path="/" component={Home} />
             <Route exact path="/reviewer" component={Reviewer} />
             <Route exact path="/books" component={Books} />
-            <Route path="/activities" component={Activities} />
+            {/* <Route path="/activities" component={Activities} /> */}
             <Route exact path="/reviews" component={Reviews} />
             <Route exact path="/forum" component={Forum} />
             <Route exact path="/login" component={Login} />
