@@ -5,15 +5,19 @@
   background-size: cover;
 }
 
+/* -------------背景音樂按鈕------------- */
 .myBGsoundBTN {
   width: 30px;
   height: 30px;
-  bottom:20px;
-  right:20px;
+  bottom: 20px;
+  right: 20px;
   cursor: pointer;
   position: absolute;
 }
+/* -------------背景音樂按鈕------------- */
 
+
+/* --------------遊戲首頁------------------ */
 @media (min-width: 576px) {
   .PC-changeGameWrap {
     width: 85vw;
@@ -86,3 +90,33 @@
     text-shadow: 0.1em 0.1em 0 rgb(173, 173, 173);
   }
 }
+/* --------------遊戲首頁------------------ */
+
+/* -------------------------雪花飄落效果----------------------- */
+#snow {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: url('./images/snow1.png');
+  -webkit-animation: snow 15s linear infinite;
+  animation: snow 15s linear infinite;
+}
+@keyframes snow {
+  0% {
+    background-position: 0 0, 0 0;
+  }
+  100% {
+    background-position: 500px 1000px, 500px 500px;
+  }
+}
+@-webkit-keyframes snow {
+  0% {
+    background-position: 0 0, 0 0;
+  }
+  100% {
+    background-position: 500px 1000px, 500px 500px;
+  }
+}
+/* -------------------------雪花飄落效果----------------------- */
