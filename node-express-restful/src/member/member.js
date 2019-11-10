@@ -37,15 +37,15 @@ router.post('/register', (req, res, next) => {
                     db.query(Member.getAddMemberSql(), (err, data) => {
                         if(err){
                             res.json({
-                                status: "已伺服器錯誤，請稍後在試",
+                                status: "伺服器錯誤，請稍後在試",
                                 message: "註冊失敗"
                              })
                             return;
                         }
                         // 若寫入資料庫成功，則回傳給clinet端下：
                         res.json({
-                            message: "註冊成功"
-
+                            status: "註冊成功",
+                            message:"歡迎" + req.body.name + "的登入!",
                          })
                       })
                 }

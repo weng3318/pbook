@@ -42,7 +42,6 @@
     margin-top: 20px;
 
   }
-
   .login_btn:active {
     transform: scale(0.95);
   }
@@ -54,6 +53,28 @@
     width: 100%;
     text-align: center;
   }
+  .tip{
+    height: 18px;
+    color: #979D9D;
+    width: 100%;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+  }
+
+  .error {
+    /* display: block;
+    height: 20px;
+    font-size: 12px; */
+    background-color: #eee;
+    border: 1px solid #FF525B;
+    color: #FF525B;
+    padding: 12px 15px;
+    margin: 10px 0;
+    width: 100%;
+    text-align: center;
+  }
+
   .serial{
     background-color: #eee;
     border: none;
@@ -154,6 +175,11 @@
     border: 1px solid rgb(230, 222, 222);
     z-index: 1;
   }
+  .container_front a{
+    margin: 20px;
+    color: #2D2D3A;
+  }
+
   .login_title{
     display: flex;
     /* width: 100%; */
@@ -165,19 +191,26 @@
   .social-container {
     display: flex;
     flex-direction: column;
-    margin: 0px 0;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+    /* border: 1px solid green; */
+
+
+  }
+  .social-container .title{
+    /* border: 1px solid #000; */
+    color: rgba(0, 0, 0, .5);
+    margin-bottom: 30px;
+    font-size: 24px;
+    
 
   }
 
   .social-container a {
-    border: 1px solid #dddddd;
-    /* border-radius: 50%; */
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    margin: 10px 5px;
-    height: 40px;
-    width: 200px;
+    border: 1px solid red;
+    width: 500px;
+    height: 50px;
   }
 
   ._center{

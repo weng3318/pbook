@@ -1,4 +1,5 @@
 import encryption from '../models/encryption'
+import db from '../db/database'
 
 class Member{
     constructor(name, email, password){
@@ -31,13 +32,11 @@ class Member{
     
     getAddMemberSql(){
         //會員編號
-        let number_blank = "MR00000"
-        let count = `SELECT MAX(sid) FROM mr_information`
-        let countLen = count.length
-        console.log(count.sid);
-        // let new_number = substr(number_blank, 0)
-        // console.log(new_number);
-        return
+        // let number_blank = "MR00000"
+        // let count = `SELECT MAX(sid) FROM mr_information`
+        
+        // let new_number = number_blank.slice(0, -3)+"143"
+        // return
         
         //進行加密
         // this.MR_password = encryption(this.MR_password)

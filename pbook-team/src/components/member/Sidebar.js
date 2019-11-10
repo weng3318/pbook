@@ -21,12 +21,12 @@ const Sidebar = (props) => {
                   // style={{ textDecoration: 'none' }}
                   className="sider_title"
                 >
-                  <Link to="/info">
+                  <Link to="/member">
                     <h2>會員資料</h2>
                   </Link>
                 </Accordion.Toggle>
                 <Accordion.Collapse eventKey="0" className="sidebar_item">
-                  <Link to="/edit">
+                  <Link to="/member/edit">
                     <a href="css">編輯資料</a>
                   </Link>
                 </Accordion.Collapse>
@@ -96,8 +96,8 @@ const Sidebar = (props) => {
         </div>
 
         <Switch>
-          <Route exact path="/info" component={Info} />
-          <Route exact path="/edit" component={Edit} />
+          <Route exact path="/member" component={Info} />
+          <Route exact path="/member/edit" component={Edit} />
           <Route path="/member/chat" component={()=><Chat id="MR00001"/>} />
         </Switch>
       </Router>
