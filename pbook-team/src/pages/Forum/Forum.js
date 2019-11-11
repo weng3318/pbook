@@ -1,14 +1,18 @@
 import React from 'react'
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
-import ForumNavBar from './ForumNavBar'
+// eslint-disable-next-line no-unused-vars
+import { BrowserRouter as Route, Link } from 'react-router-dom'
 import CardS1 from '../../components/forum/CardS1/CardS1'
 import CardS2 from '../../components/forum/CardS2/CardS2'
-import './Forum.css'
+import Listitem from '../../components/forum/ListItem/ListItem'
+import HotTopic from '../../components/forum/HotTopic/HotTopic'
+import './Forum.scss'
 
 class Forum extends React.Component {
   constructor() {
     super()
     this.state = {
+      update: false,
+      items: 20,
       data: [],
     }
   }
@@ -22,7 +26,8 @@ class Forum extends React.Component {
       })
       .then(async result => {
         await this.setState({
-          data: result[0],
+          data: result.featured,
+          update: true,
         })
       })
       .catch(error => {
@@ -34,20 +39,37 @@ class Forum extends React.Component {
   render() {
     return (
       <>
-        <ForumNavBar />
         <div className="container">
-          <div className="featured-title">精選文章</div>
-          <div className="featured">
-            <CardS1
-              data={this.state.data}
-              img={
-                "require('../../../images/Forum/'" +
-                this.state.data.fm_demoImage +
-                ')'
-              }
-            />
-            <CardS2 />
-            <CardS1 />
+          <div className="position-r">
+            <div className="featured-title">精選文章</div>
+            <div className="featured">
+              <CardS1 data={this.state.data[0]} />
+              <CardS2
+                update={this.state.update}
+                data={[
+                  this.state.data[2],
+                  this.state.data[3],
+                  this.state.data[4],
+                ]}
+              />
+              <CardS1 data={this.state.data[1]} />
+            </div>
+            <div style={{ color: 'transparent' }}>更多精選</div>
+            <Link to="" className="more-featured position-a">
+              更多精選 +{' '}
+            </Link>
+          </div>
+          <hr></hr>
+          <div className="position-r">
+            <div className="forum-list-wrapper card-module">
+              <div className="articleList-title">文章列表</div>
+              {this.state.data.map(value => {
+                return <Listitem key={value.fm_articleId} article={value} />
+              })}
+            </div>
+            <div className="HotTopic-wrapper card-module position-a">
+              <HotTopic />
+            </div>
           </div>
         </div>
       </>

@@ -1,19 +1,14 @@
 import express from 'express'
-import List from './ac'
-
+import AC from './acModel'
 
 const router = express.Router()
 
-router.get('/', async (req, res, next) => {    
-    res.json( await List())
-//   db.query(Product.getAllProductSQL(), (err, data) => {
-//     if (!err) {
-//       res.status(200).json({
-//         message: 'Products listed.',
-//         productId: data,
-//       })
-//     }
-//   })
+router.get('/offline', async (req, res, next) => {    
+    res.json( await AC.getOfflineList())
+})
+
+router.get('/discount', async (req, res, next) => {    
+    res.json( await AC.getDiscountList())
 })
 
 // router.post('/add', (req, res, next) => {

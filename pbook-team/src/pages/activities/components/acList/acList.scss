@@ -1,11 +1,19 @@
 .acList {
   .tagContainer {
     justify-content: space-between;
+    p {
+      margin: 0 1rem;
+      line-height: 40px;
+    }
   }
 
-  .tagContainer p {
-    margin: 0 1rem;
-    line-height: 40px;
+  h4{
+    font-size: 1.5rem;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    white-space: normal;
   }
 
   .eventList {

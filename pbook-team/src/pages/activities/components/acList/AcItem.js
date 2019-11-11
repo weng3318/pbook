@@ -2,7 +2,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-function AcItem(props) {
+function AcItemOffline(props) {
   return (
     <>
       <div className="acItem row mt-3">
@@ -23,13 +23,37 @@ function AcItem(props) {
             to={'/activities/' + props.acType + '/' + props.sid}
             className="acTitle"
           >
-            <h4>{props.title}</h4>
+            <h4 title={props.title}>{props.title}</h4>
           </Link>
-          <div className="acIntro ellipsis">{props.brief_intro}</div>
+          <div className="acIntro ellipsis my-2" title={props.brief_intro}>
+            {props.brief_intro}
+          </div>
           <div className="acInfo">
-            <small className="date">{props.date.substring(0, 10)}</small>
-            <br />
-            <small className="location">{props.location}</small>
+            {(function() {
+              if (props.acType === 'offline') {
+                return (
+                  <>
+                    <small className="date">
+                      {props.date.substring(0, 10)}
+                    </small>
+                    <br />
+                    <small className="location">{props.location}</small>
+                  </>
+                )
+              } else if (props.acType === 'discount') {
+                return (
+                  <>
+                    <small className="date">
+                      開始時間：{props.start_time.substring(0, 10)}
+                    </small>
+                    <br />
+                    <small className="date">
+                      結束時間：{props.end_time.substring(0, 10)}
+                    </small>
+                  </>
+                )
+              }
+            })()}
           </div>
         </section>
       </div>
@@ -37,4 +61,4 @@ function AcItem(props) {
   )
 }
 
-export default AcItem
+export default AcItemOffline

@@ -8,7 +8,7 @@ import { acFetch } from '../../AcActions'
 
 const AcList = props => {
   useEffect(() => {
-    props.dispatch(acFetch('discount'))
+    props.dispatch(acFetch(props.acType))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -17,15 +17,16 @@ const AcList = props => {
       <div className="container acList">
         <AcListHeader />
         <div className="my-2 py-2" style={{ borderTop: '1px solid #ccc' }}>
-          {props.acData.discount &&
-            props.acData.discount.items
-              .filter(v => {
-                return (
-                  +v.status === +props.visibilityFilter.value ||
-                  +props.visibilityFilter.value === 3
-                )
-              })
-              .map(v => <AcItem key={v.sid} {...v} acType={props.acType} />)}
+          {props.acData[props.acType].items
+            .filter(v => {
+              return (
+                +v.status === +props.visibilityFilter.value ||
+                +props.visibilityFilter.value === 3
+              )
+            })
+            .map(v => (
+              <AcItem key={v.sid} {...v} acType={props.acType} />
+            ))}
         </div>
       </div>
     </>
