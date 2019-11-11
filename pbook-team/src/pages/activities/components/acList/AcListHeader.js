@@ -13,8 +13,6 @@ function AcListHeader(props) {
   // }
 
   function acTypeHandler(acType) {
-    console.log(acType);
-    
     props.dispatch(setAcType(acType))
   }
 

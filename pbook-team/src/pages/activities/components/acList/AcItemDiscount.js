@@ -2,7 +2,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-function AcItem(props) {
+function AcItemDiscount(props) {
   return (
     <>
       <div className="acItem row mt-3">
@@ -27,7 +27,7 @@ function AcItem(props) {
           </Link>
           <div className="acIntro ellipsis">{props.brief_intro}</div>
           <div className="acInfo">
-            <small className="date">{props.date.substring(0, 10)}</small>
+            {/* <small className="date">{props.date.substring(0, 10)}</small> */}
             <br />
             <small className="location">{props.location}</small>
           </div>
@@ -37,4 +37,4 @@ function AcItem(props) {
   )
 }
 
-export default AcItem
+export default AcItemDiscount
