@@ -2,7 +2,7 @@ import React from 'react'
 import Data from '../pages/reviewer_page/data/reviewer_data'
 import { withRouter } from 'react-router-dom'
 import BR_ReviewerList from './reviewer_page/BR_ReviewerList'
-import BR_Bookcase from './reviewer_page/BR_BookcaseList'
+import BR_BookcaseList from './reviewer_page/BR_BookcaseList'
 import BR_BookcaseHot from './reviewer_page/BR_BookcaseHot'
 import axios from 'axios';
 
@@ -53,7 +53,7 @@ class ReviewerBooks extends React.Component {
 
           {/* 書評列表 */}
           {this.state.brData.map(({ bookcase }) => (
-            <BR_Bookcase bookcase={bookcase}></BR_Bookcase>
+            <BR_BookcaseList bookcase={bookcase}></BR_BookcaseList>
           ))}
 
         </section>

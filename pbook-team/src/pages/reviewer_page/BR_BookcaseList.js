@@ -1,6 +1,6 @@
 import React from 'react'
 
-class BR_Bookcase extends React.Component {
+class BR_BookcaseList extends React.Component {
     render() {
         let bookcase = '03書_React全方位基礎入門實戰.png'
         return (
@@ -47,4 +47,4 @@ class BR_Bookcase extends React.Component {
     }
 }
 
-export default BR_Bookcase
+export default BR_BookcaseList
