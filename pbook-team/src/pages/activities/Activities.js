@@ -1,7 +1,8 @@
 import React from 'react'
 // import Test from './test'
 import AcList from './components/acList/AcList'
-import AcPage from './components/acPage/Acpage'
+import AcPageOffline from './components/acPage/AcPageOffline'
+import AcPageDiscount from './components/acPage/AcPageDiscount'
 import { connect } from 'react-redux'
 // eslint-disable-next-line no-unused-vars
 import { Route, Link, Switch, Redirect } from 'react-router-dom'
@@ -19,9 +20,9 @@ import { Route, Link, Switch, Redirect } from 'react-router-dom'
 // //redux---------------------------------------------
 
 const Activities = props => {
-
   return (
     <>
+      <Redirect from={'/activities'} to={'/activities/' + props.acType} />
       <Switch>
         <Redirect
           exact
@@ -29,17 +30,18 @@ const Activities = props => {
           to={'/activities/' + props.acType}
         />
       </Switch>
+
       <Route exact path={props.match.url + '/discount'} component={AcList} />
       <Route exact path={props.match.url + '/offline'} component={AcList} />
       <Route
         exact
         path={props.match.url + '/discount/:acId'}
-        component={AcPage}
+        component={AcPageDiscount}
       />
       <Route
         exact
         path={props.match.url + '/offline/:acId'}
-        component={AcPage}
+        component={AcPageOffline}
       />
     </>
   )

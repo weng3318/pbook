@@ -59,6 +59,7 @@ router.post('/login', (req, res, next) => {
     
     db.query(Member.getLoginSql(), (err, rows) => {
         // console.log(rows);
+        if(err) console.log(err)
         
         if( rows.length == 0){
             res.json({
@@ -73,9 +74,9 @@ router.post('/login', (req, res, next) => {
             })
             return
         }else{
-            res.locals.userId = rows[0].sid;
+            // res.locals.userId = rows[0].sid;
             //設定session
-            req.session.sid = res.locals.userId; 
+            // req.session.sid = res.locals.userId; 
             // console.log(req.session.sid);
 
             res.json({

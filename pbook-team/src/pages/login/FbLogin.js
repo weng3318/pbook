@@ -10,7 +10,7 @@ class FbLogin extends React.Component{
         picture: ""
       };
 
-      responseFacebook = response => {
+    responseFacebook = response => {
           console.log(response);
           
         this.setState({
@@ -32,7 +32,7 @@ class FbLogin extends React.Component{
         let fbContent;
         if(this.state.isLoggedIn){
             fbContent = (
-               <></>
+               window.location.href='/'
               );
         }else{
         fbContent = (

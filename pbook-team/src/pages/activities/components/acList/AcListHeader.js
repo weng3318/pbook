@@ -1,5 +1,9 @@
 import React from 'react'
-import { SET_VISIBILITY_FILTER, VisibilityFilterType } from '../../AcActions'
+import {
+  SET_VISIBILITY_FILTER,
+  VisibilityFilterType,
+  setAcType,
+} from '../../AcActions'
 import { connect } from 'react-redux'
 
 function AcListHeader(props) {
@@ -7,6 +11,10 @@ function AcListHeader(props) {
   // function selectHandler(evt) {
   //   setAcStatus(evt.target.value)
   // }
+
+  function acTypeHandler(acType) {
+    props.dispatch(setAcType(acType))
+  }
 
   function selectHandler(e) {
     let action = { type: SET_VISIBILITY_FILTER, visibilityFilter: '' }
@@ -39,13 +47,16 @@ function AcListHeader(props) {
           <ul className="nav">
             <li className="nav-item">
               {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-              <a className="nav-link active" href="#">
+              <a
+                className="nav-link active"
+                onClick={() => acTypeHandler('discount')}
+              >
                 優惠活動
               </a>
             </li>
             <li className="nav-item">
               {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-              <a className="nav-link" href="#">
+              <a className="nav-link" onClick={() => acTypeHandler('offline')}>
                 線下活動
               </a>
             </li>

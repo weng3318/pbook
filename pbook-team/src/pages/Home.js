@@ -5,14 +5,15 @@ import Theme from '../components/indexComponents/theme/Theme'
 import Storyteller from '../components/indexComponents/storyteller/Storyteller'
 
 class Home extends React.Component {
-  constructor(props) {
-    super(props)
+  constructor() {
+    super()
     this.state = {}
   }
 
   componentDidMount() {}
 
   render() {
+    
     return (
       <>
         <Carousel />
