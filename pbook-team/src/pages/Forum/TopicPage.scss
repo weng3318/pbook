@@ -1,0 +1,14 @@
+.forumPage {
+  .carouselContorl {
+    margin-top: 20px;
+  }
+  .cards-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 24px;
+  }
+  .cards-wrapper .card-figure{
+      margin-bottom: 32px;
+  }
+}

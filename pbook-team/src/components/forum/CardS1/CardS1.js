@@ -1,12 +1,12 @@
 import React from 'react'
 import './CardS1.scss'
 import UserDetails from '../UserDetails/UserDetails'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCat } from '@fortawesome/free-solid-svg-icons'
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+// import { faCat } from '@fortawesome/free-solid-svg-icons'
 
 //傳入props.data (fm資料表))
 
-class CardS1 extends React.Component {
+class CardS1 extends React.PureComponent {
   constructor(props) {
     super(props)
     this.state = {

@@ -1,11 +1,7 @@
 import React from 'react'
 import './Listitem.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-  faStar,
-  faBookmark,
-  faEllipsisH,
-} from '@fortawesome/free-solid-svg-icons'
+import { faBookmark, faEllipsisH } from '@fortawesome/free-solid-svg-icons'
 
 import {
   faBookmark as faBookmarks,
@@ -37,10 +33,10 @@ class Listitem extends React.Component {
       <>
         <div className="forum-list-item dis-flex">
           <div className="item-left">
-            <div className="list-item-category">{article.fm_category}</div>
+            <div className="list-item-category">{article.name}</div>
             <div className="card-title-font">{article.fm_title}</div>
             <div className="card-subtitle-font">{article.fm_subTitle}</div>
-            <div className="list-item-details">{article.fm_memberId}</div>
+            <div className="list-item-details">{article.MR_nickname}</div>
             <div className="list-item-time dis-flex ">
               <div>
                 <span>{article.fm_publishTime.slice(0, 10)}</span>

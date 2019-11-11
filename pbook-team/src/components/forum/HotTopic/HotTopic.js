@@ -1,8 +1,8 @@
 import React from 'react'
 import './HotTopic.scss'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBookmark } from '@fortawesome/free-solid-svg-icons'
-import { faBookmark as faBookmarks } from '@fortawesome/free-regular-svg-icons'
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+// import { faBookmark } from '@fortawesome/free-solid-svg-icons'
+// import { faBookmark as faBookmarks } from '@fortawesome/free-regular-svg-icons'
 
 class HotTopic extends React.Component {
   constructor(props) {
@@ -45,13 +45,13 @@ class HotTopic extends React.Component {
           <div className="padding-frame">
             {this.state.article.map(value => {
               return (
-                <div className="HotTopic-item">
+                <div className="HotTopic-item" key={value.fm_articleId}>
                   <div className="dis-flex">
                     <span className="counter">{'0' + count++}</span>
 
                     <div>
                       <div className="card-title-font">{value.fm_title}</div>
-                      <div>user</div>
+                      <div>{value.MR_nickname}</div>
                       <div>
                         <span className="time">
                           {value.fm_publishTime.slice(0, 10)}
