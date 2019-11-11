@@ -5,7 +5,6 @@ import './chat.css'
 import axios from 'axios'
 import moment from 'moment'
 import io from 'socket.io-client'
-import { log } from 'util'
 
 const socket = io('ws://localhost:5000')
 
