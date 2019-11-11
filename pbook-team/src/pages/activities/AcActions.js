@@ -41,7 +41,7 @@ export const AC_FETCH = 'AC_FETCH'
 export const acFetch = acType => async dispatch => {
   dispatch(acRequest(acType))
   try {
-    let response = await fetch('http://localhost:5555/activities', {
+    let response = await fetch('http://localhost:5555/activities/' + acType, {
       method: 'GET',
       headers: new Headers({
         Accept: 'application/json',

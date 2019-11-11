@@ -19,9 +19,9 @@ import { Route, Link, Switch, Redirect } from 'react-router-dom'
 // //redux---------------------------------------------
 
 const Activities = props => {
-
   return (
     <>
+      <Redirect from={'/activities'} to={'/activities/' + props.acType} />
       <Switch>
         <Redirect
           exact
@@ -29,6 +29,7 @@ const Activities = props => {
           to={'/activities/' + props.acType}
         />
       </Switch>
+
       <Route exact path={props.match.url + '/discount'} component={AcList} />
       <Route exact path={props.match.url + '/offline'} component={AcList} />
       <Route

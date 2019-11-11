@@ -14,8 +14,8 @@ const visibilityFilter = (state = SHOW_ACTIVE, action) => {
   }
 }
 // set ac type
-const { DISCOUNT } = acTypeConst
-const acType = (state = DISCOUNT, action) => {
+const { OFFLINE } = acTypeConst
+const acType = (state = OFFLINE, action) => {
   switch (action.type) {
     case SET_AC_TYPE:
       return action.acType
@@ -53,7 +53,21 @@ function ac(
   }
 }
 
-function acData(state = [], action) {
+let iniAcData = {
+  discount: {
+    isFetching: false,
+    didInvalidate: false,
+    lastUpdated: '',
+    items: [],
+  },
+  offline: {
+    isFetching: false,
+    didInvalidate: false,
+    lastUpdated: '',
+    items: [],
+  },
+}
+function acData(state = iniAcData, action) {
   switch (action.type) {
     case AC_RECEIVE:
     case AC_REQUEST:
