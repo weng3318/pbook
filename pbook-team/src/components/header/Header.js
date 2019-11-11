@@ -20,34 +20,33 @@ import Chat from '../../components/member/chat/Chat'
 import './header.css'
 
 export default class Header extends React.Component {
-
   constructor() {
     super()
     this.state = {
       loginImg: './images/yoko.jpg',
-      memberData:{}
+      memberData: {},
     }
   }
 
   // loginSuccess(memberData){
   //   console.log("memberData", memberData);
-    
+
   //   this.setState({hasData:true,id:memberData.MR_number,name:memberData.MR_name,level:memberData.MR_personLevel})
   // }
 
-  handleLoginButton = event => {    
-      let loginButton = event.currentTarget
-      let loginImg = loginButton.querySelector('.loginImg')
-      let loginText = loginButton.querySelectorAll('.loginText')
+  handleLoginButton = event => {
+    let loginButton = event.currentTarget
+    let loginImg = loginButton.querySelector('.loginImg')
+    let loginText = loginButton.querySelectorAll('.loginText')
 
-      loginButton.classList.add('transition')
-      loginButton.classList.toggle('long')
-      setTimeout(() => {
-        loginImg.classList.toggle('show')
-        for (let i = 0; i < loginText.length; i++) {
-          loginText[i].classList.toggle('show')
-        }
-      }, 200)
+    loginButton.classList.add('transition')
+    loginButton.classList.toggle('long')
+    setTimeout(() => {
+      loginImg.classList.toggle('show')
+      for (let i = 0; i < loginText.length; i++) {
+        loginText[i].classList.toggle('show')
+      }
+    }, 200)
   }
 
   handleStopPropagation = event => {
@@ -113,19 +112,18 @@ export default class Header extends React.Component {
     // function getPermission(cb) {
     //     Notification.requestPermission(cb);
     // }
-    console.log("componentDidMount");
-    
+    console.log('componentDidMount')
   }
-  
-  componentWillMount(){
-    console.log("componentWillMount");
+
+  componentWillMount() {
+    console.log('componentWillMount')
   }
-  shouldComponentUpdate(){
-    console.log("Update");
+  shouldComponentUpdate() {
+    console.log('Update')
     return true
   }
-  componentWillUnmount(){
-    console.log("WillUnmount");
+  componentWillUnmount() {
+    console.log('WillUnmount')
   }
 
   render() {
@@ -135,10 +133,9 @@ export default class Header extends React.Component {
     // if (JSON.parse(localStorage.getItem('user')).MR_number !== '') phoneVisitorStatus = 'none'
 
     // console.log("head" , this.state.memberData);
-    console.log("render", this.state.memberData);
-    console.log(JSON.parse(localStorage.getItem('user')));
-    
-    
+    console.log('render', this.state.memberData)
+    console.log(JSON.parse(localStorage.getItem('user')))
+
     return (
       <>
         <img
@@ -162,68 +159,65 @@ export default class Header extends React.Component {
             <span className="titleEn">CART</span>
           </div>
 
-          {JSON.parse(localStorage.getItem('user')) === null ? 
-          (
+          {JSON.parse(localStorage.getItem('user')) === null ? (
             <>
-            <Link
-              className="loginButton position-absolute d-flex flex-column justify-content-center align-items-center pointer"
-              to="/login"
-            >
-              <span className="titleZh-white">
-                登入
-              </span>
-              <span className="titleEn">
-                LOGIN
-              </span>
-            </Link>
-            </>)        
-            :
-            (<>
+              <Link
+                className="loginButton position-absolute d-flex flex-column justify-content-center align-items-center pointer"
+                to="/login"
+              >
+                <span className="titleZh-white">登入</span>
+                <span className="titleEn">LOGIN</span>
+              </Link>
+            </>
+          ) : (
+            <>
               <div
-            className="loginButton position-absolute d-flex flex-column justify-content-center align-items-center pointer"
-            onClick={this.handleLoginButton}
-          >
-            <span className="titleZh-white">
-              {JSON.parse(localStorage.getItem('user')).MR_name}
-            </span>
-            <span className="titleEn">
-            {JSON.parse(localStorage.getItem('user')).MR_personLevel}
-            </span>
-            <span
-              className="loginImg"
-              style={{
-                backgroundImage:
-                  'url(' + require('' + this.state.loginImg) + ')',
-              }}
-            ></span>
-            <Link
-              to="/member"
-              className="loginText"
-              onClick={this.handleStopPropagation}
-            >
-              會員資料
-            </Link>
-            <Link
-              to={'/game/' + JSON.parse(localStorage.getItem('user')).MR_number}
-              className="loginText"
-              onClick={this.handleStopPropagation}
-            >
-              二手書配對
-            </Link>
-            <Link
-              to='/chat'
-              className="loginText"
-              onClick={this.handleStopPropagation}
-            >
-              聊天室
-            </Link>
-            <div className="loginText" onClick={this.handleLogout}>
-              登出
-            </div>
-          </div>
-            </>)
-}
-          
+                className="loginButton position-absolute d-flex flex-column justify-content-center align-items-center pointer"
+                onClick={this.handleLoginButton}
+              >
+                <span className="titleZh-white">
+                  {JSON.parse(localStorage.getItem('user')).MR_name}
+                </span>
+                <span className="titleEn">
+                  {JSON.parse(localStorage.getItem('user')).MR_personLevel}
+                </span>
+                <span
+                  className="loginImg"
+                  style={{
+                    backgroundImage:
+                      'url(' + require('' + this.state.loginImg) + ')',
+                  }}
+                ></span>
+                <Link
+                  to="/member"
+                  className="loginText"
+                  onClick={this.handleStopPropagation}
+                >
+                  會員資料
+                </Link>
+                <Link
+                  to={
+                    '/game/' +
+                    JSON.parse(localStorage.getItem('user')).MR_number
+                  }
+                  className="loginText"
+                  onClick={this.handleStopPropagation}
+                >
+                  二手書配對
+                </Link>
+                <Link
+                  to="/chat"
+                  className="loginText"
+                  onClick={this.handleStopPropagation}
+                >
+                  聊天室
+                </Link>
+                <div className="loginText" onClick={this.handleLogout}>
+                  登出
+                </div>
+              </div>
+            </>
+          )}
 
           <section className="d-flex justify-content-center titleButton">
             <Link to="/reviewer" className="myHeaderTextCenter mx-4 pointer">
@@ -259,102 +253,108 @@ export default class Header extends React.Component {
               <div className="bar bar2"></div>
               <div className="bar bar3"></div>
               <ul>
-              {JSON.parse(localStorage.getItem('user')) === null ? 
-              <>
-              (
-                <li>
-                  <Link to="/login" className="myHeaderA">
-                    登入
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/cart" className="myHeaderA">
-                    購物車
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/reviewer" className="myHeaderA">
-                    書評家
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/books" className="myHeaderA">
-                    書籍商城
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/activities" className="myHeaderA">
-                    品書活動
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/reviews" className="myHeaderA">
-                    品書書評
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/forum" className="myHeaderA">
-                    品書討論區
-                  </Link>
-                </li>
-              )
-              </>
-              :
-              <>
-              (
-                <li>
-                  <Link to="/member" className="myHeaderA">
-                  {JSON.parse(localStorage.getItem('user')).MR_name}
-                  </Link>
-                </li>
-                <li>
-                  <Link to={'/game/' + JSON.parse(localStorage.getItem('user')).MR_number} className="myHeaderA">
-                    二手書配對
-                  </Link>
-                </li>
-                <li>
-                  <Link to='/chat' className="myHeaderA">
-                    聊天室
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/cart" className="myHeaderA">
-                    購物車
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/reviewer" className="myHeaderA">
-                    書評家
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/books" className="myHeaderA">
-                    書籍商城
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/activities" className="myHeaderA">
-                    品書活動
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/reviews" className="myHeaderA">
-                    品書書評
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/forum" className="myHeaderA">
-                    品書討論區
-                  </Link>
-                </li>
-                <li>
-                  <div className="myHeaderA" onClick={this.handleLogout}>
-                    登出
-                  </div>
-                </li>
-              )
-              </>             
-              }
+                {JSON.parse(localStorage.getItem('user')) === null ? (
+                  <>
+                    (
+                    <li>
+                      <Link to="/login" className="myHeaderA">
+                        登入
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/cart" className="myHeaderA">
+                        購物車
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/reviewer" className="myHeaderA">
+                        書評家
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/books" className="myHeaderA">
+                        書籍商城
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/activities" className="myHeaderA">
+                        品書活動
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/reviews" className="myHeaderA">
+                        品書書評
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/forum" className="myHeaderA">
+                        品書討論區
+                      </Link>
+                    </li>
+                    )
+                  </>
+                ) : (
+                  <>
+                    (
+                    <li>
+                      <Link to="/member" className="myHeaderA">
+                        {JSON.parse(localStorage.getItem('user')).MR_name}
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to={
+                          '/game/' +
+                          JSON.parse(localStorage.getItem('user')).MR_number
+                        }
+                        className="myHeaderA"
+                      >
+                        二手書配對
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/chat" className="myHeaderA">
+                        聊天室
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/cart" className="myHeaderA">
+                        購物車
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/reviewer" className="myHeaderA">
+                        書評家
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/books" className="myHeaderA">
+                        書籍商城
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/activities" className="myHeaderA">
+                        品書活動
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/reviews" className="myHeaderA">
+                        品書書評
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/forum" className="myHeaderA">
+                        品書討論區
+                      </Link>
+                    </li>
+                    <li>
+                      <div className="myHeaderA" onClick={this.handleLogout}>
+                        登出
+                      </div>
+                    </li>
+                    )
+                  </>
+                )}
               </ul>
             </div>
           </section>
@@ -368,10 +368,7 @@ export default class Header extends React.Component {
             <Route exact path="/forum" component={Forum} />
             {/* <Route exact path="/login" component={()=><Login loginSuccess={(memberData)=>{ this.loginSuccess(memberData) }}/>} /> */}
             <Route exact path="/login" component={Login} />
-            <Route
-              path="/member"
-              component={Member}
-            />
+            <Route path="/member" component={Member} />
             <Route exact path="/game/:id" component={Game} />
             <Route exact path="/chat" component={Chat} />
             <Route exact path="/logout" component={Logout} />
