@@ -53,7 +53,7 @@ class Chat extends React.Component {
     var chat_id_index = window.location.href.indexOf('#')
     var chat_id = window.location.href.slice(chat_id_index + 1)
     // 利用props取得發文者(myFrom)
-    var myFrom = this.props.id
+    var myFrom = JSON.parse(localStorage.getItem('user')).MR_number
     // 利用chat_id和myFrom取得收文者
     var chat_id_array = chat_id.split('MR')
     var myFrom_array = myFrom.split('MR')
@@ -87,7 +87,7 @@ class Chat extends React.Component {
       var chat_id_index = window.location.href.indexOf('#')
       var chat_id = window.location.href.slice(chat_id_index + 1)
       // 利用props取得發文者(myFrom)
-      var myFrom = this.props.id
+      var myFrom = JSON.parse(localStorage.getItem('user')).MR_number
       // 利用chat_id和myFrom取得收文者
       var chat_id_array = chat_id.split('MR')
       var myFrom_array = myFrom.split('MR')

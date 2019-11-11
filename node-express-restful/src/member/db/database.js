@@ -1,13 +1,21 @@
 import mysql from "mysql";
 
+// const pool = mysql.createPool({
+//             connectionLimit : 10,
+//             host     : 'localhost',
+//             user     : 'root',
+//             password : 'root',
+//             database : 'pbook',
+//             debug    : false 
+            // });     
 const pool = mysql.createPool({
-            connectionLimit : 10,
-            host     : 'localhost',
-            user     : 'root',
-            password : 'root',
-            database : 'pbook',
+            host: "192.168.27.186",
+            user: "root",
+            password: "root",
+            database: "pbook",
             debug    : false 
-            });                    
+            });     
+                          
 
 function executeQuery(sql, callback) {
     pool.getConnection((err,connection) => {

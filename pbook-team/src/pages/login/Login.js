@@ -30,6 +30,7 @@ class Login extends React.Component {
       button: "OK",
     }).then(()=>{
       setTimeout(() => {
+        console.log(1235);
         window.location.href = '/'
       }, 1000)
     })
@@ -81,14 +82,16 @@ class Login extends React.Component {
   //判斷密碼格式
   checkPassword(password, password2){
     const re =   /^(?=.*\d)(?=.*[a-z]).{4,8}$/
-    console.log((password == password2) , re.test(password, password2));
-    const result = (password == password2) && re.test(password, password2)
+    console.log((password === password2) , re.test(password, password2));
+    const result = (password === password2) && re.test(password, password2)
     return result
   }
 
 
 
   handleLogin (e){
+    console.log("handleLogin");
+    
     fetch('http://localhost:5555/member/login', {
       method: 'POST',
       headers: {
@@ -101,20 +104,22 @@ class Login extends React.Component {
     })
     .then( response => {
       if(!response) throw new Error(response.statusText)
-      // console.log('3'+response);
+      console.log('3'+response);
       
       return response.json()
     })
     .then(async data => {
-      // console.log(data.info);
+      console.log(data.info);
       let status = data.status
       let message = data.message
       if(status === "登入成功"){
-        await this.success(status, message)
         await localStorage.setItem('user', JSON.stringify(data.info))
         // alert(status + message)
-        await this.setState({memberData: data.info})
-       
+        // await this.setState({memberData: data.info})
+        await this.success(status, message)
+        
+        console.log("1234", data.info); 
+        // await this.props.loginSuccess(data.info)
       }
       if(status === "登入失敗"){
         console.log(status, message)
@@ -155,8 +160,8 @@ class Login extends React.Component {
       this.setState({password: "格式或密碼有誤", password2: "請再重新輸入"})
       let password = document.querySelector('#password')
       let password2 = document.querySelector('#password2')
-      password.type = (password.type == "text") ;
-      password2.type = (password2.type == "text") ;
+      password.type = (password.type === "text") ;
+      password2.type = (password2.type === "text") ;
       password.classList.add('error')
       password2.classList.add('error')
       }else{
@@ -193,6 +198,7 @@ class Login extends React.Component {
             // }, 1000)
           }else{
             alert(data.status + data.message)
+            console.log(1236);
             window.location.href = '/login'
           }
         })
@@ -265,7 +271,9 @@ class Login extends React.Component {
             <button type="button" className="singUp_btn" onClick={this.handleRegister}>
               確認
             </button>
-            <button type="button" className="singUp_btn" onClick={()=>{window.location.href = '/' }}>
+            <button type="button" className="singUp_btn" onClick={()=>{
+              console.log(1237);
+              window.location.href = '/' }}>
               取消
             </button>
           </form>
