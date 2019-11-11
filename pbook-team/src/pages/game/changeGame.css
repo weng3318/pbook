@@ -16,7 +16,6 @@
 }
 /* -------------背景音樂按鈕------------- */
 
-
 /* --------------遊戲首頁------------------ */
 @media (min-width: 576px) {
   .PC-changeGameWrap {
@@ -91,6 +90,62 @@
   }
 }
 /* --------------遊戲首頁------------------ */
+
+/* -------------書籍列表-------------- */
+@media (min-width: 576px) {
+  .PC-changeGameBookListWrap {
+    width: 100vw;
+    height: 50vw;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .PC-changeGameBookListContext {
+    width: 100%;
+    height: 100%;
+  }
+  .PC-changeGameBookListTable {
+    top: 10vw;
+    left: 25vw;
+    width: 65%;
+    height: 30vw;
+    overflow: auto;
+  }
+  .PC-changeGameBookListTable > h6 {
+    text-align: right;
+    font-size: 1.5vw;
+    margin: 0.5vw 0;
+  }
+  .PC-changeGameBookListTable table,.PC-changeGameBookListTable td,.PC-changeGameBookListTable th,.PC-changeGameBookListTable tr {
+    font-size: 1.5vw;
+    text-align: center;
+    border:2px solid black !important;
+  }
+
+  .PC-changeGameBookListSubmit {
+    width: 5vw;
+    height: 2.5vw;
+  }
+
+  .PHONE-changeGameBookListContext {
+    display: none;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .PC-changeGameBookListWrap {
+    display: none;
+  }
+  .PC-changeGameBookListContext {
+    display: none;
+  }
+
+  .PHONE-changeGameBookListContext {
+    width: 100vw;
+    height: 20vh;
+  }
+}
+/* -------------書籍列表-------------- */
 
 /* -------------------------雪花飄落效果----------------------- */
 #snow {

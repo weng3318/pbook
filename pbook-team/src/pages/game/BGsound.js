@@ -27,8 +27,8 @@ class BGsound extends React.Component {
         <audio
           src={require('./sound/changeGameBGsound.mp3')}
           controls="controls"
-          loop="false"
-          hidden="true"
+          loop={false}
+          hidden={true}
           ref={audio => (this.bgaudio = audio)}
         ></audio>
 

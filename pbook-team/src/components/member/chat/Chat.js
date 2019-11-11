@@ -38,13 +38,11 @@ class Chat extends React.Component {
 
   onMsg = data => {
     console.log('客戶端接收服務端發的消息', data)
-
-    this.setState({
-      oldDataMessage: [data, ...this.state.oldDataMessage],
-    })
-
     axios.get(`http://localhost:5555/nana_use/chatList`).then(res => {
-      this.setState({ oldDataList: res.data })
+      this.setState({
+        oldDataList: res.data,
+        oldDataMessage: [data, ...this.state.oldDataMessage],
+      })
     })
   }
 
@@ -120,10 +118,12 @@ class Chat extends React.Component {
     axios.get(`http://localhost:5555/nana_use/chatList`).then(res => {
       this.setState({ oldDataList: res.data })
     })
+    console.log('componentDidMount')
   }
 
   render() {
     var count = 0
+    console.log('render')
     return (
       <>
         <div className="chatWrap">
@@ -167,15 +167,15 @@ class Chat extends React.Component {
                         >
                           <div className="d-flex">
                             <div className="chatImgWrap">
-                              {/* <img
+                              <img
                                 alt="會員大頭照"
                                 className="chatImg"
                                 src={
                                   value.MR_pic
-                                    ? require('../../images/' + value.MR_pic)
-                                    : require('../../images/yoko.jpg')
+                                    ? require('./images/' + value.MR_pic)
+                                    : require('./images/yoko.jpg')
                                 }
-                              ></img> */}
+                              ></img>
                             </div>
                             <div className="d-flex flex-column align-self-center chatTextWrap">
                               <span className="chatText">{value.MR_name}</span>
@@ -220,15 +220,15 @@ class Chat extends React.Component {
                                     if (value.MR_number === value2.myFrom) {
                                       return (
                                         <div className="myContainer">
-                                          {/* <img
+                                          <img
                                             src={
                                               value.MR_pic
-                                                ? require('../../images/' +
+                                                ? require('./images/' +
                                                     value.MR_pic)
-                                                : require('../../images/yoko.jpg')
+                                                : require('./images/yoko.jpg')
                                             }
                                             alt="Avatar"
-                                          /> */}
+                                          />
                                           <p>{value2.content}</p>
                                           <span className="time-right">
                                             {moment(value2.created_at).format(
@@ -240,11 +240,11 @@ class Chat extends React.Component {
                                     } else {
                                       return (
                                         <div className="myContainer darker">
-                                          {/* <img
-                                            src={require('./images/yoko2.jpg')}
+                                          <img
+                                            src={require('./images/yoko.jpg')}
                                             alt="Avatar"
                                             className="right"
-                                          /> */}
+                                          />
                                           <p>{value2.content}</p>
                                           <span className="time-left">
                                             {moment(value2.created_at).format(
