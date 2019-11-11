@@ -117,16 +117,16 @@ export default class Header extends React.Component {
     
   }
   
-  componentWillMount(){
-    console.log("componentWillMount");
-  }
-  shouldComponentUpdate(){
-    console.log("Update");
-    return true
-  }
-  componentWillUnmount(){
-    console.log("WillUnmount");
-  }
+  // componentWillMount(){
+  //   console.log("componentWillMount");
+  // }
+  // shouldComponentUpdate(){
+  //   console.log("Update");
+  //   return true
+  // }
+  // componentWillUnmount(){
+  //   console.log("WillUnmount");
+  // }
 
   render() {
     // let phoneMemberStatus = 'none'
