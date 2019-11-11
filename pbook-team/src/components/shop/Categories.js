@@ -15,14 +15,15 @@ const Categories = props => {
         <div className="d-flex justify-content-center align-items-center border-bottom">
           分類瀏覽
         </div>
-        {props.cgData.map(cgData => (
-          <div
-            className="d-flex justify-content-center align-items-center border-bottom categories-color"
-            key={cgData.sid}
-          >
-            {cgData.name}
-          </div>
-        ))}
+        {props.categories.payload &&
+          props.categories.payload.map(categories => (
+            <div
+              className="d-flex justify-content-center align-items-center border-bottom categories-color"
+              key={categories.sid}
+            >
+              {categories.name}
+            </div>
+          ))}
       </Col>
     </>
   )
@@ -56,6 +57,6 @@ const Categories = props => {
 // }
 
 const mapStateToProps = state => ({
-  cgData: state.cgData,
+  categories: state.categories,
 })
 export default connect(mapStateToProps)(Categories)

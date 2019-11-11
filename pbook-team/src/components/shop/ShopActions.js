@@ -1,23 +1,21 @@
 export const CATEGORIES_RECEIVE = 'CATEGORIES_RECEIVE'
 export const CATEGORIES_REQUEST = 'CATEGORIES_REQUEST'
 //給cgFetch用---------------
-function cgReceive(payload, cgData) {
+function cgReceive(cgData) {
   return {
     type: CATEGORIES_RECEIVE,
-    payload,
-    cgData: cgData,
+    payload: cgData,
     receivedAt: Date.now(),
   }
 }
-function cgRequest(payload) {
+function cgRequest() {
   return {
     type: CATEGORIES_REQUEST,
-    payload,
   }
 }
 //-------------------------
-export const cgFetch = payload => async dispatch => {
-  dispatch(cgRequest(payload))
+export const cgFetch = () => async dispatch => {
+  dispatch(cgRequest())
   try {
     let response = await fetch('http://localhost:5555/books/book_categories', {
       method: 'GET',
@@ -26,7 +24,8 @@ export const cgFetch = payload => async dispatch => {
         'Content-Type': 'application/json',
       }),
     })
-    dispatch(cgReceive(payload, await response.json()))
+    dispatch(cgReceive(await response.json()))
+    console.log('success')
   } catch (error) {
     console.log('error ', error)
   }

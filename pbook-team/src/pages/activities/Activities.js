@@ -1,7 +1,7 @@
 import React from 'react'
 // import Test from './test'
 import AcList from './components/acList/AcList'
-import AcPage from './components/acPage/Acpage'
+import AcPage from './components/acPage/AcPage'
 import { connect } from 'react-redux'
 // eslint-disable-next-line no-unused-vars
 import { Route, Link, Switch, Redirect } from 'react-router-dom'
