@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-has-content */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react'
-import './acPage.scss'
+import './acPageDiscount.scss'
 import { connect } from 'react-redux'
 import { acFetch } from '../../AcActions'
 // import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
@@ -33,9 +33,9 @@ const AcPage = props => {
         <div className="row">
           <main className="col-md-9">
             <div className="info my-3">
-              <small><time>時間：{item.date.substr(0, 10)}</time></small>
+              {/* <small><time>時間：{item.date.substr(0, 10)}</time></small> */}
               <br />
-              <small><span>地點：{item.location}</span></small>
+              {/* <small><span>地點：{item.location}</span></small> */}
             </div>
             <header className="py-3">
               <h1>{item.title}</h1>

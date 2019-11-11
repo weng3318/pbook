@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
-import AcItemOffline from './AcItemOffline'
-import AcItemDiscount from './AcItemDiscount'
+import AcItem from './AcItem'
 import AcListHeader from './AcListHeader'
 import './acList.scss'
 import { connect } from 'react-redux'
@@ -18,29 +17,16 @@ const AcList = props => {
       <div className="container acList">
         <AcListHeader />
         <div className="my-2 py-2" style={{ borderTop: '1px solid #ccc' }}>
-          {props.acType === 'offline' &&
-            props.acData.offline.items
-              .filter(v => {
-                return (
-                  +v.status === +props.visibilityFilter.value ||
-                  +props.visibilityFilter.value === 3
-                )
-              })
-              .map(v => (
-                <AcItemOffline key={v.sid} {...v} acType={props.acType} />
-              ))}
-
-          {props.acType === 'discount' &&
-            props.acData.discount.items
-              .filter(v => {
-                return (
-                  +v.status === +props.visibilityFilter.value ||
-                  +props.visibilityFilter.value === 3
-                )
-              })
-              .map(v => (
-                <AcItemDiscount key={v.sid} {...v} acType={props.acType} />
-              ))}
+          {props.acData[props.acType].items
+            .filter(v => {
+              return (
+                +v.status === +props.visibilityFilter.value ||
+                +props.visibilityFilter.value === 3
+              )
+            })
+            .map(v => (
+              <AcItem key={v.sid} {...v} acType={props.acType} />
+            ))}
         </div>
       </div>
     </>
