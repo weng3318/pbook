@@ -6,8 +6,11 @@ const app = express();
 const mysql = require("mysql");
 const db = mysql.createConnection({
   host: "localhost",
-  user: "root",
-  password: "root",
+  // user: "root",
+  // password: "root",
+  // database: "pbook"
+  user: "Arwen",
+  password: "4595",
   database: "pbook"
 });
 db.connect();
