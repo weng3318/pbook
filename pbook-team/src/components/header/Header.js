@@ -8,7 +8,7 @@ import Reviewer from '../../pages/Reviewer'
 import Books from '../../pages/Books'
 import Activities from '../../pages/activities/Activities'
 import Reviews from '../../pages/Reviews'
-import Forum from '../../pages/Forum/Forum'
+import Forum from '../../pages/Forum/ForumNavBar'
 import Login from '../../pages/login/Login'
 import Member from '../../pages/member/Member'
 import Game from '../../pages/game/Game'
@@ -20,7 +20,6 @@ import Chat from '../../components/member/chat/Chat'
 import './header.css'
 
 export default class Header extends React.Component {
-
   constructor() {
     super()
     this.state = {
@@ -365,8 +364,10 @@ export default class Header extends React.Component {
             <Route exact path="/books" component={Books} />
             <Route path="/activities" component={Activities} />
             <Route exact path="/reviews" component={Reviews} />
+//             <Route path="/forum" component={Forum} />
             <Route exact path="/forum" component={Forum} />
             {/* <Route exact path="/login" component={()=><Login loginSuccess={(memberData)=>{ this.loginSuccess(memberData) }}/>} /> */}
+
             <Route exact path="/login" component={Login} />
             <Route
               path="/member"

@@ -1,0 +1,46 @@
+.forumPage {
+  $season-green: #cde2d0;
+  $grey-grey: #979d9d;
+
+  .HotTopic-card {
+    min-width: 370px;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    .HotTopic-title {
+      font-size: 1.6rem;
+      &:before {
+        content: '';
+        font-size: 1.1rem;
+        border: 3px solid $season-green;
+        margin-right: 10px;
+      }
+    }
+    .tilte-line {
+      background:$grey-grey;
+      height: 2px;
+      width: 80%;
+      margin: 10px 0 10px 0;
+    }
+    .padding-frame {
+      .HotTopic-item {
+        margin-bottom: 24px;
+        flex: 1 1 260px;
+        .counter {
+          font-size: 34px;
+          margin-right: 16px;
+          color: $grey-grey;
+
+        }
+        .time {
+          font-size: 0.8rem;
+          margin-right: 16px;
+          color: $grey-grey;
+
+        }
+      }
+    }
+  }
+}
