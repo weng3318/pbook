@@ -27,6 +27,7 @@ app.use("/member", require('./src/member/member'))
 app.use("/forum", require("./src/forum/homepage"));
 app.use("/nana_use", require("./src/nana_use/chatList"));
 app.use("/nana_use", require("./src/nana_use/chatMessage"));
+app.use("/books", require(__dirname + '/src/books/book_categories') )
 app.use('/activities', require('./src/activities/acApi'))
 
 

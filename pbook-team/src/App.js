@@ -6,9 +6,12 @@ import Footer from './components/footer/Footer'
 function App() {
   return (
     <>
-      <Header />
-      <GoTop />
-      <Footer />
+      <Provider store={store}>
+        <Header />
+        {/* <Login/> */}
+        <GoTop />
+        <Footer />
+      </Provider>
     </>
   )
 }

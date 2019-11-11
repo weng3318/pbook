@@ -6,106 +6,233 @@ $big_text: 32px;
 $title: 28px;
 $content: 24px;
 
-.contentWrap{
+
+
+* {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.contentWrap {
   height: 80vw;
   width: 1280px;
 }
 
+//會員編輯的樣式
+.editWrap{
+  @extend .contentWrap;
+  border: 1px solid rgb(109, 34, 34);
+  .title {
+    // border: 1px solid #000;
+    margin: 20px;
+    font-size: 32px;
+    margin-top: 50px;
+    padding-left: 60px;
+    padding-bottom: 50px;
+    width: 1180px;
+    border-bottom: 3px solid $yellow;
 
-*{
-    margin: 0;
-    padding: 0;
-    list-style: none;
+    
+  }
+
+  .list {
+    border: 1px solid #000;
+    width: 640px;
+    margin-top: 50px;
+    padding-left: 80px;
+
+    .item {
+      /* background-color: silver; */
+      box-sizing: border-box;
+    }
+
+    h4 {
+      margin: 20px;
+      padding: 20px 10px;
+    }
+    input{
+      // border: 1px solid #000;
+      margin-top: 40px;
+      height:30px;
+      width: 300px;
+   }
+  }
+  .list-r {
+    // border: 1px solid #000;
+    margin-top: 50px;
+
+    .item {
+      height: 100px;
+      // border: 1px solid #000;
+      width: 640px;
+      display: flex;
+      justify-content: center;
+      padding-top: 50px;
+      /* border: 1px solid #000; */
+    }
+    .genderGroupp{
+      border: 1px solid #000;
+      width: 640px;
+
+      input{
+        border: 1px solid #000;
+        display: flex;
+        justify-content: center;
+        padding-top: 50px;
+        /* border: 1px solid #000; */
+      }
+    }
+
+    figure{
+      border: 1px solid #000;
+      width: 300px;
+      height: 300px;
+      border-radius: 99em;
+    }
+    h3 {
+      display: block;
+      width: 200px;
+    }
+  }
+
 }
 
-.editWrap{
-    @extend .contentWrap;
+
+
+//會員資訊的樣式
+.infoWrap {
+  @extend .contentWrap;
+  // border: 1px solid #000;
+
+  .title {
+    // border: 1px solid #000;
+    margin: 20px;
+    font-size: 32px;
+    margin-top: 50px;
+    padding-left: 60px;
+  }
+
+  .list {
+    // border: 1px solid #000;
+    width: 640px;
+    margin-top: 50px;
+    padding-left: 80px;
+
+    .item {
+      /* background-color: silver; */
+      box-sizing: border-box;
+    }
+
+    h4 {
+      margin: 20px;
+      padding: 20px 10px;
+    }
+  }
+  .list-r {
+    // border: 1px solid #000;
+    margin-top: 50px;
+
+    .item {
+      height: 100px;
+      // border: 1px solid #000;
+      width: 640px;
+      display: flex;
+      justify-content: center;
+      padding-top: 50px;
+      /* border: 1px solid #000; */
+    }
+
+    figure{
+      border: 1px solid #000;
+      width: 300px;
+      height: 300px;
+      border-radius: 99em;
+    }
+    h3 {
+      display: block;
+      width: 200px;
+    }
+  }
 }
 
 //sidebar內樣式
-.side-menu{
-    width: 320px;
-    height: 80vw;
-    padding: 30px 0;
-    box-sizing: border-box;
-    background-color: $main_color;
-    opacity: .6;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 5px 0px 10px #9CC5A1;
+.side-menu {
+  width: 320px;
+  height: 80vw;
+  padding: 30px 0;
+  box-sizing: border-box;
+  background-color: $main_color;
+  opacity: 0.6;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 5px 0px 10px #9cc5a1;
 
-    .sidebar{
-        padding-left: 60px;
-    
-    }
-
-    .sidebar_title{
-        // border: 1px solid #000;
-        font-size: 28px;
-        color: $black;
-        
-        h2{
-            text-decoration: none !important;
-        }
-    }
-    
-
-    .sidebar_item{
-        padding: 5px 50px;
-        font-size: 24px;
-        
-        a{
-            color: $black;
-        }
-        a:hover{
-            color: chocolate;
-            text-decoration: none;
-        }
-    }
-}
-
-
-.navbarWrap {
-    height: 80px;
-    background-color: $main_color;
-    // box-shadow: 0px 5px 5px rgba(194, 212, 171, 0.5);
-    font-size: 24px; 
-
-    .breadcrumb {
-      width: 90%;
-      margin: auto;
-      padding: 20px;
-      color: #2d3a3a;
-      padding-left:250px;
-      background: $main_color;
-
-      li {
-        padding: 0 20px;
-      }
-
-      a {
-        text-decoration: none;
-        color: #2d3a3a;
-      }
-
-      a:hover,li:last-child a {
-          color: $grey;
-      }
-
-      li + li {
-        padding-left: 0;
-      }
-
-      li + li::before {
-        content: ">";
-        color: #2d3a3a;
-        margin-right: 20px;
-      }
-
-    }
-
+  .sidebar {
+    padding-left: 60px;
   }
 
+  .sidebar_title {
+    // border: 1px solid #000;
+    font-size: 28px;
+    color: $black;
 
+    h2 {
+      text-decoration: none !important;
+    }
+  }
 
+  .sidebar_item {
+    padding: 5px 50px;
+    font-size: 24px;
 
+    a {
+      color: $black;
+    }
+    a:hover {
+      color: chocolate;
+      text-decoration: none;
+    }
+  }
+}
+
+//navbar樣式
+.navbarWrap {
+  height: 80px;
+  background-color: $main_color;
+  // box-shadow: 0px 5px 5px rgba(194, 212, 171, 0.5);
+  font-size: 24px;
+
+  .breadcrumb {
+    width: 90%;
+    margin: auto;
+    padding: 20px;
+    color: #2d3a3a;
+    padding-left: 250px;
+    background: $main_color;
+
+    li {
+      padding: 0 20px;
+    }
+
+    a {
+      text-decoration: none;
+      color: #2d3a3a;
+    }
+
+    a:hover,
+    li:last-child a {
+      color: $grey;
+    }
+
+    li + li {
+      padding-left: 0;
+    }
+
+    li + li::before {
+      content: '>';
+      color: #2d3a3a;
+      margin-right: 20px;
+    }
+  }
+}

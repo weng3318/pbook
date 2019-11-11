@@ -144,7 +144,7 @@
     transition: 0.5s;
     right: 15px;
     top: 15px;
-    z-index: 9999999;
+    z-index: 99;
   }
 
   .myHeaderMenu.active {

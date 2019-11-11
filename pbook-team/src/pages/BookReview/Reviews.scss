@@ -1,0 +1,72 @@
+/* /reviews  書評首頁 */
+
+.reviews{
+
+  .btn {
+    background: #fff;
+    width: 100px;
+    height: 40px;
+    color: black;
+    text-align: center;
+    text-decoration: none;
+    font-size: 15px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    line-height: 15px;
+  }
+  
+  .btn:hover {
+    background: #cde2d0;
+    color: #2d3a3a;
+  }
+  
+  .btn:focus {
+    background: #2d3a3a;
+    color: #ffc408;
+  }
+  
+  .pagination {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .paginationNum {
+    display: flex;
+    justify-content: center;
+    width: 30px;
+    margin: 0 10px;
+    font-size: 20px;
+    border: 1px solid #ccc;
+  }
+  
+  .img {
+    max-height: 100%;
+    max-width: 100%;
+    width: 150px;
+    height: 174px;
+    margin: 0 0 45px 0;
+    border: 1px solid #ccc;
+  }
+  
+  .list_img {
+    max-height: 100%;
+    max-width: 100%;
+    width: 150px;
+    height: 150px;
+    margin: 0 0 0 0;
+    border: 1px solid #ccc;
+  }
+  
+  /* 文字超連結A標籤 效果 */
+  .list_sid {
+    color: #2d3a3a;
+  }
+  .list_sid:hover {
+    color: #ffc408;
+  }
+  
+  /*  /list  進入單本書籍後 書評頁面 */
+
+}
