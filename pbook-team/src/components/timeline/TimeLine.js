@@ -1,63 +1,80 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react'
+import ReactDOM from 'react-dom'
 import axios from 'axios'
 
-import HorizontalTimelineContent from './demos/demo-swipeable-views/HorizontalTimelineContent';
+import HorizontalTimelineContent from './demos/demo-swipeable-views/HorizontalTimelineContent'
 
 import './timeLine.css'
 
-
 class TimeLine extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       value: 0,
       previous: 0,
-      oldData: []
-    };
+      oldData: [],
+    }
   }
 
   goToReviews = () => {
     window.location.href = '/reviews'
   }
 
-
   componentDidMount() {
-
     setInterval(() => {
       renderMydata()
     }, 1000)
 
     const renderMydata = async () => {
-
       var GameInfo = []
-      await axios.get(`http://localhost/php-api/timeLine.php`)
-        .then(res => {
-          GameInfo = res.data
-        })
+      await axios.get(`http://localhost/php-api/timeLine.php`).then(res => {
+        GameInfo = res.data
+      })
 
       this.data = GameInfo.map((game, index) => {
-        return ({
+        return {
           date: game.BR_release_time,
           component: (
-            <div className='container' key={index} style={{ textAlign: "left" }} >
-              <h2 className="timeLine20">{game.BR_title.replace(/<.+?>/g, '').replace(/&nbsp;/ig, '').replace(/\s/ig, '')}</h2>
-              <em className="timeLine16" style={{ fontSize: "20px" }}>-書評家：{game.BR_publisher}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-發表時間：{game.BR_release_time}</em>
+            <div
+              className="container"
+              key={index}
+              style={{ textAlign: 'left' }}
+            >
+              <h2 className="timeLine20">
+                {game.BR_title.replace(/<.+?>/g, '')
+                  .replace(/&nbsp;/gi, '')
+                  .replace(/\s/gi, '')}
+              </h2>
+              <em className="timeLine16" style={{ fontSize: '20px' }}>
+                -書評家：{game.BR_publisher}
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-發表時間：
+                {game.BR_release_time}
+              </em>
               <br />
-              <em className="timeLine16" style={{ fontSize: "20px" }}>-書籍名稱：{game.BR_book_name}</em>
+              <em className="timeLine16" style={{ fontSize: '20px' }}>
+                -書籍名稱：{game.BR_book_name}
+              </em>
               <hr />
-              <p className="timeline-p">{game.BR_data.replace(/<.+?>/g, '').replace(/&nbsp;/ig, '').replace(/\s/ig, '')}</p>
+              <p className="timeline-p">
+                {game.BR_data.replace(/<.+?>/g, '')
+                  .replace(/&nbsp;/gi, '')
+                  .replace(/\s/gi, '')}
+              </p>
               <hr />
               <div className="timeline-more">
-                <span className="pointer" style={{ color: "#ffc408" }}>►</span>
-                <span className="pointer" onClick={this.goToReviews}>Read More</span>
+                <span className="pointer" style={{ color: '#ffc408' }}>
+                  ►
+                </span>
+                <span className="pointer" onClick={this.goToReviews}>
+                  Read More
+                </span>
               </div>
             </div>
-          )
-        });
-      });
+          ),
+        }
+      })
       this.setState({ oldData: GameInfo })
-      console.log("timeLineCounter");
+      console.log('timeLineCounter')
     }
     renderMydata()
   }
@@ -72,10 +89,9 @@ class TimeLine extends React.Component {
           <br />
           <span className="titleEn">NEWS</span>
         </div>
-        <HorizontalTimelineContent
-          content={this.data} />
+        <HorizontalTimelineContent content={this.data} />
       </section>
-    );
+    )
   }
 }
 

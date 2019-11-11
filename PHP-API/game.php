@@ -10,7 +10,7 @@ $gameListTime = $pdo->query($gameListSql)->fetch()['created_at'];
 $gameListTimeStamp = strtotime($gameListTime);  //獲取創建配對列表時的時間戳
 
 // 如果現在時間大於配對列表創建時間+24小時的話就更新配對列表
-if ($nowTimeStamp > ($gameListTimeStamp + 86400000)) {
+if ($nowTimeStamp > ($gameListTimeStamp + 86400)) {
 
     // 製造出新的配對列表陣列
     // 會員二手書書籍表格內條件為(亂數拿取!!會員號碼不重複+書籍狀態有配對中(0)的欄位=可以參加遊戲)
