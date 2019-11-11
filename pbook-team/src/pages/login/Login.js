@@ -30,20 +30,17 @@ class Login extends React.Component {
       icon: "success",
       button: "OK",
     })
-    .then((icon)=>{
-      if (icon) {
+    .then((title) =>{
+      if(title === "登入成功"){
         swal('您已經成功登入!', {
           icon: 'success',
         })
-        window.location.href = "/"
+      }else if(title === "註冊成功"){
+        swal('您已經成功註冊!', {
+          icon: 'success',
+        })
       }
     })
-    // .then(()=>{
-    //   setTimeout(() => {
-    //     console.log(1235);
-    //     window.location.href = '/'
-    //   }, 1000)
-    // })
   }
 
   fail(status, message){
@@ -120,10 +117,13 @@ class Login extends React.Component {
       if(status === "登入成功"){
          localStorage.setItem('user', JSON.stringify(data.info))
          this.success(status, message)
+        //  window.location.href = '/'
         // alert(status + message)
         // await this.setState({memberData: data.info})
         this.setState({login: !this.state.login})
-        
+        setTimeout(() => {
+          window.location.href = '/'
+        }, 1000)
         // console.log("1234", data.info); 
         // await this.props.loginSuccess(data.info)
       }
@@ -194,17 +194,17 @@ class Login extends React.Component {
           
           return response.json()
         })
-        .then(async data => {
-          console.log(data.info);
+        .then(data => {
+          let status = data.status
+          let message = data.message
+          console.log("註冊",data);
           if(data.status === "註冊成功"){
-            // alert(data.status + data.message)
-            await this.setState({memberData: data.info})
-            // await setTimeout(()=>{
-            //   window.location.href = '/'
-            // }, 1000)
+            this.success(status, message)
+            setTimeout(() => {
+              window.location.href = '/login'
+            }, 2000)
+            // window.location.href = '/login'
           }else{
-            alert(data.status + data.message)
-            console.log(1236);
             window.location.href = '/login'
           }
         })

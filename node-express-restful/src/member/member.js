@@ -7,6 +7,9 @@ const router = express.Router()
 //註冊
 router.post('/register', (req, res, next) => {
     let Member = new member(req.body.name, req.body.email, req.body.password)
+    let number_blank = "MR00000"
+    let new_number =""
+        
 
     //驗證email格式
     if(Member.checkEmail(req.body.email) === false){
@@ -34,11 +37,16 @@ router.post('/register', (req, res, next) => {
                      })
                      return
                 }else{
-                    db.query(Member.getAddMemberSql(), (err, data) => {
+                    db.query(`SELECT MAX(sid) FROM mr_information`,(err, data)=>{
+                       new_number = number_blank.slice(0, -3)+  data[0]['MAX(sid)']
+                       res.json(new_number)
+                    })
+
+                    db.query(Member.getAddMemberSql(new_number), (err, data) => {
                         if(err){
                             res.json({
                                 status: "伺服器錯誤，請稍後在試",
-                                message: "註冊失敗"
+                                message: "註冊失敗",
                              })
                             return;
                         }
