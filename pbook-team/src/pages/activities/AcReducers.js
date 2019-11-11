@@ -66,5 +66,5 @@ function acData(state = [], action) {
   }
 }
 
-const ListReducer = combineReducers({ visibilityFilter, acType, acData })
+const ListReducer = { visibilityFilter, acType, acData }
 export default ListReducer
