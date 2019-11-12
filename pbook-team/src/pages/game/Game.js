@@ -7,7 +7,7 @@ import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import './changeGame.css'
 import BGsound from './BGsound'
-import Countdown from './Countdown'
+import MyCountdown from './MyCountdown'
 
 class Game extends React.Component {
   constructor(props) {
@@ -198,7 +198,7 @@ class Game extends React.Component {
                 />
                 <div className="position-absolute PC-changeGameBookListTableWrap">
                   <div className="PC-changeGameBookListTable">
-                    <Countdown />
+                    <MyCountdown />
                     <table className="table table-bordered table-hover">
                       <thead className="thead-dark">
                         <tr>
@@ -347,7 +347,7 @@ class Game extends React.Component {
                 <Slider {...settings}>
                   <div>
                     <div className="text-center" style={{ margin: '10px 0' }}>
-                      <Countdown />
+                      <MyCountdown />
                     </div>
                     <div
                       style={{

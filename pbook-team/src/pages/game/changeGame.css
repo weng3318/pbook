@@ -16,6 +16,22 @@
 }
 /* -------------背景音樂按鈕------------- */
 
+/* ----------倒數計時器------------- */
+.countDownText,
+.countDownText > span {
+  text-align: left;
+  font-size: 1.5vw;
+  margin: 1vw 0;
+}
+@media (max-width: 575.98px) {
+  .countDownText,
+  .countDownText > span {
+    text-align: center;
+    font-size: 16px;
+  }
+}
+/* ----------倒數計時器------------- */
+
 /* --------------遊戲首頁------------------ */
 @media (min-width: 576px) {
   .PC-changeGameWrap {
@@ -88,7 +104,6 @@
     transform: translate3d(1px, 1px, 1px);
     text-shadow: 0.1em 0.1em 0 rgb(173, 173, 173);
   }
-  
 }
 /* --------------遊戲首頁------------------ */
 
@@ -112,11 +127,7 @@
     height: 30vw;
     overflow: auto;
   }
-  .PC-changeGameBookListTable > h6 {
-    text-align: right;
-    font-size: 1.5vw;
-    margin: 1vw 0;
-  }
+
   .PC-changeGameBookListTable table,
   .PC-changeGameBookListTable td,
   .PC-changeGameBookListTable th,
@@ -170,7 +181,7 @@
     text-shadow: 0.1em 0.1em 0 rgb(173, 173, 173);
   }
 
-  .PHONE-changeGameBookListWrap{
+  .PHONE-changeGameBookListWrap {
     display: none;
   }
 
@@ -189,9 +200,7 @@
   .PC-changeGameBookListTableWrap {
     display: none;
   }
-  .PC-changeGameBookListTable > h6 {
-    display: none;
-  }
+
   .PC-changeGameBookListTable table,
   .PC-changeGameBookListTable td,
   .PC-changeGameBookListTable th,
@@ -227,7 +236,7 @@
   .PHONE-changeGameBookListContext {
     width: 100vw;
     height: 20vh;
-  } 
+  }
   .PHONE-changeGameBookListText {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -235,15 +244,15 @@
     -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
   }
-  .PHONE-changeGameBookListImg{
-    border-radius: .25rem;
+  .PHONE-changeGameBookListImg {
+    border-radius: 0.25rem;
     max-width: 50%;
     height: auto;
-    margin:0 auto;
+    margin: 0 auto;
   }
   .PHONE-changeGameBookListBtnWrap {
     width: 30%;
-    margin:8vw auto 0 auto;
+    margin: 8vw auto 0 auto;
   }
   .PHONE-changeGameBookListBtnWrap img {
     width: 100%;
@@ -256,10 +265,9 @@
     text-shadow: 0.1em 0.1em 0 rgb(173, 173, 173);
   }
 
-  .slick-arrow.slick-next{
+  .slick-arrow.slick-next {
     display: none !important;
   }
-
 }
 /* -------------書籍列表-------------- */
 
