@@ -16,16 +16,30 @@ function Bookinfo() {
   const [page, getPage] = useState()
   const [goPage, setPage] = useState(1)
   let pageNum = []
-
-  const url = window.location.href
-  if (url.indexOf('?') != -1) {
-    let cate, page, array
-    let arr = url.split('?')[1].split('&')
-    for (let i = 0; i >= arr.length; i++) {
-      if (arr[i].split('=')[0] == 'cate') cate = arr[i].split('=')[1]
+  let c,
+    p = 1,
+    s1,
+    s2
+  const url = window.location.search.replace('?', '')
+  if (url !== '') {
+    let urlSplit = url.split('&')
+    if (url.indexOf('c') != -1) {
+      if (urlSplit.length >= 1) {
+        s1 = urlSplit[0].split('=')
+        c = 'c=' + s1[1] + '&'
+        p = 1
+      }
+    } else {
+      c = ''
+      s1 = urlSplit[0].split('=')
+      p = s1[1]
+    }
+    if (urlSplit.length >= 2) {
+      s2 = urlSplit[1].split('=')
+      p = s2[1]
     }
   }
-  // setCategorys(urlParams)
+
   //---------------------------------------------------------------------------
   const CategoryBar = styled.div`
     display: flex;
@@ -79,7 +93,7 @@ function Bookinfo() {
   useEffect(() => {
     bookInfo()
     categoryBar()
-  }, [array, goPage])
+  }, [array, c, p])
 
   const categoryBar = () => {
     axios
@@ -95,7 +109,7 @@ function Bookinfo() {
 
   const bookInfo = () => {
     axios
-      .get(`http://localhost:5555/reviews/?c=1&a=${array}&p=${goPage}`)
+      .get(`http://localhost:5555/reviews/?${c}a=${array}&p=${p}`)
       .then(res => {
         setBookInformation(res.data.rows)
         getPage(Math.ceil(res.data.total / 10))
@@ -108,21 +122,18 @@ function Bookinfo() {
 
   for (let i = 1; i <= page; i++) {
     pageNum.push(
-      <li
-        onClick={e => {
-          setPage(e.target.value)
-        }}
-        className="reviews_paginationNum"
-      >
-        {i}
-      </li>
+      <Link to={'reviews?' + c + 'p=' + i}>
+        <li value={i} className="reviews_paginationNum">
+          {i}
+        </li>
+      </Link>
     )
   }
   return (
     <>
       <CategoryBar>
         {categorys.map((data, index) => (
-          <Link to={'reviews?c=' + data.sid + '&'}>
+          <Link to={'reviews?c=' + data.sid + '&p=' + p}>
             <button value={data.sid} key={index} className="reviews_btn">
               {data.name}
             </button>

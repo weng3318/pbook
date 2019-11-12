@@ -32,7 +32,7 @@ router.post("/categoryBar", (req, res) => {
 //SELECT COUNT(1) FROM `vb_books` WHERE categories ${c}
 //書本內容
 router.get(`/?`, (req, res) => {
-  let c,a,page;
+  let c, a, page;
   const urlpart = url.parse(req.url, true);
   if (urlpart.query.c !== undefined) {
     c = "=" + urlpart.query.c;
@@ -86,5 +86,4 @@ router.get("/book_reviews/:sid?", (req, res) => {
 
 //書本各分類數量
 
-
-module.exports = router
+module.exports = router;
