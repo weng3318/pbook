@@ -1,13 +1,14 @@
 import React from 'react'
 import './UserDetails.scss'
+import { func } from 'prop-types'
 //props : memberId={fm_memberId} read={true}//閱讀人數是否顯示 article={article} //文章資料
 
 class UserDetails extends React.Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
       update: false,
-      user: [],
+      user: false,
     }
   }
 

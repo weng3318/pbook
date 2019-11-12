@@ -2,7 +2,8 @@ import React from 'react'
 import Carousel from '../../components/carousel/Carousel'
 import './TopicPage.scss'
 import CardS1 from '../../components/forum/CardS1/CardS1'
-import Button from '../../components/Material-UI/Button'
+import ButtonUI from '../../components/Material-UI/Button'
+import { Nav, Navbar, Form, FormControl, Button } from 'react-bootstrap'
 
 class TopicPage extends React.Component {
   constructor(props) {
@@ -15,10 +16,9 @@ class TopicPage extends React.Component {
   componentDidMount() {
     this.handleCateChange()
   }
+
   handleCateChange() {
-    fetch(`http://localhost:5555/forum/homepage/cate/${this.props.cate}`, {
-      method: 'GET',
-    })
+    fetch(`http://localhost:5555/forum/homepage/cate/${this.props.cate}`)
       .then(response => {
         if (!response.ok) throw new Error(response.statusText)
         return response.json()
@@ -29,8 +29,21 @@ class TopicPage extends React.Component {
           articles: result.article,
           subcategory: result.subcategory,
           cate: this.props.cate,
+          data: result.article,
         })
       })
+  }
+  handelSelectSubcate = selectedKey => {
+    if (selectedKey !== '0') {
+      let result = this.state.data.filter(value => {
+        return `${value.fm_subCategories}` === selectedKey
+      })
+      this.setState({
+        articles: result,
+      })
+    } else {
+      this.handleCateChange()
+    }
   }
 
   render() {
@@ -46,18 +59,26 @@ class TopicPage extends React.Component {
             <div className="subCate-navbar">
               <div className="dis-flex">
                 <div className="subBar-item">
-                  <Button name="熱門" color="primary" />
+                  <Nav
+                    variant="pills"
+                    defaultActiveKey="0"
+                    onSelect={this.handelSelectSubcate}
+                  >
+                    <Nav.Item>
+                      <Nav.Link eventKey="0">熱門</Nav.Link>
+                    </Nav.Item>
+                    {this.state.subcategory.map(value => {
+                      return (
+                        <Nav.Item key={value.sid}>
+                          <Nav.Link eventKey={value.sid}>{value.name}</Nav.Link>
+                        </Nav.Item>
+                      )
+                    })}
+                  </Nav>
                 </div>
-                {this.state.subcategory.map(value => {
-                  return (
-                    <div className="subBar-item" key={value.sid}>
-                      {value.name}
-                    </div>
-                  )
-                })}
               </div>
               <div className="subBar-item ">
-                <Button name="我想發文" color="secondary"></Button>
+                <ButtonUI name="我想發文" color="secondary"></ButtonUI>
               </div>
             </div>
             <Carousel />
