@@ -118,9 +118,8 @@ class Game extends React.Component {
               zIndex: 999,
             }}
           >
-            <div id="snow"></div>
-
             <div className="changeGameIndexBG">
+              <div id="snow"></div>
               <div className="position-relative PC-changeGameWrap">
                 <img
                   className="position-absolute PC-changeGameIndexContext"
@@ -187,9 +186,8 @@ class Game extends React.Component {
               zIndex: 999,
             }}
           >
-            <div id="snow"></div>
-
             <div className="changeGameIndexBG">
+              <div id="snow"></div>
               <div className="position-relative PC-changeGameBookListWrap d-flex">
                 <img
                   className="position-absolute PC-changeGameBookListContext"

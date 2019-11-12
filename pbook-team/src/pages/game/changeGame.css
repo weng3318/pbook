@@ -148,13 +148,15 @@
     position: absolute;
     content: '(A)良好：有使用痕跡，不如新書潔白、小範圍瑕疵，如摺角、碰撞、汙點或泛黃等。\A(B)尚可：有使用痕跡，並因時間因素，有大範圍黃、黑斑及瑕疵。\A(C)欠佳：印刷褪色、模糊或其它更糟之書況。';
     white-space: pre-wrap;
-    width: 20vw;
-    height: 25vh;
+    width: 50vw;
+    height: 20vw;
     border-radius: 0.5vw;
     color: #ffff;
-    background: rgba(0, 0, 0, 0.479);
+    background: rgb(0, 0, 0);
     padding: 5px;
     text-align: left;
+    top:5vw;
+    left: -15vw;
   }
 
   .PC-changeGameBookListShow {
