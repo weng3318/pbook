@@ -2,6 +2,7 @@ import React from 'react'
 import Chat from '../components/member/chat/Chat'
 import Data from '../pages/reviewer_page/data/reviewer_data'
 import BR_ReviewerList from './reviewer_page/BR_ReviewerList'
+import BR_Navbar from './reviewer_page/BR_Navbar'
 import axios from 'axios'
 
 // 書評家使用的CSS
@@ -29,6 +30,7 @@ export class Reviewer extends React.Component {
     render() {
         return (
             <>
+            <BR_Navbar />
         <h1>書評家</h1>
         {/* <Chat id="MR00001"/> */}
         {/* {this.state.brData */}

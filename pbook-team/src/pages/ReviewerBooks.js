@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom'
 import BR_ReviewerList from './reviewer_page/BR_ReviewerList'
 import BR_BookcaseList from './reviewer_page/BR_BookcaseList'
 import BR_BookcaseHot from './reviewer_page/BR_BookcaseHot'
+import BR_Navbar from './reviewer_page/BR_Navbar'
 import axios from 'axios';
 
 class ReviewerBooks extends React.Component {
@@ -26,7 +27,7 @@ class ReviewerBooks extends React.Component {
   }
   render() {
     let reviewerData = null
-
+    
     for (let i = 0; i < Data.length; i++) {
       if (Data[i].id == this.props.match.params.id) {
         reviewerData = Data[i]
@@ -36,6 +37,7 @@ class ReviewerBooks extends React.Component {
     let as = reviewerData.bookcase
     return (
       <>
+        <BR_Navbar />
         <h1>看看書櫃</h1>
         <section className="reviewerBooks borderLine">
           {/* 接應id的書評家個人介紹 */}

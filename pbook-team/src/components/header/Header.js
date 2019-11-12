@@ -18,7 +18,6 @@ import NoPage from '../../pages/nopage/NoPage'
 import Chat from '../../components/member/chat/Chat'
 import ReviewerBooks from '../../pages/ReviewerBooks'
 import BR_ReviewerList from '../../pages/reviewer_page/BR_ReviewerList'
-import Navbar from '../../pages/reviewer_page/BR_Navbar'
 import './header.css'
 
 export default class Header extends React.Component {
@@ -138,7 +137,6 @@ export default class Header extends React.Component {
         />
 
         <Router>
-          <Navbar />
           <Link
             to="/"
             className="myHeaderLogo position-absolute pointer"
