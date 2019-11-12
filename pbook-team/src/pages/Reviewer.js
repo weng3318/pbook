@@ -1,5 +1,6 @@
 import React from 'react'
 import Chat from '../components/member/chat/Chat'
+import Data from '../pages/reviewer_page/data/reviewer_data'
 import BR_ReviewerList from './reviewer_page/BR_ReviewerList'
 import axios from 'axios'
 
@@ -30,7 +31,8 @@ export class Reviewer extends React.Component {
             <>
         <h1>書評家</h1>
         {/* <Chat id="MR00001"/> */}
-        {this.state.brData
+        {/* {this.state.brData */}
+        {Data
           .filter(({ name }) => '31桑' == name)
           .map(({ level, type, name, info, id, tube }) => (
             <BR_ReviewerList
@@ -45,8 +47,9 @@ export class Reviewer extends React.Component {
             ></BR_ReviewerList>
           ))}
 
-        {this.state.brData.map(
-          ({ level, type, name, info, id, tube, bookcase }) => (
+        {/* {this.state.brData */}
+        {Data
+        .map(({ level, type, name, info, id, tube, bookcase }) => (
             <BR_ReviewerList
               key={id}
               to={'/ReviewerBooks/' + id}

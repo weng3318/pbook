@@ -10,6 +10,9 @@ const Data = [
       'vb_9573321742.jpg',
       '03書_React全方位基礎入門實戰.png',
       'vb_9789864901449.jpg',
+      'vb_9789864901449.jpg',
+      'vb_4717702261306.jpg',
+      'vb_9789571377971.jpg',
     ],
   },
   {
@@ -24,6 +27,8 @@ const Data = [
       'vb_9789864762859.jpg',
       'fe71a7aa54ab589e5bb450cc0f9e6c059ac0ddea.jpg',
       'vb_9573318318.jpg',
+      'vb_4717702261306.jpg',
+      'vb_9789571377971.jpg',
     ],
   },
   {
@@ -33,7 +38,13 @@ const Data = [
     name: '阿德',
     info: '素肚黑肉男',
     tube: 'https://www.youtube.com/embed/fHKIuNP1khs',
-    bookcase: 'vb_9789864901449.jpg',
+    bookcase: [
+      'vb_9789864901449.jpg',
+      '03書_React全方位基礎入門實戰.png',
+      'vb_9789864901449.jpg',
+      'vb_4717702261306.jpg',
+      'vb_9789571377971.jpg',
+    ],
   },
   {
     id: 4,
@@ -42,7 +53,13 @@ const Data = [
     name: '享享',
     info: '大賢者',
     tube: 'https://www.youtube.com/embed/LgY-mRoP67w',
-    bookcase: 'vb_9789864762859.jpg',
+    bookcase: [
+      'vb_9789864762859.jpg',
+      '03書_React全方位基礎入門實戰.png',
+      'vb_9789864901449.jpg',
+      'vb_4717702261306.jpg',
+      'vb_9789571377971.jpg',
+    ],
   },
   {
     id: 5,
@@ -51,7 +68,14 @@ const Data = [
     name: 'YO桑',
     info: '老菌俠',
     tube: 'https://www.youtube.com/embed/kGG80qPgrpc',
-    bookcase: 'vb_9789862464557.jpg',
+    bookcase: [
+      'vb_9789862464557.jpg',
+      'vb_9789865031091.jpg',
+      '03書_React全方位基礎入門實戰.png',
+      'vb_9789864901449.jpg',
+      'vb_4717702261306.jpg',
+      'vb_9789571377971.jpg',
+    ],
   },
   {
     id: 6,
@@ -60,7 +84,13 @@ const Data = [
     name: '伊藤正樹',
     info: '滷蛋騎士',
     tube: 'https://www.youtube.com/embed/LG6ngmEsNY0',
-    bookcase: 'vb_9789865031091.jpg',
+    bookcase: [
+      'vb_9789865031091.jpg',
+      '03書_React全方位基礎入門實戰.png',
+      'vb_9789864901449.jpg',
+      'vb_4717702261306.jpg',
+      'vb_9789571377971.jpg',
+    ],
   },
   {
     id: 7,
@@ -69,7 +99,13 @@ const Data = [
     name: 'Amy',
     info: '迷妹',
     tube: 'https://www.youtube.com/embed/Nd_MFj0KXFY',
-    bookcase: 'vb_4717702258290.jpg',
+    bookcase: [
+      'vb_4717702258290.jpg',
+      '03書_React全方位基礎入門實戰.png',
+      'vb_9789864901449.jpg',
+      'vb_4717702261306.jpg',
+      'vb_9789571377971.jpg',
+    ],
   },
   {
     id: 8,
@@ -78,7 +114,14 @@ const Data = [
     name: '阿克婭',
     info: '藍色智障',
     tube: 'https://www.youtube.com/embed/EWGAIq9uGX4',
-    bookcase: 'fe71a7aa54ab589e5bb450cc0f9e6c059ac0ddea.jpg',
+    bookcase: [
+      'fe71a7aa54ab589e5bb450cc0f9e6c059ac0ddea.jpg',
+      'vb_9789865031091.jpg',
+      '03書_React全方位基礎入門實戰.png',
+      'vb_9789864901449.jpg',
+      'vb_4717702261306.jpg',
+      'vb_9789571377971.jpg',
+    ],
   },
   {
     id: 9,
@@ -87,7 +130,13 @@ const Data = [
     name: '惠惠',
     info: '蘿莉',
     tube: 'https://www.youtube.com/embed/_q2ABESnqi0',
-    bookcase: 'vb_4710139134151.jpg',
+    bookcase: [
+      'vb_4710139134151.jpg',
+      '03書_React全方位基礎入門實戰.png',
+      'vb_9789864901449.jpg',
+      'vb_4717702261306.jpg',
+      'vb_9789571377971.jpg',
+    ],
   },
   {
     id: 10,
@@ -96,7 +145,13 @@ const Data = [
     name: '達克尼斯',
     info: '為美好的世界獻上祝福２',
     tube: 'https://www.youtube.com/embed/O058aSaoa0k',
-    bookcase: 'vb_4715443044431.jpg',
+    bookcase: [
+      'vb_4715443044431.jpg',
+      'fe71a7aa54ab589e5bb450cc0f9e6c059ac0ddea.jpg',
+      'vb_4710139134151.jpg',
+      '03書_React全方位基礎入門實戰.png',
+      'vb_9789864901449.jpg',
+    ],
   },
 ]
 export default Data

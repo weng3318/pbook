@@ -34,13 +34,13 @@
 }
 /* 頭書，一本書區域 (圖片區) */
 .brAvatarAllBox_Bookcase{
-    min-width: 120px;
+    min-width: 150px;
     padding: 0 10px;
     /* max-width: 210px; */
 }
 /* 頭書，一本書 (圖片) */
 .brBookInfoImg_Bookcase{
-    width: 150%;
+    width: 100%;
     left: 50%;
     top: 50%;
     transform: translate(-50% , -50%);
