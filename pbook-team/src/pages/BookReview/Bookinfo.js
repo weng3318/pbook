@@ -14,16 +14,23 @@ function Bookinfo() {
   const [array, setArray] = useState(1) //排序方式
   const [categorys, setCategorys] = useState([])
   const [page, getPage] = useState()
+  const [goPage, setPage] = useState(1)
   let pageNum = []
 
-  const urlParams = window.location.search
-
+  const url = window.location.href
+  if (url.indexOf('?') != -1) {
+    let cate, page, array
+    let arr = url.split('?')[1].split('&')
+    for (let i = 0; i >= arr.length; i++) {
+      if (arr[i].split('=')[0] == 'cate') cate = arr[i].split('=')[1]
+    }
+  }
   // setCategorys(urlParams)
   //---------------------------------------------------------------------------
   const CategoryBar = styled.div`
     display: flex;
     flex-wrap: wrap;
-    width:1100px;
+    width: 1100px;
   `
 
   //右上排列方式欄位
@@ -72,7 +79,7 @@ function Bookinfo() {
   useEffect(() => {
     bookInfo()
     categoryBar()
-  }, [urlParams, array])
+  }, [array, goPage])
 
   const categoryBar = () => {
     axios
@@ -86,9 +93,9 @@ function Bookinfo() {
       })
   }
 
-  const bookInfo = e => {
+  const bookInfo = () => {
     axios
-      .get(`http://localhost:5555/reviews/${urlParams}?&a=${array}&p=1`)
+      .get(`http://localhost:5555/reviews/?c=1&a=${array}&p=${goPage}`)
       .then(res => {
         setBookInformation(res.data.rows)
         getPage(Math.ceil(res.data.total / 10))
@@ -100,7 +107,16 @@ function Bookinfo() {
   }
 
   for (let i = 1; i <= page; i++) {
-    pageNum.push(<li className="reviews_paginationNum"><a>{i}</a></li>)
+    pageNum.push(
+      <li
+        onClick={e => {
+          setPage(e.target.value)
+        }}
+        className="reviews_paginationNum"
+      >
+        {i}
+      </li>
+    )
   }
   return (
     <>
@@ -113,21 +129,21 @@ function Bookinfo() {
           </Link>
         ))}
       </CategoryBar>
-      {urlParams === '' || (
-        <OptionBar>
-          <select
-            onChange={e => {
-              setArray(e.target.value)
-            }}
-            value={array}
-            name="array"
-          >
-            <option value="1">討論度(高>低)</option>
-            <option value="2">上市日期(新>舊)</option>
-            <option value="3">暢銷度</option>
-          </select>
-        </OptionBar>
-      )}
+
+      <OptionBar>
+        <select
+          onChange={e => {
+            setArray(e.target.value)
+          }}
+          value={array}
+          name="array"
+        >
+          <option value="1">討論度(高>低)</option>
+          <option value="2">上市日期(新>舊)</option>
+          <option value="3">暢銷度</option>
+        </select>
+      </OptionBar>
+
       <Book>
         <BookColumn>
           {bookInformation.map((data, index) => (
@@ -145,7 +161,10 @@ function Bookinfo() {
         <BookColumn>
           {bookInformation.map(data => (
             <BookInfo key={data.sid}>
-              <Link className="reviews_list_sid" to={'/book_reviews/' + data.sid}>
+              <Link
+                className="reviews_list_sid"
+                to={'/book_reviews/' + data.sid}
+              >
                 <h4> {data.name}</h4>
               </Link>
               {'作者:'}
