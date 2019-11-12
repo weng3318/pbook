@@ -1,20 +1,20 @@
 import mysql from "mysql";
 
-const pool = mysql.createPool({
-            connectionLimit : 10,
-            host     : 'localhost',
-            user     : 'root',
-            password : 'root',
-            database : 'pbook',
-            debug    : false 
-            });     
 // const pool = mysql.createPool({
-//             host: "192.168.27.186",
-//             user: "root",
-//             password: "root",
-//             database: "pbook",
+//             connectionLimit : 10,
+//             host     : 'localhost',
+//             user     : 'root',
+//             password : 'root',
+//             database : 'pbook',
 //             debug    : false 
 //             });     
+const pool = mysql.createPool({
+            host: "192.168.27.186",
+            user: "root",
+            password: "root",
+            database: "pbook",
+            debug    : false 
+            });     
                           
 
 function executeQuery(sql, callback) {

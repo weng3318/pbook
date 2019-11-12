@@ -5,7 +5,7 @@ import cors from "cors";
 const app = express();
 const mysql = require("mysql");
 const db = mysql.createConnection({
-  host: "localhost",
+  host: "192.168.27.186",
   user: "root",
   password: "root",
   database: "pbook"
@@ -27,7 +27,9 @@ app.use("/member", require('./src/member/member'))
 app.use("/forum", require("./src/forum/homepage"));
 app.use("/nana_use", require("./src/nana_use/chatList"));
 app.use("/nana_use", require("./src/nana_use/chatMessage"));
-app.use("/books", require(__dirname + '/src/books/book_categories') )
+app.use("/books", require(__dirname + '/src/books/book_categories'));
+app.use("/books", require(__dirname + '/src/books/book_data'));
+app.use("/books", require(__dirname + '/src/books/book_ratings'));
 app.use('/activities', require('./src/activities/acApi'))
 
 
