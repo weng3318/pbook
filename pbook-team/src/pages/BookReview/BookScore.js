@@ -58,7 +58,7 @@ export default function CustomizedRatings(props) {
   return (
     <>
       {score}
-      <Box component="fieldset" mt={-5} borderColor="transparent">
+      <Box component="fieldset" mt={0} borderColor="transparent">
         <Typography component="legend"></Typography>
         <StyledRating
           name="customized-color"
