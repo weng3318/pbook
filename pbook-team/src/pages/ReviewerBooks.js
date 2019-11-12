@@ -32,7 +32,8 @@ class ReviewerBooks extends React.Component {
         reviewerData = Data[i]
       }
     }
-
+    // 書櫃裡的書
+    let as = reviewerData.bookcase
     return (
       <>
         <h1>看看書櫃</h1>
@@ -52,7 +53,7 @@ class ReviewerBooks extends React.Component {
           <BR_BookcaseHot />
 
           {/* 書評列表 */}
-          {this.state.brData.map(({ bookcase }) => (
+          {as.map((bookcase) => (
             <BR_BookcaseList bookcase={bookcase}></BR_BookcaseList>
           ))}
 
