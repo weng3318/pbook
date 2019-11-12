@@ -19,13 +19,13 @@ const Main = styled.section`
 const Book = styled.div`
   display: flex;
   margin: 5px 0;
-  justify-content: center;
   height: 300px;
 `
 //橫排
 const BookRow = styled.div`
   display: flex;
   margin: 0 1rem 0 0;
+  flex-direction: row-reverse;
 `
 
 //直排
@@ -34,16 +34,17 @@ const BookColumn = styled.div`
   flex-direction: column;
 `
 
-//書本圖片
-const BookImage = styled.img`
-  margin: 0 auto;
+//評分條外框
+const BookLine = styled.div`
+  display: flex;
+  flex-direction: row-reverse;
 `
 
 //加入書櫃按鈕
 const BookCase = styled.button`
-  margin: 0 auto;
-  width: 80px;
-  height: 40px;
+  width: 100px;
+  height: 50px;
+  margin:0 50px 0 0;
   border-radius: 5px;
   background-color: #cde2d0;
   color: #2d3a3a;
@@ -51,14 +52,15 @@ const BookCase = styled.button`
 `
 //書本資訊
 const BookInfo = styled.div`
-  width: 750px;
+  margin: 0 0 0 50px;
+  width: 1000px;
 `
 
 //書本分數
 const BookScoreTitle = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 45px 0 0 0;
+  margin: 0px 0 0 0;
   font-size: 15px;
 `
 //書本評分
@@ -76,9 +78,10 @@ const Review = styled.section`
   border-bottom: 1px solid #ccc;
 `
 //會員頭像
-const Member = styled.img`
+const Member = styled.div`
   width: 100px;
   height: 100px;
+  margin: 0 0 0 10px;
 `
 const Text = styled.div`
   position: relative;
@@ -170,6 +173,16 @@ const List = () => {
                 </div>
               </BookInfo>
             </BookColumn>
+          </Book>
+        ))}
+        <div>
+          <BookLine>
+            <BookScore>
+              <BookHeart urlParams={urlParams} />
+            </BookScore>
+            <BookRow>
+              <BookLineForBR List={List} />
+            </BookRow>
             <BookScoreTitle>
               <span>{'5'}</span>
               <span>{'4'}</span>
@@ -177,22 +190,35 @@ const List = () => {
               <span>{'2'}</span>
               <span>{'1'}</span>
             </BookScoreTitle>
-            <BookColumn>
-              <BookRow>
-                <BookCase>加入書櫃</BookCase>
-                <BookCase>立即購買</BookCase>
-              </BookRow>
-              <BookLineForBR List={List} />
-            </BookColumn>
-            <BookScore>
-              <BookHeart urlParams={urlParams} />
-            </BookScore>
-          </Book>
-        ))}
-
+            <BookCase>加入書櫃</BookCase>
+            <BookCase>立即購買</BookCase>
+          </BookLine>
+          {/* <BookScoreTitle>
+            <span>{'5'}</span>
+            <span>{'4'}</span>
+            <span>{'3'}</span>
+            <span>{'2'}</span>
+            <span>{'1'}</span>
+          </BookScoreTitle>
+          <BookColumn>
+            <BookRow>
+              <BookCase>加入書櫃</BookCase>
+              <BookCase>立即購買</BookCase>
+            </BookRow>
+            <BookLineForBR List={List} />
+          </BookColumn>
+          <BookScore>
+            <BookHeart urlParams={urlParams} />
+          </BookScore> */}
+        </div>
         <Review>
           <h3>發表評論</h3>
-          <Member />
+          <Member>
+            <img
+              className="reviews_list_img"
+              src={require('../reviewer_page/images/1189214.png')}
+            />
+          </Member>
           <Text />
           <Submit>送出評論</Submit>
         </Review>

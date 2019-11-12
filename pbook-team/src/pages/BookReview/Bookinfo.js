@@ -133,7 +133,7 @@ function Bookinfo() {
     <>
       <CategoryBar>
         {categorys.map((data, index) => (
-          <Link to={'reviews?c=' + data.sid + '&p=' + p}>
+          <Link to={'reviews?c=' + data.sid + '&p=1' }>
             <button value={data.sid} key={index} className="reviews_btn">
               {data.name}
             </button>

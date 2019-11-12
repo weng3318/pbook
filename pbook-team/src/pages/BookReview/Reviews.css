@@ -65,3 +65,7 @@
 }
 
 /*  /list  進入單本書籍後 書評頁面 */
+.reviews_line {
+  display: flex;
+  flex-direction: row-reverse;
+}
