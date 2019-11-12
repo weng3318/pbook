@@ -2,14 +2,59 @@ import React from 'react'
 import './lukeStyle.scss'
 
 class Info extends React.Component {
+    constructor(){
+        super()
+        this.state = {
+            member:{}
+        }
 
+    }
+
+    componentDidMount(){
+        this.queryMember()
+    }
 
     queryMember(){
+        let number = JSON.parse(localStorage.getItem('user')).MR_number
+        // console.log(number);
+
+        fetch('http://localhost:5555/member', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              number: number,
+            })
+          })
+          .then( response => {
+            if(!response) throw new Error(response.statusText)
+            // console.log('3'+response);
+            return response.json()
+          })
+          .then(data =>{
+            //   console.log("test", JSON.stringify(data));
+              this.setState({member: data[0]})
+          })
+
         
     }
 
 
     render(){
+        let level = [
+                '',
+                '品書會員',
+                '品書學徒',
+                '品書專家',
+                '品書大師',
+                '品書至尊',
+                '書評家'
+            ];
+            
+        // console.log("member", this.state.member.MR_name);
+        let member = this.state.member
+
         return (
           <>
             <div className="infoWrap">
@@ -20,37 +65,37 @@ class Info extends React.Component {
                           <div className="list">
                               <div className="row item">
                                   <h4>帳號 : </h4>
-                                  <h4>luke@gmail.com</h4>
+                                  <h4>{member.MR_email}</h4>
                               </div>
                               <div className="row item">
                                   <h4>姓名 : </h4>
-                                  <h4>luke</h4>
+                                  <h4>{member.MR_name}</h4>
                               </div>
                               <div className="row item">
                                   <h4>暱稱 : </h4>
-                                  <h4>luke</h4>
+                                  <h4>{member.MR_nickname}</h4>
                               </div>
                               <div className="row item">
-                                  <h4>信箱 : </h4>
-                                  <h4>1988/08/12</h4>
+                                  <h4>生日 : </h4>
+                                  <h4>{member.MR_birthday}</h4>
                               </div>
                               <div className="row item">
                                   <h4>手機 : </h4>
-                                  <h4>09XXXXXXXX</h4>
+                                  <h4>{member.MR_mobile}</h4>
                               </div>
                               <div className="row item">
                                   <h4>地址 : </h4>
-                                  <h4>XXXXXXXXXXXXXXXXXXXXXXXXX</h4>
+                                  <h4>{member.MR_address}</h4>
                               </div>
                           </div>
                           <div className="list-r">
                                   <div className="item">
                                           <h3>會員編號 :</h3>
-                                          <h3>MR000001</h3>
+                                          <h3>{member.MR_number}</h3>
                                   </div>
                                   <div className="item">
                                           <h3>會員等級 :</h3>
-                                          <h3>品書大師</h3>
+                                          <h3>{level[member.MR_personLevel]}</h3>
                                   </div>
                                       <div className="item col">
                                           <figure>

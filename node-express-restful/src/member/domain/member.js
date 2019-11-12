@@ -2,12 +2,11 @@ import encryption from '../models/encryption'
 import db from '../db/database'
 
 class Member{
-    constructor(name, email, password){
+    constructor(name, email, password,nickname, birthday, mobile, address, number){
         this.MR_name = name
         this.MR_email = email
         // this.MR_password = encryption(password)
         this.MR_password = password
-        console.log(this.MR_name, this.MR_email, this.MR_password)
     }
 
     //進行加密
@@ -25,8 +24,8 @@ class Member{
         return sql
     }
 
-    getAllMemberSql(){
-        let sql = `SELECT * FROM mr_information WHERE 1`
+    getMemberInfo(MR_number){
+        let sql = `SELECT * FROM mr_information WHERE MR_number = '${MR_number}'`
         return sql
     }
     
@@ -37,6 +36,20 @@ class Member{
         let sql = `INSERT INTO mr_information(MR_name, MR_number , MR_email, MR_password, MR_personLevel, MR_createdDate) 
                         VALUES('${this.MR_name}', '${new_number}', '${this.MR_email}', '${this.MR_password}', 1, now()) `
                         
+        return sql
+    }
+
+    //修改資料
+    modifyMemberInfoSql(number, email, name, nickname, birthday, mobile, address){
+        // console.log(name,
+        //     email,
+        //     nickname,
+        //     birthday ,
+        //     mobile,
+        //     address,
+        //     number,)
+        
+        let sql = `UPDATE mr_information SET MR_email = '${email}',MR_name = '${name}', MR_nickname = '${nickname}',MR_birthday = '${birthday}',MR_mobile = '${mobile}',MR_address = '${address}' WHERE MR_number = '${number}' `
         return sql
     }
     

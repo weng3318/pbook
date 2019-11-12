@@ -18,6 +18,7 @@ import NoPage from '../../pages/nopage/NoPage'
 import Chat from '../../components/member/chat/Chat'
 import ReviewerBooks from '../../pages/ReviewerBooks'
 import BR_ReviewerList from '../../pages/reviewer_page/BR_ReviewerList'
+import BookReviews from '../../pages/BookReview/BookReviews'
 import './header.css'
 
 export default class Header extends React.Component {
@@ -113,10 +114,8 @@ export default class Header extends React.Component {
     // function getPermission(cb) {
     //     Notification.requestPermission(cb);
     // }
-    console.log('componentDidMount')
+    // console.log('componentDidMount')
   }
-
-
 
   render() {
     // let phoneMemberStatus = 'none'
@@ -124,9 +123,9 @@ export default class Header extends React.Component {
     // let phoneVisitorStatus = 'block'
     // if (JSON.parse(localStorage.getItem('user')).MR_number !== '') phoneVisitorStatus = 'none'
 
-    // console.log("head" , this.state.memberData);
-    console.log('render', this.state.memberData)
-    console.log(JSON.parse(localStorage.getItem('user')))
+    // // console.log("head" , this.state.memberData);
+    // console.log('render', this.state.memberData)
+    // console.log(JSON.parse(localStorage.getItem('user')))
 
     return (
       <>
@@ -354,15 +353,17 @@ export default class Header extends React.Component {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/reviewer" component={Reviewer} />
-            <Route exact path="/BR_ReviewerList" component={BR_ReviewerList}/>
-            <Route exact path="/ReviewerBooks/:id?" component={ReviewerBooks}/>
+            <Route exact path="/BR_ReviewerList" component={BR_ReviewerList} />
+            <Route exact path="/ReviewerBooks/:id?" component={ReviewerBooks} />
             <Route exact path="/books" component={Books} />
             <Route path="/activities" component={Activities} />
             <Route exact path="/reviews" component={Reviews} />
-//             <Route path="/forum" component={Forum} />
+
+            {/* <Route path="/forum" component={Forum} /> */}
+            <Route exact path="/book_reviews/:sid" component={BookReviews} />
+            <Route path="/forum" component={Forum} />
             <Route exact path="/forum" component={Forum} />
             {/* <Route exact path="/login" component={()=><Login loginSuccess={(memberData)=>{ this.loginSuccess(memberData) }}/>} /> */}
-
             <Route exact path="/login" component={Login} />
             <Route path="/member" component={Member} />
             <Route exact path="/game/:id" component={Game} />
