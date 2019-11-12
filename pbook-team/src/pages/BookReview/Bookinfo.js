@@ -23,7 +23,7 @@ function Bookinfo() {
   const CategoryBar = styled.div`
     display: flex;
     flex-wrap: wrap;
-    width:1100px;
+    width: 1100px;
   `
 
   //右上排列方式欄位
@@ -100,7 +100,11 @@ function Bookinfo() {
   }
 
   for (let i = 1; i <= page; i++) {
-    pageNum.push(<li className="reviews_paginationNum"><a>{i}</a></li>)
+    pageNum.push(
+      <li className="reviews_paginationNum">
+        <a>{i}</a>
+      </li>
+    )
   }
   return (
     <>
@@ -145,7 +149,10 @@ function Bookinfo() {
         <BookColumn>
           {bookInformation.map(data => (
             <BookInfo key={data.sid}>
-              <Link className="reviews_list_sid" to={'/book_reviews/' + data.sid}>
+              <Link
+                className="reviews_list_sid"
+                to={'/book_reviews/' + data.sid}
+              >
                 <h4> {data.name}</h4>
               </Link>
               {'作者:'}
