@@ -1,13 +1,15 @@
 import React from 'react'
+import { Col, Button } from 'react-bootstrap'
+import Rating from 'react-rating'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faStar } from '@fortawesome/free-solid-svg-icons' //空
+import { faStar as faStars } from '@fortawesome/free-regular-svg-icons' //滿
 import './Shop.scss'
-import { Col } from 'react-bootstrap'
-
 class BookData extends React.Component {
   constructor(props) {
     super(props)
     this.state = {}
   }
-
   render() {
     return (
       <>
@@ -19,7 +21,7 @@ class BookData extends React.Component {
             <span>顯示模式</span>
             <span>排序依</span>
           </div>
-          <div className="d-flex">
+          <div className="d-flex justify-content-between">
             <div className="d-flex">
               <div className="book_pic">
                 <img
@@ -37,7 +39,23 @@ class BookData extends React.Component {
                 </div>
               </div>
             </div>
-            <div></div>
+            <div className="d-flex flex-column ">
+              <span>優惠價 : 79 折 261 元</span>
+              <Button>放入購物車</Button>
+              <div className="d-flex position-relative">
+                <div className="position-absolute"></div>
+                <div>
+                  <Rating
+                    emptySymbol={[<FontAwesomeIcon icon={faStars} />]}
+                    fullSymbol={[
+                      <FontAwesomeIcon icon={faStar} color={'#FFC408'} />,
+                    ]}
+                    initialRating={3}
+                    readonly
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         </Col>
       </>

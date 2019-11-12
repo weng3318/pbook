@@ -15,21 +15,11 @@ db.connect(error => {
 });
 bluebird.promisifyAll(db);
 
-router.get("/book_categories/:keyword?", (req, res) => {
-  // const output = {};
-  // output.params = req.params; 可以在網址看params用
-  let keyword = req.params.keyword || ""; //search用
+router.get("/book_ratings", (req, res) => {
   let where = " WHERE 1 ";
-  if (keyword) {
-    keyword = keyword.split("'").join("\\'"); // 避免 SQL injection
-    where += " AND `name` LIKE '%" + keyword + "%' ";
-    // output.keyword = keyword; 可以在網址看keyword用
-  }
-  let sql = "SELECT * FROM `vb_categories`" + where;
-  // console.log(sql);
+  let sql = "SELECT * FROM `vb_ratings`" + where;
   db.queryAsync(sql)
     .then(results => {
-      // output.catagories = results;
       res.json(results);
     })
     .catch(error => {
