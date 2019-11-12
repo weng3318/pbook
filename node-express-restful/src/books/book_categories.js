@@ -16,7 +16,7 @@ db.connect(error => {
 bluebird.promisifyAll(db);
 
 router.get("/book_categories/:keyword?", (req, res) => {
-  const output = {};
+  // const output = {};
   // output.params = req.params; 可以在網址看params用
   let keyword = req.params.keyword || ""; //search用
   let where = " WHERE 1 ";

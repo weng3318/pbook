@@ -1,0 +1,94 @@
+/* 邊框顏色，參照用 */
+.h5_Bookcase{
+    font-size: 1.5rem;
+    left: 0;
+    right: 0;
+    color: #2d3a3a;
+    border-bottom: 1px solid #ffc408;
+    width: 140px;
+    margin: 0 auto;
+    padding: 30px 0 10px 0;
+}
+/* 熱門書評區域 (光效) */
+.HotBookBoxAll_Bookcase{
+    box-shadow: inset 0 6px .8rem #cde2d0, inset 0 -10px 1rem #cde2d0;
+}
+/* 熱門書評，四本書 (文字設定) */
+.brHotBookText{
+    font-size: 1rem;
+    color: #fff;
+    text-align: center;
+    margin: 0 20px 16px 20px;
+}
+/* 熱門書評，四本書區域 (圖片區塊) */
+.HotBookBox_Bookcase{
+    left: 0;
+    right: 0;
+    display: flex;
+    text-align: center;
+}
+/* 熱門書評，四本書 (圖片) */
+.brHotBookImg_Bookcase{
+    width: 80%;
+    margin: 20px 0 10px 0;
+}
+/* 頭書，一本書區域 (圖片區) */
+.brAvatarAllBox_Bookcase{
+    min-width: 150px;
+    padding: 0 10px;
+    /* max-width: 210px; */
+}
+/* 頭書，一本書 (圖片) */
+.brBookInfoImg_Bookcase{
+    width: 100%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50% , -50%);
+}
+/* 書評家簡介全區域 (縮放限制) */
+.brInfoBox_Bookcase{
+    min-width: 265px;
+    min-height: 310px;
+}
+/* 書評家簡介，(文字、限制行數) */
+.brInfoText_Bookcase{
+    font-size: 1rem;
+    margin: 6px 20px 12px 20px;
+    /* color: rgba(255,255,255,.7); */
+    color: #2d3a3a;
+    overflow : hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    -webkit-box-orient: vertical;
+}
+/* 書評家簡介內的書名、作者 (文字) */
+.bookInfo_Bookcase{
+    font-weight: 600;
+    font-size: 1.2rem;
+    margin: 6px 0 0 6px;
+}
+/* 社群分享，共用區域 (社群圖示區塊) */
+.brIconBox_Bookcase{
+    left: 10px;
+    right: 0;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+/* 社群分享，三小圖示+收藏 (社群圖示) */
+.brIconShare_Bookcase{
+    width: 30px;
+    margin: 0 6px 6px 6px;
+}
+/* 評分組件區塊，區域控制 */
+.brStarBox_Bookcase{    
+    min-width: 100px;
+    max-width: 240px;
+}
+/* ------------------------------------------------------------------ */
+/* 書評家列表，整體區域 ( Display狀態改變) */
+.ReviewerListAllBox_Bookcase{
+    display: flex;
+}
+@media (max-width: 786px) {
+}
