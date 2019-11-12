@@ -32,37 +32,74 @@
     }
     .book_pic {
       width: 10vw;
-      height: 10vw;
+      height: 11vw;
       img {
         object-fit: cover;
         height: 100%;
         width: 100%;
       }
     }
-    .d-flex {
-      .flex-column {
-        width: 25vw;
-        height: 10vw;
-        .content_color {
-          color: $color-gray;
+    .book_data {
+      width: 20vw;
+      height: 11vw;
+      .content_color {
+        color: $color-gray;
+      }
+      .content_box {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+      }
+      .moreInfo {
+        color: $color-black;
+        .fa-caret-right {
+          vertical-align: -0.7rem;
+          color: $color-yellow;
         }
-        .content_box {
-          overflow: hidden;
-          text-overflow: ellipsis;
-          display: -webkit-box;
-          -webkit-line-clamp: 4;
-          -webkit-box-orient: vertical;
+      }
+    }
+    .book_sell {
+      height: 11vw;
+      .font-big {
+        font-size: 1.2rem;
+        color: $color-gray;
+        .price {
+          font-size: 1.2rem;
+          color: $color-red;
         }
-        .position-absolute {
-          top: 0;
-          left: 0;
+      }
+      .addCart {
+        background-color: $color-green;
+        border: 1px solid transparent;
+        border-radius: 10px;
+        width: 6vw;
+        height: 1.6vw;
+        font-size: 1rem;
+        &:focus {
+          outline: none;
         }
-        .bookRate {
-          width: 7vw;
-          height: 0.5vw;
-          background-color: $color-yellow;
+      }
+      .book_star {
+        .book_rank {
+          font-size: 2rem;
         }
-        
+        .book_review {
+          font-size: 0.5rem;
+        }
+      }
+      .addReview {
+        background-color: $color-black;
+        border: 1px solid transparent;
+        border-radius: 10px;
+        color: $color-yellow;
+        width: 6vw;
+        height: 1.6vw;
+        font-size: 1rem;
+        &:focus {
+          outline: none;
+        }
       }
     }
   }
