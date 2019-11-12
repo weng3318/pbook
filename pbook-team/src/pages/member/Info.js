@@ -5,6 +5,7 @@ class Info extends React.Component {
     constructor(){
         super()
         this.state = {
+            birthday:'',
             member:{}
         }
 
@@ -34,7 +35,11 @@ class Info extends React.Component {
           })
           .then(data =>{
             //   console.log("test", JSON.stringify(data));
-              this.setState({member: data[0]})
+            let bdy = data[0].MR_birthday
+            let birthday = bdy.slice(0, 10)
+              this.setState({
+                birthday: birthday,
+                member: data[0]})
           })
 
         
@@ -54,6 +59,7 @@ class Info extends React.Component {
             
         // console.log("member", this.state.member.MR_name);
         let member = this.state.member
+        
 
         return (
           <>
@@ -77,7 +83,7 @@ class Info extends React.Component {
                               </div>
                               <div className="row item">
                                   <h4>生日 : </h4>
-                                  <h4>{member.MR_birthday}</h4>
+                                  <h4>{this.state.birthday}</h4>
                               </div>
                               <div className="row item">
                                   <h4>手機 : </h4>
