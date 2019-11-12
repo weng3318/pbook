@@ -12,6 +12,12 @@
       .item-left {
         flex: 1 1 500px;
         color: $grey-grey;
+        .fm-subtitle {
+          width: 570px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
         .list-item-time {
           justify-content: space-between;
           font-size: 0.8rem;

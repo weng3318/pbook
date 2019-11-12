@@ -67,8 +67,15 @@ router
       })
       .then(results => {
         output.article = results;
+        sql =
+          "SELECT * FROM `fm_subcategories` WHERE `fm_categories`='" +
+          number +
+          "'";
+          return db.queryAsync(sql);
+      }).then(results=>{
+        output.subcategory = results;
         res.json(output);
-      });
+      })
   });
 
 // router.route("/homepage/:id?").get((req, res) => {

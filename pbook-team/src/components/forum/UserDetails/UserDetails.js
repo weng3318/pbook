@@ -60,7 +60,6 @@ class UserDetails extends React.Component {
       let user = this.state.user
       let userImage = user.MR_pic
 
-      // let userImage = user.MR_pic
       return (
         <>
           <div className="card-details">
