@@ -31,27 +31,12 @@ class Member{
     }
     
     getAddMemberSql(new_number){
-        //會員編號
-        // let number_blank = "MR00000"
-        // let count = `SELECT MAX(sid) FROM mr_information`
-        
-        // let new_number = number_blank.slice(0, -3)+"143"
-        // return
-        
         //進行加密
         // this.MR_password = encryption(this.MR_password)
         //塞入資料
         let sql = `INSERT INTO mr_information(MR_name, MR_number , MR_email, MR_password, MR_personLevel, MR_createdDate) 
                         VALUES('${this.MR_name}', '${new_number}', '${this.MR_email}', '${this.MR_password}', 1, now()) `
                         
-        return sql
-    }
-
-
-
-    
-    getLoginSql(){
-        let sql = `SELECT * FROM 'mr_information' WHERE MR_email = '${this.MR_email}' AND MR_password = '${this.MR_password}'`
         return sql
     }
     

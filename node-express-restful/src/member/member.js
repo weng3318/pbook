@@ -39,23 +39,23 @@ router.post('/register', (req, res, next) => {
                 }else{
                     db.query(`SELECT MAX(sid) FROM mr_information`,(err, data)=>{
                        new_number = number_blank.slice(0, -3)+  data[0]['MAX(sid)']
-                       res.json(new_number)
+                    //    res.json(new_number)
+                       db.query(Member.getAddMemberSql(new_number), (err, data) => {
+                           if(err){
+                               res.json({
+                                   status: "伺服器錯誤，請稍後在試",
+                                   message: "註冊失敗",
+                                })
+                               return;
+                           }
+                           // 若寫入資料庫成功，則回傳給clinet端下：
+                           res.json({
+                               status: "註冊成功",
+                               message:"歡迎" + req.body.name + "的登入!",
+                            })
+                         })
                     })
 
-                    db.query(Member.getAddMemberSql(new_number), (err, data) => {
-                        if(err){
-                            res.json({
-                                status: "伺服器錯誤，請稍後在試",
-                                message: "註冊失敗",
-                             })
-                            return;
-                        }
-                        // 若寫入資料庫成功，則回傳給clinet端下：
-                        res.json({
-                            status: "註冊成功",
-                            message:"歡迎" + req.body.name + "的登入!",
-                         })
-                      })
                 }
         })
     }
@@ -66,8 +66,6 @@ router.post('/login', (req, res, next) => {
     let Member = new login(req.body.email, req.body.password)
     
     db.query(Member.getLoginSql(), (err, rows) => {
-        // console.log(rows);
-        if(err) console.log(err)
         
         if( rows.length == 0){
             res.json({

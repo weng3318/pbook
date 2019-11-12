@@ -9,8 +9,8 @@ class Login{
 
 
     getLoginSql(){
-        // let sql = `SELECT MR_name,MR_email, MR_password FROM mr_information WHERE MR_email = '${this.MR_email}' AND MR_password = '${this.MR_password}'`
-        let sql = `SELECT * FROM mr_information WHERE MR_email = '${this.MR_email}' AND MR_password = '${this.MR_password}'`
+        //讀取資料指回傳部分欄位
+        let sql = `SELECT MR_number,MR_name,MR_nickname,MR_pic,MR_personLevel FROM mr_information WHERE MR_email = '${this.MR_email}' AND MR_password = '${this.MR_password}'`
         return sql
     }
 
