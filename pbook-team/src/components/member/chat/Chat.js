@@ -31,14 +31,14 @@ class Chat extends React.Component {
     this.myDiv.classList.add('hide')
     this.messageSearch.classList.add('show-inline-flex')
 
-    axios.get(`http://localhost:5555/nana_use/chatMessage`).then(res => {
+    axios.get(`http://localhost:5555/nana_use/chatMessage`,{withCredentials:true}).then(res => {
       this.setState({ oldDataMessage: res.data })
     })
   }
 
   onMsg = data => {
     console.log('客戶端接收服務端發的消息', data)
-    axios.get(`http://localhost:5555/nana_use/chatList`).then(res => {
+    axios.get(`http://localhost:5555/nana_use/chatList`,{withCredentials:true}).then(res => {
       this.setState({
         oldDataList: res.data,
         oldDataMessage: [data, ...this.state.oldDataMessage],
@@ -115,15 +115,15 @@ class Chat extends React.Component {
   }
 
   componentDidMount() {
-    axios.get(`http://localhost:5555/nana_use/chatList`).then(res => {
+    axios.get(`http://localhost:5555/nana_use/chatList`,{withCredentials:true}).then(res => {
       this.setState({ oldDataList: res.data })
     })
-    console.log('componentDidMount')
+    // console.log('componentDidMount')
   }
 
   render() {
     var count = 0
-    console.log('render')
+    // console.log('render')
     return (
       <>
         <div className="chatWrap">

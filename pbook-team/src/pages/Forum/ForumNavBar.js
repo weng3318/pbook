@@ -37,10 +37,10 @@ const ForumNavBar = () => {
         <div className="forumPage">
           <Navbar className="navbarControl">
             <nav className="container">
-              <LinkContainer to="/forum" exact activeClassName="active">
-                <Navbar.Brand className="F-nav-link">個人首頁</Navbar.Brand>
-              </LinkContainer>
               <Nav className="mr-auto ">
+                <LinkContainer to="/forum/" activeClassName="active">
+                  <Nav.Link className="F-nav-link">個人首頁</Nav.Link>
+                </LinkContainer>
                 <LinkContainer to="/forum/finance" activeClassName="active">
                   <Nav.Link className="F-nav-link">商業理財</Nav.Link>
                 </LinkContainer>
@@ -85,47 +85,47 @@ const ForumNavBar = () => {
             <Route
               exact
               path="/forum/finance"
-              render={props => <TopicPage {...props} cate={2} />}
+              render={props => <TopicPage {...props} cate={2} subCate={0} />}
             ></Route>
             <Route
               exact
               path="/forum/art"
-              render={props => <TopicPage {...props} cate={3} />}
+              render={props => <TopicPage {...props} cate={3} subCate={0} />}
             ></Route>
             <Route
               exact
               path="/forum/novel"
-              render={props => <TopicPage {...props} cate={1} />}
+              render={props => <TopicPage {...props} cate={1} subCate={0} />}
             ></Route>
             <Route
               exact
               path="/forum/psychology"
-              render={props => <TopicPage {...props} cate={7} />}
+              render={props => <TopicPage {...props} cate={7} subCate={0} />}
             ></Route>
             <Route
               exact
               path="/forum/lifeStyle"
-              render={props => <TopicPage {...props} cate={10} />}
+              render={props => <TopicPage {...props} cate={10} subCate={0} />}
             ></Route>
             <Route
               exact
               path="/forum/food"
-              render={props => <TopicPage {...props} cate={11} />}
+              render={props => <TopicPage {...props} cate={11} subCate={0} />}
             ></Route>
             <Route
               exact
               path="/forum/technology"
-              render={props => <TopicPage {...props} cate={21} />}
+              render={props => <TopicPage {...props} cate={21} subCate={0} />}
             ></Route>
             <Route
               exact
               path="/forum/child"
-              render={props => <TopicPage {...props} cate={13} />}
+              render={props => <TopicPage {...props} cate={13} subCate={0} />}
             ></Route>
             <Route
               exact
               path="/forum/humanities"
-              render={props => <TopicPage {...props} cate={4} />}
+              render={props => <TopicPage {...props} cate={4} subCate={0} />}
             ></Route>
           </Switch>
         </div>

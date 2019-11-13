@@ -15,10 +15,10 @@ db.connect();
 const bluebird = require("bluebird");
 bluebird.promisifyAll(db);
 
-app.use(cors());
-app.use(cors()); //預設的 Access-Control-Allow-Origin 是 * (代表全部瀏覽器都可以查看資料)
+
+//預設的 Access-Control-Allow-Origin 是 * (代表全部瀏覽器都可以查看資料)
 //設定指定的瀏覽器才能連線
-const whitelist = ["http://localhost:3000", undefined]; //若要使用同一台伺服器需使用undefined而不是直接填url(node.js設定問題)
+const whitelist = ["http://localhost:3000", undefined,"http://localhost:5000"]; //若要使用同一台伺服器需使用undefined而不是直接填url(node.js設定問題)
 const corsOptions = {
   credentials: true,
   origin: function (origin, callback) {
@@ -38,7 +38,7 @@ app.use(
   session({
     //新用戶沒有使用到session物件時不會建立session和發送cookie
     saveUninitialized: false,
-    resave: false,
+    resave: true,
     secret: "yoko0509",
     cookie: {
       maxAge: 1200000 //單位毫秒
@@ -63,11 +63,20 @@ app.use("/books", require(__dirname + '/src/books/book_ratings'));
 app.use('/activities', require('./src/activities/acApi'))
 app.use('/reviews', require('./src/book_review/reviews'))
 
+
+
 app.get("/", function (req, res) {
   res.send("Home");
 });
 
-app.use("/forum", require("./src/forum/homepage"));
+//登出
+app.get('/logout', (req, res)=>{
+  delete req.session.memberData
+  // console.log("logout success", req.session);
+  return res.redirect('/')
+})
+
+
 
 //if we are here then the specified request is not found
 app.use((req, res, next) => {

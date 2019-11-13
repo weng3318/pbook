@@ -64,7 +64,7 @@ class Info extends React.Component {
         return (
           <>
             <div className="infoWrap">
-                      <div className="title">
+                      <div className="MB_title">
                               會員資料
                       </div>
                       <div className="row">
