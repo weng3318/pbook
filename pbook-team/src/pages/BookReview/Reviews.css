@@ -1,8 +1,11 @@
 /* /reviews  書評首頁 */
+* {
+  outline: none;
+}
 .reviews_btn {
   background: #fff;
-  width: 100px;
-  height: 40px;
+  width: 70px;
+  height: 25px;
   color: black;
   text-align: center;
   text-decoration: none;
@@ -12,16 +15,19 @@
   border-radius: 4px;
   border: 1px solid #ccc;
   line-height: 15px;
+  outline: none;
 }
 
 .reviews_btn:hover {
   background: #cde2d0;
   color: #2d3a3a;
+  outline: none;
 }
 
 .reviews_btn:focus {
   background: #2d3a3a;
   color: #ffc408;
+  outline: none;
 }
 
 .reviews_pagination {
@@ -37,13 +43,18 @@
   font-size: 20px;
   border: 1px solid #ccc;
 }
-
+.reviews_Link {
+  text-decoration: none;
+  color: black;
+}
+.reviews_paginationNum:hover {
+}
 .reviews_img {
   max-height: 100%;
   max-width: 100%;
   width: 150px;
-  height: 180px;
-  margin: 0 0 45px 0;
+  height: 150px;
+  margin: 0 0 75px 0;
   border: 1px solid #ccc;
 }
 
@@ -58,6 +69,7 @@
 
 /* 文字超連結A標籤 效果 */
 .reviews_list_sid {
+  text-decoration: none;
   color: #2d3a3a;
 }
 .reviews_list_sid:hover {
@@ -68,4 +80,14 @@
 .reviews_line {
   display: flex;
   flex-direction: row-reverse;
+}
+
+.reviews_submitBtn {
+  position: relative;
+  top: -60px;
+  left: 50px;
+  width: 100px;
+  height: 50px;
+  border-radius: 5px;
+  background: #cde2d0;
 }

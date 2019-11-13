@@ -6,6 +6,7 @@ import axios from 'axios'
 import styled from '@emotion/styled'
 import BookHeart from './BookScore'
 import BookLineForBR from './BookLineForBR'
+import { Button } from '@material-ui/core'
 
 //---------------------------------------------------------------------------------------------------------
 
@@ -38,13 +39,14 @@ const BookColumn = styled.div`
 const BookLine = styled.div`
   display: flex;
   flex-direction: row-reverse;
+  outline: none;
 `
 
 //加入書櫃按鈕
 const BookCase = styled.button`
   width: 100px;
   height: 50px;
-  margin:0 50px 0 0;
+  margin: 0 50px 0 0;
   border-radius: 5px;
   background-color: #cde2d0;
   color: #2d3a3a;
@@ -73,7 +75,6 @@ const BookScore = styled.div`
 //回復評論外框
 const Review = styled.section`
   width: 1200px;
-  height: 350px;
   margin: 3rem auto;
   border-bottom: 1px solid #ccc;
 `
@@ -81,34 +82,31 @@ const Review = styled.section`
 const Member = styled.div`
   width: 100px;
   height: 100px;
-  margin: 0 0 0 10px;
+  margin: 0 0 0 5px;
 `
-const Text = styled.div`
+const Text = styled.textarea`
   position: relative;
   top: -100px;
   left: 150px;
   width: 1000px;
-  height: 200px;
-  border: 1px solid #ccc;
+  min-height: 100px;
+  border: 1.5px solid #ccc;
+  border-radius: 1rem;
+  padding: 0.7rem;
 `
-const Submit = styled.button`
-  position: relative;
-  top: -70px;
-  left: 1050px;
-  width: 100px;
-  height: 50px;
-`
+const Submit = styled.button``
 
 //------------------------------------------------------------------------------------------------------
 
 const List = () => {
   //從nodejs拿取資料的sid值
   const urlParams = window.location.pathname.replace('/book_reviews/', '')
-  console.log(urlParams)
 
   //變數
   const [List, setList] = useState([])
   const [score, setScore] = useState([])
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')))
+  console.log(user)
   useEffect(() => {
     reviewList()
   }, [score])
@@ -193,34 +191,24 @@ const List = () => {
             <BookCase>加入書櫃</BookCase>
             <BookCase>立即購買</BookCase>
           </BookLine>
-          {/* <BookScoreTitle>
-            <span>{'5'}</span>
-            <span>{'4'}</span>
-            <span>{'3'}</span>
-            <span>{'2'}</span>
-            <span>{'1'}</span>
-          </BookScoreTitle>
-          <BookColumn>
-            <BookRow>
-              <BookCase>加入書櫃</BookCase>
-              <BookCase>立即購買</BookCase>
-            </BookRow>
-            <BookLineForBR List={List} />
-          </BookColumn>
-          <BookScore>
-            <BookHeart urlParams={urlParams} />
-          </BookScore> */}
         </div>
         <Review>
           <h3>發表評論</h3>
           <Member>
-            <img
-              className="reviews_list_img"
-              src={require('../reviewer_page/images/1189214.png')}
-            />
+            {user !== null ? (
+              <img
+                className="reviews_list_img"
+                src={require('../../images/' + user.MR_pic)}
+              />
+            ) : (
+              <img
+                className="reviews_list_img"
+                src={require('../../images/forum/2.jpg')}
+              />
+            )}
           </Member>
-          <Text />
-          <Submit>送出評論</Submit>
+          <Text placeholder="新增評論..." />
+          <button className="reviews_submitBtn">送出評論</button>
         </Review>
         <Review>
           <Member />
