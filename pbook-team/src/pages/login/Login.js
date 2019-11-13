@@ -1,9 +1,11 @@
 import React from 'react'
 import './login.css'
-import Carousel from '../../components/indexComponents/carousel/Carousel'
 import '../member/lukeStyle.scss'
 import FbLogin from './FbLogin'
 import swal from '@sweetalert/with-react'
+import Carousel from '../../components/indexComponents/carousel/Carousel'
+import Theme from '../../components/indexComponents/theme/Theme'
+import Storyteller from '../../components/indexComponents/storyteller/Storyteller'
 
 class Login extends React.Component {
   constructor(){
@@ -97,8 +99,9 @@ class Login extends React.Component {
     fetch('http://localhost:5555/member/login', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
+      credentials: 'include',
       body: JSON.stringify({
         email: this.state.email,
         password: this.state.password
@@ -239,8 +242,9 @@ class Login extends React.Component {
     
     return (
       <>
-      <Carousel />
-      <div className="login_wrap" >
+      <div className="login_wrap">
+      
+      <div  >
       <div className="container_login" >
           <div className="container_back">
             <div className="login_title">
@@ -278,7 +282,6 @@ class Login extends React.Component {
               確認
             </button>
             <button type="button" className="singUp_btn" onClick={()=>{
-              console.log(1237);
               window.location.href = '/' }}>
               取消
             </button>
@@ -286,7 +289,7 @@ class Login extends React.Component {
 
           <div className="container_front" >
             <div className="login_title">
-              <img src={require('./icon_MR_m.svg')} alt="" style={{ width: '30px' }} />
+              <img src={require('./icon_MR_m.svg')} alt="" style={{ width: '30px' }} onClick={()=>{window.location.href = '/' }}/>
               <h2>品書人登入</h2>
             </div>
             <input className="login_input" placeholder="Email" name="email" value={this.state.email} onChange={this.handleChange} />
@@ -300,7 +303,9 @@ class Login extends React.Component {
           </div>
 
           <div className="container_left _center">
-            <img src={require('./品書logo.png')}alt="" style={{ width: '120px' }} />
+            <img src={require('./品書logo.png')}alt="" style={{ width: '120px' }} 
+              onClick={()=>{window.location.href = '/' }}
+            />
             <h4 style={{ margin: '10px' }}>還沒有帳號就快來加入品書人行列</h4>
             <button className="login_btn" onClick={this.flipSingUp}>
               品書人註冊
@@ -315,6 +320,10 @@ class Login extends React.Component {
         </div>
       </div>
       </div>
+      </div>
+      <Carousel />
+      <Theme />
+      <Storyteller />
       </>
     )
   }

@@ -1,10 +1,11 @@
+//-------categories--------
 export const CATEGORIES_RECEIVE = 'CATEGORIES_RECEIVE'
 export const CATEGORIES_REQUEST = 'CATEGORIES_REQUEST'
-//給cgFetch用---------------
-function cgReceive(cgData) {
+//給cgFetch用=======
+function cgReceive(json) {
   return {
     type: CATEGORIES_RECEIVE,
-    payload: cgData,
+    payload: json,
     receivedAt: Date.now(),
   }
 }
@@ -13,7 +14,7 @@ function cgRequest() {
     type: CATEGORIES_REQUEST,
   }
 }
-//-------------------------
+//==================
 export const cgFetch = () => async dispatch => {
   dispatch(cgRequest())
   try {
@@ -25,8 +26,70 @@ export const cgFetch = () => async dispatch => {
       }),
     })
     dispatch(cgReceive(await response.json()))
-    console.log('success')
   } catch (error) {
     console.log('error ', error)
   }
 }
+//------------------------
+//-------rating-----------
+export const RATING_RECEIVE = 'RATING_RECEIVE'
+export const RATING_REQUEST = 'RATING_REQUEST'
+function rtReceive(json) {
+  return {
+    type: RATING_RECEIVE,
+    payload: json,
+    receivedAt: Date.now(),
+  }
+}
+function rtRequest() {
+  return {
+    type: RATING_REQUEST,
+  }
+}
+export const rtFetch = () => async dispatch => {
+  dispatch(rtRequest())
+  try {
+    let response = await fetch('http://localhost:5555/books/book_ratings', {
+      method: 'GET',
+      headers: new Headers({
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      }),
+    })
+    dispatch(rtReceive(await response.json()))
+  } catch (error) {
+    console.log('error ', error)
+  }
+}
+//-------------------------
+//-------Shop-----------
+export const SHOP_RECEIVE = 'SHOP_RECEIVE'
+export const SHOP_REQUEST = 'SHOP_REQUEST'
+function shopReceive(json) {
+  return {
+    type: SHOP_RECEIVE,
+    payload: json,
+    receivedAt: Date.now(),
+  }
+}
+function shopRequest() {
+  return {
+    type: SHOP_REQUEST,
+  }
+}
+export const shopFetch = () => async dispatch => {
+  dispatch(shopRequest())
+  try {
+    let response = await fetch('http://localhost:5555/books/book_data', {
+      method: 'GET',
+      headers: new Headers({
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      }),
+    })
+    dispatch(shopReceive(await response.json()))
+  } catch (error) {
+    console.log('error ', error)
+  }
+}
+//-------------------------

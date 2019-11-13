@@ -1,5 +1,5 @@
 .changeGameIndexBG {
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   background: url(images/changeGameIndexBG.png) center center no-repeat;
   background-size: cover;
@@ -12,9 +12,25 @@
   bottom: 20px;
   right: 20px;
   cursor: pointer;
-  position: absolute;
+  position: fixed;
 }
 /* -------------背景音樂按鈕------------- */
+
+/* ----------倒數計時器------------- */
+.countDownText,
+.countDownText > span {
+  text-align: left;
+  font-size: 1.5vw;
+  margin: 1vw 0;
+}
+@media (max-width: 575.98px) {
+  .countDownText,
+  .countDownText > span {
+    text-align: center;
+    font-size: 16px;
+  }
+}
+/* ----------倒數計時器------------- */
 
 /* --------------遊戲首頁------------------ */
 @media (min-width: 576px) {
@@ -95,8 +111,8 @@
 @media (min-width: 576px) {
   .PC-changeGameBookListWrap {
     width: 100vw;
-    height: 50vw;
-    top: 50%;
+    height: 48vw;
+    top: 48.5%;
     left: 50%;
     transform: translate(-50%, -50%);
   }
@@ -104,27 +120,70 @@
     width: 100%;
     height: 100%;
   }
-  .PC-changeGameBookListTable {
-    top: 10vw;
+  .PC-changeGameBookListTableWrap {
+    top: 11vw;
     left: 25vw;
     width: 65%;
     height: 30vw;
     overflow: auto;
   }
-  .PC-changeGameBookListTable > h6 {
-    text-align: right;
-    font-size: 1.5vw;
-    margin: 0.5vw 0;
-  }
-  .PC-changeGameBookListTable table,.PC-changeGameBookListTable td,.PC-changeGameBookListTable th,.PC-changeGameBookListTable tr {
+
+  .PC-changeGameBookListTable table,
+  .PC-changeGameBookListTable td,
+  .PC-changeGameBookListTable th,
+  .PC-changeGameBookListTable tr {
     font-size: 1.5vw;
     text-align: center;
-    border:2px solid black !important;
+    border: 2px solid black !important;
   }
 
-  .PC-changeGameBookListSubmit {
-    width: 5vw;
-    height: 2.5vw;
+  .PC-changeGameBookListBookStatus {
+    cursor: pointer;
+    position: relative;
+    z-index: 10;
+  }
+
+  .PC-changeGameBookListBookStatus:hover:after {
+    font-size: 1vw;
+    cursor: pointer;
+    position: absolute;
+    content: '(A)良好：有使用痕跡，不如新書潔白、小範圍瑕疵，如摺角、碰撞、汙點或泛黃等。\A(B)尚可：有使用痕跡，並因時間因素，有大範圍黃、黑斑及瑕疵。\A(C)欠佳：印刷褪色、模糊或其它更糟之書況。';
+    white-space: pre-wrap;
+    width: 20vw;
+    height: 25vh;
+    border-radius: 0.5vw;
+    color: #ffff;
+    background: rgba(0, 0, 0, 0.705);
+    padding: 5px;
+    text-align: left;
+  }
+
+  .PC-changeGameBookListShow {
+    font-size: 1.5vw;
+    margin: 0 auto;
+    color: #cc2929;
+  }
+  .PC-changeGameBookListShow:hover {
+    color: #ffffff;
+    cursor: pointer;
+  }
+
+  .PC-changeGameBookListBtnWrap {
+    width: 99%;
+  }
+  .PC-changeGameBookListBtnWrap img {
+    width: 20%;
+    height: 20%;
+    object-fit: cover;
+    cursor: pointer;
+  }
+  .PC-changeGameBookListBtnWrap img:hover {
+    transform: translate3d(1px, 1px, 1px);
+    text-shadow: 0.1em 0.1em 0 rgb(173, 173, 173);
+  }
+
+  .PHONE-changeGameBookListWrap {
+    display: none;
   }
 
   .PHONE-changeGameBookListContext {
@@ -139,10 +198,76 @@
   .PC-changeGameBookListContext {
     display: none;
   }
+  .PC-changeGameBookListTableWrap {
+    display: none;
+  }
+
+  .PC-changeGameBookListTable table,
+  .PC-changeGameBookListTable td,
+  .PC-changeGameBookListTable th,
+  .PC-changeGameBookListTable tr {
+    display: none;
+  }
+
+  .PC-changeGameBookListBookStatus {
+    display: none;
+  }
+
+  .PC-changeGameBookListBookStatus:hover:after {
+    display: none;
+  }
+
+  .PC-changeGameBookListShow {
+    display: none;
+  }
+  .PC-changeGameBookListShow:hover {
+    display: none;
+  }
+
+  .PC-changeGameBookListBtnWrap {
+    display: none;
+  }
+  .PC-changeGameBookListBtnWrap img {
+    display: none;
+  }
+  .PC-changeGameBookListBtnWrap img:hover {
+    display: none;
+  }
 
   .PHONE-changeGameBookListContext {
     width: 100vw;
     height: 20vh;
+  }
+  .PHONE-changeGameBookListText {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+  }
+  .PHONE-changeGameBookListImg {
+    border-radius: 0.25rem;
+    max-width: 50%;
+    height: auto;
+    margin: 0 auto;
+  }
+  .PHONE-changeGameBookListBtnWrap {
+    width: 30%;
+    margin: 8vw auto 0 auto;
+  }
+  .PHONE-changeGameBookListBtnWrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    cursor: pointer;
+  }
+  .PHONE-changeGameBookListBtnWrap img:hover {
+    transform: translate3d(1px, 1px, 1px);
+    text-shadow: 0.1em 0.1em 0 rgb(173, 173, 173);
+  }
+
+  .slick-arrow.slick-next {
+    display: none !important;
   }
 }
 /* -------------書籍列表-------------- */

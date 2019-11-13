@@ -1,6 +1,6 @@
 // 引入套件
 const express = require("express"); //EXPRESS(建立路由使用)
-const chatMessage = express.Router();
+const countDown = express.Router();
 const bluebird = require("bluebird"); //青鳥
 const _ = require("lodash"); //loadsh,處理數據的各種方法
 
@@ -17,29 +17,26 @@ db.connect(); //資料庫連線
 
 bluebird.promisifyAll(db);
 
-chatMessage
-    .route("/chatMessage")
+
+countDown
+    .route("/countDown")
     .get(function (req, res) {
-        console.log("nana",req.session.memberId);
+        req.session.memberId = "MR00001";
         if (req.session.memberId === undefined) {
-            res.json(test);
+            res.send("找不到資料");
         }
         db.queryAsync(
-            `SELECT * FROM mb_chat WHERE myFrom = "${req.session.memberId}" OR myTo = "${req.session.memberId}" ORDER BY created_at DESC`
+            `SELECT created_at FROM mb_gamelist WHERE 1`
         )
             .then(results => {
-                res.json(results);
+                var date = results[0]['created_at']
+                var time = date.getTime()
+                res.json(time);
             })
             .catch(error => {
                 res.send("404-找不到資料");
                 console.log(error);
             });
     });
-module.exports = chatMessage;
-
-
-
-
-
-
+module.exports = countDown;
 

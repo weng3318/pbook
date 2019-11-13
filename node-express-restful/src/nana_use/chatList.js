@@ -23,7 +23,8 @@ var mapResult = [];
 chatList
   .route("/chatList")
   .get(function (req, res) {
-    req.session.memberId = "MR00001";
+    console.log("nana",req.session.memberId);
+    
     if (req.session.memberId === undefined) {
       res.send("找不到資料");
     }
@@ -31,6 +32,8 @@ chatList
       `SELECT mb_chat.*,MR_number,MR_name,MR_pic FROM mb_chat LEFT JOIN mr_information ON MR_number = myTo OR MR_number = myFrom WHERE myFrom = "${req.session.memberId}" OR myTo = "${req.session.memberId}" ORDER BY created_at ASC`
     )
       .then(results => {
+        console.log(1);
+        
         // 一開始拿的資料,MR_number有塞我的跟對方的,為了讓MR_number是塞對方的資料,所以要先篩選一次
         var Without_MY_MR_number = [];
         results.forEach(function (value, index) {
@@ -60,6 +63,7 @@ chatList
         );
       })
       .then(results => {
+        console.log(2);
         mapResult.forEach(function (value, index) {
           value.total = 0;
           for (var i = 0; i < results.length; i++) {
@@ -69,6 +73,9 @@ chatList
           }
         });
 
+        console.log(3);
+        console.log(mapResult);
+        
         res.json(mapResult);
       })
       .catch(error => {

@@ -7,7 +7,6 @@ $title: 28px;
 $content: 24px;
 
 
-
 * {
   margin: 0;
   padding: 0;
@@ -19,21 +18,24 @@ $content: 24px;
   width: 1280px;
 }
 
+.MB_title{
+  margin: 20px;
+  font-size: 32px;
+  margin-top: 50px;
+  padding-left: 60px;
+  padding-bottom: 50px;
+  width: 1180px;
+  border-bottom: 3px solid $yellow;
+}
+
 //會員編輯的樣式
 .editWrap{
   @extend .contentWrap;
-  border: 1px solid rgb(109, 34, 34);
-  .title {
+  // border: 1px solid rgb(109, 34, 34);
+  
+  .MB_title {
     // border: 1px solid #000;
-    margin: 20px;
-    font-size: 32px;
-    margin-top: 50px;
-    padding-left: 60px;
-    padding-bottom: 50px;
-    width: 1180px;
-    border-bottom: 3px solid $yellow;
-
-    
+    @extend .MB_title;
   }
 
   .list {
@@ -124,12 +126,8 @@ $content: 24px;
   @extend .contentWrap;
   // border: 1px solid #000;
 
-  .title {
-    // border: 1px solid #000;
-    margin: 20px;
-    font-size: 32px;
-    margin-top: 50px;
-    padding-left: 60px;
+  .MB_title {
+    @extend .MB_title;
   }
 
   .list {

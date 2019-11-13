@@ -114,7 +114,7 @@ export default class Header extends React.Component {
     // function getPermission(cb) {
     //     Notification.requestPermission(cb);
     // }
-    console.log('componentDidMount')
+    // console.log('componentDidMount')
   }
 
   render() {
@@ -123,9 +123,9 @@ export default class Header extends React.Component {
     // let phoneVisitorStatus = 'block'
     // if (JSON.parse(localStorage.getItem('user')).MR_number !== '') phoneVisitorStatus = 'none'
 
-    // console.log("head" , this.state.memberData);
-    console.log('render', this.state.memberData)
-    console.log(JSON.parse(localStorage.getItem('user')))
+    // // console.log("head" , this.state.memberData);
+    // console.log('render', this.state.memberData)
+    // console.log(JSON.parse(localStorage.getItem('user')))
 
     return (
       <>
@@ -358,8 +358,10 @@ export default class Header extends React.Component {
             <Route exact path="/books" component={Books} />
             <Route path="/activities" component={Activities} />
             <Route exact path="/reviews" component={Reviews} />
+
+            {/* <Route path="/forum" component={Forum} /> */}
             <Route exact path="/book_reviews/:sid" component={BookReviews} />
-            // <Route path="/forum" component={Forum} />
+            <Route path="/forum" component={Forum} />
             <Route exact path="/forum" component={Forum} />
             {/* <Route exact path="/login" component={()=><Login loginSuccess={(memberData)=>{ this.loginSuccess(memberData) }}/>} /> */}
             <Route exact path="/login" component={Login} />

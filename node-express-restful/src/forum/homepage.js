@@ -47,13 +47,14 @@ router
 
 //分類文章
 router
-  .route("/homepage/cate/:number")
+  .route("/homepage/cate/:number/:subCate?")
   .all((req, res, next) => {
     next();
   })
   .get((req, res) => {
     let output = {};
     let number = req.params.number;
+    let subCate = req.params.subCate;
     let sql =
       "SELECT * FROM `fm_article` WHERE `fm_featured`='1' AND `fm_category`='" +
       number +
@@ -62,11 +63,20 @@ router
       .then(results => {
         output.featured = results;
         console.log(output);
+
         sql = "SELECT * FROM `fm_article` WHERE `fm_category`='" + number + "'";
         return db.queryAsync(sql);
       })
       .then(results => {
-        output.article = results;
+        output.article = results; 
+        sql =
+          "SELECT * FROM `fm_subcategories` WHERE `fm_categories`='" +
+          number +
+          "'";
+        return db.queryAsync(sql);
+      })
+      .then(results => {
+        output.subcategory = results;
         res.json(output);
       });
   });
