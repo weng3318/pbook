@@ -20,18 +20,20 @@ export const setAcType = acType => ({
 
 // fetch data list
 export const AC_REQUEST = 'AC_REQUEST'
-function acRequest(acType) {
+function acRequest(acType, acId = 0) {
   return {
     type: AC_REQUEST,
     acType,
+    acId,
   }
 }
 
 export const AC_RECEIVE = 'AC_RECEIVE'
-function acReceive(acType, json) {
+function acReceive(acType, json, acId = 0) {
   return {
     type: AC_RECEIVE,
     acType,
+    acId,
     ac: json,
     receivedAt: Date.now(),
   }
@@ -49,6 +51,27 @@ export const acFetch = acType => async dispatch => {
       }),
     })
     dispatch(acReceive(acType, await response.json()))
+  } catch (error) {
+    console.log('error', error)
+  }
+}
+
+// get discount books
+export const AC_DISCOUNT_BOOKS = 'AC_DISCOUNT_BOOKS'
+export const acDiscountBooks = acId => async dispatch => {
+  dispatch(acRequest('discount', acId))
+  try {
+    let response = await fetch(
+      'http://localhost:5555/activities/discount' + acId,
+      {
+        method: 'GET',
+        headers: new Headers({
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        }),
+      }
+    )
+    dispatch(acReceive('discount', await response.json(), acId))
   } catch (error) {
     console.log('error', error)
   }
