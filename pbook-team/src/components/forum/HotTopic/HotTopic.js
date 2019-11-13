@@ -50,7 +50,12 @@ class HotTopic extends React.Component {
                     <span className="counter">{'0' + count++}</span>
 
                     <div>
-                      <div className="card-title-font">{value.fm_title}</div>
+                      <div
+                        className="card-title-font fm-title"
+                        title={value.fm_title}
+                      >
+                        {value.fm_title}
+                      </div>
                       <div>{value.MR_nickname}</div>
                       <div>
                         <span className="time">
