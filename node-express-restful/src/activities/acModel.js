@@ -54,7 +54,14 @@ class AC {
     static async getDiscountBooksById(acId) {
         let sql = "SELECT * FROM `pm_books_group` WHERE `books_id` AND `event_id` =" + acId
         let books_id = await sqlQuery(sql)
-        return books_id.map(v=>v.books_id)
+        // 取得書籍資訊
+        sql = "SELECT * FROM `vb_books` WHERE ( "
+        for (let i = 0; i < books_id.length; i++) {
+            sql += " `sid`=" + books_id[i].books_id + " OR"
+        }
+        sql += " 0 )"
+        let books = await sqlQuery(sql)
+        return books
     }
 
     static async getDiscountBooksByCate(acId, cpId = []) {
@@ -75,7 +82,7 @@ class AC {
         sql += " 0 )"
         // -------
         let books = await sqlQuery(sql)
-        return books.map(v => v.sid)
+        return books
     }
 
     static async getDiscountCp(acId) {
