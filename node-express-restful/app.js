@@ -63,11 +63,20 @@ app.use("/books", require(__dirname + '/src/books/book_ratings'));
 app.use('/activities', require('./src/activities/acApi'))
 app.use('/reviews', require('./src/book_review/reviews'))
 
+
+
 app.get("/", function (req, res) {
   res.send("Home");
 });
 
-app.use("/forum", require("./src/forum/homepage"));
+//登出
+app.get('/logout', (req, res)=>{
+  delete req.session.memberData
+  // console.log("logout success", req.session);
+  return res.redirect('/')
+})
+
+
 
 //if we are here then the specified request is not found
 app.use((req, res, next) => {

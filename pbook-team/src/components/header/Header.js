@@ -2,7 +2,6 @@ import React from 'react'
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 import ReactResizeDetector from 'react-resize-detector'
 import swal from '@sweetalert/with-react'
-
 import Home from '../../pages/Home'
 import Reviewer from '../../pages/Reviewer'
 import Books from '../../pages/Books'
@@ -12,7 +11,6 @@ import Forum from '../../pages/Forum/ForumNavBar'
 import Login from '../../pages/login/Login'
 import Member from '../../pages/member/Member'
 import Game from '../../pages/game/Game'
-import Logout from '../../pages/login/Login'
 import Cart from '../../pages/Cart'
 import NoPage from '../../pages/nopage/NoPage'
 import Chat from '../../components/member/chat/Chat'
@@ -66,6 +64,14 @@ export default class Header extends React.Component {
         swal('您已經成功登出!', {
           icon: 'success',
         })
+        fetch('http://localhost:5555/logout',{
+          method:'GET',
+          credentials: 'include',
+        })
+        .then((res)=>{
+          console.log("logout");
+        })
+
         setTimeout(() => {
           localStorage.removeItem('user')
           window.location.href = '/'
@@ -368,7 +374,6 @@ export default class Header extends React.Component {
             <Route path="/member" component={Member} />
             <Route exact path="/game/:id" component={Game} />
             <Route exact path="/chat" component={Chat} />
-            <Route exact path="/logout" component={Logout} />
             <Route exact path="/cart" component={Cart} />
             <Route exact component={NoPage} />
           </Switch>
