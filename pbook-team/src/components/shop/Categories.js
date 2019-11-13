@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { Col } from 'react-bootstrap'
-import { cgFetch } from './ShopActions'
 import { connect } from 'react-redux'
+import { cgFetch } from './ShopActions'
 import './Shop.scss'
 
 const Categories = props => {

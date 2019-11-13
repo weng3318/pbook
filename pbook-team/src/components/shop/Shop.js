@@ -2,7 +2,7 @@ import React from 'react'
 import { Container, Row } from 'react-bootstrap'
 import Breadcrumb from './Breadcrumb'
 import Categories from './Categories'
-import BookData from './BookData'
+import Data from './Data'
 import './Shop.scss'
 
 class Shop extends React.Component {
@@ -19,7 +19,7 @@ class Shop extends React.Component {
         <Container>
           <Row className="book_wrapper">
             <Categories></Categories>
-            <BookData></BookData>
+            <Data></Data>
           </Row>
         </Container>
       </>

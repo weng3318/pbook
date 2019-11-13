@@ -7,7 +7,6 @@ $title: 28px;
 $content: 24px;
 
 
-
 * {
   margin: 0;
   padding: 0;
@@ -19,6 +18,16 @@ $content: 24px;
   width: 1280px;
 }
 
+.title{
+  margin: 20px;
+  font-size: 32px;
+  margin-top: 50px;
+  padding-left: 60px;
+  padding-bottom: 50px;
+  width: 1180px;
+  border-bottom: 3px solid $yellow;
+}
+
 //會員編輯的樣式
 .editWrap{
   @extend .contentWrap;
@@ -26,15 +35,7 @@ $content: 24px;
   
   .title {
     // border: 1px solid #000;
-    margin: 20px;
-    font-size: 32px;
-    margin-top: 50px;
-    padding-left: 60px;
-    padding-bottom: 50px;
-    width: 1180px;
-    border-bottom: 3px solid $yellow;
-
-    
+    @extend .title;
   }
 
   .list {
@@ -126,11 +127,7 @@ $content: 24px;
   // border: 1px solid #000;
 
   .title {
-    // border: 1px solid #000;
-    margin: 20px;
-    font-size: 32px;
-    margin-top: 50px;
-    padding-left: 60px;
+    @extend .title;
   }
 
   .list {
