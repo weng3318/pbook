@@ -15,10 +15,10 @@ db.connect();
 const bluebird = require("bluebird");
 bluebird.promisifyAll(db);
 
-app.use(cors());
-app.use(cors()); //預設的 Access-Control-Allow-Origin 是 * (代表全部瀏覽器都可以查看資料)
+
+//預設的 Access-Control-Allow-Origin 是 * (代表全部瀏覽器都可以查看資料)
 //設定指定的瀏覽器才能連線
-const whitelist = ["http://localhost:3000", undefined]; //若要使用同一台伺服器需使用undefined而不是直接填url(node.js設定問題)
+const whitelist = ["http://localhost:3000", undefined,"http://localhost:5000"]; //若要使用同一台伺服器需使用undefined而不是直接填url(node.js設定問題)
 const corsOptions = {
   credentials: true,
   origin: function (origin, callback) {
@@ -38,7 +38,7 @@ app.use(
   session({
     //新用戶沒有使用到session物件時不會建立session和發送cookie
     saveUninitialized: false,
-    resave: false,
+    resave: true,
     secret: "yoko0509",
     cookie: {
       maxAge: 1200000 //單位毫秒

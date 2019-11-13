@@ -115,7 +115,7 @@ class Edit extends React.Component {
         <>
           <div className="editWrap">
             <div className=" wrap">
-              <div className="title">會員資料修改</div>
+              <div className="MB_title">會員資料修改</div>
               <div className="d-flex">
                 <div className="list">
                   <div className="d-flex item">
