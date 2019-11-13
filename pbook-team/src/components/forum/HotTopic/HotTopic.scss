@@ -19,7 +19,7 @@
       }
     }
     .tilte-line {
-      background:$grey-grey;
+      background: $grey-grey;
       height: 2px;
       width: 80%;
       margin: 10px 0 10px 0;
@@ -27,18 +27,23 @@
     .padding-frame {
       .HotTopic-item {
         margin-bottom: 24px;
-        flex: 1 1 260px;
+        width: 280px;
+
+        .fm-title {
+          width: 230px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
         .counter {
           font-size: 34px;
           margin-right: 16px;
           color: $grey-grey;
-
         }
         .time {
           font-size: 0.8rem;
           margin-right: 16px;
           color: $grey-grey;
-
         }
       }
     }

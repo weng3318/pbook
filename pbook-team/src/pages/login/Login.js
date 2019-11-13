@@ -99,8 +99,9 @@ class Login extends React.Component {
     fetch('http://localhost:5555/member/login', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
+      credentials: 'include',
       body: JSON.stringify({
         email: this.state.email,
         password: this.state.password

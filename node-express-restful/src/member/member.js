@@ -2,6 +2,7 @@ import express from 'express'
 import db from './db/database'
 import member from './domain/member'
 import login from './domain/login'
+import session from 'express-session'
 const router = express.Router()
 
 var Member = new member()
@@ -81,10 +82,14 @@ router.post('/login', (req, res, next) => {
             return
         }else{
             // res.locals.userId = rows[0].sid;
-            //設定session
             // req.session.sid = res.locals.userId; 
             // console.log(req.session.sid);
-
+            // console.log("req", req);
+            //設定session
+            req.session.memberId =  rows[0].MR_number
+            console.log("session", req.session);           
+            console.log("headers",req.headers);
+            
             res.json({
                 status:"登入成功",
                 message:"歡迎" + rows[0].MR_name + "的登入!",

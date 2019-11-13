@@ -20,7 +20,7 @@ bluebird.promisifyAll(db);
 chatMessage
     .route("/chatMessage")
     .get(function (req, res) {
-        req.session.memberId = "MR00001";
+        console.log("nana",req.session.memberId);
         if (req.session.memberId === undefined) {
             res.json(test);
         }

@@ -35,7 +35,7 @@ class Listitem extends React.Component {
           <div className="item-left">
             <div className="list-item-category">{article.name}</div>
             <div className="card-title-font">{article.fm_title}</div>
-            <div className="card-subtitle-font">{article.fm_subTitle}</div>
+            <div className="card-subtitle-font fm-subtitle">{article.fm_subTitle}</div>
             <div className="list-item-details">{article.MR_nickname}</div>
             <div className="list-item-time dis-flex ">
               <div>

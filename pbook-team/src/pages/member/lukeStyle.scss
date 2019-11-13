@@ -18,7 +18,7 @@ $content: 24px;
   width: 1280px;
 }
 
-.title{
+.MB_title{
   margin: 20px;
   font-size: 32px;
   margin-top: 50px;
@@ -33,9 +33,9 @@ $content: 24px;
   @extend .contentWrap;
   // border: 1px solid rgb(109, 34, 34);
   
-  .title {
+  .MB_title {
     // border: 1px solid #000;
-    @extend .title;
+    @extend .MB_title;
   }
 
   .list {
@@ -126,8 +126,8 @@ $content: 24px;
   @extend .contentWrap;
   // border: 1px solid #000;
 
-  .title {
-    @extend .title;
+  .MB_title {
+    @extend .MB_title;
   }
 
   .list {
