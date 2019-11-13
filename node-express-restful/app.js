@@ -41,7 +41,7 @@ app.use(
     resave: true,
     secret: "yoko0509",
     cookie: {
-      maxAge: 1200000 //單位毫秒
+      maxAge: 120000000000000000000000000 //單位毫秒
     }
   })
 );
