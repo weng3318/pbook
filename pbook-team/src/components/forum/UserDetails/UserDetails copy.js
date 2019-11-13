@@ -1,12 +1,5 @@
 import React from 'react'
 import './UserDetails.scss'
-import { connect } from 'react-redux'
-import {
-  userHover,
-  categoryHover,
-  detailUpdate,
-  details,
-} from '../../../pages/Forum/fmAction'
 
 //props : memberId={fm_memberId} read={true}//閱讀人數是否顯示 article={article} //文章資料
 
@@ -21,17 +14,12 @@ class UserDetails extends React.Component {
 
   componentDidMount() {
     // 用props傳入的userID在fetch一次
-    if (!this.props.update) {
+    if (!this.state.update) {
       fetch('http://localhost:5555/forum/homepage/' + this.props.memberId)
         .then(response => {
           return response.json()
         })
         .then(async result => {
-          // let update = true
-          // let userData = result[0]
-          // const data = { update, userData }
-          // this.props.dispatch(userHover(data))
-
           await this.setState({ user: result[0], update: true })
         })
     }
@@ -45,23 +33,25 @@ class UserDetails extends React.Component {
   }
   //Category details hover frame
   handleCategoryMouseIn = event => {
-    let hover = true
-    this.props.dispatch(categoryHover(hover))
+    this.setState({
+      categoryHover: true,
+    })
   }
   handleCategoryMouseOut = event => {
-    let hover = false
-    this.props.dispatch(categoryHover(hover))
+    this.setState({
+      categoryHover: false,
+    })
   }
   //user details hover frame
   handleUserMouseIn = event => {
-    let hover = true
-    console.log(this.props)
-    this.props.dispatch(userHover(hover))
+    this.setState({
+      UserHover: true,
+    })
   }
   handleUserMouseOut = event => {
-    let hover = false
-    console.log(this.props.userHover)
-    this.props.dispatch(userHover(hover))
+    this.setState({
+      UserHover: false,
+    })
   }
   render() {
     if (!this.state.update) {
@@ -73,7 +63,6 @@ class UserDetails extends React.Component {
 
       return (
         <>
-          <div>{this.props.userHover}</div>
           <div className="card-details">
             <img
               className="card-details-img "
@@ -94,7 +83,7 @@ class UserDetails extends React.Component {
                   <div
                     className={
                       'userFrame ' +
-                      (this.props.userHover ? 'displayBlock' : 'displayNone')
+                      (this.state.UserHover ? 'displayBlock' : 'displayNone')
                     }
                   >
                     user details<br></br>user details<br></br>user details
@@ -113,7 +102,7 @@ class UserDetails extends React.Component {
                   <div
                     className={
                       'userFrame ' +
-                      (this.props.categoryHover
+                      (this.state.categoryHover
                         ? 'displayBlock'
                         : 'displayNone')
                     }
@@ -142,14 +131,5 @@ class UserDetails extends React.Component {
     }
   }
 }
+export default UserDetails
 
-// 綁定props.todos <=> store.todos
-const mapStateToProps = store => ({
-  userHover: store.UserDetails.userHover,
-  categoryHover: store.UserDetails.cateHover,
-  update: store.UserDetails.update,
-  data: store.UserDetails.data,
-})
-
-// redux(state)綁定到此元件的props、dispatch方法自動綁定到此元件的props
-export default connect(mapStateToProps)(UserDetails)
