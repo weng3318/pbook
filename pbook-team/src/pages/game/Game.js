@@ -32,7 +32,15 @@ class Game extends React.Component {
         window.location.href = '/'
       })
     } else {
-      this.setState({ status: 'gameBookList' })
+      // console.log(Object.values(this.state.myBooks))
+      // for (var i = 0; i < Object.values(this.state.myBooks).length - 1; i++) {
+      //   Object.values(this.state.myBooks)[i]["mb_status"] === "1")
+      // }
+      console.log(Object.values(this.state.myBooks))
+
+      // Object.values(this.state.myBooks)
+
+      // this.setState({ status: 'gameBookList' })
     }
   }
 
