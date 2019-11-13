@@ -15,7 +15,7 @@ db.connect(error => {
 });
 bluebird.promisifyAll(db);
 
-router.get("/book_categories/:keyword?", (req, res) => {
+router.get("/book_data/:keyword?", (req, res) => {
   // const output = {};
   // output.params = req.params; 可以在網址看params用
   let keyword = req.params.keyword || ""; //search用
@@ -25,7 +25,7 @@ router.get("/book_categories/:keyword?", (req, res) => {
     where += " AND `name` LIKE '%" + keyword + "%' ";
     // output.keyword = keyword; 可以在網址看keyword用
   }
-  let sql = "SELECT * FROM `vb_categories`" + where;
+  let sql = "SELECT * FROM `vb_books`" + where;
   // console.log(sql);
   db.queryAsync(sql)
     .then(results => {
