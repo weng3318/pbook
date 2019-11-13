@@ -26,7 +26,7 @@ const corsOptions = {
     if (whitelist.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
-      callback(new Error("錯誤囉!!!請更換到白名單內有的port號!!!"));
+      callback(null, false);
     }
   }
 };
@@ -71,6 +71,7 @@ app.get("/", function (req, res) {
 
 //登出
 app.get('/logout', (req, res)=>{
+  //清除session的memberData
   delete req.session.memberData
   // console.log("logout success", req.session);
   return res.redirect('/')

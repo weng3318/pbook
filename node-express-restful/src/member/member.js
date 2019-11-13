@@ -2,7 +2,6 @@ import express from 'express'
 import db from './db/database'
 import member from './domain/member'
 import login from './domain/login'
-import session from 'express-session'
 const router = express.Router()
 
 var Member = new member()
@@ -82,12 +81,12 @@ router.post('/login', (req, res, next) => {
             return
         }else{
             //設定session
-            // let memberData ={}
+            // 在session內塞memberData物件，用來存放會員資料
             req.session.memberData = {
                 memberId: rows[0].MR_number,
                 memberLv: rows[0].MR_personLevel,
             } 
-            console.log(req.session);
+            // console.log(req.session);
             
             res.json({
                 status:"登入成功",
@@ -130,6 +129,33 @@ router.post('/edit', (req, res, next)=>{
     })
 })
 
+//上傳圖片
+const multer =require('multer')
+const upload =multer({dest:'tmp_uploads/'})
+const fs = require('fs')
+router.post('/upload', upload.single('avatar'),(req, res) =>{
+        console.log(req.body);
+        if(req.file && req.file.mimetype){
+            console.log(req.file);
+    
+            switch(req.file.mimetype){
+                case 'image/png':
+                case 'image/jpeg':
+                    fs.createReadStream(req.file.path)
+                        .pipe(
+                            fs.createWriteStream('public/images/member/' + req.file.originalname)
+                        )
+                        res.json({
+                            status: "upload success"
+                        })
+                        break;
+                default:
+                    return res.send('bad file type')
+            }
+        }else{
+            res.send('no uploads')
+        }
+    })
 
 
 
