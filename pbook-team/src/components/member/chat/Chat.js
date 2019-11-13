@@ -14,7 +14,9 @@ class Chat extends React.Component {
     this.state = {
       oldDataList: [],
       oldDataMessage: [],
-      myData: [{ MR_pic: 'yoko.jpg', MR_number: 'MR00001' }],
+      myData: [
+        { MR_pic: 'yoko.jpg', MR_number: 'MR00001', myName: '01橫山裕' },
+      ],
       mySearch: '',
     }
     socket.on('SeverToClientMsg', this.onMsg)
@@ -151,6 +153,7 @@ class Chat extends React.Component {
     var count = 0
     var myPic = this.state.myData[0].MR_pic
     var myId = this.state.myData[0].MR_number
+    var myName = this.state.myData[0].MR_name
     // console.log('render', this.state.oldDataList)
 
     // 因為第一次render會得不到值,會一直報錯!所以要多加判斷,或者給他一個初始值
@@ -158,8 +161,10 @@ class Chat extends React.Component {
     //   'render-mypic',
     //   this.state.myData[0] && this.state.myData[0].MR_pic
     // )
-    console.log('render-mypic', this.state.myData[0].MR_pic)
-    console.log('render-mypic', this.state.myData[0].MR_number)
+    console.log('render-mypic', myPic)
+    console.log('render-mypic', myId)
+    console.log('render-mypic', myName)
+    console.log('render', this.state.oldDataList)
 
     return (
       <>
@@ -207,15 +212,13 @@ class Chat extends React.Component {
                               <img
                                 alt="左邊DATALIST大頭照"
                                 className="chatImg"
-                                src={
-                                  value.MR_pic
-                                    ? require('./images/' + value.MR_pic)
-                                    : require('./images/kura.jpg')
-                                }
+                                src={require('./images/' + value.MR_pic)}
                               ></img>
                             </div>
                             <div className="d-flex flex-column align-self-center chatTextWrap">
-                              <span className="chatText">{value.MR_name}</span>
+                              <span className="chatText">
+                                {'chat with--' + value.MR_name}
+                              </span>
                               <span className="chatText">{value.content}</span>
                             </div>
                             {value.total === 0 ? (

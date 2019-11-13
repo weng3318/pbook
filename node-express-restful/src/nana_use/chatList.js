@@ -42,6 +42,8 @@ chatList
           }
         });
 
+        console.log(Without_MY_MR_number);
+
         // 去除重複的chat_id(因為同樣的兩位只需開一個對話框)
         var myResult = {};
         var finalResult = [];
@@ -73,7 +75,7 @@ chatList
           }
         });
 
-        console.log(3);
+        
         console.log(mapResult);
         
         res.json(mapResult);
