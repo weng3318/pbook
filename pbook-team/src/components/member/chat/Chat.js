@@ -14,6 +14,7 @@ class Chat extends React.Component {
     this.state = {
       oldDataList: [],
       oldDataMessage: [],
+      myData: [{ MR_pic: 'yoko.jpg', MR_number: 'MR00001' }],
       mySearch: '',
     }
     socket.on('SeverToClientMsg', this.onMsg)
@@ -31,38 +32,36 @@ class Chat extends React.Component {
     this.myDiv.classList.add('hide')
     this.messageSearch.classList.add('show-inline-flex')
 
-    axios.get(`http://localhost:5555/nana_use/chatMessage`,{withCredentials:true}).then(res => {
-      this.setState({ oldDataMessage: res.data })
-    })
+    axios
+      .get(`http://localhost:5555/nana_use/chatMessage`, {
+        withCredentials: true,
+      })
+      .then(res => {
+        this.setState({ oldDataMessage: res.data })
+      })
   }
 
   onMsg = data => {
     console.log('客戶端接收服務端發的消息', data)
-    axios.get(`http://localhost:5555/nana_use/chatList`,{withCredentials:true}).then(res => {
-      this.setState({
-        oldDataList: res.data,
-        oldDataMessage: [data, ...this.state.oldDataMessage],
+    axios
+      .get(`http://localhost:5555/nana_use/chatList`, { withCredentials: true })
+      .then(res => {
+        this.setState({
+          oldDataList: res.data,
+          oldDataMessage: [data, ...this.state.oldDataMessage],
+        })
       })
-    })
   }
 
   handleSubmit = () => {
     // 利用網址列取得chat_id
-    var chat_id_index = window.location.href.indexOf('#')
-    var chat_id = window.location.href.slice(chat_id_index + 1)
-    // 利用props取得發文者(myFrom)
+    var chat_id_index = window.location.href.indexOf('#') // console.log(chat_id_index,"26")
+    var chat_id = window.location.href.slice(chat_id_index + 1, 41)
+    // 利用localStorage取得發文者(myFrom)
     var myFrom = JSON.parse(localStorage.getItem('user')).MR_number
-    // 利用chat_id和myFrom取得收文者
-    var chat_id_array = chat_id.split('MR')
-    var myFrom_array = myFrom.split('MR')
-    var myTo = ''
-    for (let item of chat_id_array) {
-      for (let item2 of myFrom_array) {
-        if (item !== item2 && item !== '') {
-          myTo = 'MR' + item
-        }
-      }
-    }
+    // 利用網址取得myTo
+    var myTo_index = window.location.href.indexOf('%') // console.log(myTo_index,"41")
+    var myTo = window.location.href.slice(myTo_index + 1)
 
     // 取得對話文字
     var textInput = this.textInput.value
@@ -82,21 +81,23 @@ class Chat extends React.Component {
   handleSubmit2 = e => {
     if (e.key === 'Enter') {
       // 利用網址列取得chat_id
-      var chat_id_index = window.location.href.indexOf('#')
+      var chat_id_index = window.location.href.indexOf('#') // console.log(chat_id_index,"26")
       var chat_id = window.location.href.slice(chat_id_index + 1)
-      // 利用props取得發文者(myFrom)
+      // 利用localStorage取得發文者(myFrom)
       var myFrom = JSON.parse(localStorage.getItem('user')).MR_number
-      // 利用chat_id和myFrom取得收文者
+      // 利用網址取得myTo
       var chat_id_array = chat_id.split('MR')
       var myFrom_array = myFrom.split('MR')
-      var myTo = ''
-      for (let item of chat_id_array) {
-        for (let item2 of myFrom_array) {
-          if (item !== item2 && item !== '') {
-            myTo = 'MR' + item
+
+      var myTo = []
+      for (var i = 1; i < chat_id_array.length; i++) {
+        for (var k = 1; k < myFrom_array.length; k++) {
+          if (chat_id_array[i] !== myFrom_array[k]) {
+            myTo.push(chat_id_array[i])
           }
         }
       }
+      console.log(myTo[0])
 
       // 取得對話文字
       var textInput = this.textInput.value
@@ -104,7 +105,7 @@ class Chat extends React.Component {
       socket.emit('clientToSeverMsg', {
         chat_id: chat_id,
         myFrom: myFrom,
-        myTo: myTo,
+        myTo: 'MR' + myTo[0],
         content: textInput,
         myRead: 0,
         created_at: new Date(),
@@ -115,15 +116,51 @@ class Chat extends React.Component {
   }
 
   componentDidMount() {
-    axios.get(`http://localhost:5555/nana_use/chatList`,{withCredentials:true}).then(res => {
-      this.setState({ oldDataList: res.data })
-    })
-    // console.log('componentDidMount')
+    // 避免set兩次,柏凱寫法
+    // let chatList = await axios.get(`http://localhost:5555/nana_use/chatList`, {
+    //   withCredentials: true,
+    // })
+    // console.log(111, chatList)
+    // let myDataList = await axios.get(
+    //   `http://localhost:5555/nana_use/myDataList`,
+    //   {
+    //     withCredentials: true,
+    //   }
+    // )
+    // this.setState({ oldDataList: chatList, myData: myDataList })
+
+    // 避免set兩次,老師寫法
+    let oldDataList
+    axios
+      .get(`http://localhost:5555/nana_use/chatList`, { withCredentials: true })
+      .then(res => {
+        oldDataList = res.data
+        return axios.get(`http://localhost:5555/nana_use/myDataList`, {
+          withCredentials: true,
+        })
+      })
+      .then(res => {
+        this.setState({
+          myData: res.data,
+          oldDataList: oldDataList,
+        })
+      })
   }
 
   render() {
     var count = 0
-    // console.log('render')
+    var myPic = this.state.myData[0].MR_pic
+    var myId = this.state.myData[0].MR_number
+    // console.log('render', this.state.oldDataList)
+
+    // 因為第一次render會得不到值,會一直報錯!所以要多加判斷,或者給他一個初始值
+    // console.log(
+    //   'render-mypic',
+    //   this.state.myData[0] && this.state.myData[0].MR_pic
+    // )
+    console.log('render-mypic', this.state.myData[0].MR_pic)
+    console.log('render-mypic', this.state.myData[0].MR_number)
+
     return (
       <>
         <div className="chatWrap">
@@ -168,12 +205,12 @@ class Chat extends React.Component {
                           <div className="d-flex">
                             <div className="chatImgWrap">
                               <img
-                                alt="會員大頭照"
+                                alt="左邊DATALIST大頭照"
                                 className="chatImg"
                                 src={
                                   value.MR_pic
                                     ? require('./images/' + value.MR_pic)
-                                    : require('./images/yoko.jpg')
+                                    : require('./images/kura.jpg')
                                 }
                               ></img>
                             </div>
@@ -204,7 +241,10 @@ class Chat extends React.Component {
               <Col sm={8}>
                 <Tab.Content>
                   <div className="myDefault" ref={div => (this.myDiv = div)}>
-                    <img alt="#" src={require('./images/admin_bg.png')}></img>
+                    <img
+                      alt="背景圖"
+                      src={require('./images/admin_bg.png')}
+                    ></img>
                   </div>
 
                   {this.state.oldDataList.map((value, index) => {
@@ -217,16 +257,12 @@ class Chat extends React.Component {
                               return (
                                 <div key={index2}>
                                   {(function() {
-                                    if (value.MR_number === value2.myFrom) {
+                                    if (value2.myFrom !== myId) {
                                       return (
                                         <div className="myContainer">
                                           <img
-                                            src={
-                                              value.MR_pic
-                                                ? require('./images/' +
-                                                    value.MR_pic)
-                                                : require('./images/yoko.jpg')
-                                            }
+                                            src={require('./images/' +
+                                              value.MR_pic)}
                                             alt="Avatar"
                                           />
                                           <p>{value2.content}</p>
@@ -241,7 +277,7 @@ class Chat extends React.Component {
                                       return (
                                         <div className="myContainer darker">
                                           <img
-                                            src={require('./images/yoko.jpg')}
+                                            src={require('./images/' + myPic)}
                                             alt="Avatar"
                                             className="right"
                                           />
