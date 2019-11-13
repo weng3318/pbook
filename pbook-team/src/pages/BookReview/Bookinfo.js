@@ -9,12 +9,15 @@ import BookScore from './BookScore'
 import BookLine from './BookLine'
 import Category from './Category'
 import './Reviews.css'
+import color from '@material-ui/core/colors/amber'
 function Bookinfo() {
   const [bookInformation, setBookInformation] = useState([]) //書籍資料
   const [array, setArray] = useState(1) //排序方式
   const [categorys, setCategorys] = useState([])
   const [page, getPage] = useState()
   const [goPage, setPage] = useState(1)
+  //---------------------------------------------------------------------------
+  //分頁功能
   let pageNum = []
   let c,
     p = 1,
@@ -39,6 +42,7 @@ function Bookinfo() {
       p = s2[1]
     }
   }
+  //---------------------------------------------------------------------------
 
   //---------------------------------------------------------------------------
   const CategoryBar = styled.div`
@@ -71,14 +75,14 @@ function Bookinfo() {
   `
   //書本資訊
   const BookInfo = styled.div`
-    width: 750px;
-    height: 180px;
-    margin: 0 2rem 45px 2rem;
+    width: 800px;
+    height: 155px;
+    margin: 0 2rem 70px 2rem;
     overflow: hidden;
     white-space: wrap;
     text-overflow: ellipsis;
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
   `
   //書本星數
@@ -122,7 +126,10 @@ function Bookinfo() {
 
   for (let i = 1; i <= page; i++) {
     pageNum.push(
-      <Link to={'reviews?' + c + 'p=' + i}>
+      <Link
+        style={{ textDecoration: 'none', color: 'black' }}
+        to={'reviews?' + c + 'p=' + i}
+      >
         <li value={i} className="reviews_paginationNum">
           {i}
         </li>
@@ -133,7 +140,7 @@ function Bookinfo() {
     <>
       <CategoryBar>
         {categorys.map((data, index) => (
-          <Link to={'reviews?c=' + data.sid + '&p=' + p}>
+          <Link to={'reviews?c=' + data.sid + '&p=1'}>
             <button value={data.sid} key={index} className="reviews_btn">
               {data.name}
             </button>
@@ -173,6 +180,7 @@ function Bookinfo() {
           {bookInformation.map(data => (
             <BookInfo key={data.sid}>
               <Link
+                style={{ textDecoration: 'none' }}
                 className="reviews_list_sid"
                 to={'/book_reviews/' + data.sid}
               >
