@@ -18,7 +18,7 @@ bluebird.promisifyAll(db);
 
 //預設的 Access-Control-Allow-Origin 是 * (代表全部瀏覽器都可以查看資料)
 //設定指定的瀏覽器才能連線
-const whitelist = ["http://localhost:3000", undefined,"http://localhost:5000"]; //若要使用同一台伺服器需使用undefined而不是直接填url(node.js設定問題)
+const whitelist = ["http://localhost:3000", undefined, "http://localhost:5000"]; //若要使用同一台伺服器需使用undefined而不是直接填url(node.js設定問題)
 const corsOptions = {
   credentials: true,
   origin: function (origin, callback) {
@@ -41,7 +41,7 @@ app.use(
     resave: true,
     secret: "yoko0509",
     cookie: {
-      maxAge: 1200000 //單位毫秒
+      maxAge: 120000000000000000000000000 //單位毫秒
     }
   })
 );
@@ -56,6 +56,7 @@ app.use("/member", require('./src/member/member'))
 app.use("/forum", require("./src/forum/homepage"));
 app.use("/nana_use", require("./src/nana_use/chatList"));
 app.use("/nana_use", require("./src/nana_use/chatMessage"));
+app.use("/nana_use", require("./src/nana_use/myDataList"));
 app.use("/nana_use", require("./src/nana_use/countDown"));
 app.use("/books", require(__dirname + '/src/books/book_categories'));
 app.use("/books", require(__dirname + '/src/books/book_data'));
