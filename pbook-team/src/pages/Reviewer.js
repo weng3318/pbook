@@ -18,53 +18,73 @@ export class Reviewer extends React.Component {
 }
   componentDidMount() {
     axios
-      .get('http://localhost:5555/reviewer_Data')
+      .get('http://localhost:5000/brBookcase')
       .then(res => {
-          this.setState({ brData: res.data })
-          console.log('取得資料' + res.data)
-        })
-        .catch(function(error) {
+        this.setState({ brData: res.data })
+        console.log('取得資料' + res.data)
+      })
+      .catch(function(error) {
             console.log('沒有取得資料請執行 json-server --watch --port 5555 reviewer_Data.json ' + error)
         })
     }
     render() {
+      console.log('檢視brData資料'+this.state.brData)
         return (
             <>
             <BR_Navbar />
-        <h1>書評家</h1>
-        {/* <Chat id="MR00001"/> */}
-        {/* {this.state.brData */}
-        {Data
-          .filter(({ name }) => '31桑' == name)
-          .map(({ level, type, name, info, id, tube }) => (
+        {/* {Data */}
+            {this.state.brData
+            .map(({ sid, title, img, name, job, intro, youtube, facebook, twitter, tube,}) => (
             <BR_ReviewerList
-              key={id}
-              to={'/ReviewerBooks/' + id}
+              key={sid}
+              to={'/ReviewerBooks/' + sid}
+              sid={sid}
+              title={title}
+              img={img}
               name={name}
-              type={type}
-              level={level}
+              job={job}
+              title={title}
+              youtube={youtube}
+              facebook={facebook}
+              intro={intro}
+              twitter={twitter}
               tube={tube}
-              id={id}
-              info={info}
             ></BR_ReviewerList>
           ))}
+        <h1>書評家</h1>
+        {/* <Chat sid="MR00001"/> */}
+        {/* {Data */}
+        {/* {this.state.brData
+          .filter(({ name }) => '31桑' == name)
+          .map(({ img, title, name, intro, sid, tube }) => (
+            <BR_ReviewerList
+              key={sid}
+              to={'/ReviewerBooks/' + sid}
+              sid={sid}
+              name={name}
+              title={title}
+              img={img}
+              tube={tube}
+              intro={intro}
+            ></BR_ReviewerList>
+          ))} */}
 
-        {/* {this.state.brData */}
-        {Data
-        .map(({ level, type, name, info, id, tube, bookcase }) => (
+        {/* {Data */}
+        {/* {this.state.brData
+        .map(({ img, title, name, intro, id, tube, bookcase }) => (
             <BR_ReviewerList
               key={id}
               to={'/ReviewerBooks/' + id}
               name={name}
-              type={type}
-              level={level}
+              title={title}
+              img={img}
               tube={tube}
               id={id}
-              info={info}
+              intro={intro}
               bookcase={bookcase}
             ></BR_ReviewerList>
           )
-        )}
+        )} */}
       </>
     )
   }

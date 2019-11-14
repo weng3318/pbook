@@ -16,7 +16,7 @@ class ReviewerBooks extends React.Component {
   }
   componentDidMount() {
     axios
-      .get('http://localhost:5555/reviewer_Data')
+      .get('http://localhost:5000/brBookcase')
       .then(res => {
         this.setState({ brData: res.data })
         console.log('取得資料' + res.data)
@@ -29,7 +29,7 @@ class ReviewerBooks extends React.Component {
     let reviewerData = null
     
     for (let i = 0; i < Data.length; i++) {
-      if (Data[i].id == this.props.match.params.id) {
+      if (Data[i].sid == this.props.match.params.sid) {
         reviewerData = Data[i]
       }
     }
@@ -42,13 +42,13 @@ class ReviewerBooks extends React.Component {
         <section className="reviewerBooks borderLine">
           {/* 接應id的書評家個人介紹 */}
           <BR_ReviewerList
-            key={reviewerData.id}
-            id={reviewerData.id}
+            key={reviewerData.sid}
+            id={reviewerData.sid}
             name={reviewerData.name}
-            type={reviewerData.type}
-            level={reviewerData.level}
-            info={reviewerData.info}
-            tube={reviewerData.tube}
+            // type={reviewerData.type}
+            // level={reviewerData.level}
+            // info={reviewerData.info}
+            // tube={reviewerData.tube}
           ></BR_ReviewerList>
 
           {/* 熱門書評列表 */}

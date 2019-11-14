@@ -1,6 +1,6 @@
 const Data = [
   {
-    id: 1,
+    sid: 1,
     level: '★ 書評家 ★',
     type: '小說家、導演、總編輯',
     name: '阿文',
@@ -15,7 +15,7 @@ const Data = [
     ],
   },
   {
-    id: 2,
+    sid: 2,
     level: '★ 書評家 ★',
     type: '小說家、編劇、工程師',
     name: '31桑',
@@ -31,7 +31,7 @@ const Data = [
     ],
   },
   {
-    id: 3,
+    sid: 3,
     level: '★ 書評家 ★',
     type: '小說家、編劇、天龍人',
     name: '阿德',
@@ -46,22 +46,7 @@ const Data = [
     ],
   },
   {
-    id: 4,
-    level: '★ 書評家 ★',
-    type: '小說家、編劇、董事長',
-    name: '享享',
-    info: '大賢者',
-    tube: 'https://www.youtube.com/embed/LgY-mRoP67w',
-    bookcase: [
-      'vb_9789864762859.jpg',
-      '03書_React全方位基礎入門實戰.png',
-      'vb_9789864901449.jpg',
-      'vb_4717702261306.jpg',
-      'vb_9789571377971.jpg',
-    ],
-  },
-  {
-    id: 5,
+    sid: 4,
     level: '★ 書評家 ★',
     type: '小說家、編劇、體育老師',
     name: 'YO桑',
@@ -77,7 +62,22 @@ const Data = [
     ],
   },
   {
-    id: 6,
+    sid: 5,
+    level: '★ 書評家 ★',
+    type: '小說家、編劇、董事長',
+    name: '享享',
+    info: '大賢者',
+    tube: 'https://www.youtube.com/embed/LgY-mRoP67w',
+    bookcase: [
+      'vb_9789864762859.jpg',
+      '03書_React全方位基礎入門實戰.png',
+      'vb_9789864901449.jpg',
+      'vb_4717702261306.jpg',
+      'vb_9789571377971.jpg',
+    ],
+  },
+  {
+    sid: 6,
     level: '★ 書評家 ★',
     type: '小說家、編劇、音樂老師',
     name: '伊藤正樹',
@@ -92,7 +92,7 @@ const Data = [
     ],
   },
   {
-    id: 7,
+    sid: 7,
     level: '★ 書評家 ★',
     type: '小說家、編劇、美術老師',
     name: 'Amy',
@@ -107,7 +107,7 @@ const Data = [
     ],
   },
   {
-    id: 8,
+    sid: 8,
     level: '★ 書評家 ★',
     type: '小說家、編劇、大學生',
     name: '阿克婭',
@@ -123,9 +123,9 @@ const Data = [
     ],
   },
   {
-    id: 9,
+    sid: 9,
     level: '★ 書評家 ★',
-    type: '小說家、編劇、高中生',
+    type: '小說家、編劇、國中生',
     name: '惠惠',
     info: '蘿莉',
     tube: 'https://www.youtube.com/embed/_q2ABESnqi0',
@@ -138,7 +138,7 @@ const Data = [
     ],
   },
   {
-    id: 10,
+    sid: 10,
     level: '★ 書評家 ★',
     type: '小說家、編劇、抖M',
     name: '達克尼斯',
