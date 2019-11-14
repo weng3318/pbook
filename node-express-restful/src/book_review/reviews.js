@@ -93,6 +93,14 @@ router.post("/book_reviews/:sid?/data", (req, res) => {
       reviewText:req.body.reviewText
     }
     book.push(newbook)
+    const sql = `INSERT INTO vb_ratings (member, book, star, message, create_time) VALUES ('${book[0].id}', '${book[0].book}', '3', '${book[0].reviewText}', NOW())`
+    db.query(sql, (error, results) => {
+      if (error) {
+        return res.send(error);
+      } else {
+        return res.send('新增成功');
+      }
+    });
     console.log(book)
 });
 
