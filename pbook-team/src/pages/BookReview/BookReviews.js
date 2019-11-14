@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import styled from '@emotion/styled'
 import BookHeart from './BookScore'
+import BookStar from './BookScoreForBR'
 import BookLineForBR from './BookLineForBR'
 import { Button } from '@material-ui/core'
 
@@ -96,13 +97,15 @@ const List = () => {
   //變數
   const [List, setList] = useState([])
   const [score, setScore] = useState([])
+  // const [score_star, setScore_star] = useState(1)
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')))
   const [review, setReview] = useState({
     id: user.MR_number,
     reviewText: '',
     book: urlParams,
-    submitSuccess:false,
-    error:false
+    star: '1',
+    submitSuccess: false,
+    error: false,
   })
   console.log(review)
   useEffect(() => {
@@ -140,7 +143,6 @@ const List = () => {
       })
   }
 
-
   const changeHandler = e => {
     setReview({
       ...review,
@@ -150,22 +152,22 @@ const List = () => {
   const submitHandler = e => {
     e.preventDefault()
     axios
-      .post(`http://localhost:5555/reviews/book_reviews/${urlParams}/data`, { 
-        id:review.id,
-        book:review.book,
-        reviewText:review.reviewText
-       })
+      .post(`http://localhost:5555/reviews/book_reviews/${urlParams}/data`, {
+        id: review.id,
+        book: review.book,
+        reviewText: review.reviewText,
+      })
       .then(res => {
         setReview({
-          error:false,
-          submitSuccess:true
+          error: false,
+          submitSuccess: true,
         })
         console.log(res)
       })
-      .catch(error=>{
+      .catch(error => {
         setReview({
-          error:true,
-          submitSuccess:false
+          error: true,
+          submitSuccess: false,
         })
       })
   }
@@ -245,6 +247,7 @@ const List = () => {
               onChange={changeHandler}
               placeholder="新增評論..."
             />
+            <BookStar score_star={review.star} setScore_star={changeHandler} />
             <button type="submit" className="reviews_submitBtn">
               送出評論
             </button>

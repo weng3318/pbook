@@ -8,25 +8,32 @@ import axios from 'axios'
 import BookScore from './BookScore'
 import BookLine from './BookLine'
 import Category from './Category'
+import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import './Reviews.css'
-import color from '@material-ui/core/colors/amber'
 function Bookinfo() {
   const [bookInformation, setBookInformation] = useState([]) //書籍資料
   const [array, setArray] = useState(1) //排序方式
   const [categorys, setCategorys] = useState([])
   const [page, getPage] = useState()
-  const [goPage, setPage] = useState(1)
+  const [goPage, setPage] = useState()
   //---------------------------------------------------------------------------
   //分頁功能
+
   let pageNum = []
   let c,
+    y,
+    x,
     p = 1,
     s1,
     s2
   const url = window.location.search.replace('?', '')
+  y = window.location.search
+  x = window.location.href.slice(-1)
+  console.log(p)
   if (url !== '') {
     let urlSplit = url.split('&')
-    if (url.indexOf('c') != -1) {
+    if (url.indexOf('c') !== -1) {
       if (urlSplit.length >= 1) {
         s1 = urlSplit[0].split('=')
         c = 'c=' + s1[1] + '&'
@@ -207,7 +214,16 @@ function Bookinfo() {
           <BookLine List={bookInformation} />
         </BookColumn>
       </Book>
-      <ul className="reviews_pagination">{pageNum}</ul>
+
+      <ul className="reviews_pagination">
+        {p >= 2 && (
+          <FontAwesomeIcon className="reviews_fontSize" icon={faAngleLeft} />
+        )}
+        {pageNum}
+        {p < page && (
+          <FontAwesomeIcon className="reviews_fontSize" icon={faAngleRight} />
+        )}
+      </ul>
     </>
   )
 }
