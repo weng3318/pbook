@@ -21,20 +21,20 @@ bluebird.promisifyAll(db);
 myDataList
     .route("/myDataList")
     .get(function (req, res) {
-
-        if (req.session.memberId === undefined) {
-            res.send("找不到資料");
+        if (req.session.memberData.memberId === undefined) {
+            res.send("找不到session.memberId");
+        } else {
+            db.queryAsync(
+                `SELECT * FROM mr_information WHERE MR_number = "${req.session.memberData.memberId}"`
+            )
+                .then(results => {
+                    res.json(results);
+                })
+                .catch(error => {
+                    res.send("404-找不到資料");
+                    console.log(error);
+                });
         }
-        db.queryAsync(
-            `SELECT * FROM mr_information WHERE MR_number = "${req.session.memberId}"`
-        )
-            .then(results => {
-                res.json(results);
-            })
-            .catch(error => {
-                res.send("404-找不到資料");
-                console.log(error);
-            });
     });
 module.exports = myDataList;
 
