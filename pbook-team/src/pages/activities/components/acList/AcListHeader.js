@@ -5,6 +5,8 @@ import {
   setAcType,
 } from '../../AcActions'
 import { connect } from 'react-redux'
+// eslint-disable-next-line no-unused-vars
+import { Route, Link, Switch, Redirect } from 'react-router-dom'
 
 function AcListHeader(props) {
   // const [acStatus, setAcStatus] = useState(1)
@@ -47,18 +49,23 @@ function AcListHeader(props) {
           <ul className="nav">
             <li className="nav-item">
               {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-              <a
+              <Link
+                to={'/activities/discount'}
                 className="nav-link active"
                 onClick={() => acTypeHandler('discount')}
               >
                 優惠活動
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
               {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-              <a className="nav-link" onClick={() => acTypeHandler('offline')}>
+              <Link
+                to={'/activities/offline'}
+                className="nav-link"
+                onClick={() => acTypeHandler('offline')}
+              >
                 線下活動
-              </a>
+              </Link>
             </li>
           </ul>
           <div className="filter d-flex align-content-center">

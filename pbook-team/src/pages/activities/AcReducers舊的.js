@@ -26,7 +26,7 @@ const acType = (state = OFFLINE, action) => {
   }
 }
 
-// fetch data
+// fetch list data
 let initAcData = {
   discount: {
     isFetching: false,
@@ -41,11 +41,94 @@ let initAcData = {
     data: [],
   },
 }
-const acData = fetchReducerCreator(FETCH_AC_LIST_BASIC_NAME, initAcData)
-const discountBooks = fetchReducerCreator(GET_DISCOUNT_BOOKS_BASIC_NAME)
+// function ac(
+//   state = {
+//     isFetching: false,
+//     didInvalidate: false,
+//     items: [],
+//   },
+//   action
+// ) {
+//   switch (action.type) {
+//     case AC_REQUEST:
+//       return {
+//         ...state,
+//         isFetching: true,
+//         didInvalidate: false,
+//       }
+//     case AC_RECEIVE:
+//       return {
+//         ...state,
+//         isFetching: false,
+//         didInvalidate: false,
+//         items: action.ac,
+//         lastUpdated: action.receivedAt,
+//       }
+//     default:
+//       return state
+//   }
+// }
+// function acData(state = iniAcData, action) {
+//   switch (action.type) {
+//     case AC_RECEIVE:
+//     case AC_REQUEST:
+//       return {
+//         ...state,
+//         [action.acType]: ac(state[action.acType], action),
+//       }
+//     default:
+//       return state
+//   }
+// }
 
-// -------------------fetch reducer creator--------------------------
-function fetchReducerCreator(basicActionName, initState = {}) {
+// middleware 版本 ac_list fetch
+
+// function acData(state = initAcData, action) {
+//   switch (action.type) {
+//     case AC_LIST_REQUEST:
+//     case AC_LIST_SUCCESS:
+//       return {
+//         ...state,
+//         [action.acType]: acListFetch(state[action.acType], action),
+//       }
+//     default:
+//       return state
+//   }
+// }
+
+// function acListFetch(
+//   state = {
+//     isFetching: false,
+//     didInvalidate: false,
+//     items: [],
+//   },
+//   action
+// ) {
+//   switch (action.type) {
+//     case AC_LIST_REQUEST:
+//       return {
+//         ...state,
+//         isFetching: true,
+//         didInvalidate: false,
+//       }
+//     case AC_LIST_SUCCESS:
+//       return {
+//         ...state,
+//         isFetching: false,
+//         didInvalidate: false,
+//         items: action.data,
+//         lastUpdated: action.receivedAt,
+//       }
+//     default:
+//       return state
+//   }
+// }
+
+// fetch reducer creator
+const acData = fetchReducetCreator(FETCH_AC_LIST_BASIC_NAME, initAcData)
+const discountBooks = fetchReducetCreator(GET_DISCOUNT_BOOKS_BASIC_NAME)
+
+function fetchReducetCreator(basicActionName, initState = {}) {
   const actionRequest = basicActionName + '_REQUEST'
   const actionSuccess = basicActionName + '_SUCCESS'
   const actionFailure = basicActionName + '_FAILURE'
@@ -91,7 +174,6 @@ function fetchReducerCreator(basicActionName, initState = {}) {
   }
   return fetchReducer
 }
-// ---------------------------------------------------------------------
 
 const ListReducer = { visibilityFilter, acType, acData, discountBooks }
 export default ListReducer
