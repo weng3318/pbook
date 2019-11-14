@@ -128,10 +128,15 @@ export default class Header extends React.Component {
     // if (JSON.parse(localStorage.getItem('user')).MR_number !== '') phoneMemberStatus = 'block'
     // let phoneVisitorStatus = 'block'
     // if (JSON.parse(localStorage.getItem('user')).MR_number !== '') phoneVisitorStatus = 'none'
-
-    // // console.log("head" , this.state.memberData);
-    // console.log('render', this.state.memberData)
-    // console.log(JSON.parse(localStorage.getItem('user')))
+    let level = [
+      '',
+      '品書會員',
+      '品書學徒',
+      '品書專家',
+      '品書大師',
+      '品書至尊',
+      '書評家'
+  ];
 
     return (
       <>
@@ -176,7 +181,7 @@ export default class Header extends React.Component {
                   {JSON.parse(localStorage.getItem('user')).MR_name}
                 </span>
                 <span className="titleEn">
-                  {JSON.parse(localStorage.getItem('user')).MR_personLevel}
+                  {level[JSON.parse(localStorage.getItem('user')).MR_personLevel]}
                 </span>
                 <span
                   className="loginImg"
