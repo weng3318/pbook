@@ -14,11 +14,11 @@ router.get('/discount', async (req, res, next) => {
 router.get('/discount/:acId', async (req, res, next) => {
     let acId = req.params.acId
     let discount = {}
-    discount.info = await AC.getDiscountById(acId)    
-    discount.member = +discount.info.user_level ? await AC.getDiscountMember(acId) : []
-    if (discount.info.group_type === 0) {
+    let info = await AC.getDiscountById(acId)    
+    discount.member = +info.user_level ? await AC.getDiscountMember(acId) : []
+    if (info.group_type === 0) {
         discount.books = []
-    } else if (discount.info.group_type === 1) {        
+    } else if (info.group_type === 1) {        
         let cpId = await AC.getDiscountCp(acId)
         discount.books = await AC.getDiscountBooksByCate(acId,cpId)
     }else{

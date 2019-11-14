@@ -25,28 +25,27 @@ export function callAPIMiddleware({ dispatch, getState }) {
 
     const [requestType, successType, failureType] = types
 
-    dispatch(
-      Object.assign({}, payload, {
-        type: requestType,
-      })
-    )
+    dispatch({
+      ...payload,
+      type: requestType,
+    })
 
     return callAPI()
       .then(response => response.json())
-      .catch(error =>
-        dispatch(
-          Object.assign({}, payload, {
-            error,
-            type: failureType,
-          })
-        )
-      )
       .then(data => {
         return dispatch({
           ...payload,
           data,
           type: successType,
+          receivedAt: Date.now(),
         })
       })
+      .catch(error =>
+        dispatch({
+          ...payload,
+          error: error.toString(),
+          type: failureType,
+        })
+      )
   }
 }
