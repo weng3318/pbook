@@ -8,8 +8,8 @@ const router = express.Router();
 const app = express();
 const db = mysql.createConnection({
   // host: "192.168.27.186",
-  host: "192.168.27.186",
-  user: "shan",
+  host: "localhost",
+  user: "opcp",
   password: "opcp2428",
   database: "pbook"
 });
@@ -72,6 +72,7 @@ router.get(`/?`, (req, res) => {
 //書本單筆資料
 router.get("/book_reviews/:sid?", (req, res) => {
   let sid = req.params.sid;
+  console.log(req.query.id)
   const sql = `SELECT * FROM vb_books WHERE sid=${sid}`;
   db.query(sql, (error, results) => {
     if (error) {
@@ -82,6 +83,17 @@ router.get("/book_reviews/:sid?", (req, res) => {
       });
     }
   });
+});
+
+router.post("/book_reviews/:sid?/data", (req, res) => {
+  let book=[]
+    const newbook={
+      id:req.body.id,
+      book:req.body.book,
+      reviewText:req.body.reviewText
+    }
+    book.push(newbook)
+    console.log(book)
 });
 
 //書本各分類數量
