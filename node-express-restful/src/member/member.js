@@ -136,16 +136,6 @@ router.post('/upload', upload.single('avatar'),(req, res) =>{
     
             switch(req.file.mimetype){
                 case 'image/png':
-                        fs.createReadStream(req.file.path)
-                        .pipe(
-                            fs.createWriteStream('public/images/member/' + req.file.originalname)
-                        )
-                        // console.log(req.file.filename);
-                        
-                        res.json({
-                           filename: req.file.filename+".png"
-                        })
-                        break;
                 case 'image/jpeg':
                     fs.createReadStream(req.file.path)
                         .pipe(
@@ -154,15 +144,13 @@ router.post('/upload', upload.single('avatar'),(req, res) =>{
                         // console.log(req.file.filename);
                         
                         res.json({
-                           filename: req.file.filename+".jpg"
+                           filename: req.file.originalname
                         })
                         break;
                 default:
                     return res.send('bad file type')
             }
         }else{
-            // console.log(req.body);
-            
             res.json({
                 filename: ""
             })

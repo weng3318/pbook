@@ -33,9 +33,13 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 const session = require("express-session");
+var FileStore = require('session-file-store')(session);
+var fileStoreOptions = {};
+
 // 設定session的middleware
 app.use(
   session({
+    store: new FileStore(fileStoreOptions),
     //新用戶沒有使用到session物件時不會建立session和發送cookie
     saveUninitialized: false,
     resave: true,
@@ -50,6 +54,7 @@ app.use(
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(express.static("public"));
+
 
 
 app.use("/member", require('./src/member/member'))

@@ -102,7 +102,7 @@ class Login extends React.Component {
     })
   }
 
-  
+
   // onClickhandler(){
   //   const formData = new FormData()
   //   let fileField = document.querySelector("input[type='file']")
@@ -177,7 +177,8 @@ class Login extends React.Component {
       }
     })
     .catch(error => {
-      console.log('error = ' + error);
+      let err = error
+      this.fail(err)
     })
     
   }
@@ -223,10 +224,6 @@ class Login extends React.Component {
     const formData = new FormData()
       let fileField = document.querySelector("input[type='file']")
       formData.append('avatar', fileField.files[0])
-    
-    if(formData.avatar == undefined){
-      console.log(1,formData);
-    }
     
     if(isPass){
       let imgFile = ""
@@ -364,7 +361,7 @@ class Login extends React.Component {
               <h2>品書人登入</h2>
             </div>
             <input className="login_input" placeholder="Email" name="email" value={this.state.email} onChange={this.handleChange} />
-            <input className="login_input" placeholder="Password" name="password" value={this.state.password} onChange={this.handleChange}/>
+            <input className="login_input" type="password" placeholder="Password" name="password" value={this.state.password} onChange={this.handleChange}/>
             <button className="login_btn" onClick={this.handleLogin}>登入</button>
             <a href="link" className="forgetPassword">Forgot your password?</a>
             <div className="social-container ">
@@ -385,6 +382,7 @@ class Login extends React.Component {
 
           <div className="container_right _center">
             <img src={require('./品書logo.png')} alt="" style={{ width: '120px' }} />
+            <img src="http://localhost:5555/member/bg.png" />
             <button className="login_btn" onClick={this.flipSingIn}>
               品書人登入
             </button>

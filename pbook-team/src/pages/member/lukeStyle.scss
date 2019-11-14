@@ -204,6 +204,7 @@ $content: 24px;
     font-size: 24px;
 
     a {
+      font-size: $title;
       color: $black;
     }
     a:hover {
