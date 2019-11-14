@@ -384,7 +384,7 @@ export default class Header extends React.Component {
             <Route exact path="/reviewer" component={Reviewer} />
             <Route exact path="/BR_ReviewerList" component={BR_ReviewerList} />
             <Route exact path="/ReviewerBooks/:id?" component={ReviewerBooks} />
-            <Route exact path="/books" component={Books} />
+            <Route path="/books" component={Books} />
             <Route path="/activities" component={Activities} />
             <Route exact path="/reviews" component={Reviews} />
 
