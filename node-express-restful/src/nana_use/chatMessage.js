@@ -20,20 +20,20 @@ bluebird.promisifyAll(db);
 chatMessage
     .route("/chatMessage")
     .get(function (req, res) {
-        console.log("nana",req.session.memberId);
-        if (req.session.memberId === undefined) {
-            res.json(test);
+        if (req.session.memberData.memberId === undefined) {
+            res.send("找不到session.memberId");
+        } else {
+            db.queryAsync(
+                `SELECT * FROM mb_chat WHERE myFrom = "${req.session.memberData.memberId}" OR myTo = "${req.session.memberData.memberId}" ORDER BY created_at DESC`
+            )
+                .then(results => {
+                    res.json(results);
+                })
+                .catch(error => {
+                    res.send("404-找不到資料");
+                });
+
         }
-        db.queryAsync(
-            `SELECT * FROM mb_chat WHERE myFrom = "${req.session.memberId}" OR myTo = "${req.session.memberId}" ORDER BY created_at DESC`
-        )
-            .then(results => {
-                res.json(results);
-            })
-            .catch(error => {
-                res.send("404-找不到資料");
-                console.log(error);
-            });
     });
 module.exports = chatMessage;
 
