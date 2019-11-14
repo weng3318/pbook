@@ -84,16 +84,7 @@ const Member = styled.div`
   height: 100px;
   margin: 0 0 0 5px;
 `
-const Text = styled.textarea`
-  position: relative;
-  top: -100px;
-  left: 150px;
-  width: 1000px;
-  min-height: 100px;
-  border: 1.5px solid #ccc;
-  border-radius: 1rem;
-  padding: 0.7rem;
-`
+
 const Submit = styled.button``
 
 //------------------------------------------------------------------------------------------------------
@@ -106,7 +97,14 @@ const List = () => {
   const [List, setList] = useState([])
   const [score, setScore] = useState([])
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')))
-  console.log(user)
+  const [review, setReview] = useState({
+    id: user.MR_number,
+    reviewText: '',
+    book: urlParams,
+    submitSuccess:false,
+    error:false
+  })
+  console.log(review)
   useEffect(() => {
     reviewList()
   }, [score])
@@ -116,8 +114,8 @@ const List = () => {
     axios
       .get(`http://localhost:5555/reviews/book_reviews/${urlParams}`)
       .then(res => {
-        let s = res.data.data[0]
-        console.log(res.data)
+        let s = res.data.data[0].sid
+        console.log(res.data.data[0].sid)
         setList(res.data.data)
         setScore(
           s.five_star + s.four_star + s.three_star + s.two_star + s.one_star ===
@@ -139,6 +137,36 @@ const List = () => {
       })
       .catch(error => {
         console.log(error)
+      })
+  }
+
+
+  const changeHandler = e => {
+    setReview({
+      ...review,
+      [e.target.name]: e.target.value,
+    })
+  }
+  const submitHandler = e => {
+    e.preventDefault()
+    axios
+      .post(`http://localhost:5555/reviews/book_reviews/${urlParams}/data`, { 
+        id:review.id,
+        book:review.book,
+        reviewText:review.reviewText
+       })
+      .then(res => {
+        setReview({
+          error:false,
+          submitSuccess:true
+        })
+        console.log(res)
+      })
+      .catch(error=>{
+        setReview({
+          error:true,
+          submitSuccess:false
+        })
       })
   }
   return (
@@ -191,6 +219,8 @@ const List = () => {
             <BookCase>加入書櫃</BookCase>
             <BookCase>立即購買</BookCase>
           </BookLine>
+          {review.submitSuccess && <p>送出成功</p>}
+          {review.error && <p>送出失敗</p>}
         </div>
         <Review>
           <h3>發表評論</h3>
@@ -207,12 +237,21 @@ const List = () => {
               />
             )}
           </Member>
-          <Text placeholder="新增評論..." />
-          <button className="reviews_submitBtn">送出評論</button>
+          <form onSubmit={submitHandler}>
+            <textarea
+              className="reviews_textarea"
+              name="reviewText"
+              value={review.reviewText}
+              onChange={changeHandler}
+              placeholder="新增評論..."
+            />
+            <button type="submit" className="reviews_submitBtn">
+              送出評論
+            </button>
+          </form>
         </Review>
         <Review>
           <Member />
-          <Text />
         </Review>
       </Main>
     </>

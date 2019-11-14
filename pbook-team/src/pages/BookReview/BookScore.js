@@ -32,7 +32,7 @@ export default function CustomizedRatings(props) {
       .get(`http://localhost:5555/reviews/book_reviews/${props.urlParams}`)
       .then(res => {
         let s = res.data.data[0]
-        console.log(res.data)
+        // console.log(res.data)
         setScore(
           s.five_star + s.four_star + s.three_star + s.two_star + s.one_star ===
             0 ||
