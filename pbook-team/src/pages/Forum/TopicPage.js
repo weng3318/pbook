@@ -4,6 +4,9 @@ import './scss/TopicPage.scss'
 import CardS1 from '../../components/forum/CardS1/CardS1'
 import ButtonUI from '../../components/Material-UI/Button'
 import { Nav, Navbar, Form, FormControl, Button } from 'react-bootstrap'
+import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
+
+import { withRouter } from 'react-router'
 
 class TopicPage extends React.Component {
   constructor(props) {
@@ -11,14 +14,16 @@ class TopicPage extends React.Component {
     this.state = {
       articles: false,
       featured: false,
+      activeKey: 2,
     }
   }
   componentDidMount() {
+    console.log(this.props)
     this.handleCateChange()
   }
 
   handleCateChange() {
-    fetch(`http://localhost:5555/forum/homepage/cate/${this.props.cate}`)
+    fetch(`http://localhost:5555/forum/cate/${this.props.cate}`)
       .then(response => {
         if (!response.ok) throw new Error(response.statusText)
         return response.json()
@@ -30,20 +35,27 @@ class TopicPage extends React.Component {
           subcategory: result.subcategory,
           cate: this.props.cate,
           data: result.article,
+          activeKey: 0,
         })
       })
   }
   handelSelectSubcate = selectedKey => {
+    console.log(selectedKey)
     if (selectedKey !== '0') {
       let result = this.state.data.filter(value => {
         return `${value.fm_subCategories}` === selectedKey
       })
       this.setState({
         articles: result,
+        activeKey: selectedKey,
       })
     } else {
       this.handleCateChange()
     }
+  }
+  handlePostClick = e => {
+    console.log(this.props.location.pathname)
+    // this.props.history.push('/forum/post')
   }
 
   render() {
@@ -54,6 +66,8 @@ class TopicPage extends React.Component {
         this.handleCateChange()
       }
       return (
+        // defaultActiveKey="0"
+
         <>
           <div className="HotTopicPage container">
             <div className="subCate-navbar">
@@ -61,7 +75,7 @@ class TopicPage extends React.Component {
                 <div className="subBar-item">
                   <Nav
                     variant="pills"
-                    defaultActiveKey="0"
+                    activeKey={this.state.activeKey}
                     onSelect={this.handelSelectSubcate}
                   >
                     <Nav.Item>
@@ -77,9 +91,11 @@ class TopicPage extends React.Component {
                   </Nav>
                 </div>
               </div>
+              {/* <Link to="/forum/post"> */}
               <div className="subBar-item ">
                 <ButtonUI name="我想發文" color="secondary"></ButtonUI>
               </div>
+              {/* </Link> */}
             </div>
             <Carousel />
             <div className="cards-wrapper">
@@ -94,4 +110,4 @@ class TopicPage extends React.Component {
   }
 }
 
-export default TopicPage
+export default withRouter(TopicPage)

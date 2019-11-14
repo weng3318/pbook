@@ -44,8 +44,8 @@ router
       "' WHERE `MR_number`= '" +
       memberId +
       "'";
-      // res.json(sql);
-      db.query(sql, (error, results, fields) => {
+    // res.json(sql);
+    db.query(sql, (error, results, fields) => {
       if (error) throw error;
       res.json(results);
     });
@@ -53,7 +53,7 @@ router
 
 //分類文章
 router
-  .route("/homepage/cate/:number/:subCate?")
+  .route("/cate/:number/:subCate?")
   .all((req, res, next) => {
     next();
   })
@@ -68,8 +68,6 @@ router
     db.queryAsync(sql)
       .then(results => {
         output.featured = results;
-        console.log(output);
-
         sql = "SELECT * FROM `fm_article` WHERE `fm_category`='" + number + "'";
         return db.queryAsync(sql);
       })

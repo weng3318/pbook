@@ -8,6 +8,7 @@ import Books from '../../pages/Books'
 import Activities from '../../pages/activities/Activities'
 import Reviews from '../../pages/Reviews'
 import Forum from '../../pages/Forum/ForumNavBar'
+import PostArticle from '../../pages/Forum/PostArticle'
 import Login from '../../pages/login/Login'
 import Member from '../../pages/member/Member'
 import Game from '../../pages/game/Game'
@@ -64,12 +65,11 @@ export default class Header extends React.Component {
         swal('您已經成功登出!', {
           icon: 'success',
         })
-        fetch('http://localhost:5555/logout',{
-          method:'GET',
+        fetch('http://localhost:5555/logout', {
+          method: 'GET',
           credentials: 'include',
-        })
-        .then((res)=>{
-          console.log("logout");
+        }).then(res => {
+          console.log('logout')
         })
 
         setTimeout(() => {
@@ -122,6 +122,16 @@ export default class Header extends React.Component {
     // }
     // console.log('componentDidMount')
   }
+  componentDidMount() {
+    console.log('DID MOUNt')
+    console.log(this.props)
+  }
+
+  componentDidUpdate(prevProps) {
+    console.log('DID UPDATE')
+    console.log(this.props)
+  }
+  shouldComponentUpdate() {}
 
   render() {
     // let phoneMemberStatus = 'none'
@@ -135,8 +145,8 @@ export default class Header extends React.Component {
       '品書專家',
       '品書大師',
       '品書至尊',
-      '書評家'
-  ];
+      '書評家',
+    ]
 
     return (
       <>
@@ -181,7 +191,11 @@ export default class Header extends React.Component {
                   {JSON.parse(localStorage.getItem('user')).MR_name}
                 </span>
                 <span className="titleEn">
-                  {level[JSON.parse(localStorage.getItem('user')).MR_personLevel]}
+                  {
+                    level[
+                      JSON.parse(localStorage.getItem('user')).MR_personLevel
+                    ]
+                  }
                 </span>
                 <span
                   className="loginImg"
@@ -372,8 +386,10 @@ export default class Header extends React.Component {
 
             {/* <Route path="/forum" component={Forum} /> */}
             <Route exact path="/book_reviews/:sid" component={BookReviews} />
-            <Route path="/forum" component={Forum} />
-            <Route exact path="/forum" component={Forum} />
+
+            <Route exact path="/forum/post" component={PostArticle} />
+            <Route path="/forum/:cat" component={Forum} />
+
             {/* <Route exact path="/login" component={()=><Login loginSuccess={(memberData)=>{ this.loginSuccess(memberData) }}/>} /> */}
             <Route exact path="/login" component={Login} />
             <Route path="/member" component={Member} />
