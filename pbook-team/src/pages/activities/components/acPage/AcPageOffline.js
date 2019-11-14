@@ -3,9 +3,10 @@
 import React from 'react'
 import './acPageOffline.scss'
 import { connect } from 'react-redux'
-import { acFetch } from '../../AcActions'
+import { fetchAcList } from '../../AcActions'
+
 // import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
-let count = 0
+
 const AcPage = props => {
   let item
   function getData(acType, acId) {
@@ -14,7 +15,7 @@ const AcPage = props => {
       props.acData[acType].items.filter(v => {
         return +v.sid === +acId
       })
-    if (!item) props.dispatch(acFetch('discount'))
+    if (!item) props.dispatch(fetchAcList('discount'))
   }
   getData(props.acType, props.match.params.acId)
 
