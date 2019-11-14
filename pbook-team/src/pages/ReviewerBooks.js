@@ -43,12 +43,12 @@ class ReviewerBooks extends React.Component {
           {/* 接應id的書評家個人介紹 */}
           <BR_ReviewerList
             key={reviewerData.sid}
-            id={reviewerData.sid}
+            sid={reviewerData.sid}
             name={reviewerData.name}
-            // type={reviewerData.type}
-            // level={reviewerData.level}
-            // info={reviewerData.info}
-            // tube={reviewerData.tube}
+            job={reviewerData.job}
+            title={reviewerData.title}
+            intro={reviewerData.intro}
+            tube={reviewerData.tube}
           ></BR_ReviewerList>
 
           {/* 熱門書評列表 */}

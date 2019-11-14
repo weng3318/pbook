@@ -42,8 +42,8 @@ class BR_ReviewerList extends React.Component {
           </div>
 
           <div className="brInfoBox borderLine"><h5>書評家簡介</h5>
-              <div className="brInfoText borderLine">{this.props.intro}
-              自我介紹<br/>
+              <div className="brInfoText ">
+              {this.props.intro}
                 </div>
           </div>
     </div>

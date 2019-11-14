@@ -32,9 +32,11 @@ export class Reviewer extends React.Component {
         return (
             <>
             <BR_Navbar />
+        <h1>書評家</h1>
+        {/* <Chat sid="MR00001"/> */}
         {/* {Data */}
-            {this.state.brData
-            .map(({ sid, title, img, name, job, intro, youtube, facebook, twitter, tube,}) => (
+        {this.state.brData
+        .map(({ sid, title, img, name, job, intro, youtube, facebook, twitter, tube,}) => (
             <BR_ReviewerList
               key={sid}
               to={'/ReviewerBooks/' + sid}
@@ -50,41 +52,28 @@ export class Reviewer extends React.Component {
               twitter={twitter}
               tube={tube}
             ></BR_ReviewerList>
-          ))}
-        <h1>書評家</h1>
-        {/* <Chat sid="MR00001"/> */}
+          )
+        )}
         {/* {Data */}
-        {/* {this.state.brData
+        {this.state.brData
           .filter(({ name }) => '31桑' == name)
-          .map(({ img, title, name, intro, sid, tube }) => (
+          .map(({ sid, title, img, name, job, intro, youtube, facebook, twitter, tube,}) => (
             <BR_ReviewerList
-              key={sid}
+             key={sid}
               to={'/ReviewerBooks/' + sid}
               sid={sid}
-              name={name}
               title={title}
               img={img}
-              tube={tube}
-              intro={intro}
-            ></BR_ReviewerList>
-          ))} */}
-
-        {/* {Data */}
-        {/* {this.state.brData
-        .map(({ img, title, name, intro, id, tube, bookcase }) => (
-            <BR_ReviewerList
-              key={id}
-              to={'/ReviewerBooks/' + id}
               name={name}
+              job={job}
               title={title}
-              img={img}
-              tube={tube}
-              id={id}
+              youtube={youtube}
+              facebook={facebook}
               intro={intro}
-              bookcase={bookcase}
+              twitter={twitter}
+              tube={tube}
             ></BR_ReviewerList>
-          )
-        )} */}
+          ))}
       </>
     )
   }
