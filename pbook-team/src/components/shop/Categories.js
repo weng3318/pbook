@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { Col } from 'react-bootstrap'
 import { connect } from 'react-redux'
 import { cgFetch } from './ShopActions'
@@ -15,14 +16,16 @@ const Categories = props => {
         <div className="d-flex justify-content-center align-items-center border-bottom">
           分類瀏覽
         </div>
+
         {props.categories.payload &&
           props.categories.payload.map(categories => (
-            <div
+            <Link
+              to={'/books/1/' + categories.sid}
               className="d-flex justify-content-center align-items-center border-bottom categories-color"
               key={categories.sid}
             >
               {categories.name}
-            </div>
+            </Link>
           ))}
       </Col>
     </>
