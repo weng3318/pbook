@@ -8,7 +8,7 @@ var Member = new member()
 
 //註冊
 router.post('/register', (req, res, next) => {
-    let Member = new member(req.body.name, req.body.email, req.body.password)
+    let Member = new member(req.body.name, req.body.email, req.body.password, req.body.filename)
     let number_blank = "MR00000"
     let new_number =""
     //驗證email格式
@@ -22,13 +22,8 @@ router.post('/register', (req, res, next) => {
 
         // 尋找是否有重複的email
         db.query(Member.queryEmail(), (err, rows) => {
-            console.log(rows);
+            // console.log(rows);
             
-                if(err){
-                    res.status(404).json({
-                       message: "伺服器錯誤，請稍後在試！"
-                    })
-                }
                 // 如果有重複的email
                 if(rows.length >=1){
                     res.json({
@@ -37,8 +32,9 @@ router.post('/register', (req, res, next) => {
                      })
                      return
                 }else{
+
                     db.query(`SELECT MAX(sid) FROM mr_information`,(err, data)=>{
-                       new_number = number_blank.slice(0, -3)+  data[0]['MAX(sid)']
+                       new_number = number_blank.slice(0, -3)+ (data[0]['MAX(sid)']+1)
                     //    res.json(new_number)
                        db.query(Member.getAddMemberSql(new_number), (err, data) => {
                            if(err){
@@ -51,7 +47,7 @@ router.post('/register', (req, res, next) => {
                            // 若寫入資料庫成功，則回傳給clinet端下：
                            res.json({
                                status: "註冊成功",
-                               message:"歡迎" + req.body.name + "的登入!",
+                               message:"歡迎" + req.body.name + "的加入!",
                             })
                          })
                     })
@@ -129,31 +125,47 @@ router.post('/edit', (req, res, next)=>{
     })
 })
 
-//上傳圖片
+//前端上傳圖片
 const multer =require('multer')
 const upload =multer({dest:'tmp_uploads/'})
 const fs = require('fs')
 router.post('/upload', upload.single('avatar'),(req, res) =>{
-        console.log(req.body);
+        console.log("avatar",  req.body.avatar);
         if(req.file && req.file.mimetype){
-            console.log(req.file);
+            // console.log(req.file);
     
             switch(req.file.mimetype){
                 case 'image/png':
+                        fs.createReadStream(req.file.path)
+                        .pipe(
+                            fs.createWriteStream('public/images/member/' + req.file.originalname)
+                        )
+                        // console.log(req.file.filename);
+                        
+                        res.json({
+                           filename: req.file.filename+".png"
+                        })
+                        break;
                 case 'image/jpeg':
                     fs.createReadStream(req.file.path)
                         .pipe(
                             fs.createWriteStream('public/images/member/' + req.file.originalname)
                         )
+                        // console.log(req.file.filename);
+                        
                         res.json({
-                            status: "upload success"
+                           filename: req.file.filename+".jpg"
                         })
                         break;
                 default:
                     return res.send('bad file type')
             }
         }else{
-            res.send('no uploads')
+            // console.log(req.body);
+            
+            res.json({
+                filename: ""
+            })
         }
     })
 

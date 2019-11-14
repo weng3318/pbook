@@ -54,6 +54,7 @@
       }
       .moreInfo {
         color: $color-black;
+
         .fa-caret-right {
           vertical-align: -0.7rem;
           color: $color-yellow;
@@ -99,6 +100,21 @@
         font-size: 1rem;
         &:focus {
           outline: none;
+        }
+      }
+    }
+    .page-item {
+      &.active {
+        .page-link {
+          background-color: $color-green;
+          border-color: $color-green;
+          color: $color-white;
+        }
+      }
+      .page-link {
+        color: $color-black;
+        &:focus{
+          box-shadow: 0 0 0 0.2rem $color-green;
         }
       }
     }

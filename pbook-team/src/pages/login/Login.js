@@ -101,6 +101,8 @@ class Login extends React.Component {
       selectedFile: e.target.files[0],
     })
   }
+
+  
   // onClickhandler(){
   //   const formData = new FormData()
   //   let fileField = document.querySelector("input[type='file']")
@@ -216,44 +218,73 @@ class Login extends React.Component {
         isPass = true
       } 
       // this.setState({name: "字數太少囉",password: "格式或密碼有誤", password2: "請再重新輸入"})
-    console.log(isPass);
+    // console.log("isPass",isPass);
+
+    const formData = new FormData()
+      let fileField = document.querySelector("input[type='file']")
+      formData.append('avatar', fileField.files[0])
+    
+    if(formData.avatar == undefined){
+      console.log(1,formData);
+    }
     
     if(isPass){
-    fetch('http://localhost:5555/member/register', {
-          method: 'POST',
-          credentials: 'include',  //跨網域取得session資訊
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            name: this.state.name,
-            email: this.state.email,
-            password: this.state.password
+      let imgFile = ""
+      //目前想說新增完圖片再塞入修改資料
+      fetch('http://localhost:5555/member/upload',{
+            method: 'POST',
+            credentials: 'include',
+            body: formData
           })
-        })
-        .then( response => {
-          if(!response) throw new Error(response.statusText)
-          // console.log('3'+response);
+          .then(res =>{
+            console.log("res:", res);
+            return res.json()
+          })
+          .then(img =>{
+            imgFile = img.filename
+            console.log(imgFile);
+
           
-          return response.json()
-        })
-        .then(data => {
-          let status = data.status
-          let message = data.message
-          console.log("註冊",data);
-          if(data.status === "註冊成功"){
-            this.success(status, message)
-            setTimeout(() => {
-              window.location.href = '/login'
-            }, 2000)
-            // window.location.href = '/login'
-          }else{
-            window.location.href = '/login'
-          }
-        })
-        .catch(error => {
-          console.log('error = ' + error);
-        })
+            fetch('http://localhost:5555/member/register', {
+              method: 'POST',
+              credentials: 'include',  //跨網域取得session資訊
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                name: this.state.name,
+                email: this.state.email,
+                password: this.state.password,
+                filename: imgFile
+              })
+            })
+            .then( response => {
+              if(!response) throw new Error(response.statusText)
+              // console.log('3'+response);
+              
+              return response.json()
+            })
+            .then(data => {
+              let status = data.status
+              let message = data.message
+              console.log("註冊",data);
+              if(data.status === "註冊成功"){
+                this.success(status, message)
+                setTimeout(() => {
+                  window.location.href = '/login'
+                }, 2000)
+              }else{
+                window.location.href = '/login'
+              }
+            })
+            .catch(error => {
+              console.log('error = ' + error);
+            })
+      })
+
+
+
+   
         }
   }
   
