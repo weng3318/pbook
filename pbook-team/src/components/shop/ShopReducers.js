@@ -14,10 +14,12 @@ const shopParams = (state = [], action) => {
       return {
         shopPage: action.shopPage,
         shopCategories: action.shopCategories,
-        shopKeyword: action.shopKeyword,
+        // shopKeyword: action.shopKeyword,
       }
     default:
-      return state
+      return {
+        ...state,
+      }
   }
 }
 
