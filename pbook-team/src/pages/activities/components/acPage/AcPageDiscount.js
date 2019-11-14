@@ -1,26 +1,38 @@
 /* eslint-disable jsx-a11y/anchor-has-content */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from 'react'
+import React, { useEffect } from 'react'
 import './acPageDiscount.scss'
 import { connect } from 'react-redux'
-import { fetchAcList } from '../../AcActions'
+import { getDiscountBooks, fetchAcList } from '../../AcActions'
 
 // import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 
-const AcPage = props => {
-  let item
-  function getData(acType, acId) {
-    item =
-      props.acData[acType] &&
-      props.acData[acType].items.filter(v => {
-        return +v.sid === +acId
-      })
-    if (!item) props.dispatch(fetchAcList('discount'))
-  }
-  getData(props.acType, props.match.params.acId)
+const AcPageDiscount = props => {
+  let acId = props.match.params.acId
+  useEffect(() => {
+    // 取得活動列表
+    if (!props.acData.offline.data.length) {
+      props.dispatch(fetchAcList('discount'))
+    }
 
-  if (!item || !item.length) return <></>
-  item = item[0]
+    // 獲取折價書籍-------------
+    props.dispatch(getDiscountBooks(acId))
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+  if (!props.discountBooks[acId.toString()]) return <></>
+  let discountBook = props.discountBooks[acId].data
+
+  // 獲取活動資訊---------------
+  let acInfo = props.acData.discount.data.filter(v => {
+    return +v.sid === +acId
+  })
+
+  if (!acInfo || !acInfo.length) return <></>
+
+  acInfo = acInfo[0]
+  // --------------------------
+
   return (
     <>
       <div className="container acPage">
@@ -28,23 +40,29 @@ const AcPage = props => {
           className="banner my-3"
           style={{
             backgroundImage:
-              "url('http://localhost:5555/ac/images/" + item.img + "')",
+              "url('http://localhost:5555/ac/images/" + acInfo.img + "')",
           }}
         ></div>
         <div className="row">
           <main className="col-md-9">
             <div className="info my-3">
-              {/* <small><time>時間：{item.date.substr(0, 10)}</time></small> */}
+              <small>
+                <time>開始時間：{acInfo.start_time.substr(0, 10)}</time>
+              </small>
               <br />
-              {/* <small><span>地點：{item.location}</span></small> */}
+              <small>
+                <time>結束時間：{acInfo.end_time.substr(0, 10)}</time>
+              </small>
             </div>
             <header className="py-3">
-              <h1>{item.title}</h1>
+              <h1>{acInfo.title}</h1>
             </header>
 
             <article
               className="mt-4 mb-5"
-              dangerouslySetInnerHTML={{ __html: item.intro }}
+              dangerouslySetInnerHTML={{
+                __html: acInfo.intro,
+              }}
             ></article>
           </main>
           <aside className="col-md-3">
@@ -92,5 +110,6 @@ const AcPage = props => {
 const mapStateToProps = state => ({
   acType: state.acType,
   acData: state.acData,
+  discountBooks: state.discountBooks,
 })
-export default connect(mapStateToProps)(AcPage)
+export default connect(mapStateToProps)(AcPageDiscount)

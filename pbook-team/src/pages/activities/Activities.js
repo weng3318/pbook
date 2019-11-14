@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 // import Test from './test'
 import AcList from './components/acList/AcList'
 import AcPageOffline from './components/acPage/AcPageOffline'
@@ -22,27 +22,26 @@ import { Route, Link, Switch, Redirect } from 'react-router-dom'
 const Activities = props => {
   return (
     <>
-      <Redirect from={'/activities'} to={'/activities/' + props.acType} />
       <Switch>
+        <Route exact path={'/activities/:acType'} component={AcList} />
+
+        <Route
+          exact
+          path={'/activities/discount/:acId'}
+          component={AcPageDiscount}
+        />
+        <Route
+          exact
+          path={'/activities/offline/:acId'}
+          component={AcPageOffline}
+        />
+
         <Redirect
           exact
           from={'/activities'}
           to={'/activities/' + props.acType}
         />
       </Switch>
-
-      <Route exact path={props.match.url + '/discount'} component={AcList} />
-      <Route exact path={props.match.url + '/offline'} component={AcList} />
-      <Route
-        exact
-        path={props.match.url + '/discount/:acId'}
-        component={AcPageDiscount}
-      />
-      <Route
-        exact
-        path={props.match.url + '/offline/:acId'}
-        component={AcPageOffline}
-      />
     </>
   )
 }

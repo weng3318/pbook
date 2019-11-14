@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Col, Pagination } from 'react-bootstrap'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { LinkContainer } from 'react-router-bootstrap'
 import moment from 'moment'
@@ -9,6 +10,7 @@ import Rating from '@material-ui/lab/Rating'
 import Box from '@material-ui/core/Box'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCaretRight } from '@fortawesome/free-solid-svg-icons'
+import { rtFetch, shopFetch } from './ShopActions'
 import './Shop.scss'
 
 const BorderLinearProgress = withStyles({
@@ -42,8 +44,15 @@ let a = [],
   min = [],
   avg = []
 const Data = props => {
+  useEffect(() => {
+    props.dispatch(rtFetch())
+    props.dispatch(shopFetch(props.nowPage, props.nowCategories))
+    // console.log(props.nowPage)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.nowPage])
+
   let page_items = []
-  let pt = props.shopPayload && props.shopPayload.totalPage
+  let pt = props.shop.payload && props.shop.payload.totalPage
   for (let page = 1; page <= pt; page++) {
     page_items.push(
       <LinkContainer to={'/books/' + page + '/' + props.nowCategories}>
@@ -109,22 +118,22 @@ const Data = props => {
       else if (e[j] < min[j]) min[j] = e[j]
     }
   }
-  countRate(props.ratingsPayload)
+  countRate(props.ratings.payload)
+  // console.log(props.shop.payload && props.shop.payload.totalPage)
 
   return (
     <>
       <Col md={10} className="books">
         <div className="book_account mx-3 my-3">
-          最新上架書籍共有
-          <span className="book_number px-2">2</span>本
+          最新上架書籍共有<span className="book_number px-2">1315</span>本
         </div>
         <div className="book_order mx-4 my-3 px-5 d-flex justify-content-between">
           <span>顯示模式</span>
           <span>排序依</span>
         </div>
-        {props.shopPayload &&
-          props.shopPayload.rows &&
-          props.shopPayload.rows.map(data => (
+        {props.shop.payload &&
+          props.shop.payload.rows &&
+          props.shop.payload.rows.map(data => (
             <div className="d-flex justify-content-between my-5" key={data.sid}>
               <div className="d-flex">
                 <div className="book_pic">
@@ -246,4 +255,9 @@ const Data = props => {
   )
 }
 
-export default Data
+const mapStateToProps = state => ({
+  ratings: state.ratings,
+  shop: state.shop,
+  shopParams: state.shopParams,
+})
+export default connect(mapStateToProps)(Data)
