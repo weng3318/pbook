@@ -31,15 +31,21 @@ router
 
 //card1 讀取作者資料
 router
-  .route("/homepage/:memberId")
+  .route("/homepage/:memberId/:category")
   .all((req, res, next) => {
     next();
   })
   .get((req, res) => {
     let memberId = req.params.memberId;
+    let category = req.params.category;
     let sql =
-      "SELECT * FROM `mr_information` WHERE `MR_number`= '" + memberId + "'";
-    db.query(sql, (error, results, fields) => {
+      "SELECT * FROM `mr_information`JOIN `vb_categories` ON `vb_categories`.sid='" +
+      category +
+      "' WHERE `MR_number`= '" +
+      memberId +
+      "'";
+      // res.json(sql);
+      db.query(sql, (error, results, fields) => {
       if (error) throw error;
       res.json(results);
     });
@@ -68,7 +74,7 @@ router
         return db.queryAsync(sql);
       })
       .then(results => {
-        output.article = results; 
+        output.article = results;
         sql =
           "SELECT * FROM `fm_subcategories` WHERE `fm_categories`='" +
           number +

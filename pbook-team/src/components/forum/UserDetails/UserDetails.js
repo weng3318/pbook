@@ -5,7 +5,7 @@ import {
   userHover,
   categoryHover,
   detailUpdate,
-  details,
+  fmUserFetch,
 } from '../../../pages/Forum/fmAction'
 
 //props : memberId={fm_memberId} read={true}//閱讀人數是否顯示 article={article} //文章資料
@@ -22,20 +22,12 @@ class UserDetails extends React.Component {
   componentDidMount() {
     // 用props傳入的userID在fetch一次
     if (!this.props.update) {
-      fetch('http://localhost:5555/forum/homepage/' + this.props.memberId)
-        .then(response => {
-          return response.json()
-        })
-        .then(async result => {
-          // let update = true
-          // let userData = result[0]
-          // const data = { update, userData }
-          // this.props.dispatch(userHover(data))
-
-          await this.setState({ user: result[0], update: true })
-        })
+      this.props.dispatch(
+        fmUserFetch(this.props.memberId, this.props.article.fm_category)
+      )
     }
   }
+
   handleCategoryClick = event => {
     console.log('category click')
   }
@@ -55,20 +47,19 @@ class UserDetails extends React.Component {
   //user details hover frame
   handleUserMouseIn = event => {
     let hover = true
-    console.log(this.props)
     this.props.dispatch(userHover(hover))
   }
   handleUserMouseOut = event => {
     let hover = false
-    console.log(this.props.userHover)
+    console.log(this.props.article)
     this.props.dispatch(userHover(hover))
   }
   render() {
-    if (!this.state.update) {
+    if (!this.props.update) {
       return <span>Loading</span>
     } else {
       let article = this.props.article
-      let user = this.state.user
+      let user = this.props.data[0]
       let userImage = user.MR_pic
 
       return (
@@ -90,7 +81,7 @@ class UserDetails extends React.Component {
                   onMouseEnter={this.handleUserMouseIn}
                   onMouseLeave={this.handleUserMouseOut}
                 >
-                  {this.state.user && this.state.user.MR_nickname}
+                  {user.MR_nickname}
                   <div
                     className={
                       'userFrame ' +
@@ -109,7 +100,7 @@ class UserDetails extends React.Component {
                   onMouseEnter={this.handleCategoryMouseIn}
                   onMouseLeave={this.handleCategoryMouseOut}
                 >
-                  {article.fm_category}
+                  {user.name}
                   <div
                     className={
                       'userFrame ' +
@@ -133,7 +124,14 @@ class UserDetails extends React.Component {
                 >
                   {article.fm_read}人閱讀
                 </span>
-                <span className="card-response">16則留言</span>
+                <span
+                  className={
+                    'card-response ' +
+                    (this.props.read ? 'displayInlineBlock' : 'displayNone')
+                  }
+                >
+                  16則留言
+                </span>
               </div>
             </div>
           </div>

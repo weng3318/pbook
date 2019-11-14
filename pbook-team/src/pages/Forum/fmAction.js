@@ -5,35 +5,27 @@ export const categoryHover = hover => ({
   type: 'CATEGORY_HOVER',
   status: hover,
 })
-export const detailUpdate = data => ({ type: 'DID_UPDATE', data })
-
-
-
-
-
-
-
-
 
 //給UserDetailsFetch用=======
-function UserDetailsReceive(json) {
+// fetch data list
+const fmUserRequest = () => {
   return {
-    type: 'USER_DETAILS_RECEIVE',
-    payload: json,
+    type: 'FM_USER_REQUEST',
   }
 }
-function UserDetailsRequest(memberId) {
+const fmUserReceive = json => {
   return {
-    type: 'USER_DETAILS_REQUEST',
-    id: memberId,
+    type: 'FM_USER_RECEIVE',
+    data: json,
+    receivedAt: Date.now(),
   }
 }
-//==================
-export const UserDetailsFetch = memberId => async dispatch => {
-  dispatch(UserDetailsRequest(memberId))
+
+export const fmUserFetch = (memberId, fm_category) => async dispatch => {
+  dispatch(fmUserRequest())
   try {
     let response = await fetch(
-      'http://localhost:5555/forum/homepage/' + memberId,
+      'http://localhost:5555/forum/homepage/' + memberId + '/' + fm_category,
       {
         method: 'GET',
         headers: new Headers({
@@ -42,8 +34,8 @@ export const UserDetailsFetch = memberId => async dispatch => {
         }),
       }
     )
-    dispatch(UserDetailsReceive(await response.json()))
+    dispatch(fmUserReceive(await response.json()))
   } catch (error) {
-    console.log('error ', error)
+    console.log('error', error)
   }
 }

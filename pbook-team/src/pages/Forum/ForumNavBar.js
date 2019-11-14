@@ -4,7 +4,7 @@ import { LinkContainer } from 'react-router-bootstrap'
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 import Forum from './Forum'
 import TopicPage from './TopicPage'
-import './ForumNavBar.scss'
+import './scss/ForumNavBar.scss'
 
 // 2 3 1 7 10 11 21 13 4
 // vb_categories {
