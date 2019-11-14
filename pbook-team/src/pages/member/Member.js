@@ -16,7 +16,7 @@ class Member extends React.Component {
     return (
       <>
         <Row style={{marginRight:"0px"}}>
-          <div className="col" style={{paddingRight:"0px"}}>
+          <div className="col" style={{paddingRight:"0px" , backgroundImage: 'url("../login/bg.png")'}}>
             <Navbar />
             <div className="row" style={{marginRight:"0px"}}>
               <Sidebar />

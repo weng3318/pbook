@@ -82,6 +82,8 @@ router.post('/login', (req, res, next) => {
                 memberId: rows[0].MR_number,
                 memberLv: rows[0].MR_personLevel,
             } 
+            console.log(req.session);
+            
             // console.log(req.session);
             
             res.json({
