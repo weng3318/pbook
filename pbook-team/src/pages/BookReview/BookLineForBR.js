@@ -30,38 +30,40 @@ export default function CustomizedProgressBars(props) {
   return (
     <>
       {List.map((data, index) => (
-        <div key={index} className={classes.root}>
-          <BorderLinearProgress
-            className={classes.margin}
-            variant="determinate"
-            color="secondary"
-            value={data.five_star}
-          />
-          <BorderLinearProgress
-            className={classes.margin}
-            variant="determinate"
-            color="secondary"
-            value={data.four_star}
-          />
-          <BorderLinearProgress
-            className={classes.margin}
-            variant="determinate"
-            color="secondary"
-            value={data.three_star}
-          />
-          <BorderLinearProgress
-            className={classes.margin}
-            variant="determinate"
-            color="secondary"
-            value={data.two_star}
-          />
-          <BorderLinearProgress
-            className={classes.margin}
-            variant="determinate"
-            color="secondary"
-            value={data.one_star}
-          />
-        </div>
+        <section className='reviews_line'>
+          <div key={index} className={classes.root}>
+            <BorderLinearProgress
+              className={classes.margin}
+              variant="determinate"
+              color="secondary"
+              value={data.five_star}
+            />
+            <BorderLinearProgress
+              className={classes.margin}
+              variant="determinate"
+              color="secondary"
+              value={data.four_star}
+            />
+            <BorderLinearProgress
+              className={classes.margin}
+              variant="determinate"
+              color="secondary"
+              value={data.three_star}
+            />
+            <BorderLinearProgress
+              className={classes.margin}
+              variant="determinate"
+              color="secondary"
+              value={data.two_star}
+            />
+            <BorderLinearProgress
+              className={classes.margin}
+              variant="determinate"
+              color="secondary"
+              value={data.one_star}
+            />
+          </div>
+        </section>
       ))}
     </>
   )

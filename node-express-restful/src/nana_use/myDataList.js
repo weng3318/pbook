@@ -1,6 +1,6 @@
 // 引入套件
 const express = require("express"); //EXPRESS(建立路由使用)
-const chatMessage = express.Router();
+const myDataList = express.Router();
 const bluebird = require("bluebird"); //青鳥
 const _ = require("lodash"); //loadsh,處理數據的各種方法
 
@@ -17,15 +17,16 @@ db.connect(); //資料庫連線
 
 bluebird.promisifyAll(db);
 
-chatMessage
-    .route("/chatMessage")
+
+myDataList
+    .route("/myDataList")
     .get(function (req, res) {
-        console.log("nana",req.session.memberId);
+
         if (req.session.memberId === undefined) {
-            res.json(test);
+            res.send("找不到資料");
         }
         db.queryAsync(
-            `SELECT * FROM mb_chat WHERE myFrom = "${req.session.memberId}" OR myTo = "${req.session.memberId}" ORDER BY created_at DESC`
+            `SELECT * FROM mr_information WHERE MR_number = "${req.session.memberId}"`
         )
             .then(results => {
                 res.json(results);
@@ -35,11 +36,5 @@ chatMessage
                 console.log(error);
             });
     });
-module.exports = chatMessage;
-
-
-
-
-
-
+module.exports = myDataList;
 

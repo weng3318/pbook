@@ -3,12 +3,13 @@ import AcItem from './AcItem'
 import AcListHeader from './AcListHeader'
 import './acList.scss'
 import { connect } from 'react-redux'
-import { acFetch } from '../../AcActions'
+// import { acFetch } from '../../AcActions'
+import { fetchAcList } from '../../AcActions'
 // import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 
 const AcList = props => {
   useEffect(() => {
-    props.dispatch(acFetch(props.acType))
+    props.dispatch(fetchAcList(props.acType))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

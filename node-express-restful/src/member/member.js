@@ -80,20 +80,24 @@ router.post('/login', (req, res, next) => {
             })
             return
         }else{
-            // res.locals.userId = rows[0].sid;
             //設定session
-            // req.session.sid = res.locals.userId; 
-            // console.log(req.session.sid);
-
+            // 在session內塞memberData物件，用來存放會員資料
+            req.session.memberData = {
+                memberId: rows[0].MR_number,
+                memberLv: rows[0].MR_personLevel,
+            } 
+            // console.log(req.session);
+            
             res.json({
                 status:"登入成功",
                 message:"歡迎" + rows[0].MR_name + "的登入!",
-                info: rows[0]
+                info: rows[0],
             })
         }
     })
 
 })
+
 
 
 //查詢會員資料
@@ -125,18 +129,33 @@ router.post('/edit', (req, res, next)=>{
     })
 })
 
-
-
-
-
-
-
-//登出，清除session
-router.get('/logout', (req, res)=>{
-    req.session.destroy()
-    res.redirect('/login')
-})
-
+//上傳圖片
+const multer =require('multer')
+const upload =multer({dest:'tmp_uploads/'})
+const fs = require('fs')
+router.post('/upload', upload.single('avatar'),(req, res) =>{
+        console.log(req.body);
+        if(req.file && req.file.mimetype){
+            console.log(req.file);
+    
+            switch(req.file.mimetype){
+                case 'image/png':
+                case 'image/jpeg':
+                    fs.createReadStream(req.file.path)
+                        .pipe(
+                            fs.createWriteStream('public/images/member/' + req.file.originalname)
+                        )
+                        res.json({
+                            status: "upload success"
+                        })
+                        break;
+                default:
+                    return res.send('bad file type')
+            }
+        }else{
+            res.send('no uploads')
+        }
+    })
 
 
 

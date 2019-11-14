@@ -37,6 +37,7 @@ if ($nowTimeStamp > ($gameListTimeStamp + 86400)) {
     $bookAllData_sql = "SELECT * FROM `mb_books` WHERE `mb_status` = 0";
     $bookAllData_rows = $pdo->query($bookAllData_sql)->fetchAll();
     // print_r($bookAllData_rows);
+    
 
     // 透過mb_shelveMember判斷,將取得的書籍所有資料放入已經倆倆分組好的陣列內
     foreach ($bookAllData_rows as $key => $value) {
@@ -52,7 +53,7 @@ if ($nowTimeStamp > ($gameListTimeStamp + 86400)) {
     // $canPlayGameMember_rows_group ->最終亂數分配好的陣列
     // 更新配對列表
     // 將取得的資料解析成字串後儲存至資料庫的配對列表(mb_gameList)
-    $serialized_data = serialize($canPlayGameMember_rows_group);
+    $serialized_data = json_encode($canPlayGameMember_rows_group);
     $serialized_data_query = "UPDATE `mb_gameList` SET `sid`='1',`member`='$serialized_data',`created_at`= NOW() WHERE `sid`='1' ";
     $pdo->query($serialized_data_query);
 }
@@ -96,7 +97,7 @@ if ($nowTimeStamp > ($gameListTimeStamp + 86400)) {
 
 // // $canPlayGameMember_rows_group ->最終亂數分配好的陣列
 // // 將取得的資料解析成字串後儲存至資料庫的配對列表(mb_game)
-// $serialized_data = serialize($canPlayGameMember_rows_group);
+// $serialized_data = json_encode($canPlayGameMember_rows_group);
 // $serialized_data_query = "INSERT INTO mb_gameList (`sid`,`member`,`created_at`)
 // VALUES ('1','$serialized_data',NOW())";
 // $pdo->query($serialized_data_query);
@@ -106,6 +107,6 @@ if ($nowTimeStamp > ($gameListTimeStamp + 86400)) {
 
 // 拿取資料庫的配對列表(mb_gameList裡面的配對列表,放在欄位名member內)
 $gameList = $pdo->query($gameListSql)->fetch()['member'];
-$unserialized_data = unserialize($gameList);
 
-echo json_encode($unserialized_data);
+
+print_r($gameList);

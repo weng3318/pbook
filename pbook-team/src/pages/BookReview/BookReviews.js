@@ -6,6 +6,7 @@ import axios from 'axios'
 import styled from '@emotion/styled'
 import BookHeart from './BookScore'
 import BookLineForBR from './BookLineForBR'
+import { Button } from '@material-ui/core'
 
 //---------------------------------------------------------------------------------------------------------
 
@@ -19,13 +20,13 @@ const Main = styled.section`
 const Book = styled.div`
   display: flex;
   margin: 5px 0;
-  justify-content: center;
   height: 300px;
 `
 //橫排
 const BookRow = styled.div`
   display: flex;
   margin: 0 1rem 0 0;
+  flex-direction: row-reverse;
 `
 
 //直排
@@ -34,16 +35,18 @@ const BookColumn = styled.div`
   flex-direction: column;
 `
 
-//書本圖片
-const BookImage = styled.img`
-  margin: 0 auto;
+//評分條外框
+const BookLine = styled.div`
+  display: flex;
+  flex-direction: row-reverse;
+  outline: none;
 `
 
 //加入書櫃按鈕
 const BookCase = styled.button`
-  margin: 0 auto;
-  width: 80px;
-  height: 40px;
+  width: 100px;
+  height: 50px;
+  margin: 0 50px 0 0;
   border-radius: 5px;
   background-color: #cde2d0;
   color: #2d3a3a;
@@ -51,14 +54,15 @@ const BookCase = styled.button`
 `
 //書本資訊
 const BookInfo = styled.div`
-  width: 750px;
+  margin: 0 0 0 50px;
+  width: 1000px;
 `
 
 //書本分數
 const BookScoreTitle = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 45px 0 0 0;
+  margin: 0px 0 0 0;
   font-size: 15px;
 `
 //書本評分
@@ -71,41 +75,38 @@ const BookScore = styled.div`
 //回復評論外框
 const Review = styled.section`
   width: 1200px;
-  height: 350px;
   margin: 3rem auto;
   border-bottom: 1px solid #ccc;
 `
 //會員頭像
-const Member = styled.img`
+const Member = styled.div`
   width: 100px;
   height: 100px;
+  margin: 0 0 0 5px;
 `
-const Text = styled.div`
+const Text = styled.textarea`
   position: relative;
   top: -100px;
   left: 150px;
   width: 1000px;
-  height: 200px;
-  border: 1px solid #ccc;
+  min-height: 100px;
+  border: 1.5px solid #ccc;
+  border-radius: 1rem;
+  padding: 0.7rem;
 `
-const Submit = styled.button`
-  position: relative;
-  top: -70px;
-  left: 1050px;
-  width: 100px;
-  height: 50px;
-`
+const Submit = styled.button``
 
 //------------------------------------------------------------------------------------------------------
 
 const List = () => {
   //從nodejs拿取資料的sid值
   const urlParams = window.location.pathname.replace('/book_reviews/', '')
-  console.log(urlParams)
 
   //變數
   const [List, setList] = useState([])
   const [score, setScore] = useState([])
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')))
+  console.log(user)
   useEffect(() => {
     reviewList()
   }, [score])
@@ -170,6 +171,16 @@ const List = () => {
                 </div>
               </BookInfo>
             </BookColumn>
+          </Book>
+        ))}
+        <div>
+          <BookLine>
+            <BookScore>
+              <BookHeart urlParams={urlParams} />
+            </BookScore>
+            <BookRow>
+              <BookLineForBR List={List} />
+            </BookRow>
             <BookScoreTitle>
               <span>{'5'}</span>
               <span>{'4'}</span>
@@ -177,24 +188,27 @@ const List = () => {
               <span>{'2'}</span>
               <span>{'1'}</span>
             </BookScoreTitle>
-            <BookColumn>
-              <BookRow>
-                <BookCase>加入書櫃</BookCase>
-                <BookCase>立即購買</BookCase>
-              </BookRow>
-              <BookLineForBR List={List} />
-            </BookColumn>
-            <BookScore>
-              <BookHeart urlParams={urlParams} />
-            </BookScore>
-          </Book>
-        ))}
-
+            <BookCase>加入書櫃</BookCase>
+            <BookCase>立即購買</BookCase>
+          </BookLine>
+        </div>
         <Review>
           <h3>發表評論</h3>
-          <Member />
-          <Text />
-          <Submit>送出評論</Submit>
+          <Member>
+            {user !== null ? (
+              <img
+                className="reviews_list_img"
+                src={require('../../images/' + user.MR_pic)}
+              />
+            ) : (
+              <img
+                className="reviews_list_img"
+                src={require('../../images/forum/2.jpg')}
+              />
+            )}
+          </Member>
+          <Text placeholder="新增評論..." />
+          <button className="reviews_submitBtn">送出評論</button>
         </Review>
         <Review>
           <Member />
