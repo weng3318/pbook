@@ -47,11 +47,6 @@ class BR_ReviewerList extends React.Component {
                 </div>
           </div>
     </div>
-    {/* <iframe className="brYouTubeRWD borderLine"
-            width="50%" height="auto"
-            src={this.props.tube}
-            frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
-            allowFullscreen /> */}
         <iframe className="brYouTubeRWD borderLine" width="50%" height="auto" src={this.props.tube} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </section>
         <div style={{height:'30px'}}></div>

@@ -18,10 +18,11 @@ export class Reviewer extends React.Component {
 }
   componentDidMount() {
     axios
-      .get('http://localhost:5000/brBookcase')
+      // .get('http://localhost:5000/brBookcase')
+      .get('http://localhost:5000/brReviewerList')
       .then(res => {
-        this.setState({ brData: res.data })
-        console.log('取得資料' + res.data)
+        this.setState({ brData: res.data.rows })
+        console.log('取得資料' + res.data.rows)
       })
       .catch(function(error) {
             console.log('沒有取得資料請執行 json-server --watch --port 5555 reviewer_Data.json ' + error)
@@ -39,7 +40,7 @@ export class Reviewer extends React.Component {
         .map(({ sid, title, img, name, job, intro, youtube, facebook, twitter, tube,}) => (
             <BR_ReviewerList
               key={sid}
-              to={'/ReviewerBooks/' + sid}
+              to={'/ReviewerBooks/:page?/' + sid}
               sid={sid}
               title={title}
               img={img}
@@ -56,7 +57,7 @@ export class Reviewer extends React.Component {
         )}
         {/* {Data */}
         {this.state.brData
-          .filter(({ name }) => '31桑' == name)
+          .filter(({ name }) => '' == name)
           .map(({ sid, title, img, name, job, intro, youtube, facebook, twitter, tube,}) => (
             <BR_ReviewerList
              key={sid}
