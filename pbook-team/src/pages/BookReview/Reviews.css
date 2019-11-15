@@ -65,15 +65,6 @@
   border: 1px solid #ccc;
 }
 
-.reviews_list_img {
-  max-height: 100%;
-  max-width: 100%;
-  width: 150px;
-  height: 150px;
-  margin: 0 auto;
-  border: 1px solid #ccc;
-}
-
 /* 文字超連結A標籤 效果 */
 .reviews_list_sid {
   text-decoration: none;
@@ -94,12 +85,43 @@
   height: 50px;
   border-radius: 5px;
   background: #cde2d0;
+  margin: 0 0 2rem 0;
 }
 
 .reviews_textarea {
   width: 1000px;
-  min-height: 100px;
+  min-height: 120px;
   border: 1.5px solid #ccc;
   border-radius: 1rem;
   padding: 0.7rem;
+}
+/* 發表評論 */
+.reviews_score {
+  margin: 20px;
+}
+
+/* 表單 */
+.reviews_form {
+  margin: 40px 0 0 60px;
+}
+/* 圖檔img */
+.reviews_list_img {
+  max-height: 100%;
+  max-width: 100%;
+  width: 150px;
+  height: 150px;
+  margin: 0 auto;
+  border: 1px solid #ccc;
+}
+
+.reviews_member_img {
+  max-height: 100%;
+  max-width: 100%;
+  width: 150px;
+  height: 150px;
+  margin: 15px 0 0 0px;
+  border: 1px solid #ccc;
+}
+.reviews_member_nickname {
+  margin: 0 0 0 8px;
 }

@@ -69,40 +69,6 @@ router.get(`/?`, (req, res) => {
     });
 });
 
-//書本單筆資料
-router.get("/book_reviews/:sid?", (req, res) => {
-  let sid = req.params.sid;
-  console.log(req.query.id)
-  const sql = `SELECT * FROM vb_books WHERE sid=${sid}`;
-  db.query(sql, (error, results) => {
-    if (error) {
-      return res.send(error);
-    } else {
-      return res.json({
-        data: results
-      });
-    }
-  });
-});
-
-router.post("/book_reviews/:sid?/data", (req, res) => {
-  let book=[]
-    const newbook={
-      id:req.body.id,
-      book:req.body.book,
-      reviewText:req.body.reviewText
-    }
-    book.push(newbook)
-    const sql = `INSERT INTO vb_ratings (member, book, star, message, create_time) VALUES ('${book[0].id}', '${book[0].book}', '3', '${book[0].reviewText}', NOW())`
-    db.query(sql, (error, results) => {
-      if (error) {
-        return res.send(error);
-      } else {
-        return res.send('新增成功');
-      }
-    });
-    console.log(book)
-});
 
 //書本各分類數量
 

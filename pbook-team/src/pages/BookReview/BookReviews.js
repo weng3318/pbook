@@ -27,12 +27,26 @@ const Book = styled.div`
 const BookRow = styled.div`
   display: flex;
   margin: 0 1rem 0 0;
+  flex-direction: row;
+`
+//橫排按鈕
+const BookRowButton = styled.div`
+  display: flex;
+  margin: 0 1rem 0 0;
   flex-direction: row-reverse;
 `
 
 //直排
 const BookColumn = styled.div`
   display: flex;
+  flex-direction: column;
+`
+
+//直排
+const BookColumnMember = styled.div`
+  display: flex;
+  margin: 0 0 0 20px;
+  align-items: center;
   flex-direction: column;
 `
 
@@ -75,9 +89,9 @@ const BookScore = styled.div`
 `
 //回復評論外框
 const Review = styled.section`
-  display:flex;
+  display: flex;
   width: 1200px;
-  margin: 3rem auto;
+  margin: 3rem 0;
   border-bottom: 1px solid #ccc;
 `
 //會員頭像
@@ -98,7 +112,7 @@ const List = () => {
   //變數
   const [List, setList] = useState([])
   const [score, setScore] = useState([])
-  // const [score_star, setScore_star] = useState(1)
+  const [memberReview, getMemberReview] = useState([])
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')))
   const [review, setReview] = useState({
     id: user.MR_number,
@@ -108,18 +122,24 @@ const List = () => {
     submitSuccess: false,
     error: false,
   })
-  console.log(review)
   useEffect(() => {
+    bookList()
     reviewList()
-  }, [score])
+    // if (user !== null) {
+    //   console.log(user, 11111)
+    //   let newPic =
+    //     'http://localhost:5555/images/member/' +
+    //     JSON.parse(localStorage.getItem('user')).MR_pic
+    //   this.setState({ loginImg: newPic })
+    // }
+  }, [score, memberReview])
 
   //書評分頁資料ajax
-  const reviewList = () => {
+  const bookList = () => {
     axios
       .get(`http://localhost:5555/reviews/book_reviews/${urlParams}`)
       .then(res => {
         let s = res.data.data[0].sid
-        console.log(res.data.data[0].sid)
         setList(res.data.data)
         setScore(
           s.five_star + s.four_star + s.three_star + s.two_star + s.one_star ===
@@ -138,6 +158,17 @@ const List = () => {
                 10
             ) / 10
         )
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }
+  const reviewList = () => {
+    axios
+      .get(`http://localhost:5555/reviews/memberReview/${urlParams}`)
+      .then(res => {
+        getMemberReview(res.data.review)
+        console.log(res.data)
       })
       .catch(error => {
         console.log(error)
@@ -178,8 +209,7 @@ const List = () => {
             submitSuccess: false,
           })
         })
-    }
-    else{
+    } else {
       alert('書評內容為空')
     }
   }
@@ -237,21 +267,24 @@ const List = () => {
           {review.error && <p>送出失敗</p>}
         </div>
         <Review>
-          <h3>發表評論</h3>
-          <Member>
-            {user !== null ? (
-              <img
-                className="reviews_list_img"
-                src={require('../../images/' + user.MR_pic)}
-              />
-            ) : (
-              <img
-                className="reviews_list_img"
-                src={require('../../images/forum/2.jpg')}
-              />
-            )}
-          </Member>
-          <form onSubmit={submitHandler}>
+          <BookColumnMember>
+            <h3 className="reviews_push">發表評論</h3>
+            <Member>
+              {user !== null ? (
+                <img
+                  className="reviews_member_img"
+                  src={require('../../images/' + user.MR_pic)}
+                />
+              ) : (
+                <img
+                  className="reviews_member_img"
+                  src={require('../../images/forum/2.jpg')}
+                />
+              )}
+              <h6 className="reviews_member_nickname">{user.MR_nickname}</h6>
+            </Member>
+          </BookColumnMember>
+          <form className="reviews_form" onSubmit={submitHandler}>
             <textarea
               className="reviews_textarea"
               name="reviewText"
@@ -259,13 +292,48 @@ const List = () => {
               onChange={changeHandler}
               placeholder="新增評論..."
             />
-            <BookStar score_star={review.star} setScore_star={changeHandler} />
-            <button type="submit" className="reviews_submitBtn">
-              送出評論
-            </button>
+            <BookRow>
+              <p>幫書籍評分</p>
+              <BookStar
+                score_star={review.star}
+                setScore_star={changeHandler}
+              />
+            </BookRow>
+            <BookRowButton>
+              <button type="submit" className="reviews_submitBtn">
+                送出評論
+              </button>
+            </BookRowButton>
           </form>
         </Review>
-       
+        <Review>
+          <BookColumnMember>
+            <h3 className="reviews_push">會員評論</h3>
+            <Member>
+              <img
+                className="reviews_member_img"
+                src={require('../../images/' + user.MR_pic)}
+              />
+              <h6 className="reviews_member_nickname">{user.MR_nickname}</h6>
+            </Member>
+          </BookColumnMember>
+          <form className="reviews_form" onSubmit={submitHandler}>
+            <textarea
+              className="reviews_textarea"
+              name="reviewText"
+              value={review.reviewText}
+              onChange={changeHandler}
+              placeholder="新增評論..."
+            />
+            <BookRow>
+              <p>幫書籍評分</p>
+              <BookStar
+                score_star={review.star}
+                setScore_star={changeHandler}
+              />
+            </BookRow>
+          </form>
+        </Review>
       </Main>
     </>
   )

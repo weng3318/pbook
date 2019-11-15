@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'
+/* eslint-disable react/jsx-no-duplicate-props */
+import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import Rating from '@material-ui/lab/Rating'
 import FavoriteIcon from '@material-ui/icons/Favorite'
@@ -19,26 +20,20 @@ function getLabelText(value) {
 }
 
 export default function CustomizedRatings(props) {
-  // useEffect(() => {
-  // }, [score])
-  console.log(props)
-  //書評分頁資料ajax
   const changeScore = e => {
     props.setScore_star(e)
   }
   return (
     <>
-      <Box component="fieldset" mt={0} borderColor="transparent">
+      <Box component="fieldset" ml={2} borderColor="transparent">
         <Typography component="legend"></Typography>
         <StyledRating
           key={props.score_star}
           onClick={changeScore}
-          name="customized-color"
           value={`${props.score_star}`}
           getLabelText={getLabelText}
           precision={1}
           name="star"
-          size="small"
           icon={<FavoriteIcon fontSize="inherit" />}
         />
       </Box>
