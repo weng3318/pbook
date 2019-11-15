@@ -31,9 +31,10 @@ export default function CustomizedRatings(props) {
       <Box component="fieldset" mt={0} borderColor="transparent">
         <Typography component="legend"></Typography>
         <StyledRating
+          key={props.score_star}
           onClick={changeScore}
           name="customized-color"
-          value={props.score_star}
+          value={`${props.score_star}`}
           getLabelText={getLabelText}
           precision={1}
           name="star"

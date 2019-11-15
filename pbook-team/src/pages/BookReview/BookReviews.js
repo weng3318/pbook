@@ -75,6 +75,7 @@ const BookScore = styled.div`
 `
 //回復評論外框
 const Review = styled.section`
+  display:flex;
   width: 1200px;
   margin: 3rem auto;
   border-bottom: 1px solid #ccc;
@@ -151,25 +152,36 @@ const List = () => {
   }
   const submitHandler = e => {
     e.preventDefault()
-    axios
-      .post(`http://localhost:5555/reviews/book_reviews/${urlParams}/data`, {
-        id: review.id,
-        book: review.book,
-        reviewText: review.reviewText,
-      })
-      .then(res => {
-        setReview({
-          error: false,
-          submitSuccess: true,
+    if (review.reviewText != '') {
+      axios
+        .post(`http://localhost:5555/reviews/book_reviews/${urlParams}/data`, {
+          id: review.id,
+          book: review.book,
+          reviewText: review.reviewText,
+          star: review.star,
         })
-        console.log(res)
-      })
-      .catch(error => {
-        setReview({
-          error: true,
-          submitSuccess: false,
+        .then(res => {
+          setReview({
+            error: false,
+            submitSuccess: true,
+          })
+          console.log(res)
         })
-      })
+        .then(
+          setTimeout(function() {
+            window.location.reload()
+          }, 1500)
+        )
+        .catch(error => {
+          setReview({
+            error: true,
+            submitSuccess: false,
+          })
+        })
+    }
+    else{
+      alert('書評內容為空')
+    }
   }
   return (
     <>
@@ -253,9 +265,7 @@ const List = () => {
             </button>
           </form>
         </Review>
-        <Review>
-          <Member />
-        </Review>
+       
       </Main>
     </>
   )
