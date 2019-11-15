@@ -30,7 +30,7 @@ export default function CustomizedProgressBars(props) {
   return (
     <>
       {List.map((data, index) => (
-        <section className='reviews_line'>
+        <section key={index} className='reviews_line'>
           <div key={index} className={classes.root}>
             <BorderLinearProgress
               className={classes.margin}

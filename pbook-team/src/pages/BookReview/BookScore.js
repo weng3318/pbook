@@ -62,7 +62,7 @@ export default function CustomizedRatings(props) {
         <Typography component="legend"></Typography>
         <StyledRating
           name="customized-color"
-          value={score}
+          value={`${score}`}
           readOnly={true}
           getLabelText={getLabelText}
           precision={0.1}
