@@ -5,19 +5,23 @@ class Member{
     constructor(name, email, password,filename, nickname, birthday, mobile, address, number){
         this.MR_name = name
         this.MR_email = email
+        //進行加密
         // this.MR_password = encryption(password)
         this.MR_password = password,
         this.MR_pic = filename
-    }
-
-    //進行加密
+    }  
     
-
     //判斷email格式
     checkEmail(email) {
         const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         const result = re.test(email);
         return result;
+    }
+    
+    //查詢分類
+    queryCategories(){
+        let sql = `SELECT * FROM vb_categories WHERE 1 `
+        return sql
     }
 
     queryEmail(){
@@ -44,6 +48,15 @@ class Member{
         let sql = `UPDATE mr_information SET MR_email = '${email}',MR_name = '${name}', MR_nickname = '${nickname}',MR_birthday = '${birthday}',MR_mobile = '${mobile}',MR_address = '${address}' WHERE MR_number = '${number}' `
         return sql
     }
+
+
+    //修改密碼
+    changePassword(number,password){
+        let sql = `UPDATE mr_information SET MR_password = '${password}' WHERE MR_number = '${number}' `
+        return sql
+    }
+
+
 
 
     //修改會員照片

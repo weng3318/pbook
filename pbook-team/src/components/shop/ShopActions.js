@@ -1,11 +1,12 @@
-// set ac type
+//-----set shop params-----------
 export const SET_SHOP_PARAMS = 'SET_SHOP_PARAMS'
-export const setShopParams = (shopPage, shopCategories, shopKeyword) => ({
+export const setShopParams = (shopPage, shopCategories) => ({
   type: SET_SHOP_PARAMS,
   shopPage: shopPage,
   shopCategories: shopCategories,
-  shopKeyword: shopKeyword,
+  // shopKeyword: shopKeyword,
 })
+//----------------------
 //-------categories--------
 export const CATEGORIES_RECEIVE = 'CATEGORIES_RECEIVE'
 export const CATEGORIES_REQUEST = 'CATEGORIES_REQUEST'

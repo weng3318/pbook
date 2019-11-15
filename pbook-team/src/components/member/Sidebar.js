@@ -3,6 +3,7 @@ import { Accordion, Button } from 'react-bootstrap'
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 import Info from '../../pages/member/Info'
 import Edit from '../../pages/member/Edit'
+import AddMemberBook from '../../pages/member/AddMemberBook'
 import '../../pages/member/lukeStyle.scss'
 
 const Sidebar = (props) => {
@@ -17,11 +18,11 @@ const Sidebar = (props) => {
                   as={Button}
                   variant="link"
                   eventKey="0"
-                  // style={{ textDecoration: 'none' }}
-                  className="sider_title"
+                  className="sidebar_title"
+                  
                 >
-                  <Link to="/member">
-                    <h2>會員資料</h2>
+                  <Link to="/member" style={{color: "#2D3A3A",textDecoration: "none"}}>
+                    <h2 >會員資料</h2>
                   </Link>
                 </Accordion.Toggle>
                 <Accordion.Collapse eventKey="0" className="sidebar_item">
@@ -84,7 +85,9 @@ const Sidebar = (props) => {
                   二手書管理
                 </Accordion.Toggle>
                 <Accordion.Collapse eventKey="0" className="sidebar_item">
+                <Link to="/member/AddMemberBook">
                   <a href="css">配對書籍</a>
+                </Link>
                 </Accordion.Collapse>
               </div>
             </Accordion>
@@ -94,6 +97,7 @@ const Sidebar = (props) => {
         <Switch>
           <Route exact path="/member" component={Info} />
           <Route exact path="/member/edit" component={Edit} />
+          <Route exact path="/member/AddMemberBook" component={AddMemberBook} />
         </Switch>
       </Router>
     </>

@@ -6,8 +6,8 @@ class Books extends React.Component {
   render() {
     return (
       <>
-        <Redirect from={'/books'} to={'/books/1/1'} />
         <Switch>
+          <Redirect exact from={'/books'} to={'/books/1/1'} />
           <Route path="/books/:page/:categories" component={Shop}></Route>
         </Switch>
         {/* <Shop /> */}

@@ -23,19 +23,18 @@ var mapResult = [];
 chatList
   .route("/chatList")
   .get(function (req, res) {
-    console.log("session", req.session);
+    // console.log("session", req.session);
 
-    console.log("nana", req.session.memberId);
+    console.log("nana", req.session.memberData.memberId);
 
-    if (req.session.memberId === undefined) {
-      console.log("找不到資料");
+    if (req.session.memberData.memberId === undefined) {
 
-      res.send("找不到資料");
+      res.send("找不到session.memberId");
     } else {
-      console.log("type", typeof (req.session.memberId));
+      console.log("type", typeof (req.session.memberData.memberId));
 
       db.queryAsync(
-        `SELECT mb_chat.*,MR_number,MR_name,MR_pic FROM mb_chat LEFT JOIN mr_information ON MR_number = myTo OR MR_number = myFrom WHERE myFrom = "${req.session.memberId}" OR myTo = "${req.session.memberId}" ORDER BY created_at ASC`
+        `SELECT mb_chat.*,MR_number,MR_name,MR_pic FROM mb_chat LEFT JOIN mr_information ON MR_number = myTo OR MR_number = myFrom WHERE myFrom = "${req.session.memberData.memberId}" OR myTo = "${req.session.memberData.memberId}" ORDER BY created_at ASC`
       )
         .then(results => {
           console.log(1);
@@ -43,7 +42,7 @@ chatList
           // 一開始拿的資料,MR_number有塞我的跟對方的,為了讓MR_number是塞對方的資料,所以要先篩選一次
           var Without_MY_MR_number = [];
           results.forEach(function (value, index) {
-            if (value.MR_number !== req.session.memberId) {
+            if (value.MR_number !== req.session.memberData.memberId) {
               Without_MY_MR_number.push(value);
             }
           });
@@ -67,7 +66,7 @@ chatList
           mapResult = finalResult;
 
           return db.queryAsync(
-            `SELECT * FROM mb_chat WHERE myTo = "${req.session.memberId}" AND myRead = 0`
+            `SELECT * FROM mb_chat WHERE myTo = "${req.session.memberData.memberId}" AND myRead = 0`
           );
         })
         .then(results => {
@@ -82,7 +81,9 @@ chatList
           });
 
 
-          console.log(mapResult);
+          console.log('final',req.session.memberData.memberId);
+          console.log('final',req.headers.cookie);
+          console.log('final',mapResult);
 
           res.json(mapResult);
         })
