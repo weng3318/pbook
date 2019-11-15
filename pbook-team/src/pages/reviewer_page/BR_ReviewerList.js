@@ -2,7 +2,8 @@ import React from 'react'
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 
 class BR_ReviewerList extends React.Component {
-  render() {
+  render(props) {
+    // console.log(this.props)
     return (
       <>   
 <section className="ReviewerListAllBox reviewerList">
@@ -11,8 +12,9 @@ class BR_ReviewerList extends React.Component {
 
           <div className="brAvatarAllBox borderLine">
               <h5>{this.props.title}</h5>
-                  
-              <img className="brAvatarImg" src={require('../reviewer_page/images/br_31桑.png')}/>
+              <div className="brAvatarBox">
+              <img className="brAvatarImg" src={require(`./images/${this.props.img}`)}/>
+              </div>
               <h5>{this.props.name}</h5>
 
               <div className="brIconBox">
