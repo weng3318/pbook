@@ -5,7 +5,6 @@
     font-size: 1rem;
     margin: 0;
     padding: 0;
-    /* z-index: 1; */
 }
 /* 標題，主要文字 */
 h5{
@@ -35,7 +34,6 @@ h5{
     color: #2d3a3a;
     white-space: nowrap;
     overflow: hidden;
-    z-index: 0;
 }
 /* 書評列表 (參照背景) */
 .reviewerList {
@@ -47,7 +45,7 @@ h5{
 }
 /* 書評列表 (參照偽元素) */
 .reviewerList::after{
-    content: "";
+    /* content: ""; */
     display: block;
     background: rgba(0,0,0,.25);
     position: absolute;
@@ -68,7 +66,7 @@ h5{
 }
 /* 分頁，看看書櫃 (參照偽元素) */
 .reviewerBooks::after{
-    content: "";
+    /* content: ""; */
     display: block;
     background: rgba(0,0,0,.4);
     position: absolute;
@@ -78,10 +76,27 @@ h5{
     bottom:0;
     width:100%;
 }
-/* 頭像區域 (縮放限制) */
+/* 左側簡介，整體區域 (縮放限制) */
 .brAvatarAllBox{    
     min-width: 120px;
     max-width: 210px;
+}
+/* 頭像區域 (縮放限制) */
+.brAvatarBox{
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 2px solid #ffc408;
+    margin: 0 auto;
+    background-size: contain ;
+    overflow: hidden;
+}
+/* 頭圖 (縮放比例、置中位置) */
+.brAvatarImg{
+    height: 103%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
 }
 /* 書評家 (type)、職業介紹 (文字) */
 .AvatarInfo{
@@ -99,12 +114,6 @@ h5{
     font-size: 1rem;
     color: #2d3a3a;
     margin: 10px;
-}
-/* 頭圖 (縮放比例、置中位置) */
-.brAvatarImg{
-    width: 80%;
-    left: 50%;
-    transform: translateX(-50%);
 }
 /* 書評家簡介全區域 (縮放限制) */
 .brInfoBox{

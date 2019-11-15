@@ -1,14 +1,9 @@
+@import './systemcolor';
+
 html {
   font-size: 16px;
 }
 .forumPage {
-  $black-tea: #2d3a3a;
-  $season-green: #cde2d0;
-  $grass-yellow: #ffc408;
-  $grey-grey: #979d9d;
-  $Darjeeling: #ff525b;
-  $deepsea: #58b2dc;
-
   color: $black-tea;
   .displayBlock {
     display: block;
@@ -28,9 +23,12 @@ html {
   .dis-flex {
     display: flex;
   }
- 
+
   .container {
     max-width: 1200px;
+  }
+  .container-m {
+    max-width: 900px;
   }
   .card-module {
     border-radius: 5px;

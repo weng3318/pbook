@@ -1,7 +1,41 @@
 import express from 'express'
 import AC from './acModel'
-
+import flatCache from 'flat-cache';
 const router = express.Router()
+const cache = flatCache.load('cacheId');
+
+// 更新資料表亂數
+// UPDATE `pm_general_discounts` SET `discounts`=ROUND(RAND()*30,0) WHERE `type`=6
+// UPDATE `pm_general_discounts` d JOIN `pm_event2` e ON d.`event_id` = e.`sid` SET d.`discounts`=ROUND(RAND()*30,0) WHERE d.`type`=6 AND `group_type`
+
+const flatCacheMiddleware = (req, res, next) => {
+    let key = '__express__' + (req.originalUrl || req.url)
+    let cacheContent = cache.getKey(key)
+
+    // 如果換日就清光cache
+    if (cacheContent) {
+        let currentTime = new Date()
+        let currentDate = currentTime.toISOString().substr(0, 10)
+        let saveDate = cacheContent.saveTime.substr(0,10)
+        if (currentDate !== saveDate) {
+            cache.removeKey(key)
+            cacheContent = null
+        }
+    }
+    // ------------------
+    if (cacheContent) {
+        res.send(cacheContent.body)
+    } else {
+        res.sendResponse = res.send
+        res.send = (body) => {
+            let saveTime = new Date()
+            cache.setKey(key, { body, saveTime:saveTime.toISOString() })
+            cache.save(true /* noPrune */)
+            res.sendResponse(body)
+        }
+        next()
+    }
+}
 
 router.get('/offline', async (req, res, next) => {
     res.json(await AC.getOfflineList())
@@ -12,19 +46,18 @@ router.get('/discount', async (req, res, next) => {
 })
 
 router.get('/discount/:acId', async (req, res, next) => {
-    let acId = req.params.acId
-    let discount = {}
-    let info = await AC.getDiscountById(acId)    
-    discount.member = +info.user_level ? await AC.getDiscountMember(acId) : []
-    if (info.group_type === 0) {
-        discount.books = []
-    } else if (info.group_type === 1) {        
-        let cpId = await AC.getDiscountCp(acId)
-        discount.books = await AC.getDiscountBooksByCate(acId,cpId)
-    }else{
-        discount.books = await AC.getDiscountBooksById(acId)
-    }
+    let discount = await AC.getDiscountAllBooks(req.params.acId)
     res.json(discount)
+})
+
+// 取得特定書籍折價
+router.get('/book-discount/:bookId/:memberLevel?', async (req, res, next) => {
+    let memberLevel = req.params.memberLevel || 1
+    res.json(await AC.getBookDiscount(req.params.bookId, memberLevel))
+})
+// 對某階級的會員，取得所有書籍折價資訊
+router.get('/book-discount-for-member-level/:memberLevel', flatCacheMiddleware, async (req, res, next) => {
+    res.json(await AC.getBooksDiscountForMemberLevel(req.params.memberLevel))
 })
 
 // router.post('/add', (req, res, next) => {

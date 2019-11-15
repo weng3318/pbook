@@ -69,20 +69,6 @@ router.get(`/?`, (req, res) => {
     });
 });
 
-//書本單筆資料
-router.get("/book_reviews/:sid?", (req, res) => {
-  let sid = req.params.sid;
-  const sql = `SELECT * FROM vb_books WHERE sid=${sid}`;
-  db.query(sql, (error, results) => {
-    if (error) {
-      return res.send(error);
-    } else {
-      return res.json({
-        data: results
-      });
-    }
-  });
-});
 
 //書本各分類數量
 
