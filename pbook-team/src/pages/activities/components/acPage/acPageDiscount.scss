@@ -11,14 +11,16 @@
     color: #444;
   }
 
-  .recommend figure {
-    height: 250px;
-  }
-
-  .recommend figure div {
-    height: 200px;
-    background-origin: content-box;
-    background-size: cover;
-    background-repeat: no-repeat;
+  .recommend {
+    border-top: 1px solid #ccc;
+    figure {
+      height: 250px;
+      div {
+        height: 200px;
+        background-origin: content-box;
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
+    }
   }
 }

@@ -91,5 +91,70 @@ class AC {
         return members.map(v => v.cp_id)
     }
 
+    static async getDiscountAmount(acId) {
+        let sql = "SELECT `type`, `discounts` FROM `pm_general_discounts` WHERE `event_id`=" + acId
+        let discountAmount = await sqlQuery(sql)
+        return discountAmount[0]
+    }
+
+    // 取得折價活動所有資訊
+    static async getDiscountAllBooks(acId) {
+        let discount = {}
+        // 取得活動資訊
+        let info = await AC.getDiscountById(acId)
+        // 取得適用會員
+        discount.member = +info.user_level ? await AC.getDiscountMember(acId) : [1, 2, 3, 4, 5, 6]
+        // 取得適用書籍
+        if (info.group_type === 0) {
+            discount.books = []
+        } else if (info.group_type === 1) {
+            let cpId = await AC.getDiscountCp(acId)
+            discount.books = await AC.getDiscountBooksByCate(acId, cpId)
+        } else {
+            discount.books = await AC.getDiscountBooksById(acId)
+        }
+        // 取得折價金額
+        discount.amount = await AC.getDiscountAmount(acId)
+        discount.info = `member: 適用會員。\nbooks: 適用書籍。\namount: 折價 O %。\nmember與books若為空陣列代表全部適用 `
+        return discount
+    }
+
+    // 取得特定書籍的折價
+    static async getBookDiscount(book_id, memberLevel = 1) {
+        let discount = 0
+        let discountList = await AC.getDiscountList()
+        discountList = discountList.filter(v => v.rule === 6 && v.status === 1).map(v => v.sid)
+        for (let i = 0; i < discountList.length; i++) {
+            let acId = discountList[i]
+            let discountAllBooks = await AC.getDiscountAllBooks(acId)
+            let books = discountAllBooks.books.map(v => v.sid)
+            // [(如果全書籍皆適用，或者，傳入之書籍適用此活動)
+            // 而且(此會員適用此項活動)]
+            // 而且(當前活動折價比上次高)
+            // 就把折價設為當前折價
+            if ((books.length === 0 || books.indexOf(+book_id) !== -1)
+                && discountAllBooks.member.indexOf(+memberLevel) !== -1) {
+
+                if (discountAllBooks.amount.discounts > discount) {
+                    discount = discountAllBooks.amount.discounts
+                }
+                // console.log(acId, discount, discountAllBooks.amount.discounts, books)
+            }
+        }
+        return { discount, type: 6 }
+    }
+
+    // 對某階級會員，取得所有書籍折價資訊
+    static async getBooksDiscountForMemberLevel(memberLevel) {
+        let sql = "SELECT `sid` FROM `vb_books` WHERE 1"
+        let allBooks = await sqlQuery(sql)
+        for (let i = 0; i < allBooks.length; i++) {
+            let { discount, type } = await AC.getBookDiscount(+allBooks[i].sid, +memberLevel)
+            allBooks[i].discount = discount
+            allBooks[i].type = type
+        }
+        return allBooks
+    }
+
 }
 module.exports = AC
