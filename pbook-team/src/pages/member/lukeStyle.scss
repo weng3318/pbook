@@ -40,6 +40,16 @@ $content: 24px;
       width: 1400px;
       border-bottom: 3px solid $yellow;
     }
+    .button-group{
+      // border: 1px solid #000;
+      margin: 30px 0px 100px 300px;
+      justify-content: flex-start;
+        button{
+            // border: 1px solid red;
+            margin: 20px 100px;
+          }
+
+    }
 
 }
 

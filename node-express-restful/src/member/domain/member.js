@@ -56,6 +56,19 @@ class Member{
         return sql
     }
 
+    //新增會員書籍
+    addMemberBoos(isbn, name, author, publishing, publishDate, version, price, pages, savingStatus, memberNo, categories, remark){
+        let sql = `INSERT INTO mb_books(mb_isbn, mb_name, mb_author, mb_publishing, mb_publishDate, mb_version, mb_fixedPrice, mb_page, mb_savingStatus, 
+                mb_shelveMember, mb_categories, mb_remarks, mb_shelveDate)
+        VALUES('${isbn}', '${name}', '${author}', '${publishing}', '${publishDate}', '${version}','${price}', '${pages}','${savingStatus}', '${memberNo}','${categories}', '${remark}',now()) `
+        return sql 
+
+        // INSERT INTO mb_books(mb_isbn, mb_name, mb_author, mb_publishing, mb_publishDate, mb_version, mb_fixedPrice, mb_page, mb_savingStatus, 
+        //     mb_shelveMember, mb_categories, mb_remarks, mb_shelveDate) 
+        // VALUES('9789861795720', '解壓放空店', '八耐舜子', '大田', '2019/11/01', 
+        //     '初版','380', '578', '良好', 'MR00166','生活風格', ' ', '2019-11-15')
+    }
+
 
 
 

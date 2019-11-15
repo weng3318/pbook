@@ -1,35 +1,205 @@
 import React from 'react'
 import './lukeStyle.scss'
+import swal from '@sweetalert/with-react'
+import ImageUploader from 'react-images-upload';
 
 
 class AddMemberBook extends React.Component {
     constructor(){
       super()
       this.state = {
+        isbn: '',
         name: '',
-        email: '',
-        number: '',
-        nickname:'',
-        birthday:'',
-        mobile:'',
-        address:'',
-        member: {}
+        author: '',
+        publishing:'',
+        publishDate:'',
+        version:'',
+        price:'',
+        pages:'',
+        savingStatus:'',
+        memberNo: JSON.parse(localStorage.getItem('user')).MR_number,
+        categories:'',
+        remark: '',
+        pictures: [],
+        // categoriesItem:""
       }
+      this.handleChange = this.handleChange.bind(this)
+      this.addBooks = this.addBooks.bind(this)
+      this.onDrop = this.onDrop.bind(this);
     }
 
-
+    //分類按鈕點擊後印出文字
     handleSubmit = (e) => {
       e.preventDefault();
       const { categories } = this.form;
-      console.log(categories, categories.value);
+      console.log(categories.value);
+      this.setState({categories: categories.value})
+    }
+
+    //輸入轉值
+  handleChange(e){
+    //解構賦值
+    const {name, value} = e.target
+    this.setState({[name]:value})
+  }
+
+    //點擊觸發圖片
+    // onChangeHandler(e){
+    //   console.log(11111);
+    //   console.log(e.target.files[0]);
+    //   this.setState({
+    //     selectedFile: e.target.files[0],
+    //   })
+    // }
+  
+    //取出分類
+    // getCategories(){
+    //   fetch('http://localhost:5555/member/categories')
+    //     .then(res=>{
+    //       return res.json()
+    //     })
+    //     .then(categories=>{
+    //       // console.log(categories.row);
+    //       let categoriesItem = categories.row
+    //       let item = categoriesItem.map(items=>{ 
+    //         console.log(1, items);
+    //       })
+    //       console.log(2, item);
+          
+    //     })
+    // }
+
+    onDrop(picture){
+      console.log(picture);
+      
+      this.setState({
+        pictures: this.state.pictures.concat(picture),
+      });
+    }
+
+    onClickhandler(){
+    const formData = new FormData()
+    let fileField = document.querySelector("input[type='file']")
+    // formData.append('username', 'abc')
+    formData.append('avatar', fileField.files[0])
+    // const formData = new FormData() 
+    // data.appen2d('file', this.state.selectedFile)
+
+
+    fetch('http://localhost:5555/member/upload',{
+      method: 'POST',
+      credentials: 'include',
+      body: formData
+    })
+    .then(res =>{
+      console.log("res:", res);
+      
+      return res.json()
+    })
+    .then(img =>{
+      console.log(img);
+      
+    })
+  }
+
+
+
+
+    success (status, message){
+      swal({
+        title: status,
+        text: message,
+        icon: "success",
+        button: "OK",
+      })
+      .then((title) =>{
+        if(title === "上架書籍成功"){
+          swal('可以參加配對活動!', {
+            icon: 'success',
+          })
+        }
+      })
     }
   
-    
+    fail(status, message){
+      swal({
+        title: status,
+        text: message,
+        icon: "error",
+        button: "OK",
+      })
+    }
+
+
+    //上架書籍
+    addBooks(){
+      // let isbn = this.state.isbn
+      // let name = this.state.name
+      // let author = this.state.author
+      // let publishing = this.state.publishing
+      // let publishDate = this.state.publishDate
+      // let version = this.state.version
+      // let price = this.state.price
+      // let pages = this.state.pages
+      // let savingStatus = this.state.savingStatus
+      // let memberNo = this.state.memberNo
+      // let categories = this.state.categories
+      // let remark = this.state.remark
+      // console.log(isbn, name, author, publishing, publishDate, version, version,
+      //   price, pages, savingStatus);
+      
+      console.log('addbooks')
+
+
+      fetch('http://localhost:5555/member/addBook', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+              body: JSON.stringify({
+                isbn : this.state.isbn,
+                name : this.state.name,
+                author : this.state.author,
+                publishing : this.state.publishing,
+                 publishDate : this.state.publishDate,
+                 version : this.state.version,
+                 price : this.state.price,
+                 pages : this.state.pages,
+                 savingStatus : this.state.savingStatus,
+                 memberNo : this.state.memberNo,
+                 categories : this.state.categories,
+                 remark : this.state.remark,
+              })
+            })
+            .then( response =>{
+              if(!response) throw new Error(response.statusText)
+              console.log('3'+response);
+              return response.json()
+            })
+            .then(data => {
+              let status = data.status
+              let message = data.message
+              console.log("新增書籍",data);
+              if(data.status === "上架書籍成功"){
+                this.success(status, message)
+              }
+              if(status === "上架書籍失敗"){
+                console.log(status, message)
+                this.fail(status, message)
+              }
+            })
+            .catch(error => {
+              console.log('error = ' + error);
+            })
+      
+    }
 
 
 
 
       render(){
+    
+
           return(
               <>
                   <div className="addMemberBook">
@@ -41,80 +211,100 @@ class AddMemberBook extends React.Component {
 
                                 <div style={{marginTop: '10px'}}>
 
-                                    <section name="" id="" className="d-flex">
+                                    <section className="d-flex">
                                         <section style={{minWidth:'640px', margin:'0px 30px'}}>
                                             <div className="form-group">
-                                                <label for="mb_isbn">ISBN</label>
+                                                <label htmlFor="mb_isbn">ISBN</label>
                                                 <span id="mb_isbnHelp" style={{margin:'0px 10px', color:'red'}}></span>
-                                                <input type="text" className="form-control" id="mb_isbn" name="mb_isbn"/>
+                                                <input type="text" className="form-control" id="isbn" name="isbn"
+                                                  value={this.state.isbn} onChange={this.handleChange} />
                                             </div>
                                             <div className="form-group">
-                                                <label for="mb_name">書名</label>
+                                                <label htmlFor="mb_name">書名</label>
                                                 <span id="mb_nameHelp" style={{margin:'0px 10px',color:'red'}}></span>
-                                                <input type="text" className="form-control" id="mb_name" name="mb_name"/>
+                                                <input type="text" className="form-control" id="mb_name" name="name"
+                                                  value={this.state.name} onChange={this.handleChange}
+                                                />
                                             </div>
                                             <div className="form-group">
-                                                <label for="mb_author">作者</label>
+                                                <label htmlFor="mb_author">作者</label>
                                                 <span id="mb_authorHelp" style={{margin:'0px 10px', color:'red'}}></span>
-                                                <input type="text" className="form-control" id="mb_author" name="mb_author"/>
+                                                <input type="text" className="form-control" id="mb_author" 
+                                                name="author" value={this.state.author} onChange={this.handleChange}/>
                                             </div>
                                             <div className="form-group">
-                                                <label for="mb_publishing">出版社</label>
+                                                <label htmlFor="mb_publishing">出版社</label>
                                                 <span id="mb_publishingHelp" style={{margin:'0px 10px', color:'red'}}></span>
-                                                <input type="text" className="form-control" id="mb_publishing" name="mb_publishing" />
+                                                <input type="text" className="form-control" id="mb_publishing" 
+                                                name="publishing" value={this.state.publishing} onChange={this.handleChange}/>
                                             </div>
                                             <div className="form-group">
-                                                <label for="mb_publishDate">出版日期</label>
+                                                <label htmlFor="mb_publishDate">出版日期</label>
                                                 <span id="mb_publishDateHelp" style={{margin:'0px 10px', color:'red'}}></span>
-                                                <input type="text" className="form-control" id="mb_publishDate" name="mb_publishDate" />
+                                                <input type="text" className="form-control" id="mb_publishDate" 
+                                                name="publishDate" value={this.state.publishDate} onChange={this.handleChange}/>
                                             </div>
                                             <div className="form-group">
-                                                <label for="mb_version">版本</label>
+                                                <label htmlFor="mb_version">版本</label>
                                                 <span id="mb_mb_versionHelp" style={{margin:'0px 10px', color:'red'}}></span>
-                                                <input type="text" className="form-control" id="mb_version" name="mb_version" />
+                                                <input type="text" className="form-control" id="mb_version" 
+                                                name="version" value={this.state.version} onChange={this.handleChange}/>
                                             </div>
                                             <div className="form-group">
-                                                <label for="mb_fixedPrice">定價</label>
+                                                <label htmlFor="mb_fixedPrice">定價</label>
                                                 <span id="mb_fixedPriceHelp" style={{margin:'0px 10px', color:'red'}}></span>
-                                                <input type="text" className="form-control" id="mb_fixedPrice" name="mb_fixedPrice" />
+                                                <input type="text" className="form-control" id="mb_fixedPrice" 
+                                                name="price" value={this.state.price} onChange={this.handleChange}/>
                                             </div>
                                             <div className="form-group">
-                                                <label for="mb_page">頁數</label>
+                                                <label htmlFor="mb_page">頁數</label>
                                                 <span id="mb_pageHelp" style={{margin:'0px 10px', color:'red'}}></span>
-                                                <input type="text" className="form-control" id="mb_page" name="mb_page" />
+                                                <input type="text" className="form-control" id="mb_page" 
+                                                name="pages" value={this.state.pages} onChange={this.handleChange}/>
                                             </div>
                                         </section>
                                         <section style={{minWidth:'640px', margin:'0px 30px'}}>
                                             <div className="form-group">
-                                                <label for="mb_savingStatus">書況</label>
+                                                <label htmlFor="mb_savingStatus">書況</label>
                                                 <span id="mb_savingStatusHelp" style={{margin:'0px 10px', color:'red'}}></span>
-                                                <input type="text" className="form-control" id="mb_savingStatus" name="mb_savingStatus" />
+                                                <input type="text" className="form-control" id="mb_savingStatus" 
+                                                name="savingStatus" value={this.state.savingStatus} onChange={this.handleChange}/>
                                             </div>
                                             <div className="form-group">
-                                                <label for="mb_shelveMember">上架會員</label>
+                                                <label htmlFor="mb_shelveMember">上架會員</label>
                                                 <span id="mb_shelveMemberHelp" style={{margin:'0px 10px', color:'red'}}></span>
-                                                <input type="text" className="form-control" id="mb_shelveMember" name="mb_shelveMember" />
+                                                <input type="text" className="form-control" id="mb_shelveMember" 
+                                                  name="shelveMember" value={this.state.memberNo} 
+                                                  style={{textAlign: "center"}} disabled="disabled"
+                                                />
                                             </div>
 
                                             <div className="form-group d-flex">
                                                 <div id="chose_pic" className="col-lg-4">
-                                                    <label for="mb_pic" style={{fontSize: '20px'}} >・請選擇書籍照片</label>
-                                                    <input type="file" className="form-control-file" id="mb_pic" name="mb_pic[]" style={{display:'none'}} multiple />
                                                     <br />
-                                                    <button className="btn btn-outline-primary my-2 my-sm-0" type="button" >
-                                                        <i className="fas fa-plus-circle" style={{marginRight:'5px'}}></i>選擇檔案
+                                                    {/* <button htmlFor="mb_pic" className="form-group btn btn-outline-primary my-2 my-sm-0" type="button" >
+                                                    <input className=" " type="file" name="file" style={{fontSize: '20px'}} onChange={this.onChangeHandler} multiple/>・請選擇書籍照片
+                                                     <button type="button" className="btn btn-success btn-block" onClick={this.onClickhandler}>Upload</button> 
                                                     </button>
                                                     <div style={{height:'50px',  marginTop:'10px'}}>
                                                         <span style={{margin:'0px 20px'}} className="my_text_blacktea_fifty">最多上傳三張圖片</span>
-                                                    </div>
+                                                    </div> */}
+                                                    <ImageUploader
+                                                        withIcon={true}
+                                                        buttonText='Choose images'
+                                                        onChange={this.onDrop}
+                                                        style={{width:'600px', height:'170px'}}
+                                                        imgExtension={['.jpg', '.gif', '.png', '.gif']}
+                                                        maxFileSize={5242880}
+                                                    />
                                                 </div>
-                                                <div className="pre_pic col-lg-3">
+                                                {/* <div className="pre_pic col-lg-3">
                                                     <img style={{objectFit: 'contain', width: '100%', height: '100%'}} id="demo" /> 
-                                                </div>
+                                                </div> */}
 
                                             </div>
                                             <div className="form-group" style={{margin: '0px 10px 10px 0px'}}>
-                                                <label for="mb_categories" className="update_label">分類</label>
+                                                <label htmlFor="mb_categories" className="update_label">分類</label>
                                                 <span id="mb_categoriesHelp" style={{margin:'0px 10px',color:'red'}}></span>
                                                 <div className="d-flex flex-wrap">
                                                 <form
@@ -208,14 +398,40 @@ class AddMemberBook extends React.Component {
                                                 </div>
                                             </div>
                                             <div className="from-group" style={{margin: '10px 20px 0px 0px'}}>
-                                                <label for="mb_remarks" className="update_label">備註</label>
-                                                <textarea className="update form-control" name="mb_remarks" id="mb_remarks" rows="5" style={{width:'680px', height:'90px', resize:'none'}}></textarea>
+                                                <label htmlFor="mb_remarks" className="update_label">備註</label>
+                                                <textarea className="update form-control" name="remark" id="mb_remarks" rows="5" style={{width:'680px', height:'90px', resize:'none'}}
+                                                value={this.state.remark} onChange={this.handleChange}
+                                                ></textarea>
                                             </div>
                                         </section>
                                     </section>
                                 </div>
                             </div>
-                        </div>
+                            
+                              <div className="d-flex button-group">
+                                <div>
+                                  <button
+                                    style={{ width: '130px' }}
+                                    type="submit"
+                                    className="btn btn-warning"
+                                    id="submit_btn"
+                                  >
+                                    &nbsp;取&nbsp;&nbsp;&nbsp;消&nbsp;
+                                  </button>
+                                </div>
+                                <div>
+                                  <button
+                                    style={{ width: '130px' }}
+                                    type="submit"
+                                    className="btn btn-warning"
+                                    id="submit_btn"
+                                    onClick={this.addBooks}
+                                  >
+                                    &nbsp;確&nbsp;認&nbsp;修&nbsp;改&nbsp;
+                                  </button>
+                                </div>
+                              </div>
+                          </div>
                     </section>
                 </div>
               </>
