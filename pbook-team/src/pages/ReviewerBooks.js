@@ -40,8 +40,7 @@ class ReviewerBooks extends React.Component {
         reviewerData = ss[i]
       }
     }
-    // 書櫃裡的書
-    let as = reviewerData.bookcase
+
     return (
       <>
         <BR_Navbar />
@@ -64,7 +63,7 @@ class ReviewerBooks extends React.Component {
 
           {/* 書評列表 */}
           {/* {as.map((bookcase) => (
-            <BR_BookcaseList bookcase={bookcase}></BR_BookcaseList>
+            <BR_BookcaseList bookcase={reviewerData.bookcase}></BR_BookcaseList>
           ))} */}
 
         </section>

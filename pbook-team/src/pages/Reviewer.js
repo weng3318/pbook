@@ -37,7 +37,7 @@ export class Reviewer extends React.Component {
         {/* <Chat sid="MR00001"/> */}
         {/* {Data */}
         {this.state.brData
-        .map(({ sid, title, img, name, job, intro, youtube, facebook, twitter, tube,}) => (
+        .map(({ sid, title, img, name, job, intro, bookcase, youtube, facebook, twitter, tube,}) => (
             <BR_ReviewerList
               key={sid}
               to={'/ReviewerBooks/' + sid}
@@ -47,6 +47,7 @@ export class Reviewer extends React.Component {
               name={name}
               job={job}
               title={title}
+              bookcase={bookcase}
               youtube={youtube}
               facebook={facebook}
               intro={intro}
@@ -58,7 +59,7 @@ export class Reviewer extends React.Component {
         {/* {Data */}
         {this.state.brData
           .filter(({ name }) => '' == name)
-          .map(({ sid, title, img, name, job, intro, youtube, facebook, twitter, tube,}) => (
+          .map(({ sid, title, img, name, job, intro, bookcase, youtube, facebook, twitter, tube,}) => (
             <BR_ReviewerList
              key={sid}
               to={'/ReviewerBooks/' + sid}
@@ -68,6 +69,7 @@ export class Reviewer extends React.Component {
               name={name}
               job={job}
               title={title}
+              bookcase={bookcase}
               youtube={youtube}
               facebook={facebook}
               intro={intro}

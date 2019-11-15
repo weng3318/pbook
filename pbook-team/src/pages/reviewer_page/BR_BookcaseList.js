@@ -1,7 +1,7 @@
 import React from 'react'
 
 class BR_BookcaseList extends React.Component {
-    render() {
+    render(props) {
         return (
             <>
 <section className="ReviewerListAllBox_Bookcase reviewerList">

@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 
 class BR_ReviewerList extends React.Component {
   render(props) {
-    // console.log(this.props)
     return (
       <>   
 <section className="ReviewerListAllBox reviewerList">
