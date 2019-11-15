@@ -91,11 +91,11 @@ class TopicPage extends React.Component {
                   </Nav>
                 </div>
               </div>
-              {/* <Link to="/forum/post"> */}
-              <div className="subBar-item ">
-                <ButtonUI name="我想發文" color="secondary"></ButtonUI>
-              </div>
-              {/* </Link> */}
+              <Link to="/forum/post">
+                <div className="subBar-item ">
+                  <ButtonUI name="我想發文" color="secondary"></ButtonUI>
+                </div>
+              </Link>
             </div>
             <Carousel />
             <div className="cards-wrapper">

@@ -1,6 +1,6 @@
 import './scss/PostArticle.scss'
-import React from 'react'
-import ForumNavBar from './ForumNavBar'
+import React, { useState } from 'react'
+import CustomizedDialogs from '../../components/Material-UI/Dialog'
 import { makeStyles } from '@material-ui/core/styles'
 import InputLabel from '@material-ui/core/InputLabel'
 import Input from '@material-ui/core/Input'
@@ -9,13 +9,16 @@ import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
+import ViewHeadlineIcon from '@material-ui/icons/ViewHeadline'
+import TextareaAutosize from 'react-textarea-autosize'
+import Divider from '@material-ui/core/Divider'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
 import SearchIcon from '@material-ui/icons/Search'
 import InboxIcon from '@material-ui/icons/Inbox'
 import VideoLibraryIcon from '@material-ui/icons/VideoLibrary'
-import ViewHeadlineIcon from '@material-ui/icons/ViewHeadline'
-import TextareaAutosize from 'react-textarea-autosize'
+import PostAddIcon from '@material-ui/icons/PostAdd'
+import CancelIcon from '@material-ui/icons/Cancel'
 
 const useStyles = makeStyles(theme => ({
   formControl: {
@@ -28,15 +31,35 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.paper,
   },
 }))
+
 function ListItemLink(props) {
   return <ListItem button component="a" {...props} />
 }
 
 const PostAritcle = props => {
   const classes = useStyles()
+  const [count, setCount] = useState(0)
+  const [data, setData] = useState('')
+  const [append, setAppend] = useState([
+    <TextareaAutosize autoFocus />,
+    <div>123</div>,
+  ])
 
   const handleClick = e => {
-    console.log(e.target)
+    append[count] = <appendExample key={count} />
+    console.log(append)
+    setCount(count => {
+      return count + 1
+    })
+  }
+  const handleUpload = e => {
+    let file1 = document.querySelector('#file1').files[0]
+    let reader = new FileReader()
+
+    reader.readAsDataURL(file1)
+    reader.addEventListener('load', function(event) {
+      setData(event.target.result)
+    })
   }
 
   const handleChange = e => {}
@@ -50,12 +73,7 @@ const PostAritcle = props => {
         <div className=" aside position-a">
           <div className={classes.root}>
             <List component="nav" aria-label="main mailbox folders">
-              <ListItem button>
-                <ListItemIcon>
-                  <InboxIcon />
-                </ListItemIcon>
-                <ListItemText primary="插入圖片" />
-              </ListItem>
+              <CustomizedDialogs />
               <ListItem button>
                 <ListItemIcon>
                   <SearchIcon />
@@ -73,6 +91,19 @@ const PostAritcle = props => {
                   <ViewHeadlineIcon />
                 </ListItemIcon>
                 <ListItemText primary="插入新段落" />
+              </ListItem>
+              <Divider />
+              <ListItem button>
+                <ListItemIcon>
+                  <PostAddIcon />
+                </ListItemIcon>
+                <ListItemText primary="發表文章" />
+              </ListItem>
+              <ListItem button>
+                <ListItemIcon>
+                  <CancelIcon />
+                </ListItemIcon>
+                <ListItemText primary="取消發表" />
               </ListItem>
             </List>
             <List component="nav" aria-label="secondary mailbox folders"></List>
@@ -96,18 +127,14 @@ const PostAritcle = props => {
                   </Select>
                 </FormControl>
               </div>
-              <h2
-                className="title-title"
-                contentEditable="true"
-                id="title"
-                onClick={handleChange}
-              >
+              <h2 className="title-title" id="title" onClick={handleChange}>
                 <input type="text" placeholder="Title"></input>
               </h2>
             </div>
           </div>
           <section>
-            <TextareaAutosize />
+            <button onClick={handleClick}>add</button>
+            {append}
           </section>
         </div>
       </div>
@@ -115,3 +142,15 @@ const PostAritcle = props => {
   )
 }
 export default PostAritcle
+
+const imgComponent = (props, handleUpload, data) => {
+  return (
+    <>
+      <input type="file" onChange={handleUpload} id="file1"></input>
+      <img src={data} id="demoImg"></img>
+    </>
+  )
+}
+const appendExample = props => {
+  return <div>{props.key}</div>
+}

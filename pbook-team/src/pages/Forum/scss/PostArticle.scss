@@ -10,14 +10,16 @@
     width: 100%;
     overflow: auto;
     height: 120px;
+    resize: none;
+    
   }
-.faketext{
-  padding: 8px 24px;
-  display: block;
-  border:2px silver solid;
-  width: 100%;
-  word-break: normal;
-}
+  .faketext {
+    padding: 8px 24px;
+    display: block;
+    border: 2px silver solid;
+    width: 100%;
+    word-break: normal;
+  }
   .dis-play {
     display: flex;
   }
@@ -48,7 +50,7 @@
       @extend %card-module;
       height: 500px;
       .title-line {
-        background: $season-green;
+        background: $grass-yellow;
         height: 5px;
         width: 100%;
       }
