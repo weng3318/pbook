@@ -65,6 +65,8 @@ app.use("/nana_use", require("./src/nana_use/chatList2"));
 app.use("/nana_use", require("./src/nana_use/chatMessage2"));
 // app.use("/nana_use", require("./src/nana_use/myDataList"));
 app.use("/nana_use", require("./src/nana_use/myDataList2"));
+app.use("/nana_use", require("./src/nana_use/pairedMemberBooks"));
+app.use("/nana_use", require("./src/nana_use/myBooks"));
 app.use("/nana_use", require("./src/nana_use/countDown"));
 app.use("/books", require(__dirname + '/src/books/book_categories'));
 app.use("/books", require(__dirname + '/src/books/book_data'));

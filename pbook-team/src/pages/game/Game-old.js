@@ -8,7 +8,6 @@ import 'slick-carousel/slick/slick-theme.css'
 import './changeGame.css'
 import BGsound from './BGsound'
 import MyCountdown from './MyCountdown'
-import GameRule from './GameRule'
 
 class Game extends React.Component {
   constructor(props) {
@@ -33,7 +32,15 @@ class Game extends React.Component {
         window.location.href = '/'
       })
     } else {
-      this.setState({ status: 'gameBookList' })
+      // console.log(Object.values(this.state.myBooks))
+      // for (var i = 0; i < Object.values(this.state.myBooks).length - 1; i++) {
+      //   Object.values(this.state.myBooks)[i]["mb_status"] === "1")
+      // }
+      console.log(Object.values(this.state.myBooks))
+
+      // Object.values(this.state.myBooks)
+
+      // this.setState({ status: 'gameBookList' })
     }
   }
 
@@ -52,67 +59,31 @@ class Game extends React.Component {
   }
 
   componentDidMount() {
-    let startTime = new Date().getTime()
-    let myBooks
-    axios
-      .post(`http://localhost:5555/nana_use/myBooks`, {
-        memberId: JSON.parse(localStorage.getItem('user')).MR_number,
-      })
-      .then(res => {
-        myBooks = res.data
-        // 如果書籍列表跟建立時間都為空,則執行ajax去拿資料
+    axios.get(`http://localhost/php-api/game.php`).then(res => {
+      const persons = res.data
+      for (var i = 0; i < persons.length; i++) {
+        // console.log('persons', persons[i])
         if (
-          localStorage.getItem('GamePairedMemberBooks') === null &&
-          localStorage.getItem('GameCreatedTime') === null
+          persons[i][0]['mb_shelveMember'] ===
+          JSON.parse(localStorage.getItem('user')).MR_number
         ) {
-          return axios.post(
-            `http://localhost:5555/nana_use/pairedMemberBooks`,
-            {
-              memberId: JSON.parse(localStorage.getItem('user')).MR_number,
-            }
-          )
+          console.log('第一組')
+          this.setState({
+            myBooks: persons[i][0],
+            pairedMemberBooks: persons[i][1],
+          })
         } else if (
-          // 如果書籍列表有資料,但現在時刻大於建立時刻那也可以去拿資料
-          localStorage.getItem('GamePairedMemberBooks') !== null &&
-          startTime >
-            JSON.parse(localStorage.getItem('GameCreatedTime')) + 21600000
+          persons[i][1]['mb_shelveMember'] ===
+          JSON.parse(localStorage.getItem('user')).MR_number
         ) {
-          return axios.post(
-            `http://localhost:5555/nana_use/pairedMemberBooks`,
-            {
-              memberId: JSON.parse(localStorage.getItem('user')).MR_number,
-            }
-          )
-        } else {
-          return '去localStorage拿資料啦'
-        }
-      })
-      .then(res => {
-        if (res === '去localStorage拿資料啦') {
+          console.log('第二組')
           this.setState({
-            pairedMemberBooks: JSON.parse(
-              localStorage.getItem('GamePairedMemberBooks')
-            ),
-            myBooks: myBooks,
+            myBooks: persons[i][1],
+            pairedMemberBooks: persons[i][0],
           })
-        } else {
-          this.setState({
-            pairedMemberBooks: res.data,
-            myBooks: myBooks,
-          })
-          localStorage.setItem(
-            'GamePairedMemberBooks',
-            JSON.stringify(res.data)
-          )
-          localStorage.setItem(
-            'GameCreatedTime',
-            JSON.stringify(new Date().getTime())
-          )
         }
-      })
-      .catch(error => {
-        console.log('COMPONENTDIDMOUNT AJAX時有錯誤', error)
-      })
+      }
+    })
   }
 
   render() {
@@ -152,7 +123,7 @@ class Game extends React.Component {
               position: 'absolute',
               top: '0',
               left: '0',
-              zIndex: 20,
+              zIndex: 999,
             }}
           >
             <div className="changeGameIndexBG">
@@ -163,7 +134,7 @@ class Game extends React.Component {
                   src={require('./images/PC-changeGameIndexContext.png')}
                   alt="電腦版"
                 />
-                <div className="d-flex position-absolute PC-changeGameBtnWrap">
+                <div className="position-absolute d-flex PC-changeGameBtnWrap">
                   <img
                     id="btn"
                     src={require('./images/start-black.png')}
@@ -174,12 +145,6 @@ class Game extends React.Component {
                     src={require('./images/back-black.png')}
                     alt="電腦版退出按鈕"
                     onClick={this.handleBackGame}
-                  />
-                  <img
-                    src={require('./images/cfm-black.png')}
-                    alt="電腦版查看配對狀態按鈕"
-                    // onClick={this.handleBackGame}
-                    // 還沒寫
                   />
                 </div>
               </div>
@@ -211,7 +176,6 @@ class Game extends React.Component {
     } else if (this.state.status === 'gameBookList') {
       return (
         <>
-          <GameRule />
           <audio
             id="audio"
             hidden={true}
@@ -227,7 +191,7 @@ class Game extends React.Component {
               position: 'absolute',
               top: '0',
               left: '0',
-              zIndex: 20,
+              zIndex: 999,
             }}
           >
             <div className="changeGameIndexBG">
