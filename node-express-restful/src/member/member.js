@@ -2,14 +2,13 @@ import express from 'express'
 import db from './db/database'
 import member from './domain/member'
 import login from './domain/login'
-import session from 'express-session'
 const router = express.Router()
 
 var Member = new member()
 
 //註冊
 router.post('/register', (req, res, next) => {
-    let Member = new member(req.body.name, req.body.email, req.body.password)
+    let Member = new member(req.body.name, req.body.email, req.body.password, req.body.filename)
     let number_blank = "MR00000"
     let new_number =""
     //驗證email格式
@@ -23,13 +22,8 @@ router.post('/register', (req, res, next) => {
 
         // 尋找是否有重複的email
         db.query(Member.queryEmail(), (err, rows) => {
-            console.log(rows);
+            // console.log(rows);
             
-                if(err){
-                    res.status(404).json({
-                       message: "伺服器錯誤，請稍後在試！"
-                    })
-                }
                 // 如果有重複的email
                 if(rows.length >=1){
                     res.json({
@@ -38,8 +32,9 @@ router.post('/register', (req, res, next) => {
                      })
                      return
                 }else{
+
                     db.query(`SELECT MAX(sid) FROM mr_information`,(err, data)=>{
-                       new_number = number_blank.slice(0, -3)+  data[0]['MAX(sid)']
+                       new_number = number_blank.slice(0, -3)+ (data[0]['MAX(sid)']+1)
                     //    res.json(new_number)
                        db.query(Member.getAddMemberSql(new_number), (err, data) => {
                            if(err){
@@ -52,7 +47,7 @@ router.post('/register', (req, res, next) => {
                            // 若寫入資料庫成功，則回傳給clinet端下：
                            res.json({
                                status: "註冊成功",
-                               message:"歡迎" + req.body.name + "的登入!",
+                               message:"歡迎" + req.body.name + "的加入!",
                             })
                          })
                     })
@@ -81,24 +76,60 @@ router.post('/login', (req, res, next) => {
             })
             return
         }else{
-            // res.locals.userId = rows[0].sid;
-            // req.session.sid = res.locals.userId; 
-            // console.log(req.session.sid);
-            // console.log("req", req);
             //設定session
-            req.session.memberId =  rows[0].MR_number
-            console.log("session", req.session);           
-            console.log("headers",req.headers);
+            // 在session內塞memberData物件，用來存放會員資料
+            req.session.memberData = {
+                memberId: rows[0].MR_number,
+                memberLv: rows[0].MR_personLevel,
+            } 
+            console.log(req.session);
+            
+            // console.log(req.session);
             
             res.json({
                 status:"登入成功",
                 message:"歡迎" + rows[0].MR_name + "的登入!",
-                info: rows[0]
+                info: rows[0],
             })
         }
     })
 
 })
+
+//查詢分類
+router.get('/categories', (req, res, next)=>{
+    db.query(Member.queryCategories(), (err, row)=>{
+        res.json({
+            row
+        })
+    })
+})
+
+//修改會員密碼
+router.post('/changePassword', (req, res, next)=>{
+    let number = req.body.number
+    let password = req.body.password
+    db.query(Member.changePassword(number,password), (err, row)=>{
+
+        if(err) return res.json({err: err})
+        console.log(row.changedRows);
+        if(row.changedRows == 0){
+
+            res.json({
+                status: "修改密碼失敗",
+                message: "會員編號有誤"
+            })
+            return
+        }
+        else{
+            res.json({
+                status: "修改密碼成功",
+                message: "完成密碼更新"
+            })
+        }
+    })
+})
+
 
 
 //查詢會員資料
@@ -130,18 +161,37 @@ router.post('/edit', (req, res, next)=>{
     })
 })
 
-
-
-
-
-
-
-//登出，清除session
-router.get('/logout', (req, res)=>{
-    req.session.destroy()
-    res.redirect('/login')
-})
-
+//前端上傳圖片
+const multer =require('multer')
+const upload =multer({dest:'tmp_uploads/'})
+const fs = require('fs')
+router.post('/upload', upload.single('avatar'),(req, res) =>{
+        console.log("avatar",  req.body.avatar);
+        if(req.file && req.file.mimetype){
+            // console.log(req.file);
+    
+            switch(req.file.mimetype){
+                case 'image/png':
+                case 'image/jpeg':
+                    fs.createReadStream(req.file.path)
+                        .pipe(
+                            fs.createWriteStream('public/images/member/' + req.file.originalname)
+                        )
+                        // console.log(req.file.filename);
+                        
+                        res.json({
+                           filename: req.file.originalname
+                        })
+                        break;
+                default:
+                    return res.send('bad file type')
+            }
+        }else{
+            res.json({
+                filename: ""
+            })
+        }
+    })
 
 
 

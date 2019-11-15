@@ -28,6 +28,22 @@ $content: 24px;
   border-bottom: 3px solid $yellow;
 }
 
+//新增會員書籍
+.addMemberBook{
+
+    .Book_title{
+      margin: 20px;
+      font-size: 32px;
+      margin-top: 50px;
+      padding-left: 60px;
+      padding-bottom: 50px;
+      width: 1400px;
+      border-bottom: 3px solid $yellow;
+    }
+
+}
+
+
 //會員編輯的樣式
 .editWrap{
   @extend .contentWrap;
@@ -184,6 +200,7 @@ $content: 24px;
   display: flex;
   flex-direction: column;
   box-shadow: 5px 0px 10px #9cc5a1;
+  text-decoration: none;
 
   .sidebar {
     padding-left: 60px;
@@ -193,6 +210,7 @@ $content: 24px;
     // border: 1px solid #000;
     font-size: 28px;
     color: $black;
+    text-decoration: none;
 
     h2 {
       text-decoration: none !important;
@@ -204,10 +222,11 @@ $content: 24px;
     font-size: 24px;
 
     a {
+      font-size: $title;
       color: $black;
     }
     a:hover {
-      color: chocolate;
+      color: $yellow;
       text-decoration: none;
     }
   }

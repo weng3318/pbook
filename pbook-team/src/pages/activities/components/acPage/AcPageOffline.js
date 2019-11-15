@@ -1,25 +1,29 @@
 /* eslint-disable jsx-a11y/anchor-has-content */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from 'react'
+import React, { useEffect } from 'react'
 import './acPageOffline.scss'
 import { connect } from 'react-redux'
-import { acFetch } from '../../AcActions'
-// import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
-let count = 0
-const AcPage = props => {
-  let item
-  function getData(acType, acId) {
-    item =
-      props.acData[acType] &&
-      props.acData[acType].items.filter(v => {
-        return +v.sid === +acId
-      })
-    if (!item) props.dispatch(acFetch('discount'))
-  }
-  getData(props.acType, props.match.params.acId)
+import { fetchAcList } from '../../AcActions'
 
+// import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
+
+const AcPageOffline = props => {
+  // ------若store裡沒有活動列表資料，就拿取資料--------
+  useEffect(() => {
+    if (!props.acData.offline.data.length) {
+      props.dispatch(fetchAcList('offline'))
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+  // -----------------------------------------------
+  // ------------取得該項活動資料-----------
+  let acId = props.match.params.acId
+  let item = props.acData.offline.data.filter(v => {
+    return +v.sid === +acId
+  })
   if (!item || !item.length) return <></>
   item = item[0]
+  // --------------------------------------
   return (
     <>
       <div className="container acPage">
@@ -33,9 +37,13 @@ const AcPage = props => {
         <div className="row">
           <main className="col-md-9">
             <div className="info my-3">
-              <small><time>時間：{item.date.substr(0, 10)}</time></small>
+              <small>
+                <time>時間：{item.date.substr(0, 10)}</time>
+              </small>
               <br />
-              <small><span>地點：{item.location}</span></small>
+              <small>
+                <span>地點：{item.location}</span>
+              </small>
             </div>
             <header className="py-3">
               <h1>{item.title}</h1>
@@ -92,4 +100,4 @@ const mapStateToProps = state => ({
   acType: state.acType,
   acData: state.acData,
 })
-export default connect(mapStateToProps)(AcPage)
+export default connect(mapStateToProps)(AcPageOffline)

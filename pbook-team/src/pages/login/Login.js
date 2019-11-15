@@ -18,11 +18,14 @@ class Login extends React.Component {
       captcha:"",
       error: '',
       memberData:{},
-      login: false
+      login: false,
+      selectedFile: null
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleLogin = this.handleLogin.bind(this)
     this.handleRegister = this.handleRegister.bind(this)
+    this.onChangeHandler = this.onChangeHandler.bind(this)
+    // this.onClickhandler = this.onClickhandler.bind(this)
   }
 
   success (status, message){
@@ -46,8 +49,6 @@ class Login extends React.Component {
   }
 
   fail(status, message){
-    console.log(1111);
-    
     swal({
       title: status,
       text: message,
@@ -58,23 +59,26 @@ class Login extends React.Component {
 
 
   handleChange(e){
-    const name = e.target.name
-    const obj = {};
-    obj[name] = e.target.value;
-    this.setState(obj, ()=>{
-      // console.log(this.state)
-    });
+    // const name = e.target.name
+    // const obj = {};
+    // obj[name] = e.target.value;
+    // this.setState(obj, ()=>{
+    //   // console.log(this.state)
+    // });
 
     //解構賦值
-    // const {name, value} = e.target
-    // console.log(name, value);
+    const {name, value} = e.target
+    this.setState({[name]:value})
   }
 
+  //判斷姓名欄位字數
   checkName(name){
     const re = /^\S{3,}/;
     const result = re.test(name);
     return result
   }
+
+
 
   //判斷email格式
   checkEmail(email) {
@@ -91,10 +95,42 @@ class Login extends React.Component {
     return result
   }
 
+  onChangeHandler(e){
+    console.log(e.target.files[0]);
+    this.setState({
+      selectedFile: e.target.files[0],
+    })
+  }
+
+
+  // onClickhandler(){
+  //   const formData = new FormData()
+  //   let fileField = document.querySelector("input[type='file']")
+  //   // formData.append('username', 'abc')
+  //   formData.append('avatar', fileField.files[0])
+  //   // const formData = new FormData() 
+  //   // data.appen2d('file', this.state.selectedFile)
+
+
+  //   fetch('http://localhost:5555/member/upload',{
+  //     method: 'POST',
+  //     credentials: 'include',
+  //     body: formData
+  //   })
+  //   .then(res =>{
+  //     console.log("res:", res);
+      
+  //     return res.json()
+  //   })
+  //   .then(img =>{
+  //     console.log(img);
+      
+  //   })
+  // }
+
 
 
   handleLogin (e){
-    // console.log("handleLogin");
     
     fetch('http://localhost:5555/member/login', {
       method: 'POST',
@@ -136,7 +172,8 @@ class Login extends React.Component {
       }
     })
     .catch(error => {
-      console.log('error = ' + error);
+      let err = error
+      this.fail(err)
     })
     
   }
@@ -177,43 +214,69 @@ class Login extends React.Component {
         isPass = true
       } 
       // this.setState({name: "字數太少囉",password: "格式或密碼有誤", password2: "請再重新輸入"})
-    console.log(isPass);
+    // console.log("isPass",isPass);
+
+    const formData = new FormData()
+      let fileField = document.querySelector("input[type='file']")
+      formData.append('avatar', fileField.files[0])
     
     if(isPass){
-    fetch('http://localhost:5555/member/register', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            name: this.state.name,
-            email: this.state.email,
-            password: this.state.password
+      let imgFile = ""
+      //目前想說新增完圖片再塞入修改資料
+      fetch('http://localhost:5555/member/upload',{
+            method: 'POST',
+            credentials: 'include',
+            body: formData
           })
-        })
-        .then( response => {
-          if(!response) throw new Error(response.statusText)
-          // console.log('3'+response);
+          .then(res =>{
+            // console.log("res:", res);
+            return res.json()
+          })
+          .then(img =>{
+            imgFile = img.filename
+            // console.log(imgFile);
+
           
-          return response.json()
-        })
-        .then(data => {
-          let status = data.status
-          let message = data.message
-          console.log("註冊",data);
-          if(data.status === "註冊成功"){
-            this.success(status, message)
-            setTimeout(() => {
-              window.location.href = '/login'
-            }, 2000)
-            // window.location.href = '/login'
-          }else{
-            window.location.href = '/login'
-          }
-        })
-        .catch(error => {
-          console.log('error = ' + error);
-        })
+            fetch('http://localhost:5555/member/register', {
+              method: 'POST',
+              credentials: 'include',  //跨網域取得session資訊
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                name: this.state.name,
+                email: this.state.email,
+                password: this.state.password,
+                filename: imgFile
+              })
+            })
+            .then( response => {
+              if(!response) throw new Error(response.statusText)
+              // console.log('3'+response);
+              
+              return response.json()
+            })
+            .then(data => {
+              let status = data.status
+              let message = data.message
+              console.log("註冊",data);
+              if(data.status === "註冊成功"){
+                this.success(status, message)
+                setTimeout(() => {
+                  window.location.href = '/login'
+                }, 2000)
+              }else{
+                window.location.href = '/login'
+              }
+            })
+            .catch(error => {
+              console.log('error = ' + error);
+            })
+      })
+
+
+
+   
         }
   }
   
@@ -238,7 +301,6 @@ class Login extends React.Component {
   
 
   render() {
-    // console.log(this.state.memberData);
     
     return (
       <>
@@ -247,7 +309,7 @@ class Login extends React.Component {
       <div  >
       <div className="container_login" >
           <div className="container_back">
-            <div className="login_title">
+            <div className="login_singUp">
               <img src={require('./icon_MR_m.svg')} alt="" style={{ width: '30px' }} />
               <h2>品書人註冊</h2>
             </div>
@@ -271,7 +333,8 @@ class Login extends React.Component {
               name="password2" id="password2"
               value={this.state.password2} onChange={this.handleChange} 
             />
-            <input className="login_input" type="text" placeholder="新增照片" />
+            <input className="login_input" type="file" name="file" onChange={this.onChangeHandler}/>
+            {/* <button type="button" className="btn btn-success btn-block" onClick={this.onClickhandler}>Upload</button>  */}
             <div className="serial"></div>
             <input
               className="login_input"
@@ -293,7 +356,7 @@ class Login extends React.Component {
               <h2>品書人登入</h2>
             </div>
             <input className="login_input" placeholder="Email" name="email" value={this.state.email} onChange={this.handleChange} />
-            <input className="login_input" placeholder="Password" name="password" value={this.state.password} onChange={this.handleChange}/>
+            <input className="login_input" type="password" placeholder="Password" name="password" value={this.state.password} onChange={this.handleChange}/>
             <button className="login_btn" onClick={this.handleLogin}>登入</button>
             <a href="link" className="forgetPassword">Forgot your password?</a>
             <div className="social-container ">
