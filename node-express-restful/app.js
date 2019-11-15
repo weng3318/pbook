@@ -68,7 +68,11 @@ app.use("/books", require(__dirname + '/src/books/book_data'));
 app.use("/books", require(__dirname + '/src/books/book_ratings'));
 app.use('/activities', require('./src/activities/acApi'))
 app.use('/reviews', require('./src/book_review/reviews'))
-app.use('/reviews', require('./src/book_review/books'))
+
+//下面三行有衝突我先註解掉
+// app.use('/reviews', require('./src/book_review/books'))
+// app.use('/reviewer', require('./src/reviewer/brReviewerList'))
+// app.use('/reviewer', require('./src/reviewer/brBookcase'))
 
 
 

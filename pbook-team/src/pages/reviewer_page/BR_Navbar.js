@@ -10,7 +10,7 @@ export class Navbar extends React.Component {
                 <nav className="brNavbar">
                 <BR_PathNow />
                 <BR_DateTime />
-                <button onClick={()=> this.props.history.push('/')}>回到首頁</button>
+                <button onClick={()=> this.props.history.push('/reviewer')}>回到書評家</button>
                 </nav>
             </>
         )
