@@ -4,6 +4,7 @@ import React, { useEffect } from 'react'
 import './acPageDiscount.scss'
 import { connect } from 'react-redux'
 import { getDiscountBooks, fetchAcList } from '../../AcActions'
+import BookInfo from './BookInfo'
 
 // import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 
@@ -32,7 +33,6 @@ const AcPageDiscount = props => {
 
   acInfo = acInfo[0]
   // --------------------------
-
   return (
     <>
       <div className="container acPage">
@@ -64,13 +64,19 @@ const AcPageDiscount = props => {
                 __html: acInfo.intro,
               }}
             ></article>
+            <section className="books row">
+              {discountBook &&
+                discountBook.books.map(v => {
+                  return <BookInfo {...v} key={v.sid} />
+                })}
+            </section>
           </main>
           <aside className="col-md-3">
             我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊
           </aside>
         </div>
 
-        <section className="recommend py-5">
+        <section className="recommend py-4 my-5">
           <h4 className="text-center pb-2 my-3">其他推薦</h4>
           <div className="row">
             <figure className="col-md-3">

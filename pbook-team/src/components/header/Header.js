@@ -8,6 +8,7 @@ import Books from '../../pages/Books'
 import Activities from '../../pages/activities/Activities'
 import Reviews from '../../pages/Reviews'
 import Forum from '../../pages/Forum/ForumNavBar'
+import PostArticle from '../../pages/Forum/PostArticle'
 import Login from '../../pages/login/Login'
 import Member from '../../pages/member/Member'
 import Game from '../../pages/game/Game'
@@ -27,7 +28,7 @@ export default class Header extends React.Component {
       memberData: {},
     }
   }
-// 'http://localhost:5555/images/member/yoko.jpg'
+  // 'http://localhost:5555/images/member/yoko.jpg'
   // loginSuccess(memberData){
   //   console.log("memberData", memberData);
 
@@ -64,12 +65,11 @@ export default class Header extends React.Component {
         swal('您已經成功登出!', {
           icon: 'success',
         })
-        fetch('http://localhost:5555/logout',{
-          method:'GET',
+        fetch('http://localhost:5555/logout', {
+          method: 'GET',
           credentials: 'include',
-        })
-        .then((res)=>{
-          console.log("logout");
+        }).then(res => {
+          console.log('logout')
         })
 
         setTimeout(() => {
@@ -90,19 +90,15 @@ export default class Header extends React.Component {
   }
 
   componentDidMount() {
-    let pic =JSON.parse(localStorage.getItem('user'))
+    let pic = JSON.parse(localStorage.getItem('user'))
 
-
-    if(pic !== null){
-      console.log(pic ,11111);
-      let newPic =  'http://localhost:5555/images/member/' + JSON.parse(localStorage.getItem('user')).MR_pic
-      this.setState({loginImg: newPic})
+    if (pic !== null) {
+      console.log(pic, 11111)
+      let newPic =
+        'http://localhost:5555/images/member/' +
+        JSON.parse(localStorage.getItem('user')).MR_pic
+      this.setState({ loginImg: newPic })
     }
-
-
-
-
-
 
     // 模擬會員登入後的狀態
     // setTimeout(() => {
@@ -136,6 +132,16 @@ export default class Header extends React.Component {
     // }
     // console.log('componentDidMount')
   }
+  componentDidMount() {
+    console.log('DID MOUNt')
+    console.log(this.props)
+  }
+
+  componentDidUpdate(prevProps) {
+    console.log('DID UPDATE')
+    console.log(this.props)
+  }
+  shouldComponentUpdate() {}
 
   render() {
     // let phoneMemberStatus = 'none'
@@ -149,12 +155,10 @@ export default class Header extends React.Component {
       '品書專家',
       '品書大師',
       '品書至尊',
-      '書評家'
-  ];
+      '書評家',
+    ]
 
-  console.log(this.state.loginImg);
-  
-  
+    console.log(this.state.loginImg)
 
     return (
       <>
@@ -199,13 +203,16 @@ export default class Header extends React.Component {
                   {JSON.parse(localStorage.getItem('user')).MR_name}
                 </span>
                 <span className="titleEn">
-                  {level[JSON.parse(localStorage.getItem('user')).MR_personLevel]}
+                  {
+                    level[
+                      JSON.parse(localStorage.getItem('user')).MR_personLevel
+                    ]
+                  }
                 </span>
                 <span
                   className="loginImg"
                   style={{
-                    backgroundImage:
-                      `url(${this.state.loginImg})`,
+                    backgroundImage: `url(${this.state.loginImg})`,
                   }}
                 ></span>
                 <Link
@@ -382,16 +389,21 @@ export default class Header extends React.Component {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/reviewer" component={Reviewer} />
-            <Route exact path="/BR_ReviewerList" component={BR_ReviewerList} />
-            <Route exact path="/ReviewerBooks/:id?" component={ReviewerBooks} />
-            <Route path="/books" component={Books} />
+            <Route
+              exact
+              path="/ReviewerBooks/:sid?"
+              component={ReviewerBooks}
+            />
+            <Route exact path="/books" component={Books} />
             <Route path="/activities" component={Activities} />
             <Route exact path="/reviews" component={Reviews} />
 
             {/* <Route path="/forum" component={Forum} /> */}
             <Route exact path="/book_reviews/:sid" component={BookReviews} />
+
+            <Route exact path="/forum/post" component={PostArticle} />
             <Route path="/forum" component={Forum} />
-            <Route exact path="/forum" component={Forum} />
+
             {/* <Route exact path="/login" component={()=><Login loginSuccess={(memberData)=>{ this.loginSuccess(memberData) }}/>} /> */}
             <Route exact path="/login" component={Login} />
             <Route path="/member" component={Member} />
