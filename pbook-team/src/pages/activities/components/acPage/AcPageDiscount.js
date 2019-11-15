@@ -33,7 +33,6 @@ const AcPageDiscount = props => {
 
   acInfo = acInfo[0]
   // --------------------------
-  console.log(discountBook)
   return (
     <>
       <div className="container acPage">
@@ -68,7 +67,6 @@ const AcPageDiscount = props => {
             <section className="books row">
               {discountBook &&
                 discountBook.books.map(v => {
-                  console.log(v)
                   return <BookInfo {...v} key={v.sid} />
                 })}
             </section>
