@@ -5,7 +5,7 @@ import CardS1 from '../../components/forum/CardS1/CardS1'
 import CardS2 from '../../components/forum/CardS2/CardS2'
 import Listitem from '../../components/forum/ListItem/ListItem'
 import HotTopic from '../../components/forum/HotTopic/HotTopic'
-import './scss/Forum.scss'
+import './Forum.scss'
 
 class Forum extends React.Component {
   constructor() {
@@ -37,14 +37,6 @@ class Forum extends React.Component {
   }
 
   render() {
-    // <CardS2
-    //             update={this.state.update}
-    //             data={[
-    //               this.state.data[2],
-    //               this.state.data[3],
-    //               this.state.data[4],
-    //             ]}
-    //           />
     return (
       <>
         <div className="container">
@@ -52,8 +44,15 @@ class Forum extends React.Component {
             <div className="featured-title">精選文章</div>
             <div className="featured">
               <CardS1 data={this.state.data[0]} />
+              <CardS2
+                update={this.state.update}
+                data={[
+                  this.state.data[2],
+                  this.state.data[3],
+                  this.state.data[4],
+                ]}
+              />
               <CardS1 data={this.state.data[1]} />
-              <CardS1 data={this.state.data[2]} />
             </div>
             <div style={{ color: 'transparent' }}>更多精選</div>
             <Link to="" className="more-featured position-a">

@@ -8,6 +8,7 @@ import Books from '../../pages/Books'
 import Activities from '../../pages/activities/Activities'
 import Reviews from '../../pages/Reviews'
 import Forum from '../../pages/Forum/ForumNavBar'
+import PostArticle from '../../pages/Forum/PostArticle'
 import Login from '../../pages/login/Login'
 import Member from '../../pages/member/Member'
 import Game from '../../pages/game/Game'
@@ -131,6 +132,16 @@ export default class Header extends React.Component {
     // }
     // console.log('componentDidMount')
   }
+  componentDidMount() {
+    console.log('DID MOUNt')
+    console.log(this.props)
+  }
+
+  componentDidUpdate(prevProps) {
+    console.log('DID UPDATE')
+    console.log(this.props)
+  }
+  shouldComponentUpdate() {}
 
   render() {
     // let phoneMemberStatus = 'none'
@@ -389,8 +400,10 @@ export default class Header extends React.Component {
 
             {/* <Route path="/forum" component={Forum} /> */}
             <Route exact path="/book_reviews/:sid" component={BookReviews} />
+
+            <Route exact path="/forum/post" component={PostArticle} />
             <Route path="/forum" component={Forum} />
-            <Route exact path="/forum" component={Forum} />
+
             {/* <Route exact path="/login" component={()=><Login loginSuccess={(memberData)=>{ this.loginSuccess(memberData) }}/>} /> */}
             <Route exact path="/login" component={Login} />
             <Route path="/member" component={Member} />
