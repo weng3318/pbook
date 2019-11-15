@@ -27,7 +27,7 @@ export default class Header extends React.Component {
       memberData: {},
     }
   }
-// 'http://localhost:5555/images/member/yoko.jpg'
+  // 'http://localhost:5555/images/member/yoko.jpg'
   // loginSuccess(memberData){
   //   console.log("memberData", memberData);
 
@@ -64,12 +64,11 @@ export default class Header extends React.Component {
         swal('您已經成功登出!', {
           icon: 'success',
         })
-        fetch('http://localhost:5555/logout',{
-          method:'GET',
+        fetch('http://localhost:5555/logout', {
+          method: 'GET',
           credentials: 'include',
-        })
-        .then((res)=>{
-          console.log("logout");
+        }).then(res => {
+          console.log('logout')
         })
 
         setTimeout(() => {
@@ -90,19 +89,15 @@ export default class Header extends React.Component {
   }
 
   componentDidMount() {
-    let pic =JSON.parse(localStorage.getItem('user'))
+    let pic = JSON.parse(localStorage.getItem('user'))
 
-
-    if(pic !== null){
-      console.log(pic ,11111);
-      let newPic =  'http://localhost:5555/images/member/' + JSON.parse(localStorage.getItem('user')).MR_pic
-      this.setState({loginImg: newPic})
+    if (pic !== null) {
+      console.log(pic, 11111)
+      let newPic =
+        'http://localhost:5555/images/member/' +
+        JSON.parse(localStorage.getItem('user')).MR_pic
+      this.setState({ loginImg: newPic })
     }
-
-
-
-
-
 
     // 模擬會員登入後的狀態
     // setTimeout(() => {
@@ -149,12 +144,10 @@ export default class Header extends React.Component {
       '品書專家',
       '品書大師',
       '品書至尊',
-      '書評家'
-  ];
+      '書評家',
+    ]
 
-  console.log(this.state.loginImg);
-  
-  
+    console.log(this.state.loginImg)
 
     return (
       <>
@@ -199,13 +192,16 @@ export default class Header extends React.Component {
                   {JSON.parse(localStorage.getItem('user')).MR_name}
                 </span>
                 <span className="titleEn">
-                  {level[JSON.parse(localStorage.getItem('user')).MR_personLevel]}
+                  {
+                    level[
+                      JSON.parse(localStorage.getItem('user')).MR_personLevel
+                    ]
+                  }
                 </span>
                 <span
                   className="loginImg"
                   style={{
-                    backgroundImage:
-                      `url(${this.state.loginImg})`,
+                    backgroundImage: `url(${this.state.loginImg})`,
                   }}
                 ></span>
                 <Link
@@ -267,7 +263,7 @@ export default class Header extends React.Component {
             </Link>
           </section>
 
-          <section className="phoneTitleHide">
+          <div className="phoneTitleHide">
             <div className="myHeaderMenu" onClick={this.handlePhoneTitle}>
               <div className="bar bar1"></div>
               <div className="bar bar2"></div>
@@ -275,7 +271,6 @@ export default class Header extends React.Component {
               <ul>
                 {JSON.parse(localStorage.getItem('user')) === null ? (
                   <>
-                    (
                     <li>
                       <Link to="/login" className="myHeaderA">
                         登入
@@ -311,11 +306,9 @@ export default class Header extends React.Component {
                         品書討論區
                       </Link>
                     </li>
-                    )
                   </>
                 ) : (
                   <>
-                    (
                     <li>
                       <Link to="/member" className="myHeaderA">
                         {JSON.parse(localStorage.getItem('user')).MR_name}
@@ -372,12 +365,11 @@ export default class Header extends React.Component {
                         登出
                       </div>
                     </li>
-                    )
                   </>
                 )}
               </ul>
             </div>
-          </section>
+          </div>
 
           <Switch>
             <Route exact path="/" component={Home} />

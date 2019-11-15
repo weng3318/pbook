@@ -132,6 +132,8 @@
 @media (min-width: 1000px) {
   .phoneTitleHide {
     display: none !important;
+    position: static;
+    z-index: 15;
   }
 }
 
@@ -147,7 +149,7 @@
     transition: 0.5s;
     right: 15px;
     top: 15px;
-    z-index: 99;
+    z-index: 15;
   }
 
   .myHeaderMenu.active {
@@ -158,11 +160,8 @@
     position: absolute;
     left: -72px;
     top: 45px;
-    background: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.822);
     width: 120px;
-    opacity: 0;
-    max-height: 0;
-    overflow: hidden;
   }
 
   .myHeaderMenu.active ul {

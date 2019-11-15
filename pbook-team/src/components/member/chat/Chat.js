@@ -50,35 +50,6 @@ class Chat extends React.Component {
       .catch(error => {
         console.log('點擊左邊那欄第一次拿chatMessage有錯誤', error)
       })
-
-    this.interval = setInterval(async () => {
-      console.log(
-        '聊天室定時器啟動',
-        JSON.parse(localStorage.getItem('user')).MR_number
-      )
-
-      await axios
-        .post(`http://localhost:5555/nana_use/chatMessage2`, {
-          memberId: JSON.parse(localStorage.getItem('user')).MR_number,
-        })
-        .then(res => {
-          this.setState({ oldDataMessage: res.data })
-        })
-        .catch(error => {
-          console.log('聊天室定時器啟動 點擊左邊那欄chatMessage有錯誤', error)
-        })
-
-      await axios
-        .post(`http://localhost:5555/nana_use/chatList2`, {
-          memberId: JSON.parse(localStorage.getItem('user')).MR_number,
-        })
-        .then(res => {
-          this.setState({ oldDataList: res.data })
-        })
-        .catch(error => {
-          console.log('聊天室定時器啟動 點擊左邊那欄chatList有錯誤', error)
-        })
-    }, 1000)
   }
 
   onMsg = data => {
@@ -194,11 +165,45 @@ class Chat extends React.Component {
       .catch(error => {
         console.log('componentDidMount拿資料時有錯誤', error)
       })
+
+    this.interval = setInterval(async () => {
+      console.log('聊天室定時器編號', this.interval)
+      console.log(
+        '聊天室定時器啟動',
+        JSON.parse(localStorage.getItem('user')).MR_number
+      )
+
+      await axios
+        .post(`http://localhost:5555/nana_use/chatMessage2`, {
+          memberId: JSON.parse(localStorage.getItem('user')).MR_number,
+        })
+        .then(res => {
+          if (this.state.oldDataMessage !== res.data) {
+            this.setState({ oldDataMessage: res.data })
+          }
+        })
+        .catch(error => {
+          console.log('聊天室定時器啟動 點擊左邊那欄chatMessage有錯誤', error)
+        })
+
+      await axios
+        .post(`http://localhost:5555/nana_use/chatList2`, {
+          memberId: JSON.parse(localStorage.getItem('user')).MR_number,
+        })
+        .then(res => {
+          if (this.state.oldDataList !== res.data) {
+            this.setState({ oldDataList: res.data })
+          }
+        })
+        .catch(error => {
+          console.log('聊天室定時器啟動 點擊左邊那欄chatList有錯誤', error)
+        })
+    }, 1000)
   }
 
   componentWillUnmount() {
     if (this.props.location.path !== '/chat') {
-      console.log('聊天室定時器關閉')
+      console.log('聊天室定時器關閉', this.interval)
       window.clearInterval(this.interval)
     }
   }
@@ -269,7 +274,10 @@ class Chat extends React.Component {
                               <img
                                 alt="左邊DATALIST大頭照"
                                 className="chatImg"
-                                src={require('./images/' + value.MR_pic)}
+                                src={
+                                  'http://localhost:5555/images/member/' +
+                                  value.MR_pic
+                                }
                               ></img>
                             </div>
                             <div className="d-flex flex-column align-self-center chatTextWrap">
@@ -321,8 +329,10 @@ class Chat extends React.Component {
                                       return (
                                         <div className="myContainer">
                                           <img
-                                            src={require('./images/' +
-                                              value.MR_pic)}
+                                            src={
+                                              'http://localhost:5555/images/member/' +
+                                              value.MR_pic
+                                            }
                                             alt="Avatar"
                                           />
                                           <p>{value2.content}</p>
@@ -337,7 +347,10 @@ class Chat extends React.Component {
                                       return (
                                         <div className="myContainer darker">
                                           <img
-                                            src={require('./images/' + myPic)}
+                                            src={
+                                              'http://localhost:5555/images/member/' +
+                                              myPic
+                                            }
                                             alt="Avatar"
                                             className="right"
                                           />
