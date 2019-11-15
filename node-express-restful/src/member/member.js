@@ -96,6 +96,40 @@ router.post('/login', (req, res, next) => {
 
 })
 
+//查詢分類
+router.get('/categories', (req, res, next)=>{
+    db.query(Member.queryCategories(), (err, row)=>{
+        res.json({
+            row
+        })
+    })
+})
+
+//修改會員密碼
+router.post('/changePassword', (req, res, next)=>{
+    let number = req.body.number
+    let password = req.body.password
+    db.query(Member.changePassword(number,password), (err, row)=>{
+
+        if(err) return res.json({err: err})
+        console.log(row.changedRows);
+        if(row.changedRows == 0){
+
+            res.json({
+                status: "修改密碼失敗",
+                message: "會員編號有誤"
+            })
+            return
+        }
+        else{
+            res.json({
+                status: "修改密碼成功",
+                message: "完成密碼更新"
+            })
+        }
+    })
+})
+
 
 
 //查詢會員資料
