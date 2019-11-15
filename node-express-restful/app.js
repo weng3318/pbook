@@ -32,9 +32,13 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 const session = require("express-session");
+var FileStore = require('session-file-store')(session);
+var fileStoreOptions = {};
+
 // 設定session的middleware
 app.use(
   session({
+    store: new FileStore(fileStoreOptions),
     //新用戶沒有使用到session物件時不會建立session和發送cookie
     saveUninitialized: false,
     resave: true,
@@ -49,17 +53,25 @@ app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(express.static("public"));
 
+
 app.use("/member", require("./src/member/member"));
 app.use("/forum", require("./src/forum/homepage"));
 app.use("/nana_use", require("./src/nana_use/chatList"));
 app.use("/nana_use", require("./src/nana_use/chatMessage"));
 app.use("/nana_use", require("./src/nana_use/myDataList"));
 app.use("/nana_use", require("./src/nana_use/countDown"));
-app.use("/books", require(__dirname + "/src/books/book_categories"));
-app.use("/books", require(__dirname + "/src/books/book_data"));
-app.use("/books", require(__dirname + "/src/books/book_ratings"));
-app.use("/activities", require("./src/activities/acApi"));
-app.use("/reviews", require("./src/book_review/reviews"));
+
+app.use("/books", require(__dirname + '/src/books/book_categories'));
+app.use("/books", require(__dirname + '/src/books/book_data'));
+app.use("/books", require(__dirname + '/src/books/book_ratings'));
+app.use('/activities', require('./src/activities/acApi'))
+app.use('/reviews', require('./src/book_review/reviews'))
+
+//下面三行有衝突我先註解掉
+// app.use('/reviews', require('./src/book_review/books'))
+// app.use('/reviewer', require('./src/reviewer/brReviewerList'))
+// app.use('/reviewer', require('./src/reviewer/brBookcase'))
+
 
 app.get("/", function(req, res) {
   res.send("Home");

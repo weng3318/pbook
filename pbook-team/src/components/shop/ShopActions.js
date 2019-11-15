@@ -1,3 +1,12 @@
+//-----set shop params-----------
+export const SET_SHOP_PARAMS = 'SET_SHOP_PARAMS'
+export const setShopParams = (shopPage, shopCategories) => ({
+  type: SET_SHOP_PARAMS,
+  shopPage: shopPage,
+  shopCategories: shopCategories,
+  // shopKeyword: shopKeyword,
+})
+//----------------------
 //-------categories--------
 export const CATEGORIES_RECEIVE = 'CATEGORIES_RECEIVE'
 export const CATEGORIES_REQUEST = 'CATEGORIES_REQUEST'
@@ -65,29 +74,41 @@ export const rtFetch = () => async dispatch => {
 //-------Shop-----------
 export const SHOP_RECEIVE = 'SHOP_RECEIVE'
 export const SHOP_REQUEST = 'SHOP_REQUEST'
-function shopReceive(json) {
+function shopReceive(shopPage, shopCategories, json) {
   return {
     type: SHOP_RECEIVE,
+    shopPage,
+    shopCategories,
+    // shopKeyword,
     payload: json,
     receivedAt: Date.now(),
   }
 }
-function shopRequest() {
+function shopRequest(shopPage, shopCategories) {
   return {
     type: SHOP_REQUEST,
+    shopPage,
+    shopCategories,
+    // shopKeyword,
   }
 }
-export const shopFetch = () => async dispatch => {
-  dispatch(shopRequest())
+export const shopFetch = (shopPage, shopCategories) => async dispatch => {
+  dispatch(shopRequest(shopPage, shopCategories))
   try {
-    let response = await fetch('http://localhost:5555/books/book_data', {
-      method: 'GET',
-      headers: new Headers({
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      }),
-    })
-    dispatch(shopReceive(await response.json()))
+    let response = await fetch(
+      'http://localhost:5555/books/book_data/' +
+        shopPage +
+        '/' +
+        shopCategories,
+      {
+        method: 'GET',
+        headers: new Headers({
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        }),
+      }
+    )
+    dispatch(shopReceive(shopPage, shopCategories, await response.json()))
   } catch (error) {
     console.log('error ', error)
   }

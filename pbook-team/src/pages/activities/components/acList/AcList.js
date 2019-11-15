@@ -8,17 +8,18 @@ import { fetchAcList } from '../../AcActions'
 // import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 
 const AcList = props => {
+  let acType = props.match.params.acType
   useEffect(() => {
-    props.dispatch(fetchAcList(props.acType))
+    props.dispatch(fetchAcList(acType))
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [props.match.params.acType])
 
   return (
     <>
       <div className="container acList">
         <AcListHeader />
         <div className="my-2 py-2" style={{ borderTop: '1px solid #ccc' }}>
-          {props.acData[props.acType].items
+          {props.acData[acType].data
             .filter(v => {
               return (
                 +v.status === +props.visibilityFilter.value ||
@@ -26,7 +27,7 @@ const AcList = props => {
               )
             })
             .map(v => (
-              <AcItem key={v.sid} {...v} acType={props.acType} />
+              <AcItem key={v.sid} {...v} acType={acType} />
             ))}
         </div>
       </div>

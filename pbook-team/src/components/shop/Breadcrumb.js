@@ -11,7 +11,7 @@ class Breadcrumb extends React.Component {
     return (
       <>
         <Col className="bread pl-4 d-flex align-items-center">
-          首頁 > 中文書 > 華文文學 ><span className="active">現代散文</span>
+          首頁 > 書籍商城 > <span className="active"> 文學小說</span>
         </Col>
       </>
     )

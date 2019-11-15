@@ -6,7 +6,13 @@ import axios from 'axios'
 import moment from 'moment'
 import io from 'socket.io-client'
 
-const socket = io('ws://localhost:5000')
+const socket = io.connect('ws://localhost:5000/', {
+  query: {
+    myID: JSON.parse(localStorage.getItem('user'))
+      ? JSON.parse(localStorage.getItem('user')).MR_number
+      : '假資料',
+  },
+})
 
 class Chat extends React.Component {
   constructor() {
@@ -18,7 +24,7 @@ class Chat extends React.Component {
         { MR_pic: 'yoko.jpg', MR_number: 'MR00001', myName: '01橫山裕' },
       ],
       mySearch: '',
-      err: '111',
+      err: '初始化',
     }
     socket.on('SeverToClientMsg', this.onMsg)
   }
@@ -35,52 +41,59 @@ class Chat extends React.Component {
     this.myDiv.classList.add('hide')
     this.messageSearch.classList.add('show-inline-flex')
 
-    axios
-      .get(`http://localhost:5555/nana_use/chatMessage`, {
-        withCredentials: true,
-      })
-      .then(res => {
-        this.setState({ oldDataMessage: res.data })
-      })
-      .catch(error => {
-        console.log(error)
-        this.setState({ err: error })
-      })
+    setInterval(() => {
+      axios
+        .get(`http://localhost:5555/nana_use/chatMessage`, {
+          withCredentials: true,
+        })
+        .then(res => {
+          if (res.data === '找不到session.memberId') {
+            this.setState({ err: res.data })
+          } else {
+            this.setState({ oldDataMessage: res.data })
+          }
+        })
+        .catch(error => {
+          console.log('1', error)
+        })
+    }, 300)
   }
 
-  onMsg = data => {
-    console.log('客戶端接收服務端發的消息', data)
-    axios
-      .get(`http://localhost:5555/nana_use/chatList`, { withCredentials: true })
-      .then(res => {
-        this.setState({
-          oldDataList: res.data,
-          oldDataMessage: [data, ...this.state.oldDataMessage],
-        })
-      })
-      .catch(error => {
-        console.log(error)
-        this.setState({ err: error })
-      })
+  onMsg = fullData => {
+    console.log('客戶端接收服務端發的消息', fullData)
+    this.setState({
+      oldDataList: fullData.oldDataList,
+      oldDataMessage: [fullData.data, ...this.state.oldDataMessage],
+    })
   }
 
   handleSubmit = () => {
     // 利用網址列取得chat_id
     var chat_id_index = window.location.href.indexOf('#') // console.log(chat_id_index,"26")
-    var chat_id = window.location.href.slice(chat_id_index + 1, 41)
+    var chat_id = window.location.href.slice(chat_id_index + 1)
     // 利用localStorage取得發文者(myFrom)
     var myFrom = JSON.parse(localStorage.getItem('user')).MR_number
     // 利用網址取得myTo
-    var myTo_index = window.location.href.indexOf('%') // console.log(myTo_index,"41")
-    var myTo = window.location.href.slice(myTo_index + 1)
+    var chat_id_array = chat_id.split('MR')
+    var myFrom_array = myFrom.split('MR')
+
+    var myTo = []
+    for (var i = 1; i < chat_id_array.length; i++) {
+      for (var k = 1; k < myFrom_array.length; k++) {
+        if (chat_id_array[i] !== myFrom_array[k]) {
+          myTo.push(chat_id_array[i])
+        }
+      }
+    }
+    console.log(myTo[0])
 
     // 取得對話文字
     var textInput = this.textInput.value
 
-    socket.emit('clientToSeverMsg', {
+    socket.emit(`clientToSeverMsg`, {
       chat_id: chat_id,
       myFrom: myFrom,
-      myTo: myTo,
+      myTo: 'MR' + myTo[0],
       content: textInput,
       myRead: 0,
       created_at: new Date(),
@@ -151,14 +164,17 @@ class Chat extends React.Component {
         })
       })
       .then(res => {
-        this.setState({
-          myData: res.data,
-          oldDataList: oldDataList,
-        })
+        if (res.data === '找不到session.memberId') {
+          this.setState({ err: res.data })
+        } else {
+          this.setState({
+            myData: res.data,
+            oldDataList: oldDataList,
+          })
+        }
       })
       .catch(error => {
-        console.log(error)
-        this.setState({ err: error })
+        console.log('3', error)
       })
   }
 
@@ -174,17 +190,17 @@ class Chat extends React.Component {
     //   'render-mypic',
     //   this.state.myData[0] && this.state.myData[0].MR_pic
     // )
-    console.log('render-mypic', myPic)
-    console.log('render-mypic', myId)
-    console.log('render-mypic', myName)
-    console.log('render', this.state.oldDataList)
-    console.log('this.state.err', this.state.err)
+    // console.log('render-mypic', myPic)
+    // console.log('render-mypic', myId)
+    // console.log('render-mypic', myName)
+    // console.log('render', this.state.oldDataList)
+    // console.log('this.state.err', this.state.err)
 
-    if (this.state.err !== '111') {
-      console.log('有錯誤')
-      return <h1>沒有資料</h1>
+    if (this.state.err !== '初始化') {
+      // console.log('沒有拿到session.memberId,或ajax時有錯誤')
+      return <h1>{this.state.err}</h1>
     } else {
-      console.log('沒有錯誤')
+      // console.log('正常')
       return (
         <>
           <div className="chatWrap">
@@ -239,7 +255,7 @@ class Chat extends React.Component {
                               </div>
                               <div className="d-flex flex-column align-self-center chatTextWrap">
                                 <span className="chatText">
-                                  {'chat with--' + value.MR_name}
+                                  {'和[' + value.MR_name + ']的聊天室'}
                                 </span>
                                 <span className="chatText">
                                   {value.content}

@@ -24,11 +24,11 @@ export default class Header extends React.Component {
   constructor() {
     super()
     this.state = {
-      loginImg: './images/yoko.jpg',
+      loginImg: '',
       memberData: {},
     }
   }
-
+  // 'http://localhost:5555/images/member/yoko.jpg'
   // loginSuccess(memberData){
   //   console.log("memberData", memberData);
 
@@ -90,6 +90,16 @@ export default class Header extends React.Component {
   }
 
   componentDidMount() {
+    let pic = JSON.parse(localStorage.getItem('user'))
+
+    if (pic !== null) {
+      console.log(pic, 11111)
+      let newPic =
+        'http://localhost:5555/images/member/' +
+        JSON.parse(localStorage.getItem('user')).MR_pic
+      this.setState({ loginImg: newPic })
+    }
+
     // 模擬會員登入後的狀態
     // setTimeout(() => {
     //     this.setState({
@@ -148,6 +158,8 @@ export default class Header extends React.Component {
       '書評家',
     ]
 
+    console.log(this.state.loginImg)
+
     return (
       <>
         <img
@@ -200,8 +212,7 @@ export default class Header extends React.Component {
                 <span
                   className="loginImg"
                   style={{
-                    backgroundImage:
-                      'url(' + require('' + this.state.loginImg) + ')',
+                    backgroundImage: `url(${this.state.loginImg})`,
                   }}
                 ></span>
                 <Link
@@ -378,8 +389,11 @@ export default class Header extends React.Component {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/reviewer" component={Reviewer} />
-            <Route exact path="/BR_ReviewerList" component={BR_ReviewerList} />
-            <Route exact path="/ReviewerBooks/:id?" component={ReviewerBooks} />
+            <Route
+              exact
+              path="/ReviewerBooks/:sid?"
+              component={ReviewerBooks}
+            />
             <Route exact path="/books" component={Books} />
             <Route path="/activities" component={Activities} />
             <Route exact path="/reviews" component={Reviews} />

@@ -24,6 +24,7 @@ class Info extends React.Component {
             headers: {
               'Content-Type': 'application/json'
             },
+            credentials: 'include',
             body: JSON.stringify({
               number: number,
             })
@@ -35,12 +36,16 @@ class Info extends React.Component {
           })
           .then(data =>{
             //   console.log("test", JSON.stringify(data));
-            let bdy = data[0].MR_birthday
-            let birthday = bdy.slice(0, 10)
-              this.setState({
-                birthday: birthday,
-                member: data[0]})
-          })
+              this.setState({member: data[0]})
+
+              if( data[0].MR_birthday!== null){
+                  let bdy = data[0].MR_birthday;
+                  let birthday = bdy.slice(0, 10);
+                    this.setState({
+                      birthday: birthday,
+                      member: data[0]})
+                }
+              })
 
         
     }
