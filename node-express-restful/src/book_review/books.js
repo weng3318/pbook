@@ -51,7 +51,7 @@ router.post("/book_reviews/:sid?/data", (req, res) => {
 
 router.get("/memberReview/:book?", (req, res) => {
   let book = req.params.book;
-  const sql = `SELECT mr_information.MR_number , vb_ratings.member , vb_ratings.message,vb_ratings.star,vb_ratings.book,mr_information.MR_nickname,book,mr_information.MR_pic,vb_ratings.create_time FROM mr_information,vb_ratings WHERE mr_information.MR_number=vb_ratings.member AND vb_ratings.book = ${book} ORDER BY vb_ratings.create_time DESC`;
+  const sql = `SELECT mr_information.MR_number , vb_ratings.sid , vb_ratings.member , vb_ratings.message,vb_ratings.star,vb_ratings.book,mr_information.MR_nickname,book,mr_information.MR_pic,vb_ratings.create_time FROM mr_information,vb_ratings WHERE mr_information.MR_number=vb_ratings.member AND vb_ratings.book = ${book} ORDER BY vb_ratings.create_time DESC`;
   db.query(sql, (error, results) => {
     if (error) {
       return res.send(error);

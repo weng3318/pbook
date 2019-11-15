@@ -273,7 +273,7 @@ const List = () => {
               {user !== null ? (
                 <img
                   className="reviews_member_img"
-                  src={require('../../images/' + user.MR_pic)}
+                  src={require('../../images/forum/2.jpg')}
                 />
               ) : (
                 <img
