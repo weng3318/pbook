@@ -16,7 +16,7 @@ class BR_BookcaseList extends React.Component {
                     {this.props.bookName}<div className="bookInfo_Bookcase">書名：蔡康永的說話之道</div>
                     {this.props.bookBy}<div className="bookInfo_Bookcase">作者：蔡康永</div>
                     <br/>
-                    {this.props.info}
+                    {this.props.intro}
                         書評介紹 > 書評介紹 > 書評介紹 > 書評介紹 > 書評介紹 > 
                         書評介紹 > 書評介紹 > 書評介紹 > 書評介紹 > 書評介紹 > 
                         書評介紹 > 書評介紹 > 書評介紹 > 書評介紹 > 書評介紹 > 
