@@ -1,5 +1,5 @@
 import React from 'react'
-import Data from '../pages/reviewer_page/data/reviewer_data'
+// import Data from '../pages/reviewer_page/data/reviewer_data'
 import { withRouter } from 'react-router-dom'
 import BR_ReviewerList from './reviewer_page/BR_ReviewerList'
 import BR_BookcaseList from './reviewer_page/BR_BookcaseList'
@@ -16,21 +16,28 @@ class ReviewerBooks extends React.Component {
   }
   componentDidMount() {
     axios
-      .get('http://localhost:5000/brBookcase')
+      .get('http://localhost:5555/reviewer')
       .then(res => {
-        this.setState({ brData: res.data })
-        console.log('取得資料' + res.data)
+        this.setState({ brData: res.data.rows })
+        console.log( res.data.rows[0])
+
       })
       .catch(function(error) {
         console.log('沒有取得資料請執行 json-server --watch --port 5555 reviewer_Data.json ' + error)
       })
   }
-  render() {
+  render(props) {
+
+    if(!this.state.brData.length) return <></>
+
+    let ss = this.state.brData
+   
     let reviewerData = null
-    
-    for (let i = 0; i < Data.length; i++) {
-      if (Data[i].sid == this.props.match.params.sid) {
-        reviewerData = Data[i]
+    console.log('ss[0].sid', ss[0])
+    // console.log(Data)
+    for (let i = 0; i < ss.length; i++) {
+      if (ss[i].sid == this.props.match.params.sid) {
+        reviewerData = ss[i]
       }
     }
     // 書櫃裡的書
@@ -44,20 +51,21 @@ class ReviewerBooks extends React.Component {
           <BR_ReviewerList
             key={reviewerData.sid}
             sid={reviewerData.sid}
+            title={reviewerData.title}
+            img={reviewerData.img}
             name={reviewerData.name}
             job={reviewerData.job}
-            title={reviewerData.title}
             intro={reviewerData.intro}
             tube={reviewerData.tube}
           ></BR_ReviewerList>
-
+             
           {/* 熱門書評列表 */}
           <BR_BookcaseHot />
 
           {/* 書評列表 */}
-          {as.map((bookcase) => (
+          {/* {as.map((bookcase) => (
             <BR_BookcaseList bookcase={bookcase}></BR_BookcaseList>
-          ))}
+          ))} */}
 
         </section>
       </>

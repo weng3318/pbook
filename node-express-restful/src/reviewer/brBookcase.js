@@ -4,16 +4,16 @@ const bluebird = require('bluebird');
 const brBookcase = express.Router();
 
 const db = mysql.createConnection({
-    host:'localhost',
-    user:'Arwen',
-    password:'4595',
-    database:'pbook'
+    host: "192.168.27.186",
+    user: "root",
+    password: "root",
+    database: "pbook"
 })
 db.connect()
 bluebird.promisifyAll(db)
 
 
-const perPage = 9
+const perPage = 5
 brBookcase.get('/:page?/:keyword?', (req, res)=> {
     // 頁數資料傳輸
         const output = {};
