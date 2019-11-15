@@ -102,19 +102,14 @@ class Login extends React.Component {
     })
   }
 
-  
+
   // onClickhandler(){
   //   const formData = new FormData()
   //   let fileField = document.querySelector("input[type='file']")
   //   // formData.append('username', 'abc')
   //   formData.append('avatar', fileField.files[0])
-  //   formData.append('email', "email")
-  //   formData.append('password', 'password')
-
-  //   console.log("formData", formData);
-
   //   // const formData = new FormData() 
-  //   // data.append('file', this.state.selectedFile)
+  //   // data.appen2d('file', this.state.selectedFile)
 
 
   //   fetch('http://localhost:5555/member/upload',{
@@ -177,7 +172,8 @@ class Login extends React.Component {
       }
     })
     .catch(error => {
-      console.log('error = ' + error);
+      let err = error
+      this.fail(err)
     })
     
   }
@@ -224,10 +220,6 @@ class Login extends React.Component {
       let fileField = document.querySelector("input[type='file']")
       formData.append('avatar', fileField.files[0])
     
-    if(formData.avatar == undefined){
-      console.log(1,formData);
-    }
-    
     if(isPass){
       let imgFile = ""
       //目前想說新增完圖片再塞入修改資料
@@ -237,12 +229,12 @@ class Login extends React.Component {
             body: formData
           })
           .then(res =>{
-            console.log("res:", res);
+            // console.log("res:", res);
             return res.json()
           })
           .then(img =>{
             imgFile = img.filename
-            console.log(imgFile);
+            // console.log(imgFile);
 
           
             fetch('http://localhost:5555/member/register', {
@@ -317,7 +309,7 @@ class Login extends React.Component {
       <div  >
       <div className="container_login" >
           <div className="container_back">
-            <div className="login_title">
+            <div className="login_singUp">
               <img src={require('./icon_MR_m.svg')} alt="" style={{ width: '30px' }} />
               <h2>品書人註冊</h2>
             </div>
@@ -364,7 +356,7 @@ class Login extends React.Component {
               <h2>品書人登入</h2>
             </div>
             <input className="login_input" placeholder="Email" name="email" value={this.state.email} onChange={this.handleChange} />
-            <input className="login_input" placeholder="Password" name="password" value={this.state.password} onChange={this.handleChange}/>
+            <input className="login_input" type="password" placeholder="Password" name="password" value={this.state.password} onChange={this.handleChange}/>
             <button className="login_btn" onClick={this.handleLogin}>登入</button>
             <a href="link" className="forgetPassword">Forgot your password?</a>
             <div className="social-container ">

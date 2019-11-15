@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Col, Pagination } from 'react-bootstrap'
-import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { LinkContainer } from 'react-router-bootstrap'
 import moment from 'moment'
@@ -10,7 +9,6 @@ import Rating from '@material-ui/lab/Rating'
 import Box from '@material-ui/core/Box'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCaretRight } from '@fortawesome/free-solid-svg-icons'
-import { rtFetch, shopFetch, setShopParams } from './ShopActions'
 import './Shop.scss'
 
 const BorderLinearProgress = withStyles({
@@ -44,21 +42,20 @@ let a = [],
   min = [],
   avg = []
 const Data = props => {
-  useEffect(() => {
-    // props.dispatch(setShopParams(1, 11, 52))
-    props.dispatch(rtFetch())
-    props.dispatch(shopFetch(1, 1))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
   let page_items = []
-  for (let number = 1; number <= 5; number++) {
+  let pt = props.shopPayload && props.shopPayload.totalPage
+  for (let page = 1; page <= pt; page++) {
     page_items.push(
-      <LinkContainer to={'/books/' + number}>
-        <Pagination.Item key={number}>{number}</Pagination.Item>
+      <LinkContainer to={'/books/' + page + '/' + props.nowCategories}>
+        <Pagination.Item key={page}>{page} </Pagination.Item>
       </LinkContainer>
     )
   }
+  let fp = props.nowPage - 1
+  if (fp < 1) fp = 1
+  let np = props.nowPage + 1
+  if (np > pt) np = pt
+
   const classes = useStyles()
   function countRate(pp) {
     if (!pp) return 'loading'
@@ -112,20 +109,22 @@ const Data = props => {
       else if (e[j] < min[j]) min[j] = e[j]
     }
   }
-  countRate(props.ratings.payload)
+  countRate(props.ratingsPayload)
+
   return (
     <>
       <Col md={10} className="books">
         <div className="book_account mx-3 my-3">
-          最新上架書籍共有<span className="book_number px-2">1315</span>本
+          最新上架書籍共有
+          <span className="book_number px-2">2</span>本
         </div>
         <div className="book_order mx-4 my-3 px-5 d-flex justify-content-between">
           <span>顯示模式</span>
           <span>排序依</span>
         </div>
-        {props.shop.payload &&
-          props.shop.payload.rows &&
-          props.shop.payload.rows.map(data => (
+        {props.shopPayload &&
+          props.shopPayload.rows &&
+          props.shopPayload.rows.map(data => (
             <div className="d-flex justify-content-between my-5" key={data.sid}>
               <div className="d-flex">
                 <div className="book_pic">
@@ -228,24 +227,23 @@ const Data = props => {
             </div>
           ))}
         <Pagination className="d-flex justify-content-center">
-          <LinkContainer to="/books/1/">
+          <LinkContainer to={'/books/1/' + props.nowCategories}>
             <Pagination.First />
           </LinkContainer>
-          <LinkContainer to="/books/1/">
+          <LinkContainer to={'/books/' + fp + '/' + props.nowCategories}>
             <Pagination.Prev />
           </LinkContainer>
           {page_items}
-          <Pagination.Next />
-          <Pagination.Last />
+          <LinkContainer to={'/books/' + np + '/' + props.nowCategories}>
+            <Pagination.Next />
+          </LinkContainer>
+          <LinkContainer to={'/books/' + pt + '/' + props.nowCategories}>
+            <Pagination.Last />
+          </LinkContainer>
         </Pagination>
       </Col>
     </>
   )
 }
 
-const mapStateToProps = state => ({
-  ratings: state.ratings,
-  shop: state.shop,
-  shopParams: state.shopParams,
-})
-export default connect(mapStateToProps)(Data)
+export default Data

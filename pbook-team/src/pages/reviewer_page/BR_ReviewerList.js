@@ -10,16 +10,16 @@ class BR_ReviewerList extends React.Component {
 
 
           <div className="brAvatarAllBox borderLine">
-              <h5>{this.props.level}</h5>
+              <h5>{this.props.title}</h5>
                   
-              <img className="brAvatarImg" src={require('../reviewer_page/images/31桑.png')}/>
+              <img className="brAvatarImg" src={require('../reviewer_page/images/br_31桑.png')}/>
               <h5>{this.props.name}</h5>
 
               <div className="brIconBox">
-                  <div className="AvatarInfo">{this.props.type}</div>
+                  <div className="AvatarInfo">{this.props.job}</div>
               </div>
 
-              <Link to={"/reviewerBooks/"+this.props.id} className="d-flex justify-content-center borderLineTop">
+              <Link to={"/reviewerBooks/"+this.props.sid} className="d-flex justify-content-center borderLineTop">
               <div className="brIconBox">
                 <img src={require('../reviewer_page/images/P_logo.png')}/>
               </div>
@@ -42,31 +42,11 @@ class BR_ReviewerList extends React.Component {
           </div>
 
           <div className="brInfoBox borderLine"><h5>書評家簡介</h5>
-              <div className="brInfoText borderLine">{this.props.info}
-                  自我介紹 > 自我介紹 > 自我介紹 > 自我介紹 > 自我介紹 > 自我介紹 > 
-                  自我介紹 > 自我介紹 > 自我介紹 > 自我介紹 > 自我介紹 > 自我介紹 > 
-                  自我介紹 > 自我介紹 > 自我介紹 > 自我介紹 > 自我介紹 > 自我介紹 >
-                  自我介紹 > 自我介紹 > 自我介紹 > 自我介紹 > 自我介紹 > 自我介紹 >
-                  自我介紹 > 自我介紹 > 自我介紹 > 自我介紹 > 自我介紹 > 自我介紹 >
-                  自我介紹 > 自我介紹 > 自我介紹 > 自我介紹 > 自我介紹 > 自我介紹 >
-                  自我介紹 > 自我介紹 > 自我介紹 > 自我介紹 > 自我介紹 > 自我介紹 >
-                  自我介紹 > 自我介紹 > 自我介紹 > 自我介紹 > 自我介紹 > 自我介紹 >
-                  自我介紹 > 自我介紹 > 自我介紹 > 自我介紹 > 自我介紹 > 自我介紹 >
-                  自我介紹 > 自我介紹 > 自我介紹 > 自我介紹 > 自我介紹 > 自我介紹 >
-                  自我介紹 > 自我介紹 > 自我介紹 > 自我介紹 > 自我介紹 > 自我介紹 >
-                  自我介紹 > 自我介紹 > 自我介紹 > 自我介紹 > 自我介紹 > 自我介紹 >
-                  自我介紹 > 自我介紹 > 自我介紹 > 自我介紹 > 自我介紹 > 自我介紹 > 
-                  自我介紹 > 自我介紹 > 自我介紹 > 自我介紹 > 自我介紹 > 自我介紹 > 
-                  自我介紹 > 自我介紹 > 自我介紹 > 自我介紹 > 自我介紹 > 自我介紹 >
-                  自我介紹 > 自我介紹 > 自我介紹 > 自我介紹 > 自我介紹 > 自我介紹 >
+              <div className="brInfoText ">
+              {this.props.intro}
                 </div>
           </div>
     </div>
-    {/* <iframe className="brYouTubeRWD borderLine"
-            width="50%" height="auto"
-            src={this.props.tube}
-            frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
-            allowFullscreen /> */}
         <iframe className="brYouTubeRWD borderLine" width="50%" height="auto" src={this.props.tube} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </section>
         <div style={{height:'30px'}}></div>
