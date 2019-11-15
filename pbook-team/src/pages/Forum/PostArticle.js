@@ -40,17 +40,13 @@ const PostAritcle = props => {
   const classes = useStyles()
   const [count, setCount] = useState(0)
   const [data, setData] = useState('')
-  const [append, setAppend] = useState([
-    <TextareaAutosize autoFocus />,
-    <div>123</div>,
-  ])
+  const [append, setAppend] = useState([<div>123</div>, <div>123</div>])
 
   const handleClick = e => {
-    append[count] = <appendExample key={count} />
+    let arr = [...append, <AppendExample n={count} />]
+    setAppend(arr)
     console.log(append)
-    setCount(count => {
-      return count + 1
-    })
+    setCount(count + 1)
   }
   const handleUpload = e => {
     let file1 = document.querySelector('#file1').files[0]
@@ -135,6 +131,7 @@ const PostAritcle = props => {
           <section>
             <button onClick={handleClick}>add</button>
             {append}
+            {count}
           </section>
         </div>
       </div>
@@ -151,6 +148,7 @@ const imgComponent = (props, handleUpload, data) => {
     </>
   )
 }
-const appendExample = props => {
-  return <div>{props.key}</div>
+const AppendExample = props => {
+  console.log('child')
+  return <div>{props.n}</div>
 }
