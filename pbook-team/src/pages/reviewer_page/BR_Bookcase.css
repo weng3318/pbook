@@ -4,10 +4,11 @@
     left: 0;
     right: 0;
     color: #2d3a3a;
-    border-bottom: 1px solid #ffc408;
+    border-bottom: 2px solid #ffc408;
     width: 140px;
     margin: 0 auto;
     padding: 30px 0 10px 0;
+    text-align: center;
 }
 /* 熱門書評區域 (光效) */
 .HotBookBoxAll_Bookcase{

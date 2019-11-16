@@ -18,8 +18,8 @@ export class Reviewer extends React.Component {
 }
   componentDidMount() {
     axios
-      // .get('http://localhost:5000/brBookcase')
-      .get('http://localhost:5555/reviewer')
+      .get('http://localhost:5000/brReviewerList')
+      // .get('http://localhost:5555/brReviewerList')
       .then(res => {
         this.setState({ brData: res.data.rows })
         console.log('取得資料' + res.data.rows)
@@ -37,7 +37,7 @@ export class Reviewer extends React.Component {
         {/* <Chat sid="MR00001"/> */}
         {/* {Data */}
         {this.state.brData
-        .map(({ sid, title, img, name, job, intro, youtube, facebook, twitter, tube,}) => (
+        .map(({ sid, title, img, name, job, intro, bookcase, youtube, facebook, twitter, tube,}) => (
             <BR_ReviewerList
               key={sid}
               to={'/ReviewerBooks/' + sid}
@@ -46,10 +46,11 @@ export class Reviewer extends React.Component {
               img={img}
               name={name}
               job={job}
+              intro={intro}
+              bookcase={bookcase}
               title={title}
               youtube={youtube}
               facebook={facebook}
-              intro={intro}
               twitter={twitter}
               tube={tube}
             ></BR_ReviewerList>
@@ -58,7 +59,7 @@ export class Reviewer extends React.Component {
         {/* {Data */}
         {this.state.brData
           .filter(({ name }) => '' == name)
-          .map(({ sid, title, img, name, job, intro, youtube, facebook, twitter, tube,}) => (
+          .map(({ sid, title, img, name, job, intro, bookcase, youtube, facebook, twitter, tube,}) => (
             <BR_ReviewerList
              key={sid}
               to={'/ReviewerBooks/' + sid}
@@ -67,10 +68,11 @@ export class Reviewer extends React.Component {
               img={img}
               name={name}
               job={job}
+              intro={intro}
+              bookcase={bookcase}
               title={title}
               youtube={youtube}
               facebook={facebook}
-              intro={intro}
               twitter={twitter}
               tube={tube}
             ></BR_ReviewerList>

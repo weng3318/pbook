@@ -16,7 +16,8 @@ class ReviewerBooks extends React.Component {
   }
   componentDidMount() {
     axios
-      .get('http://localhost:5555/reviewer')
+      .get('http://localhost:5000/brReviewerList')
+      // .get('http://localhost:5555/reviewer')
       .then(res => {
         this.setState({ brData: res.data.rows })
         console.log( res.data.rows[0])
@@ -30,18 +31,17 @@ class ReviewerBooks extends React.Component {
 
     if(!this.state.brData.length) return <></>
 
-    let ss = this.state.brData
+    let Data = this.state.brData
    
     let reviewerData = null
-    console.log('ss[0].sid', ss[0])
+    console.log('Data[0].sid', Data[0])
     // console.log(Data)
-    for (let i = 0; i < ss.length; i++) {
-      if (ss[i].sid == this.props.match.params.sid) {
-        reviewerData = ss[i]
+    for (let i = 0; i < Data.length; i++) {
+      if (Data[i].sid == this.props.match.params.sid) {
+        reviewerData = Data[i]
       }
     }
-    // 書櫃裡的書
-    let as = reviewerData.bookcase
+    console.log('帶進來的書籍',reviewerData.bookcase)
     return (
       <>
         <BR_Navbar />
@@ -63,10 +63,10 @@ class ReviewerBooks extends React.Component {
           <BR_BookcaseHot />
 
           {/* 書評列表 */}
-          {/* {as.map((bookcase) => (
-            <BR_BookcaseList bookcase={bookcase}></BR_BookcaseList>
-          ))} */}
-
+          <BR_BookcaseList 
+          bookcase={reviewerData.bookcase}
+          bookcase={reviewerData.bookcase}
+          ></BR_BookcaseList>
         </section>
       </>
     )

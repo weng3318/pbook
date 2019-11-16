@@ -8,10 +8,10 @@ class BR_BookcaseList extends React.Component {
     <div className="d-flex">
           <div className="brAvatarAllBox_Bookcase borderLine">
             {/* 書籍圖片 */}
-            <img className="brBookInfoImg_Bookcase" src={require(`../reviewer_page/images_books/${this.props.bookcase}`)}/>
+            <img className="brBookInfoImg_Bookcase" src={require(`./images_books/${this.props.bookcase}`)}/>
           </div>
 
-          <div className="brInfoBox_Bookcase borderLine"><h5>書評內容</h5>
+          <div className="brInfoBox_Bookcase borderLine"><h5 className="h5_br">書評內容</h5>
                 <div className="brInfoText_Bookcase">
                     {this.props.bookName}<div className="bookInfo_Bookcase">書名：蔡康永的說話之道</div>
                     {this.props.bookBy}<div className="bookInfo_Bookcase">作者：蔡康永</div>

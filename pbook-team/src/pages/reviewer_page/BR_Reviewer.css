@@ -5,13 +5,14 @@
     font-size: 1rem;
     margin: 0;
     padding: 0;
+    z-index: 1;
 }
 /* 標題，主要文字 */
-h5{
+.h5_br{
     text-align: center;
     font-weight: 800;
     color: #2d3a3a;
-    margin:3px;
+    margin: 10px 0 5px 0;
 }
 /* 邊框顏色，參照用 */
 .borderLine {
@@ -37,7 +38,7 @@ h5{
 }
 /* 書評列表 (參照背景) */
 .reviewerList {
-    background: #fff;
+    /* background: #fff; */
     /* background: url(../reviewer_page/images/01_書評家.png) center center; */
     max-width: 1200px;
     margin: 0 auto;
@@ -66,7 +67,7 @@ h5{
 }
 /* 分頁，看看書櫃 (參照偽元素) */
 .reviewerBooks::after{
-    /* content: ""; */
+    content: "";
     display: block;
     background: rgba(0,0,0,.4);
     position: absolute;
@@ -83,8 +84,8 @@ h5{
 }
 /* 頭像區域 (縮放限制) */
 .brAvatarBox{
-    width: 120px;
-    height: 120px;
+    width: 110px;
+    height: 110px;
     border-radius: 50%;
     border: 2px solid #ffc408;
     margin: 0 auto;
@@ -123,7 +124,7 @@ h5{
 /* 書評家簡介，(文字、限制行數) */
 .brInfoText{
     font-size: 1rem;
-    margin: 16px;
+    margin: 24px;
     /* color: rgba(255,255,255,.7); */
     color: #2d3a3a;
     overflow : hidden;
@@ -145,6 +146,8 @@ h5{
     display: flex;
     justify-content: center;
     align-items: center;
+    /* justify-content: space-around; */
+    position: relative;
 }
 /* 追蹤作者 (按鈕) */
 .brIconFollow{
@@ -153,9 +156,19 @@ h5{
 /* 分享圖示 (按鈕) */
 .brIconShare{
     width: 23%;
-    margin: 5px 6px;
+    margin: 5px 4px;
 }
-
+.fb-share-button{
+    width: 100%;
+}
+.fbBox{
+    display: flex;
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    background: #1877f2;
+    height: 25px;
+}
 /* 書評家列表，整體區域 ( Display狀態改變) */
 .ReviewerListAllBox{
     display: flex;
