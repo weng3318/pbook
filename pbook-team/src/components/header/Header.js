@@ -25,7 +25,7 @@ export default class Header extends React.Component {
     super()
     this.state = {
       loginImg: '',
-      memberData: {},
+      member:{}
     }
   }
   // 'http://localhost:5555/images/member/yoko.jpg'
@@ -90,15 +90,7 @@ export default class Header extends React.Component {
   }
 
   componentDidMount() {
-    let pic = JSON.parse(localStorage.getItem('user'))
-
-    if (pic !== null) {
-      console.log(pic, 11111)
-      let newPic =
-        'http://localhost:5555/images/member/' +
-        JSON.parse(localStorage.getItem('user')).MR_pic
-      this.setState({ loginImg: newPic })
-    }
+    this.queryMember()
 
     // 模擬會員登入後的狀態
     // setTimeout(() => {
@@ -130,18 +122,40 @@ export default class Header extends React.Component {
     // function getPermission(cb) {
     //     Notification.requestPermission(cb);
     // }
-    // console.log('componentDidMount')
+    console.log('componentDidMount')
   }
-  componentDidMount() {
-    console.log('DID MOUNt')
-    console.log(this.props)
-  }
+  queryMember(){
+    let number = JSON.parse(localStorage.getItem('user')).MR_number
+    // console.log(number);
 
-  componentDidUpdate(prevProps) {
-    console.log('DID UPDATE')
-    console.log(this.props)
-  }
-  shouldComponentUpdate() {}
+    fetch('http://localhost:5555/member', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          number: number,
+        })
+      })
+      .then( response => {
+        if(!response) throw new Error(response.statusText)
+        // console.log('3'+response);
+        return response.json()
+      })
+      .then(data =>{
+          console.log("test", data);
+          this.setState({member: data[0]})
+          })
+
+    
+}
+
+  // componentDidUpdate(prevProps) {
+  //   // console.log('DID UPDATE')
+  //   // console.log(this.props)
+  // }
+  // shouldComponentUpdate() {}
 
   render() {
     // let phoneMemberStatus = 'none'
@@ -157,8 +171,10 @@ export default class Header extends React.Component {
       '品書至尊',
       '書評家',
     ]
-
-    console.log(this.state.loginImg)
+    let member = this.state.member
+    let newPic = 'http://localhost:5555/images/member/' +
+    member.MR_pic 
+    console.log('newPic'+ newPic);
 
     return (
       <>
@@ -212,9 +228,9 @@ export default class Header extends React.Component {
                 <span
                   className="loginImg"
                   style={{
-                    backgroundImage: `url(${this.state.loginImg})`,
-                  }}
-                ></span>
+                   backgroundImage: `url(${newPic})`
+                   }}>
+                </span>
                 <Link
                   to="/member"
                   className="loginText"

@@ -82,8 +82,6 @@ router.post('/login', (req, res, next) => {
                 memberId: rows[0].MR_number,
                 memberLv: rows[0].MR_personLevel,
             } 
-            console.log(req.session);
-            
             // console.log(req.session);
             
             res.json({
@@ -150,9 +148,10 @@ router.post('/edit', (req, res, next)=>{
     let birthday = req.body.birthday
     let mobile = req.body.mobile
     let address = req.body.address
+    let filename = req.body.filename
 
     
-    db.query(Member.modifyMemberInfoSql(number, email, name, nickname, birthday, mobile, address), (err, result)=>{
+    db.query(Member.modifyMemberInfoSql(number, email, name, nickname, birthday, mobile, address, filename), (err, result)=>{
         if(err){ res.json(err) }
         res.json({
             status: "修改成功",
@@ -205,8 +204,7 @@ const fs = require('fs')
 router.post('/upload', upload.single('avatar'),(req, res) =>{
         console.log("avatar",  req.body.avatar);
         if(req.file && req.file.mimetype){
-            // console.log(req.file);
-    
+            console.log(req.file)
             switch(req.file.mimetype){
                 case 'image/png':
                 case 'image/jpeg':
@@ -232,13 +230,14 @@ router.post('/upload', upload.single('avatar'),(req, res) =>{
 
 
 //前端上傳圖片多張
-router.post('/imgs', upload.array('avatar', 5),(req, res, next) =>{
+//API用POSTMAN測試可以
+router.post('/imgFiles', upload.array('avatar', 5),(req, res, next) =>{
         console.log("avatar",  req.body.avatar);
-
+        console.log("Files", req.files); 
+        let images = []
         for(let i=0; i<req.files.length;i++){
             if(req.files[i] && req.files[i].mimetype){
-                console.log(req.files.length);
-        
+                console.log([i]);
                 switch(req.files[i].mimetype){
                         case 'image/png':
                         case 'image/jpeg':
@@ -246,18 +245,21 @@ router.post('/imgs', upload.array('avatar', 5),(req, res, next) =>{
                                 .pipe(
                                     fs.createWriteStream('public/images/member/' + req.files[i].originalname)
                                 )
+                                images.push( req.files[i].originalname)
+                                console.log(images);
                                 
                                 res.json({
-                                filename: req.files[i].originalname
+                                pictures: images
                                 })
                                 break;
-                        default:
-                        return res.send('bad file type')
+                                default:
+                                return res.send('bad file type')
                         }
                             
                         }else{
+                            console.log('222');
                             res.json({
-                                filename: ""
+                                pictures: []
                             })
                         }
                     }

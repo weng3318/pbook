@@ -79,25 +79,23 @@ class AddMemberBook extends React.Component {
 
     onClickhandler(){
     const formData = new FormData()
-    let fileField = document.querySelector("input[type='file']")
-    // formData.append('username', 'abc')
-    formData.append('avatar', fileField.files[0])
-    // const formData = new FormData() 
-    // data.appen2d('file', this.state.selectedFile)
-
-
-    fetch('http://localhost:5555/member/upload',{
+    formData.append('avatar', this.state.pictures)
+    console.log(formData);
+    
+    fetch('http://localhost:5555/member/imgFiles',{
       method: 'POST',
-      credentials: 'include',
       body: formData
     })
     .then(res =>{
-      console.log("res:", res);
-      
-      return res.json()
+      console.log("res2:", res);
+      // return res.json()
     })
-    .then(img =>{
-      console.log(img);
+    .then(imgs =>{
+      console.log("imgs.files", imgs.filename);
+      
+    })
+    .catch(err=>{
+      console.log("err=", err);
       
     })
   }
@@ -133,23 +131,11 @@ class AddMemberBook extends React.Component {
 
     //上架書籍
     addBooks(){
-      // let isbn = this.state.isbn
-      // let name = this.state.name
-      // let author = this.state.author
-      // let publishing = this.state.publishing
-      // let publishDate = this.state.publishDate
-      // let version = this.state.version
-      // let price = this.state.price
-      // let pages = this.state.pages
-      // let savingStatus = this.state.savingStatus
-      // let memberNo = this.state.memberNo
-      // let categories = this.state.categories
-      // let remark = this.state.remark
-      // console.log(isbn, name, author, publishing, publishDate, version, version,
-      //   price, pages, savingStatus);
       
-      console.log('addbooks')
+      this.onClickhandler()
 
+      console.log("upload success");
+      
 
       fetch('http://localhost:5555/member/addBook', {
                 method: 'POST',
@@ -184,7 +170,6 @@ class AddMemberBook extends React.Component {
                 this.success(status, message)
               }
               if(status === "上架書籍失敗"){
-                console.log(status, message)
                 this.fail(status, message)
               }
             })
@@ -285,18 +270,18 @@ class AddMemberBook extends React.Component {
                                                     {/* <button htmlFor="mb_pic" className="form-group btn btn-outline-primary my-2 my-sm-0" type="button" >
                                                     <input className=" " type="file" name="file" style={{fontSize: '20px'}} onChange={this.onChangeHandler} multiple/>・請選擇書籍照片
                                                      <button type="button" className="btn btn-success btn-block" onClick={this.onClickhandler}>Upload</button> 
-                                                    </button>
-                                                    <div style={{height:'50px',  marginTop:'10px'}}>
-                                                        <span style={{margin:'0px 20px'}} className="my_text_blacktea_fifty">最多上傳三張圖片</span>
-                                                    </div> */}
+                                                    </button>*/}
                                                     <ImageUploader
                                                         withIcon={true}
                                                         buttonText='Choose images'
                                                         onChange={this.onDrop}
-                                                        style={{width:'600px', height:'170px'}}
+                                                        style={{width:'600px', height:'130px'}}
                                                         imgExtension={['.jpg', '.gif', '.png', '.gif']}
                                                         maxFileSize={5242880}
                                                     />
+                                                     <div style={{height:'20px',  marginTop:'10px'}}>
+                                                        <span style={{margin:'0px 20px'}} className="my_text_blacktea_fifty">最多上傳三張圖片</span>
+                                                    </div> 
                                                 </div>
                                                 {/* <div className="pre_pic col-lg-3">
                                                     <img style={{objectFit: 'contain', width: '100%', height: '100%'}} id="demo" /> 

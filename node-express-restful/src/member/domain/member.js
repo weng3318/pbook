@@ -44,8 +44,8 @@ class Member{
     }
 
     //修改資料
-    modifyMemberInfoSql(number, email, name, nickname, birthday, mobile, address){
-        let sql = `UPDATE mr_information SET MR_email = '${email}',MR_name = '${name}', MR_nickname = '${nickname}',MR_birthday = '${birthday}',MR_mobile = '${mobile}',MR_address = '${address}' WHERE MR_number = '${number}' `
+    modifyMemberInfoSql(number, email, name, nickname, birthday, mobile, address, filename){
+        let sql = `UPDATE mr_information SET MR_email = '${email}',MR_name = '${name}', MR_nickname = '${nickname}',MR_birthday = '${birthday}',MR_mobile = '${mobile}',MR_address = '${address}',MR_pic='${filename}' WHERE MR_number = '${number}' `
         return sql
     }
 

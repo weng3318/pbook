@@ -28,7 +28,7 @@ $content: 24px;
   border-bottom: 3px solid $yellow;
 }
 
-//新增會員書籍
+//?啣??u?貊?
 .addMemberBook{
 
     .Book_title{
@@ -54,7 +54,7 @@ $content: 24px;
 }
 
 
-//會員編輯的樣式
+//?u蝺刻摩?見撘?
 .editWrap{
   @extend .contentWrap;
   // border: 1px solid rgb(109, 34, 34);
@@ -121,10 +121,10 @@ $content: 24px;
       }
 
       figure{
-        border: 1px solid #000;
         width: 300px;
         height: 300px;
         border-radius: 99em;
+        background-size: cover;
       }
     }
  
@@ -147,7 +147,7 @@ $content: 24px;
 
 
 
-//會員資訊的樣式
+//?u鞈??見撘?
 .infoWrap {
   @extend .contentWrap;
   // border: 1px solid #000;
@@ -187,10 +187,12 @@ $content: 24px;
     }
 
     figure{
-      border: 1px solid #000;
+      // border: 1px solid #000;
       width: 300px;
       height: 300px;
       border-radius: 99em;
+      // background-repeat: no-repeat;
+      background-size: cover;
     }
     h3 {
       display: block;
@@ -199,7 +201,7 @@ $content: 24px;
   }
 }
 
-//sidebar內樣式
+//sidebar?扳見撘?
 .side-menu {
   width: 320px;
   height: 80vw;
@@ -242,7 +244,7 @@ $content: 24px;
   }
 }
 
-//navbar樣式
+//navbar璅??
 .navbarWrap {
   height: 80px;
   background-color: $main_color;

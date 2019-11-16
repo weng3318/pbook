@@ -64,6 +64,9 @@ class Info extends React.Component {
             
         // console.log("member", this.state.member.MR_name);
         let member = this.state.member
+        let newPic = 'http://localhost:5555/images/member/' +
+        member.MR_pic 
+        console.log('newPic'+ newPic);
         
 
         return (
@@ -109,8 +112,12 @@ class Info extends React.Component {
                                           <h3>{level[member.MR_personLevel]}</h3>
                                   </div>
                                       <div className="item col">
-                                          <figure>
-                                              <img src="../images/cars.jpg" alt="" />
+                                          <figure 
+                                          style={{
+                                            backgroundImage: `url(${newPic})`
+                                            }}>
+                                          
+                                        
                                           </figure>
                                       </div>
                           </div>

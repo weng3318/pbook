@@ -1,5 +1,6 @@
 import React from 'react'
 import './lukeStyle.scss'
+import swal from '@sweetalert/with-react'
 
 class Edit extends React.Component {
   constructor(){
@@ -12,11 +13,13 @@ class Edit extends React.Component {
       birthday:'',
       mobile:'',
       address:'',
-      member: {}
+      member: {},
+      selectedFile: null
 
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleEdit = this.handleEdit.bind(this)
+    this.onChangeHandler = this.onChangeHandler.bind(this)
   }
 
   componentDidMount(){
@@ -30,7 +33,7 @@ class Edit extends React.Component {
             headers: {
               'Content-Type': 'application/json'
             },
-            credentials: 'include',
+            // credentials: 'include',
             body: JSON.stringify({
               number: number,
             })
@@ -55,8 +58,8 @@ class Edit extends React.Component {
                   address:data[0].MR_address,
                   member: data[0]
                 })
+                return
             }
-            console.log("test");
             
 
             this.setState({
@@ -74,6 +77,42 @@ class Edit extends React.Component {
         
     }
 
+    success (status, message){
+      swal({
+        title: status,
+        text: message,
+        icon: "success",
+        button: "OK",
+      })
+      .then((title) =>{
+        if(title === "修改成功"){
+          swal('您已經成功做了修改!', {
+            icon: 'success',
+          })
+          setTimeout(() => {
+            window.location.href = '/member'
+          }, 1000)
+        }
+      })
+    }
+  
+    fail(status, message){
+      swal({
+        title: status,
+        text: message,
+        icon: "error",
+        button: "OK",
+      })
+    }
+
+  //照片上傳
+  onChangeHandler(e){
+    // console.log(e.target.files[0]);
+    this.setState({
+      selectedFile: e.target.files[0],
+    })
+  }
+
 
 
 
@@ -86,6 +125,27 @@ class Edit extends React.Component {
 
   handleEdit(){
     let number = JSON.parse(localStorage.getItem('user')).MR_number
+    const formData = new FormData()
+    let fileField = document.querySelector("input[type='file']")
+    formData.append('avatar', fileField.files[0])
+    console.log(formData);
+    let imgFile = ""
+
+    fetch('http://localhost:5555/member/upload',{
+      method: 'POST',
+      // credentials: 'include',
+      body: formData
+    })
+    .then(res =>{
+      console.log("res:", res);
+      return res.json()
+    })
+    .then(img =>{
+      imgFile = img.filename
+      console.log(imgFile);
+      
+
+
     fetch('http://localhost:5555/member/edit', {
             method: 'POST',
             headers: {
@@ -99,6 +159,7 @@ class Edit extends React.Component {
               birthday: this.state.birthday,
               mobile: this.state.mobile,
               address: this.state.address,
+              filename: imgFile
             })
           })
           .then( response => {
@@ -107,7 +168,17 @@ class Edit extends React.Component {
           })
           .then(data =>{
               console.log("data", JSON.stringify(data));
-          })
+              let status = data.status
+              let message = data.message
+              if(status === "修改成功"){
+                this.success(status, message)
+              }
+              if(status === "修改失敗"){
+                this.fail(status, message)
+              }
+                  })
+
+      })
   }
 
 
@@ -117,6 +188,9 @@ class Edit extends React.Component {
 
   render(){
     let member = this.state.member
+    let newPic = 'http://localhost:5555/images/member/' +
+        member.MR_pic 
+        // console.log(newPic);
     let level = [
       '',
       '品書會員',
@@ -176,15 +250,15 @@ class Edit extends React.Component {
                     <h3>{level[member.MR_personLevel]}</h3>
                   </div>
                   <div className="item">
-                    <figure>
-                      <img src="../images/cars.jpg" alt="" />
+                  <figure 
+                      style={{
+                      backgroundImage: `url(${newPic})`
+                      }}>
                     </figure>
                     <div className="chang_btn">
-                    <input type="file" className="form-control-file" id="mr_pic" name="mr_pic" style={{display:"none"}} />
-                    
-                    <button className="btn btn-warning my-2 my-sm-0" type="button">
-                                    選擇圖片
-                    </button>
+                    <input className="btn btn-warning my-2 my-sm-0" type="file" name="file" onChange={this.onChangeHandler} 
+                      style={{width: "250px"}}
+                    />
                     </div>
                   </div>
                 </div>
@@ -196,8 +270,9 @@ class Edit extends React.Component {
                     type="submit"
                     className="btn btn-warning"
                     id="submit_btn"
+                    onClick= {()=>{ window.location.href = '/'}}
                   >
-                    &nbsp;取&nbsp;&nbsp;&nbsp;消&nbsp;
+                    &nbsp;回&nbsp;首&nbsp;頁&nbsp;
                   </button>
                 </div>
                 <div>
