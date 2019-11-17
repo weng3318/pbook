@@ -6,13 +6,7 @@ import axios from 'axios'
 import moment from 'moment'
 import io from 'socket.io-client'
 
-const socket = io.connect('ws://localhost:5000/', {
-  query: {
-    myID: JSON.parse(localStorage.getItem('user'))
-      ? JSON.parse(localStorage.getItem('user')).MR_number
-      : '假資料',
-  },
-})
+const socket = io.connect('ws://localhost:5000/')
 
 class Chat extends React.Component {
   constructor() {
@@ -20,9 +14,6 @@ class Chat extends React.Component {
     this.state = {
       oldDataList: [],
       oldDataMessage: [],
-      myData: [
-        { MR_pic: 'yoko.jpg', MR_number: 'MR00001', myName: '01橫山裕' },
-      ],
       mySearch: '',
     }
     socket.on('SeverToClientMsg', this.onMsg)
@@ -30,9 +21,7 @@ class Chat extends React.Component {
 
   handleSearch = () => {
     // 取得搜尋的字串
-
     var mySearch = this.mySearch.value
-
     this.setState({ mySearch: mySearch })
   }
 
@@ -52,23 +41,35 @@ class Chat extends React.Component {
       })
   }
 
-  onMsg = data => {
-    console.log('客戶端接收服務端發的消息', data)
-    this.setState({
-      oldDataMessage: [data, ...this.state.oldDataMessage],
-    })
-    // axios
-    //   .post(`http://localhost:5555/nana_use/chatList2`, {
-    //     memberId: JSON.parse(localStorage.getItem('user')).MR_number,
-    //   })
-    //   .then(res => {
-    //     this.setState({
-    //       oldDataList: res.data,
-    //     })
-    //   })
-    //   .catch(error => {
-    //     console.log('客戶端接收服務端發的消息之後的更新左邊那欄有錯誤', error)
-    //   })
+  onMsg = fullData => {
+    console.log('客戶端接收服務端發的消息', fullData)
+    console.log('我是誰?', JSON.parse(localStorage.getItem('user')).MR_number)
+
+    if (
+      fullData.data.myFrom ===
+      JSON.parse(localStorage.getItem('user')).MR_number
+    ) {
+      this.setState({
+        oldDataList: fullData.oldDataList,
+        oldDataMessage: [fullData.data, ...this.state.oldDataMessage],
+      })
+    } else if (
+      fullData.data.myTo === JSON.parse(localStorage.getItem('user')).MR_number
+    ) {
+      axios
+        .post(`http://localhost:5555/nana_use/chatList2`, {
+          memberId: JSON.parse(localStorage.getItem('user')).MR_number,
+        })
+        .then(res => {
+          this.setState({
+            oldDataList: res.data,
+            oldDataMessage: [fullData.data, ...this.state.oldDataMessage],
+          })
+        })
+        .catch(error => {
+          console.log('componentDidMount拿資料時有錯誤', error)
+        })
+    }
   }
 
   handleSubmit = () => {
@@ -144,90 +145,24 @@ class Chat extends React.Component {
   }
 
   componentDidMount() {
-    // 避免set兩次
-    let oldDataList
     axios
       .post(`http://localhost:5555/nana_use/chatList2`, {
         memberId: JSON.parse(localStorage.getItem('user')).MR_number,
       })
       .then(res => {
-        oldDataList = res.data
-        return axios.post(`http://localhost:5555/nana_use/myDataList2`, {
-          memberId: JSON.parse(localStorage.getItem('user')).MR_number,
-        })
-      })
-      .then(res => {
         this.setState({
-          myData: res.data,
-          oldDataList: oldDataList,
+          oldDataList: res.data,
         })
       })
       .catch(error => {
         console.log('componentDidMount拿資料時有錯誤', error)
       })
-
-    this.interval = setInterval(async () => {
-      console.log('聊天室定時器編號', this.interval)
-      console.log(
-        '聊天室定時器啟動',
-        JSON.parse(localStorage.getItem('user')).MR_number
-      )
-
-      await axios
-        .post(`http://localhost:5555/nana_use/chatMessage2`, {
-          memberId: JSON.parse(localStorage.getItem('user')).MR_number,
-        })
-        .then(res => {
-          if (this.state.oldDataMessage !== res.data) {
-            this.setState({ oldDataMessage: res.data })
-          }
-        })
-        .catch(error => {
-          console.log('聊天室定時器啟動 點擊左邊那欄chatMessage有錯誤', error)
-        })
-
-      await axios
-        .post(`http://localhost:5555/nana_use/chatList2`, {
-          memberId: JSON.parse(localStorage.getItem('user')).MR_number,
-        })
-        .then(res => {
-          if (this.state.oldDataList !== res.data) {
-            this.setState({ oldDataList: res.data })
-          }
-        })
-        .catch(error => {
-          console.log('聊天室定時器啟動 點擊左邊那欄chatList有錯誤', error)
-        })
-    }, 1000)
-  }
-
-  componentWillUnmount() {
-    if (this.props.location.path !== '/chat') {
-      console.log('聊天室定時器關閉', this.interval)
-      window.clearInterval(this.interval)
-    }
   }
 
   render() {
+    let myId = JSON.parse(localStorage.getItem('user')).MR_number
+    let myPic = JSON.parse(localStorage.getItem('user')).MR_pic
     var count = 0
-    var myPic = this.state.myData[0].MR_pic
-    var myId = this.state.myData[0].MR_number
-    var myName = this.state.myData[0].MR_name
-
-    // console.log(this.props)
-    // console.log('render', this.state.oldDataList)
-
-    // 因為第一次render會得不到值,會一直報錯!所以要多加判斷,或者給他一個初始值
-    // console.log(
-    //   'render-mypic',
-    //   this.state.myData[0] && this.state.myData[0].MR_pic
-    // )
-    // console.log('render-mypic', myPic)
-    // console.log('render-mypic', myId)
-    // console.log('render-mypic', myName)
-    // console.log('render', this.state.oldDataList)
-    // console.log('this.state.err', this.state.err)
-
     return (
       <>
         <div className="chatWrap">
