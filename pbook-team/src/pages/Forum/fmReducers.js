@@ -1,3 +1,31 @@
+import React from 'react'
+//---- PostArticle --------
+const postArticleState = {
+  imgData: [],
+  imgCount: 1,
+  addElement: []
+
+}
+function postArticle(state = postArticleState, action) {
+  switch (action.type) {
+    case 'APPEND_IMG_ELEMENT':
+      return {
+        ...state,
+        addElement: [...state.addElement, action.content],
+        imgData: [...state.imgData, action.imgData]
+      }
+    case 'APPEND_TEXTAREA':
+      return {
+        ...state,
+        addElement: [...state.addElement, action.content],
+      }
+    default: return state
+  }
+}
+
+//---- PostArticle End --------
+
+//---- UserDetails --------
 const detailInitState = {
   userHover: false,
   cateHover: false,
@@ -19,7 +47,8 @@ function UserDetails(state = detailInitState, action) {
       return state
   }
 }
+//---- UserDetails End --------
 
-const ListReducer = { UserDetails }
+const ListReducer = { UserDetails, postArticle }
 
 export default ListReducer
