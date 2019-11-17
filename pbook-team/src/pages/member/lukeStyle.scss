@@ -28,16 +28,66 @@ $content: 24px;
   border-bottom: 3px solid $yellow;
 }
 
-//忘記密碼
-.forgetPWD_wrap{
-  background: rgba(0, 0, 0, 0.459);
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 10;
+
+
+//收藏書籍
+.booksContent{
+  @extend .contentWrap;
+
+  .title{
+      margin: 20px;
+      font-size: 32px;
+      margin-top: 50px;
+      padding-left: 60px;
+      padding-bottom: 50px;
+      width: 1280px;
+      border-bottom: 3px solid $yellow;
+
+  }
+  .wrap{
+    margin: 0 auto;
+    width: 100%;
+    column-count:4;
+    column-width: 20%;
+    column-gap: 5px;
+  }
+  .list{
+    // border: 1px solid #000;
+    margin-bottom: 10px;
+    margin-left: 30px;
+    // margin: 5px 10px;
+    /* 防止多列布局，分页媒体和多区域上下文中的意外中断 */
+    break-inside: avoid;
+    overflow: hidden;
+    &:hover{
+      box-shadow: 2px 2px 2px rgba(0, 0, 0, .5);
+    }
+  }
+  .listImg{
+    width: 100%;
+    vertical-align: middle;
+  }
+  .bookInfo{
+    padding: 5px 10px;
+  }
+  .avatar {
+    vertical-align: middle;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+  }
+  .booksTitle{
+    font-size: $title;
+    // text-shadow: 2px 2px 2px rgba(0, 0, 0, .3);
+  }
+  .introduction{
+    // border: 1px solid #000;
+    text-shadow: 2px 2px 2px rgba(0, 0, 0, .3);
+  }
+
 }
+
+
 
 
 //修改密碼
@@ -193,6 +243,7 @@ $content: 24px;
         height: 300px;
         border-radius: 99em;
         background-size: cover;
+        object-fit: cover;
       }
     }
  
@@ -261,6 +312,7 @@ $content: 24px;
       border-radius: 99em;
       // background-repeat: no-repeat;
       background-size: cover;
+      // object-fit: cover;
     }
     h3 {
       display: block;

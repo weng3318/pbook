@@ -5,6 +5,8 @@ import Info from '../../pages/member/Info'
 import Edit from '../../pages/member/Edit'
 import AddMemberBook from '../../pages/member/AddMemberBook'
 import PasswordModify from '../../pages/member/PasswordModify'
+import BooksFavorite from '../../pages/member/BooksFavorite'
+
 import '../../pages/member/lukeStyle.scss'
 
 const Sidebar = (props) => {
@@ -67,7 +69,9 @@ const Sidebar = (props) => {
                   個人書櫃
                 </Accordion.Toggle>
                 <Accordion.Collapse eventKey="0" className="sidebar_item">
-                  <a href="css">收藏書籍</a>
+                  <Link to='/member/BooksFavorite'>
+                    <a href="css">收藏書籍</a>
+                  </Link>
                 </Accordion.Collapse>
                 <Accordion.Collapse eventKey="0" className="sidebar_item">
                   <a href="css">收藏書評家</a>
@@ -102,6 +106,7 @@ const Sidebar = (props) => {
           <Route exact path="/member/edit" component={Edit} />
           <Route exact path="/member/AddMemberBook" component={AddMemberBook} />
           <Route exact path="/member/PasswordModify" component={PasswordModify} />
+          <Route exact path="/member/BooksFavorite" component={BooksFavorite} />
         </Switch>
       </Router>
     </>
