@@ -211,7 +211,6 @@ class Game extends React.Component {
     } else if (this.state.status === 'gameBookList') {
       return (
         <>
-          <GameRule />
           <audio
             id="audio"
             hidden={true}
@@ -230,6 +229,7 @@ class Game extends React.Component {
               zIndex: 20,
             }}
           >
+            <GameRule />
             <div className="changeGameIndexBG">
               <div id="snow"></div>
               <div className="position-relative PC-changeGameBookListWrap d-flex">
