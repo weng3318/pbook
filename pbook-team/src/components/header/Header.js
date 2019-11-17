@@ -296,7 +296,7 @@ export default class Header extends React.Component {
             </Link>
           </section>
 
-          <section className="phoneTitleHide">
+          <div className="phoneTitleHide">
             <div className="myHeaderMenu" onClick={this.handlePhoneTitle}>
               <div className="bar bar1"></div>
               <div className="bar bar2"></div>
@@ -304,7 +304,6 @@ export default class Header extends React.Component {
               <ul>
                 {JSON.parse(localStorage.getItem('user')) === null ? (
                   <>
-                    (
                     <li>
                       <Link to="/login" className="myHeaderA">
                         登入
@@ -340,11 +339,9 @@ export default class Header extends React.Component {
                         品書討論區
                       </Link>
                     </li>
-                    )
                   </>
                 ) : (
                   <>
-                    (
                     <li>
                       <Link to="/member" className="myHeaderA">
                         {JSON.parse(localStorage.getItem('user')).MR_name}
@@ -401,12 +398,11 @@ export default class Header extends React.Component {
                         登出
                       </div>
                     </li>
-                    )
                   </>
                 )}
               </ul>
             </div>
-          </section>
+          </div>
 
           <Switch>
             <Route exact path="/" component={Home} />

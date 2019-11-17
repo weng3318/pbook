@@ -27,6 +27,8 @@ chatMessage
                 `SELECT * FROM mb_chat WHERE myFrom = "${req.session.memberData.memberId}" OR myTo = "${req.session.memberData.memberId}" ORDER BY created_at DESC`
             )
                 .then(results => {
+                    console.log('message final',results);
+                    
                     res.json(results);
                 })
                 .catch(error => {

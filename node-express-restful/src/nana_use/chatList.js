@@ -89,7 +89,7 @@ chatList
         })
         .catch(error => {
           res.send("404-找不到資料");
-          console.log(error);
+          console.log('chatlist',error);
         });
 
     }
