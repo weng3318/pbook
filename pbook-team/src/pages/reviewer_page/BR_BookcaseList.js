@@ -1,4 +1,5 @@
 import React from 'react'
+import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 
 class BR_BookcaseList extends React.Component {
     render() {
@@ -6,11 +7,12 @@ class BR_BookcaseList extends React.Component {
             <>
 <section className="ReviewerListAllBox_Bookcase reviewerList">
     <div className="d-flex">
-          <div className="brAvatarAllBox_Bookcase borderLine">
             {/* 書籍圖片 */}
+        <Link to={"/reviewer/reviewerBooks/bookcase/"+this.props.sid} className="d-flex justify-content-center borderLineTop">
+          <div className="brAvatarAllBox_Bookcase borderLine">
             <img className="brBookInfoImg_Bookcase" src={require(`./images_books/${this.props.bookcase}`)}/>
           </div>
-
+        </Link>
           <div className="brInfoBox_Bookcase borderLine"><h5 className="h5_br">書評內容</h5>
                 <div className="brInfoText_Bookcase">
                     {this.props.bookName}<div className="bookInfo_Bookcase">書名：蔡康永的說話之道</div>

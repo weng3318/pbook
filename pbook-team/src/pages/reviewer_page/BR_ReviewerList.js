@@ -27,7 +27,7 @@ class BR_ReviewerList extends React.Component {
                   <div className="AvatarInfo">{this.props.job}</div>
               </div>
 
-              <Link to={"/reviewerBooks/"+this.props.sid} className="d-flex justify-content-center borderLineTop">
+              <Link to={"/reviewer/reviewerBooks/"+this.props.sid} className="d-flex justify-content-center borderLineTop">
               <div className="brIconBox">
                 <img src={require('../reviewer_page/images/P_logo.png')}/>
               </div>
