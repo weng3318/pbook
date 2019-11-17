@@ -115,13 +115,25 @@
 }
 
 .reviews_member_img {
-  max-height: 100%;
-  max-width: 100%;
-  width: 150px;
-  height: 150px;
+  max-height: 80%;
+  max-width: 80%;
+  width: 100px;
+  height: 100px;
   margin: 15px 0 0 0px;
   border: 1px solid #ccc;
 }
+/* 會員暱稱 */
 .reviews_member_nickname {
   margin: 0 0 0 8px;
+}
+
+/* 未登入會員連結 */
+.reviews_Login {
+  margin: 60px auto 0 auto;
+}
+/* 下方其他會員書評 */
+.reviews_text {
+  width: 1000px;
+  height: 120px;
+  padding: 0.7rem;
 }

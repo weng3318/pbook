@@ -4,9 +4,10 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import styled from '@emotion/styled'
-import BookHeart from './BookScore'
-import BookStar from './BookScoreForBR'
-import BookLineForBR from './BookLineForBR'
+import BookHeart from './BookScore/BookScore'
+import BookStar from './BookScore/BookScoreForBR'
+import BookLineForBR from './BookLine/BookLineForBR'
+import BookScoreForMember from './BookScore/BookScoreForMember'
 import { Button } from '@material-ui/core'
 
 //---------------------------------------------------------------------------------------------------------
@@ -92,7 +93,7 @@ const Review = styled.section`
   display: flex;
   width: 1200px;
   margin: 3rem 0;
-  border-bottom: 1px solid #ccc;
+  ${'' /* border-bottom: 1px solid #ccc; */}
 `
 //會員頭像
 const Member = styled.div`
@@ -113,9 +114,13 @@ const List = () => {
   const [List, setList] = useState([])
   const [score, setScore] = useState([])
   const [memberReview, getMemberReview] = useState([])
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')))
+  const [user, setUser] = useState({
+    isLogin: false,
+    pic: 'yui.png',
+    nickname: '',
+  })
   const [review, setReview] = useState({
-    id: user.MR_number,
+    id: '',
     reviewText: '',
     book: urlParams,
     star: '1',
@@ -125,14 +130,16 @@ const List = () => {
   useEffect(() => {
     bookList()
     reviewList()
-    // if (user !== null) {
-    //   console.log(user, 11111)
-    //   let newPic =
-    //     'http://localhost:5555/images/member/' +
-    //     JSON.parse(localStorage.getItem('user')).MR_pic
-    //   this.setState({ loginImg: newPic })
-    // }
-  }, [score, memberReview])
+    if (JSON.parse(localStorage.getItem('user')) !== null) {
+      let data = JSON.parse(localStorage.getItem('user'))
+      setUser({
+        isLogin: true,
+        pic: data.MR_pic,
+        nickname: data.MR_nickname,
+      })
+      setReview({...review,id:data.MR_number})
+    }
+  }, [score])
 
   //書評分頁資料ajax
   const bookList = () => {
@@ -167,7 +174,7 @@ const List = () => {
     axios
       .get(`http://localhost:5555/reviews/memberReview/${urlParams}`)
       .then(res => {
-        getMemberReview(res.data.review)
+        getMemberReview(res.data.reviews)
         console.log(res.data)
       })
       .catch(error => {
@@ -270,10 +277,10 @@ const List = () => {
           <BookColumnMember>
             <h3 className="reviews_push">發表評論</h3>
             <Member>
-              {user !== null ? (
+              {user.isLogin ? (
                 <img
                   className="reviews_member_img"
-                  src={require('../../images/forum/2.jpg')}
+                  src={`http://localhost:5555/images/member/${user.pic}`}
                 />
               ) : (
                 <img
@@ -284,56 +291,64 @@ const List = () => {
               <h6 className="reviews_member_nickname">{user.MR_nickname}</h6>
             </Member>
           </BookColumnMember>
-          <form className="reviews_form" onSubmit={submitHandler}>
-            <textarea
-              className="reviews_textarea"
-              name="reviewText"
-              value={review.reviewText}
-              onChange={changeHandler}
-              placeholder="新增評論..."
-            />
-            <BookRow>
-              <p>幫書籍評分</p>
-              <BookStar
-                score_star={review.star}
-                setScore_star={changeHandler}
+          {user.isLogin ? (
+            <form className="reviews_form" onSubmit={submitHandler}>
+              <textarea
+                className="reviews_textarea"
+                name="reviewText"
+                value={review.reviewText}
+                onChange={changeHandler}
+                placeholder="新增評論..."
               />
-            </BookRow>
-            <BookRowButton>
-              <button type="submit" className="reviews_submitBtn">
-                送出評論
-              </button>
-            </BookRowButton>
-          </form>
+              <BookRow>
+                <p>幫書籍評分</p>
+                <BookStar
+                  score_star={review.star}
+                  setScore_star={changeHandler}
+                />
+              </BookRow>
+              <BookRowButton>
+                <button type="submit" className="reviews_submitBtn">
+                  送出評論
+                </button>
+              </BookRowButton>
+            </form>
+          ) : (
+            <h6 className="reviews_Login">
+              <a href="/login">請登入會員填寫評論</a>
+            </h6>
+          )}
         </Review>
-        <Review>
-          <BookColumnMember>
-            <h3 className="reviews_push">會員評論</h3>
-            <Member>
-              <img
-                className="reviews_member_img"
-                src={require('../../images/' + user.MR_pic)}
-              />
-              <h6 className="reviews_member_nickname">{user.MR_nickname}</h6>
-            </Member>
-          </BookColumnMember>
-          <form className="reviews_form" onSubmit={submitHandler}>
-            <textarea
-              className="reviews_textarea"
-              name="reviewText"
-              value={review.reviewText}
-              onChange={changeHandler}
-              placeholder="新增評論..."
-            />
-            <BookRow>
-              <p>幫書籍評分</p>
-              <BookStar
-                score_star={review.star}
-                setScore_star={changeHandler}
-              />
-            </BookRow>
-          </form>
-        </Review>
+        <h3 className="reviews_push">會員評論</h3>
+        {memberReview.map(data => (
+          <Review>
+            <BookColumnMember>
+              
+              <Member>
+                <img
+                  className="reviews_member_img"
+                  src={`http://localhost:5555/images/member/${data.MR_pic}`}
+                />
+                <h6 className="reviews_member_nickname">{data.MR_nickname}</h6>
+              </Member>
+            </BookColumnMember>
+            <section className="reviews_form">
+              <BookRow>
+                <BookScoreForMember score_star={data.star} />
+                {new Intl.DateTimeFormat('zh-TW', {
+                  year: 'numeric',
+                  month: 'numeric',
+                  day: 'numeric',
+                  hour: 'numeric',
+                  minute: 'numeric',
+                  second: 'numeric',
+                  hour12: false,
+                }).format(new Date(data.create_time))}
+              </BookRow>
+              <div className="reviews_text">{data.message}</div>
+            </section>
+          </Review>
+        ))}
       </Main>
     </>
   )
