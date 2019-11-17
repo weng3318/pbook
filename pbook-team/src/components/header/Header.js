@@ -18,6 +18,7 @@ import Chat from '../../components/member/chat/Chat'
 import ReviewerBooks from '../../pages/ReviewerBooks'
 import BR_ReviewerList from '../../pages/reviewer_page/BR_ReviewerList'
 import BookReviews from '../../pages/BookReview/BookReviews'
+import ResetPWD from '../../pages/ResetPWD'
 import './header.css'
 
 export default class Header extends React.Component {
@@ -25,7 +26,7 @@ export default class Header extends React.Component {
     super()
     this.state = {
       loginImg: '',
-      member:{}
+      member:{},
     }
   }
   // 'http://localhost:5555/images/member/yoko.jpg'
@@ -90,8 +91,13 @@ export default class Header extends React.Component {
   }
 
   componentDidMount() {
-    this.queryMember()
-
+    
+    let pic = JSON.parse(localStorage.getItem('user'))
+    if (pic !== null) {
+      this.queryMember()
+    }
+    // }
+    // console.log('componentDidMount')
     // 模擬會員登入後的狀態
     // setTimeout(() => {
     //     this.setState({
@@ -122,8 +128,11 @@ export default class Header extends React.Component {
     // function getPermission(cb) {
     //     Notification.requestPermission(cb);
     // }
-    console.log('componentDidMount')
+    
   }
+
+
+  //查詢會員資料重設圖片
   queryMember(){
     let number = JSON.parse(localStorage.getItem('user')).MR_number
     // console.log(number);
@@ -144,12 +153,13 @@ export default class Header extends React.Component {
         return response.json()
       })
       .then(data =>{
-          console.log("test", data);
-          this.setState({member: data[0]})
+          // console.log("test", data);
+          let newPic = 'http://localhost:5555/images/member/' + data[0].MR_pic
+          console.log(newPic);
+          
+          this.setState({loginImg: newPic, member: data[0]})
           })
-
-    
-}
+  }
 
   // componentDidUpdate(prevProps) {
   //   // console.log('DID UPDATE')
@@ -171,10 +181,6 @@ export default class Header extends React.Component {
       '品書至尊',
       '書評家',
     ]
-    let member = this.state.member
-    let newPic = 'http://localhost:5555/images/member/' +
-    member.MR_pic 
-    console.log('newPic'+ newPic);
 
     return (
       <>
@@ -228,8 +234,8 @@ export default class Header extends React.Component {
                 <span
                   className="loginImg"
                   style={{
-                   backgroundImage: `url(${newPic})`
-                   }}>
+                    backgroundImage: `url(${this.state.loginImg})`,
+                  }}>
                 </span>
                 <Link
                   to="/member"
@@ -422,10 +428,12 @@ export default class Header extends React.Component {
 
             {/* <Route exact path="/login" component={()=><Login loginSuccess={(memberData)=>{ this.loginSuccess(memberData) }}/>} /> */}
             <Route exact path="/login" component={Login} />
-            <Route path="/member" component={Member} />
+            <Route exact path="/member" component={Member} />
             <Route exact path="/game/:id" component={Game} />
             <Route exact path="/chat" component={Chat} />
             <Route exact path="/cart" component={Cart} />
+            <Route exact path="/cart" component={Cart} />
+            <Route exact path="/ResetPWD" component={ResetPWD} />
             <Route exact component={NoPage} />
           </Switch>
         </Router>

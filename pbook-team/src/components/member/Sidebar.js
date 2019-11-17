@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 import Info from '../../pages/member/Info'
 import Edit from '../../pages/member/Edit'
 import AddMemberBook from '../../pages/member/AddMemberBook'
+import PasswordModify from '../../pages/member/PasswordModify'
 import '../../pages/member/lukeStyle.scss'
 
 const Sidebar = (props) => {
@@ -31,7 +32,9 @@ const Sidebar = (props) => {
                   </Link>
                 </Accordion.Collapse>
                 <Accordion.Collapse eventKey="0" className="sidebar_item">
+                  <Link to="/member/PasswordModify">
                   <a href="css">修改密碼</a>
+                  </Link>
                 </Accordion.Collapse>
               </div>
             </Accordion>
@@ -98,6 +101,7 @@ const Sidebar = (props) => {
           <Route exact path="/member" component={Info} />
           <Route exact path="/member/edit" component={Edit} />
           <Route exact path="/member/AddMemberBook" component={AddMemberBook} />
+          <Route exact path="/member/PasswordModify" component={PasswordModify} />
         </Switch>
       </Router>
     </>

@@ -57,6 +57,46 @@ router.post('/register', (req, res, next) => {
     }
 })
 
+//寄發EMAIL
+import nodemailer from 'nodemailer'
+router.post('/sendPwd', (req, res)=>{
+    let email = req.body.email
+
+    if(email === ''){
+        console.log(12);
+        
+        return res.json({
+            status: '傳送失敗',
+            message: '請輸入正確的信箱'
+        })
+    }
+    console.log(34);
+    
+    let transporter = nodemailer.createTransport({
+        service: 'Gmail',
+        auth:{
+            user: 'dragonqoo1988@gmail.com',
+            pass: '29894199',
+        
+        }
+    })
+    let mailOptions = {
+        form: '"品書網"<dragonqoo1988@gmail.com>',
+        to: `${email}`,
+        subject: '重設密碼',
+        html: '<h1>親愛的品書會員您好:</h1><br><h3>請點擊下方進行重新設定密碼</h3><br><a href="http://localhost:3000/ResetPWD"><h2>重設密碼頁</h2></a>'
+    }
+    transporter.sendMail(mailOptions, (err, info)=>{
+        console.log(info);
+        res.json({
+            status: '傳送成功',
+            message: '請到信箱修改密碼'
+        })
+    })
+})
+
+
+
 //登入
 router.post('/login', (req, res, next) => {
     let Member = new login(req.body.email, req.body.password)
@@ -107,10 +147,12 @@ router.get('/categories', (req, res, next)=>{
 router.post('/changePassword', (req, res, next)=>{
     let number = req.body.number
     let password = req.body.password
+    // console.log(number, password);
+    
     db.query(Member.changePassword(number,password), (err, row)=>{
 
         if(err) return res.json({err: err})
-        console.log(row.changedRows);
+        // console.log(row);
         if(row.changedRows == 0){
 
             res.json({

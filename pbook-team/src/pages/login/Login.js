@@ -6,10 +6,14 @@ import swal from '@sweetalert/with-react'
 import Carousel from '../../components/indexComponents/carousel/Carousel'
 import Theme from '../../components/indexComponents/theme/Theme'
 import Storyteller from '../../components/indexComponents/storyteller/Storyteller'
+import CaptchaMini from 'captcha-mini'
+import {BrowserRouter as Router, Route, Link, Switch} from 'react-router-dom' 
+
+
 
 class Login extends React.Component {
-  constructor(){
-    super()
+  constructor(props){
+    super(props)
     this.state = {
       name: '',
       email: '',
@@ -19,13 +23,46 @@ class Login extends React.Component {
       error: '',
       memberData:{},
       login: false,
-      selectedFile: null
+      selectedFile: null,
+      captcha1: '',
+      captcha2: '',
+      forgetPwd: false
+
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleLogin = this.handleLogin.bind(this)
     this.handleRegister = this.handleRegister.bind(this)
     this.onChangeHandler = this.onChangeHandler.bind(this)
+    this.captcha1 = this.captcha1.bind(this)
+    this.sendPWD = this.sendPWD.bind(this)
     // this.onClickhandler = this.onClickhandler.bind(this)
+  }
+
+
+
+  componentDidMount(){
+    this.captcha1()
+  }
+
+  clearStyle(){
+    // this.setState({ 
+    // name: '',
+    // email: '',
+    // password: '',
+    // password2:'',
+    // captcha2: ''})
+
+    let email = document.querySelector('#email')
+    email.classList.remove('error') 
+    let name = document.querySelector('#name')
+    name.classList.remove('error') 
+    let password = document.querySelector('#password')
+    let password2 = document.querySelector('#password2')
+    password.classList.remove('error')
+    password2.classList.remove('error')
+    let captcha2 = document.querySelector('#captcha2')
+    captcha2.classList.remove('error')
+    
   }
 
   success (status, message){
@@ -57,8 +94,21 @@ class Login extends React.Component {
     })
   }
 
+
+    //驗證碼
+    captcha1(){
+      let captcha1 = new CaptchaMini();
+      captcha1.draw(document.querySelector('#captcha1'), r => {
+          // console.log(r, '验证码1');
+          this.setState({captcha1: r})
+      });
+    }
+
   //輸入轉值
   handleChange(e){
+    //解構賦值
+    const {name, value} = e.target
+    this.setState({[name]:value})
     // const name = e.target.name
     // const obj = {};
     // obj[name] = e.target.value;
@@ -66,9 +116,44 @@ class Login extends React.Component {
     //   // console.log(this.state)
     // });
 
-    //解構賦值
-    const {name, value} = e.target
-    this.setState({[name]:value})
+  }
+
+  sendPWD(){
+    let email = this.state.email
+
+    fetch('http://localhost:5555/member/sendPwd',{
+      method:'POST',
+      headers:{
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include',
+      body: JSON.stringify({
+        email: email,
+        })
+      })
+      .then(res=>{
+        console.log(11);
+        
+        return res.json()
+      })
+      .then( data=>{
+        let status = data.status
+        let message = data.message
+        console.log(status, message);
+        if(data.status === "傳送成功"){
+          this.success(status, message)
+          setTimeout(() => {
+            window.location.href = '/login'
+          }, 2000)
+        }else{
+          this.fail(status, message)
+        }
+      })
+
+
+
+
+    // this.props.setEmail(email)
   }
 
   //判斷姓名欄位字數
@@ -94,6 +179,8 @@ class Login extends React.Component {
     const result = (password === password2) && re.test(password, password2)
     return result
   }
+
+
 
   //照片上傳
   onChangeHandler(e){
@@ -130,7 +217,7 @@ class Login extends React.Component {
   // }
 
 
-
+  //登入
   handleLogin (e){
     
     fetch('http://localhost:5555/member/login', {
@@ -180,14 +267,15 @@ class Login extends React.Component {
   }
 
   
-
+  //註冊
   handleRegister(e){
    let isPass = false
    let email = this.state.email
    let password = this.state.password
    let password2 = this.state.password2
    let name = this.state.name
-
+   let captcha1 = this.state.captcha1
+   let captcha2 = this.state.captcha2
 
     if(this.checkEmail(email) === false){
      //驗證信箱錯誤時的訊息
@@ -207,10 +295,16 @@ class Login extends React.Component {
       this.setState({password: "格式或密碼有誤", password2: "請再重新輸入"})
       let password = document.querySelector('#password')
       let password2 = document.querySelector('#password2')
-      password.type = (password.type === "text") ;
-      password2.type = (password2.type === "text") ;
+      // password.type = (password.type === "text") ;
+      // password2.type = (password2.type === "text") ;
       password.classList.add('error')
       password2.classList.add('error')
+      }
+
+      if(captcha1 !== captcha2){
+        this.setState({captcha2: "驗證碼錯誤，請在核對ㄧ次"})
+        let captcha2 = document.querySelector('#captcha2')
+        captcha2.classList.add('error')
       }else{
         isPass = true
       } 
@@ -282,6 +376,7 @@ class Login extends React.Component {
   }
   
   
+  //翻頁效果
   flipSingUp = () =>{
       let container_back = document.querySelector('.container_back')
       let container_front = document.querySelector('.container_front')
@@ -302,12 +397,13 @@ class Login extends React.Component {
   
 
   render() {
+    // console.log(this.state.forgetPwd);
     
     return (
       <>
-      <div className="login_wrap">
-      
-      <div  >
+  <Router>
+    <div className="login_wrap">
+     <div>
       <div className="container_login" >
           <div className="container_back">
             <div className="login_singUp">
@@ -336,22 +432,25 @@ class Login extends React.Component {
             />
             <input className="login_input" type="file" name="file" onChange={this.onChangeHandler}/>
             {/* <button type="button" className="btn btn-success btn-block" onClick={this.onClickhandler}>Upload</button>  */}
-            <div className="serial"></div>
+            {/* <div className="serial"></div> */}
+            <canvas  className="serial" id="captcha1" onClick={this.captcha1}></canvas>
             <input
               className="login_input"
               type="text"
               placeholder="輸入驗證碼"
+              name="captcha2"
+              id="captcha2"
+              value={this.state.captcha2} onChange={this.handleChange} 
             />
             <button type="button" className="singUp_btn" onClick={this.handleRegister}>
               確認
             </button>
-            <button type="button" className="singUp_btn" onClick={()=>{
-              window.location.href = '/' }}>
+            <button type="button" className="singUp_btn" onClick={this.clearStyle}>
               取消
             </button>
           </div>
-
-          <div className="container_front" >
+          {this.state.forgetPwd === false ?
+          (<div className="container_front" >
             <div className="login_title">
               <img src={require('./icon_MR_m.svg')} alt="" style={{ width: '30px' }} onClick={()=>{window.location.href = '/' }}/>
               <h2>品書人登入</h2>
@@ -359,12 +458,36 @@ class Login extends React.Component {
             <input className="login_input" placeholder="Email" name="email" value={this.state.email} onChange={this.handleChange} />
             <input className="login_input" type="password" placeholder="Password" name="password" value={this.state.password} onChange={this.handleChange}/>
             <button className="login_btn" onClick={this.handleLogin}>登入</button>
-            <a href="link" className="forgetPassword">Forgot your password?</a>
+            {/* <Link to="/forgetPWD"> */}
+            <a className="forgetPassword"
+              onClick={()=>{this.setState({forgetPwd: true})}}
+            >Forgot your password?</a>
+            {/* </Link> */}
             <div className="social-container ">
               <div className="title">快速登入</div>
-              <div><FbLogin/></div>
+              <Link to="/fbLogin">
+              <FbLogin/>
+              </Link>
             </div>
-          </div>
+          </div>):
+          (<div className="container_front" >
+            <div className="login_title">
+              <img src={require('./icon_MR_m.svg')} alt="" style={{ width: '30px' }} onClick={()=>{window.location.href = '/' }}/>
+              <h2>品書人重設密碼</h2>
+            </div>
+            <input className="login_input" placeholder="Email" name="email" value={this.state.email} 
+            style={{margin: '50px 0px'}}
+            onChange={this.handleChange} />
+            {/* <input className="login_input" type="password" placeholder="Password" name="password" value={this.state.password} onChange={this.handleChange}/> */}
+            <button className="login_btn" onClick={this.sendPWD}>寄送EMAIL</button>
+            <div className="social-container ">
+              <div className="title">快速登入</div>
+              <Link to="/fbLogin">
+              <FbLogin/>
+              </Link>
+            </div>
+          </div>)}
+
 
           <div className="container_left _center">
             <img src={require('./品書logo.png')}alt="" style={{ width: '120px' }} 
@@ -377,7 +500,9 @@ class Login extends React.Component {
           </div>
 
           <div className="container_right _center">
-            <img src={require('./品書logo.png')} alt="" style={{ width: '120px' }} />
+            <img src={require('./品書logo.png')} alt="" style={{ width: '120px' }} 
+              onClick={()=>{window.location.href = '/' }}
+            />
             <button className="login_btn" onClick={this.flipSingIn}>
               品書人登入
             </button>
@@ -385,6 +510,11 @@ class Login extends React.Component {
       </div>
       </div>
       </div>
+      <Switch>
+        <Router exact path="/fbLogin" component={FbLogin}/>
+      </Switch>
+    </Router>
+
       <Carousel />
       <Theme />
       <Storyteller />
