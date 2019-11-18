@@ -22,6 +22,12 @@ class Game extends React.Component {
       startTime: '',
       chance: 0,
       modalShow: false,
+      modalData: {
+        bookName: '',
+        bookPic: [],
+        bookRemarks: '',
+      },
+      chosenValue: 0,
     }
   }
 
@@ -48,18 +54,44 @@ class Game extends React.Component {
   }
 
   // 書籍列表光箱控制鈕
-  handleModalShow = () => {
-    this.setState({ modalShow: true })
+  handleModalShow = modalData => {
+    console.log('modalData', modalData)
+    var bookPic
+    if (modalData.bookPic !== null) {
+      bookPic = modalData.bookPic.split(',')
+    } else {
+      bookPic = ['品書印章.png']
+    }
+
+    this.setState({
+      modalData: {
+        bookName: modalData.bookName,
+        bookPic: bookPic,
+        bookRemarks: modalData.bookRemarks,
+      },
+      modalShow: true,
+    })
   }
   handleModalHide = () => {
     this.setState({ modalShow: false })
   }
 
-  // 書籍列表重置紐
+  // 書籍列表重置按鈕
   getNewData = data => {
     this.setState({
       pairedMemberBooks: JSON.parse(data.pairedMemberBooks),
       chance: data.chance,
+    })
+  }
+
+  //書籍列表選項按鈕
+  handleCheckedBook = () => {
+    // console.log('測試', this.state.chosenValue)
+  }
+
+  handleRadioButtonClick = e => {
+    this.setState({
+      chosenValue: e.target.value,
     })
   }
 
@@ -161,11 +193,18 @@ class Game extends React.Component {
   }
 
   render() {
-    const { myBooks, pairedMemberBooks, startTime, chance } = this.state
+    const {
+      myBooks,
+      pairedMemberBooks,
+      startTime,
+      chance,
+      modalData,
+    } = this.state
     console.log('render myBooks', myBooks)
     console.log('render pairedMemberBooks', pairedMemberBooks)
     console.log('render startTime', startTime)
     console.log('render chance', chance)
+    console.log('render modalData', modalData)
     var pcSettings = {
       dots: true,
       infinite: true,
@@ -317,7 +356,8 @@ class Game extends React.Component {
                               <input
                                 type="radio"
                                 name="react-tips"
-                                value="option1"
+                                value={value.mb_sid}
+                                onClick={this.handleRadioButtonClick}
                               ></input>
                             </th>
                             <td>{value.mb_name}</td>
@@ -326,7 +366,13 @@ class Game extends React.Component {
                               <ButtonToolbar>
                                 <div
                                   className="PC-changeGameBookListShow"
-                                  onClick={this.handleModalShow}
+                                  onClick={() =>
+                                    this.handleModalShow({
+                                      bookName: value.mb_name,
+                                      bookPic: value.mb_pic,
+                                      bookRemarks: value.mb_remarks,
+                                    })
+                                  }
                                 >
                                   +顯示
                                 </div>
@@ -334,38 +380,40 @@ class Game extends React.Component {
 
                               <Modal
                                 show={this.state.modalShow}
+                                onHide={this.handleModalHide}
                                 size="lg"
-                                aria-labelledby={'book' + value.mb_sid}
+                                aria-labelledby="myModal"
                                 centered
                               >
                                 <Modal.Header>
-                                  <Modal.Title id={'book' + value.mb_sid}>
-                                    {index}
+                                  <Modal.Title id="myModal">
+                                    {modalData.bookName}
                                   </Modal.Title>
                                 </Modal.Header>
                                 <Modal.Body>
                                   <Slider {...pcSettings}>
-                                    <div>
-                                      <img
-                                        style={{
-                                          margin: '0 auto',
-                                        }}
-                                        src={require('./images/vb_9573318318.jpg')}
-                                        alt="書籍照片"
-                                      />
-                                    </div>
-                                    <div>
-                                      <img
-                                        style={{
-                                          margin: '0 auto',
-                                        }}
-                                        src={require('./images/vb_9573318318.jpg')}
-                                        alt="書籍照片"
-                                      />
-                                    </div>
+                                    {modalData.bookPic.map((value, index) => (
+                                      <div key={index}>
+                                        <img
+                                          style={{
+                                            margin: '0 auto',
+                                            width: '30vw',
+                                            maxHeight: '30vh',
+                                            objectFit: 'contain',
+                                          }}
+                                          src={
+                                            'http://localhost:5555/images/memberBooks/' +
+                                            value
+                                          }
+                                          alt="書籍照片"
+                                        />
+                                      </div>
+                                    ))}
                                   </Slider>
                                 </Modal.Body>
-                                <Modal.Body>書籍備註：無畫線註記。</Modal.Body>
+                                <Modal.Body>
+                                  書籍備註：{modalData.bookRemarks}
+                                </Modal.Body>
                                 <Modal.Footer>
                                   <Button onClick={this.handleModalHide}>
                                     關閉
@@ -384,6 +432,7 @@ class Game extends React.Component {
                     <img
                       src={require('./images/submit-green.png')}
                       alt="電腦版確認送出按鈕"
+                      onClick={this.handleCheckedBook}
                     />
                     <img
                       src={require('./images/back-red.png')}
@@ -401,95 +450,69 @@ class Game extends React.Component {
                 />
 
                 <Slider {...settings}>
-                  <div>
-                    <div className="text-center" style={{ margin: '10px 0' }}>
-                      <MyCountdown />
-                      <MyChance
-                        chance={this.state.chance}
-                        getNewData={this.getNewData}
-                      />
+                  {this.state.pairedMemberBooks.map((value, index) => (
+                    <div key={index}>
+                      <div className="text-center" style={{ margin: '10px 0' }}>
+                        <MyCountdown />
+                        <MyChance
+                          chance={this.state.chance}
+                          getNewData={this.getNewData}
+                        />
+                      </div>
+                      <div
+                        style={{
+                          width: '90vw',
+                          margin: '0 auto',
+                        }}
+                      >
+                        <Card.Header className="text-center">
+                          {value.mb_name}
+                        </Card.Header>
+                        <Card.Body className="text-left">
+                          <Card.Text>
+                            <img
+                              src={
+                                'http://localhost:5555/images/memberBooks/' +
+                                value.mb_pic.split(',')[0]
+                              }
+                              alt="手機板書籍照片"
+                              className="PHONE-changeGameBookListImg"
+                            ></img>
+                          </Card.Text>
+                          <Card.Text>
+                            ・選擇：
+                            <input
+                              type="radio"
+                              name="react-tips"
+                              value={value.mb_sid}
+                              onClick={() => this.handleRadioButtonClick}
+                            ></input>
+                          </Card.Text>
+                          <Card.Text>・書況：{value.mb_savingStatus}</Card.Text>
+                          <Card.Text>・分類：{value.mb_categories}</Card.Text>
+                          <Card.Text>・定價：{value.mb_fixedPrice}元</Card.Text>
+                          <div
+                            className="PHONE-changeGameBookListShow"
+                            onClick={() =>
+                              this.handleModalShow({
+                                bookName: value.mb_name,
+                                bookPic: value.mb_pic,
+                                bookRemarks: value.mb_remarks,
+                              })
+                            }
+                          >
+                            ・點我顯示詳請
+                          </div>
+                        </Card.Body>
+                      </div>
                     </div>
-                    <div
-                      style={{
-                        width: '90vw',
-                        margin: '0 auto',
-                      }}
-                    >
-                      <Card.Header className="text-center">
-                        柱子小隊的資策會人生
-                      </Card.Header>
-                      <Card.Body className="text-left">
-                        <Card.Text>
-                          <img
-                            src={require('./images/hina.jpg')}
-                            alt="手機板書籍照片"
-                            className="PHONE-changeGameBookListImg"
-                          ></img>
-                        </Card.Text>
-                        <Card.Text>
-                          ・選擇：
-                          <input
-                            type="radio"
-                            name="react-tips"
-                            value="option1"
-                          ></input>
-                        </Card.Text>
-                        <Card.Text>・書況：A良好</Card.Text>
-                        <Card.Text>・分類：程式語言</Card.Text>
-                        <Card.Text className="PHONE-changeGameBookListText">
-                          ・書籍備註：CSS不能單獨使用，必須與HTML或XML一起協同工作，為HTML或XML起裝飾作用。本文主要介紹用於裝飾HTML網頁的CSS技術。其中HTML負責確定網頁中有哪些內容，CSS確定以何種外觀(大小、粗細、顏色、對齊和位置)展現這些元素。CSS可以用於設定頁面布局、設定頁面元素樣式、設定適用於所有網頁的全域樣式。CSS可以零散地直接添加在要應用樣式的網頁元素上，也可以集中化內建於網頁、連結式引入網頁以及匯入式引入網頁。[1]
-                          CSS最重要的目標是將檔案的內容與它的顯示分隔開來。在CSS出現前，幾乎所有的HTML檔案內都包含檔案顯示的資訊，比如字型的顏色、背景應該是怎樣的、如何排列、邊緣、連線等等都必須一一在HTML檔案內列出，有時重複列出。CSS使作者可以將這些資訊中的大部分隔離出來，簡化HTML檔案，這些資訊被放在一個輔助的，用CSS語言寫的檔案中。HTML檔案中只包含結構和內容的資訊，CSS檔案中只包含樣式的資訊。
-                          比如HTML中H2標誌這一個二級標題，它在級別上比一級標題H1低，比三級標題H3高。這些資訊都是結構上的資訊。
-                        </Card.Text>
-                        <Card.Text>・定價：500元</Card.Text>
-                      </Card.Body>
-                    </div>
-                  </div>
-                  <div>
-                    <h6 className="text-center" style={{ margin: '10px 0' }}>
-                      2019年9月29日 剩餘時間 5小時3分20秒
-                    </h6>
-                    <div
-                      style={{
-                        width: '90vw',
-                        margin: '0 auto',
-                      }}
-                    >
-                      <Card.Header className="text-center">
-                        柱子小隊的資策會人生
-                      </Card.Header>
-                      <Card.Body className="text-left">
-                        <Card.Text>
-                          <img
-                            src={require('./images/hina.jpg')}
-                            alt="手機板書籍照片"
-                            className="PHONE-changeGameBookListImg"
-                          ></img>
-                        </Card.Text>
-                        <Card.Text>
-                          ・選擇：
-                          <input
-                            type="radio"
-                            name="react-tips"
-                            value="option2"
-                          ></input>
-                        </Card.Text>
-                        <Card.Text>・書況：A良好</Card.Text>
-                        <Card.Text>・分類：程式語言</Card.Text>
-                        <Card.Text className="PHONE-changeGameBookListText">
-                          ・書籍備註：CSS不能單獨使用，必須與HTML或XML一起協同工作，為HTML或XML起裝飾作用。本文主要介紹用於裝飾HTML網頁的CSS技術。其中HTML負責確定網頁中有哪些內容，CSS確定以何種外觀(大小、粗細、顏色、對齊和位置)展現這些元素。CSS可以用於設定頁面布局、設定頁面元素樣式、設定適用於所有網頁的全域樣式。CSS可以零散地直接添加在要應用樣式的網頁元素上，也可以集中化內建於網頁、連結式引入網頁以及匯入式引入網頁。[1]
-                          CSS最重要的目標是將檔案的內容與它的顯示分隔開來。在CSS出現前，幾乎所有的HTML檔案內都包含檔案顯示的資訊，比如字型的顏色、背景應該是怎樣的、如何排列、邊緣、連線等等都必須一一在HTML檔案內列出，有時重複列出。CSS使作者可以將這些資訊中的大部分隔離出來，簡化HTML檔案，這些資訊被放在一個輔助的，用CSS語言寫的檔案中。HTML檔案中只包含結構和內容的資訊，CSS檔案中只包含樣式的資訊。
-                          比如HTML中H2標誌這一個二級標題，它在級別上比一級標題H1低，比三級標題H3高。這些資訊都是結構上的資訊。
-                        </Card.Text>
-                        <Card.Text>・定價：500元</Card.Text>
-                      </Card.Body>
-                    </div>
-                  </div>
+                  ))}
                 </Slider>
                 <div className="d-flex PHONE-changeGameBookListBtnWrap">
                   <img
                     src={require('./images/submit-green.png')}
                     alt="手機版確認送出按鈕"
+                    onClick={this.handleCheckedBook}
                   />
                   <img
                     src={require('./images/back-red.png')}
