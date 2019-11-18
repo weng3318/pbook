@@ -46,7 +46,8 @@
     "redux-thunk": "^2.3.0",
     "slick-carousel": "^1.8.1",
     "socket.io": "^2.3.0",
-    "sweetalert": "^2.1.2"
+    "sweetalert": "^2.1.2",
+    "sweetalert2-react": "^0.8.3"
   },
   "scripts": {
     "start": "react-scripts start",
