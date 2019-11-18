@@ -23,19 +23,23 @@ const Shop = props => {
 
   return (
     <>
-      <Container className="px-0" fluid={true}>
-        <Breadcrumb></Breadcrumb>
-      </Container>
-      <Container>
-        <Row className="book_wrapper">
-          <Categories categoriesPayload={categoriesPayload}></Categories>
-          <Data
-            shopPayload={shopPayload}
-            ratingsPayload={ratingsPayload}
-            nowCategories={props.match.params.categories}
-            nowPage={props.match.params.page}
-          ></Data>
-        </Row>
+      <Container className="px-0 book_wrapper" fluid={true}>
+        <Breadcrumb
+          categoriesPayload={categoriesPayload}
+          nowCategories={props.match.params.categories}
+          nowPage={props.match.params.page}
+        ></Breadcrumb>
+        <Container>
+          <Row>
+            <Categories categoriesPayload={categoriesPayload}></Categories>
+            <Data
+              shopPayload={shopPayload}
+              ratingsPayload={ratingsPayload}
+              nowCategories={props.match.params.categories}
+              nowPage={props.match.params.page}
+            ></Data>
+          </Row>
+        </Container>
       </Container>
     </>
   )

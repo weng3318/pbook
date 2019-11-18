@@ -10,7 +10,7 @@ import Rating from '@material-ui/lab/Rating'
 import Box from '@material-ui/core/Box'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCaretRight } from '@fortawesome/free-solid-svg-icons'
-import { rtFetch, shopFetch } from './ShopActions'
+import { rtFetch, shopFetch } from '../ShopActions'
 import './Shop.scss'
 
 const BorderLinearProgress = withStyles({
