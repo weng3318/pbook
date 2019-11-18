@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Col } from 'react-bootstrap'
 import { connect } from 'react-redux'
-import { cgFetch, shopFetch } from './ShopActions'
+import { cgFetch, shopFetch } from '../ShopActions'
 import './Shop.scss'
 
 const Categories = props => {

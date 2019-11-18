@@ -45,40 +45,20 @@ a,a:link,a:visited{
     white-space: nowrap;
     overflow: hidden;
 }
-/* 書評列表 (參照背景) */
-.reviewerList {
-    /* background: #fff; */
-    /* background: url(../reviewer_page/images/01_書評家.png) center center; */
-    max-width: 1200px;
-    margin: 0 auto;
-    background-size:cover;
-}
-/* 書評列表 (參照偽元素) */
-.reviewerList::after{
-    /* content: ""; */
-    display: block;
-    background: rgba(0,0,0,.25);
-    position: absolute;
-    left:0;
-    right:0;
-    top:0;
-    bottom:0;
-    width:100%;
-}
-/* 分頁，看看書櫃 (參照偽元素) */
-.reviewerBooks {
+/* 書評部落格 (參照背景) */
+.reviewerBlog {
     background: #fff;
+    background: url(../reviewer_page//images/03_評品書.png) center center;
     max-width: 1200px;
-    min-height: 2050px;
+    height: 2500px;
     margin: 0 auto;
-    /* background: url(../reviewer_page/images/02_看看書櫃.png) center center; */
     background-size:cover;
 }
-/* 分頁，看看書櫃 (參照偽元素) */
-.reviewerBooks::after{
+/* 書評部落格 (參照偽元素) */
+.reviewerBlog::after{
     content: "";
     display: block;
-    background: rgba(0,0,0,.4);
+    background: rgba(0,0,0,.25);
     position: absolute;
     left:0;
     right:0;

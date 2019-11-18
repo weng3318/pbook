@@ -1,0 +1,90 @@
+@import 'color';
+
+.detail_wrapper {
+  background-image: url('../../../images/bg.png');
+  height: 100vh;
+  .bookTitle {
+    font-size: 1.5rem;
+  }
+  .marks {
+    border: 1px solid $color-gray;
+    border-radius: 2rem;
+    width: 6vw;
+    height: 2vw;
+    .fav {
+      color: $color-red;
+    }
+  }
+  .bookPrice {
+    background-color: rgba($color-green, 0.3);
+    .discount {
+      color: $color-red;
+    }
+  }
+  .stock {
+    color: $color-red;
+  }
+  .icon {
+    color: $color-black;
+    .svg-inline--fa {
+      font-size: 2rem;
+    }
+  }
+  .introduction {
+    background-color: rgba($color-green, 0.3);
+    color: $color-gray;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+  }
+  .buyNow {
+    background-color: $color-black;
+    border: 1px solid transparent;
+    border-radius: 30px;
+    color: $color-white;
+    text-align: left;
+    width: 10vw;
+    height: 2.3vw;
+    font-size: 1.2rem;
+    padding-left: 2rem;
+    &:focus {
+      outline: none;
+    }
+    .svg-inline--fa {
+      color: $color-yellow;
+    }
+  }
+  .addCart {
+    @extend .buyNow ;
+    .svg-inline--fa {
+      color: $color-green;
+    }
+  }
+  .addFav {
+    @extend .buyNow ;
+    padding-left: 2.3rem;
+    .svg-inline--fa {
+      color: $color-red;
+    }
+  }
+  .book_star{
+    width: 10vw;
+    .book_rank{
+      font-size: 2rem;
+    }
+  }
+  .addComment{
+    @extend .buyNow ;
+    padding-left: 2.3rem;
+    color: $color-yellow;
+    font-size: 1.5rem;
+    &:hover{
+      text-decoration: none;
+    }
+  }
+  .BookProduct{
+    border-top: 1px solid $color-gray;
+  }
+}

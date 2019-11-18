@@ -11,7 +11,6 @@ const Categories = props => {
         <div className="d-flex justify-content-center align-items-center border-bottom">
           分類瀏覽
         </div>
-
         {props.categoriesPayload &&
           props.categoriesPayload.map(categories => (
             <Link
