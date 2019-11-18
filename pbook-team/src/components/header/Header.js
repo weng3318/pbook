@@ -26,8 +26,8 @@ export default class Header extends React.Component {
     super()
     this.state = {
       loginImg: '',
-      member:{},
-      login: false
+      member: {},
+      login: false,
     }
   }
   // 'http://localhost:5555/images/member/yoko.jpg'
@@ -56,8 +56,8 @@ export default class Header extends React.Component {
     event.stopPropagation()
   }
 
-  clickLogin = ()=> {
-    this.setState({login: true})
+  clickLogin = () => {
+    this.setState({ login: true })
   }
 
   handleLogout = () => {
@@ -96,7 +96,6 @@ export default class Header extends React.Component {
   }
 
   componentDidMount() {
-    
     let pic = JSON.parse(localStorage.getItem('user'))
     if (pic !== null) {
       this.queryMember()
@@ -133,37 +132,35 @@ export default class Header extends React.Component {
     // function getPermission(cb) {
     //     Notification.requestPermission(cb);
     // }
-    
   }
 
-
   //查詢會員資料重設圖片
-  queryMember(){
+  queryMember() {
     let number = JSON.parse(localStorage.getItem('user')).MR_number
     // console.log(number);
 
     fetch('http://localhost:5555/member', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        credentials: 'include',
-        body: JSON.stringify({
-          number: number,
-        })
-      })
-      .then( response => {
-        if(!response) throw new Error(response.statusText)
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify({
+        number: number,
+      }),
+    })
+      .then(response => {
+        if (!response) throw new Error(response.statusText)
         // console.log('3'+response);
         return response.json()
       })
-      .then(data =>{
-          // console.log("test", data);
-          let newPic = 'http://localhost:5555/images/member/' + data[0].MR_pic
-          console.log(newPic);
-          
-          this.setState({loginImg: newPic, member: data[0]})
-          })
+      .then(data => {
+        // console.log("test", data);
+        let newPic = 'http://localhost:5555/images/member/' + data[0].MR_pic
+        console.log(newPic)
+
+        this.setState({ loginImg: newPic, member: data[0] })
+      })
   }
 
   // componentDidUpdate(prevProps) {
@@ -240,8 +237,8 @@ export default class Header extends React.Component {
                   className="loginImg"
                   style={{
                     backgroundImage: `url(${this.state.loginImg})`,
-                  }}>
-                </span>
+                  }}
+                ></span>
                 <Link
                   to="/member"
                   className="loginText"
@@ -273,69 +270,80 @@ export default class Header extends React.Component {
             </>
           )}
 
-          {(this.state.login === false)?(
+          {this.state.login === false ? (
             <>
-            <section className="d-flex justify-content-center titleButton">
-            <Link to="/reviewer" className="myHeaderTextCenter mx-4 pointer">
-              <span className="titleZh">書評家</span>
-              <br />
-              <span className="titleEn">REVIEWER</span>
-            </Link>
-            <Link to="/books" className="myHeaderTextCenter mx-4 pointer">
-              <span className="titleZh">書籍商城</span>
-              <br />
-              <span className="titleEn">BOOKS</span>
-            </Link>
-            <Link to="/activities" className="myHeaderTextCenter mx-4 pointer">
-              <span className="titleZh">品書活動</span>
-              <br />
-              <span className="titleEn">ACTIVITIES</span>
-            </Link>
-            <Link to="/reviews" className="myHeaderTextCenter mx-4 pointer">
-              <span className="titleZh">品書書評</span>
-              <br />
-              <span className="titleEn">REVIEWS</span>
-            </Link>
-            <Link to="/forum" className="myHeaderTextCenter mx-4 pointer">
-              <span className="titleZh">品書討論區</span>
-              <br />
-              <span className="titleEn">FORUM</span>
-            </Link>
-          </section>
-          </>
-          ):(
-          <>
-          <section className="d-flex justify-content-center titleButton">
-            <Link to="/reviewer" className="myHeaderTextCenter mx-4 pointer">
-              <span className="titleZh">書評家</span>
-              <br />
-              <span className="titleEn">REVIEWER</span>
-            </Link>
-            <Link to="/books" className="myHeaderTextCenter mx-4 pointer">
-              <span className="titleZh">書籍商城</span>
-              <br />
-              <span className="titleEn">BOOKS</span>
-            </Link>
-            <Link to="/activities" className="myHeaderTextCenter mx-4 pointer">
-              <span className="titleZh">品書活動</span>
-              <br />
-              <span className="titleEn">ACTIVITIES</span>
-            </Link>
-            <Link to="/reviews" className="myHeaderTextCenter mx-4 pointer">
-              <span className="titleZh">品書書評</span>
-              <br />
-              <span className="titleEn">REVIEWS</span>
-            </Link>
-            <Link to="/forum" className="myHeaderTextCenter mx-4 pointer">
-              <span className="titleZh">品書討論區</span>
-              <br />
-              <span className="titleEn">FORUM</span>
-            </Link>
-          </section>
-          <Login />
-          </>
+              <section className="d-flex justify-content-center titleButton">
+                <Link
+                  to="/reviewer"
+                  className="myHeaderTextCenter mx-4 pointer"
+                >
+                  <span className="titleZh">書評家</span>
+                  <br />
+                  <span className="titleEn">REVIEWER</span>
+                </Link>
+                <Link to="/books" className="myHeaderTextCenter mx-4 pointer">
+                  <span className="titleZh">書籍商城</span>
+                  <br />
+                  <span className="titleEn">BOOKS</span>
+                </Link>
+                <Link
+                  to="/activities"
+                  className="myHeaderTextCenter mx-4 pointer"
+                >
+                  <span className="titleZh">品書活動</span>
+                  <br />
+                  <span className="titleEn">ACTIVITIES</span>
+                </Link>
+                <Link to="/reviews" className="myHeaderTextCenter mx-4 pointer">
+                  <span className="titleZh">品書書評</span>
+                  <br />
+                  <span className="titleEn">REVIEWS</span>
+                </Link>
+                <Link to="/forum" className="myHeaderTextCenter mx-4 pointer">
+                  <span className="titleZh">品書討論區</span>
+                  <br />
+                  <span className="titleEn">FORUM</span>
+                </Link>
+              </section>
+            </>
+          ) : (
+            <>
+              <section className="d-flex justify-content-center titleButton">
+                <Link
+                  to="/reviewer"
+                  className="myHeaderTextCenter mx-4 pointer"
+                >
+                  <span className="titleZh">書評家</span>
+                  <br />
+                  <span className="titleEn">REVIEWER</span>
+                </Link>
+                <Link to="/books" className="myHeaderTextCenter mx-4 pointer">
+                  <span className="titleZh">書籍商城</span>
+                  <br />
+                  <span className="titleEn">BOOKS</span>
+                </Link>
+                <Link
+                  to="/activities"
+                  className="myHeaderTextCenter mx-4 pointer"
+                >
+                  <span className="titleZh">品書活動</span>
+                  <br />
+                  <span className="titleEn">ACTIVITIES</span>
+                </Link>
+                <Link to="/reviews" className="myHeaderTextCenter mx-4 pointer">
+                  <span className="titleZh">品書書評</span>
+                  <br />
+                  <span className="titleEn">REVIEWS</span>
+                </Link>
+                <Link to="/forum" className="myHeaderTextCenter mx-4 pointer">
+                  <span className="titleZh">品書討論區</span>
+                  <br />
+                  <span className="titleEn">FORUM</span>
+                </Link>
+              </section>
+              <Login />
+            </>
           )}
-
 
           <div className="phoneTitleHide">
             <div className="myHeaderMenu" onClick={this.handlePhoneTitle}>

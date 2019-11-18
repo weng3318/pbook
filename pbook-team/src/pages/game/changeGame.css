@@ -231,6 +231,12 @@
   .PHONE-changeGameBookListContext {
     display: none;
   }
+  .PHONE-changeGameBookListShow {
+    display: none;
+  }
+  .PHONE-changeGameBookListShow:hover {
+    display: none;
+  }
 }
 
 @media (max-width: 575.98px) {
@@ -280,16 +286,11 @@
     width: 100vw;
     height: 20vh;
   }
-  .PHONE-changeGameBookListText {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 4;
-    -webkit-box-orient: vertical;
-  }
   .PHONE-changeGameBookListImg {
     border-radius: 0.25rem;
     max-width: 50%;
+    max-width: 40%;
+    object-fit: contain;
     height: auto;
     margin: 0 auto;
   }
@@ -306,6 +307,13 @@
   .PHONE-changeGameBookListBtnWrap img:hover {
     transform: translate3d(1px, 1px, 1px);
     text-shadow: 0.1em 0.1em 0 rgb(173, 173, 173);
+  }
+  .PHONE-changeGameBookListShow {
+    display: inline;
+  }
+  .PHONE-changeGameBookListShow:hover {
+    color: #cc2929;
+    cursor: pointer;
   }
 
   .slick-arrow.slick-next {
