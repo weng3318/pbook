@@ -1,11 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const mysql = require("mysql");
+const multer = require("multer");
+const upload = multer();
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "root",
-  database: "pbook" 
+  database: "pbook"
 });
 db.connect();
 const bluebird = require("bluebird");
@@ -83,6 +85,18 @@ router
         output.subcategory = results;
         res.json(output);
       });
+  });
+
+//發表新文章
+router
+  .route("/postNew")
+  .all((req, res, next) => {
+    next();
+  })
+  .post(upload.array(), (req, res) => {
+    let output = {};
+    console.log(req.body);
+    res.send(req.body);
   });
 
 // router.route("/homepage/:id?").get((req, res) => {

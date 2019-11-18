@@ -1,25 +1,21 @@
-
 // Action Creators
-export const userHover = hover => ({ type: 'USER_HOVER', status: hover })
 
-export const categoryHover = hover => ({
-  type: 'CATEGORY_HOVER',
-  status: hover,
-})
-export const AppendImgElement = (addElement,uploading) => ({
+export const AppendImgElement = (addElement, uploading) => ({
   type: 'APPEND_IMG_ELEMENT',
   content: addElement,
-  imgData: uploading
+  imgData: uploading,
 })
-export const AppendTextarea = (addElement) => ({
+export const AppendTextarea = addElement => ({
   type: 'APPEND_TEXTAREA',
   content: addElement,
 })
-
-
-
-
-
+export const MainImageFile = mainImagefile => ({
+  type: 'MAIN_IMAGE',
+  mainImagefile: mainImagefile,
+})
+export const letMeLogin = () => ({
+  type: 'LET_ME_LOGIN',
+})
 //給UserDetailsFetch用=======
 // fetch data list
 const fmUserRequest = () => {

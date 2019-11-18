@@ -11,15 +11,14 @@
     overflow: auto;
     height: 120px;
     resize: none;
-    
   }
-  img{
+  img {
     padding: 0 16px;
     max-width: 800px;
     max-height: 600px;
     object-fit: contain;
   }
-  
+
   .faketext {
     padding: 8px 24px;
     display: block;
@@ -41,9 +40,14 @@
       font-weight: bold;
     }
   }
-  #side-panel{
-   position: relative; 
-   top: 0;
+  #side-panel {
+    position: relative;
+    top: 0;
+    &.fixed {
+      @extend %card-module;
+      min-width: 200px;
+      position: fixed;
+    }
   }
 
   .container.end {
@@ -87,5 +91,4 @@
     display: flex;
     color: $grey-grey;
   }
-  
 }
