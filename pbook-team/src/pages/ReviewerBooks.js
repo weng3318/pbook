@@ -1,10 +1,12 @@
 import React from 'react'
+import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 // import Data from '../pages/reviewer_page/data/reviewer_data'
 import { withRouter } from 'react-router-dom'
 import BR_ReviewerList from './reviewer_page/BR_ReviewerList'
 import BR_BookcaseList from './reviewer_page/BR_BookcaseList'
-import BR_BookcaseHot from './reviewer_page/BR_BookcaseHot'
+import BR_BookcaseHot_books from './reviewer_page/BR_BookcaseHot_books'
 import BR_Navbar from './reviewer_page/BR_Navbar'
+import ReviewerBlog from './ReviewerBlog'
 import axios from 'axios'
 
 class ReviewerBooks extends React.Component {
@@ -35,12 +37,11 @@ class ReviewerBooks extends React.Component {
       })
       .then(res=>{
         this.setState({ brData: newbrData, csData: newcsData, bkData:res.data.rows})
+        // console.log('前端取得資料' , res.data.rows)
       })
       .catch(function(error) {
         console.log(
-          '沒有取得資料請執行 json-server --watch --port 5555 reviewer_Data.json ' +
-          error
-          )
+          '前端沒有取得資料',error)
         })
       }
       render(props) {
@@ -67,6 +68,7 @@ class ReviewerBooks extends React.Component {
     console.log('撈書櫃的書籍', csData)
     return (
       <>
+      <Router>
         <BR_Navbar />
         <h1>看看書櫃</h1>
         <section className="reviewerBooks borderLine">
@@ -83,25 +85,51 @@ class ReviewerBooks extends React.Component {
           ></BR_ReviewerList>
 
           {/* 熱門書評列表 */}
-          <BR_BookcaseHot />
+          <div className="HotBookBoxAll_Light">
+              <h5 className="h5_hotText">熱門書評</h5>
+              <div className="HotBookBoxAll_Bookcase">
+                  {this.state.csData.filter(({number}) => reviewerData.number == number)
+                  .map(({pic, sid, author})=>(
+                    <BR_BookcaseHot_books
+                    key={sid}
+                    to={"/reviewer/reviewerBooks/reviewerBlog/" + sid}
+                    sid={sid}
+                    pic={pic}
+                    author={author}
+                    ></BR_BookcaseHot_books>
+                  ))}
+              </div>
+          </div>
+                <Switch>
+                      <Route exact 
+                      path="/reviewer/reviewerBooks/reviewerBlog/:sid?" 
+                      component={ReviewerBlog} />
+                </Switch>
 
-          {/* 收藏書櫃列表 */}
-          {this.state.csData.filter(({number}) => reviewerData.number == number)
-          .map(({bookcase, sid})=>(
+            {/* 全倒出來 - 書櫃列表 */}
+          {this.state.bkData.map(({name,pic,author,introduction,sid})=>(
             <BR_BookcaseList
-            to={"/reviewer/reviewerBooks/bookcase/" + sid}
-            bookcase={bookcase}
+            sid={sid}
+            key={sid}
+            to={"/reviewer/reviewerBooks/reviewerBlog/" + sid}
+            name={name}
+            author={author}
+            pic={pic}
+            introduction={introduction}
             ></BR_BookcaseList>
           ))}
-
-          {this.state.bkData.map(({name,pic})=>(
+          {/* 針對書評家 - 書櫃列表 */}
+          {/* {this.state.csData.filter(({number}) => reviewerData.number == number)
+          .map(({pic, sid})=>(
             <BR_BookcaseList
-            name={name}
+            to={"/reviewer/reviewerBooks/reviewerBlog/" + sid}
             pic={pic}
             ></BR_BookcaseList>
-          ))}
+          ))} */}
 
         </section>
+
+      </Router>
       </>
     )
   }

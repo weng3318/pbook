@@ -68,9 +68,10 @@ app.use('/activities', require('./src/activities/acApi'))
 app.use('/reviews', require('./src/book_review/reviews'))
 
 //下面三行有衝突我先註解掉
-// app.use('/reviews', require('./src/book_review/books'))
-// app.use('/reviewer', require('./src/reviewer/brReviewerList'))
-// app.use('/reviewer', require('./src/reviewer/brBookcase'))
+app.use('/reviews', require('./src/book_review/books'))
+app.use('/reviewer', require('./src/reviewer/brReviewerList'))
+app.use('/reviewer', require('./src/reviewer/brBookcase'))
+app.use('/reviewer', require('./src/reviewer/brBooks'))
 
 
 app.get("/", function(req, res) {

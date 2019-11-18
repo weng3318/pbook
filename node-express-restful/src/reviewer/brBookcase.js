@@ -4,7 +4,8 @@ const bluebird = require('bluebird');
 const router = express.Router();
 
 const db = mysql.createConnection({
-    host: "localhost",
+    host: "192.168.27.186",
+    // host: "localhost",
     user: "root",
     password: "root",
     database: "pbook"
@@ -12,7 +13,7 @@ const db = mysql.createConnection({
 db.connect()
 bluebird.promisifyAll(db)
 // 每一頁數量
-const perPage = 5
+const perPage = 10
 router.get('/brBookcase/:page?/:keyword?', (req,res)=>{
     // 頁數資料傳輸
     const output = {};
@@ -27,7 +28,7 @@ router.get('/brBookcase/:page?/:keyword?', (req,res)=>{
         output.keyword = keyword
 
     }
-    let t_sql = 'SELECT COUNT(1) `total` FROM `br_reviewer_blogger`' + where
+    let t_sql = 'SELECT COUNT(1) `total` FROM `br_bookcase`' + where
 
     db.queryAsync(t_sql)
 
@@ -40,7 +41,7 @@ router.get('/brBookcase/:page?/:keyword?', (req,res)=>{
                 if( page > output.totalRows ) page = output.totalRows
                 output.page = page
     
-                return db.queryAsync('SELECT * FROM `br_reviewer_blogger` '+ where +' LIMIT '+(page-1)*perPage+','+(perPage))
+                return db.queryAsync('SELECT * FROM `br_bookcase` '+ where +' LIMIT '+(page-1)*perPage+','+(perPage))
 
             .then((results)=>{
                 output.rows = results
