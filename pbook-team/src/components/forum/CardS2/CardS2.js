@@ -25,7 +25,9 @@ const CardS2 = props => {
                   alt=""
                 />
                 <div className="card-s2-list-details">
-                  <div className="card-s2-title card-title-font">{value.fm_title}</div>
+                  <div className="card-s2-title card-title-font">
+                    {value.fm_title}
+                  </div>
                   <div className="card-s2-font">
                     <UserDetails
                       read={false}

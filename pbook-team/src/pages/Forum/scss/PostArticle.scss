@@ -1,0 +1,78 @@
+@import './systemcolor';
+
+.post-article {
+  input {
+    border: none;
+  }
+  textarea {
+    padding: 8px 24px;
+    border: none;
+    width: 100%;
+    overflow: auto;
+    height: 120px;
+    resize: none;
+    
+  }
+  .faketext {
+    padding: 8px 24px;
+    display: block;
+    border: 2px silver solid;
+    width: 100%;
+    word-break: normal;
+  }
+  .dis-play {
+    display: flex;
+  }
+  .Navbar {
+    background: $season-green;
+    height: 65px;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    .container {
+      font-size: 1.4rem;
+      font-weight: bold;
+    }
+  }
+  .container.end {
+    position: relative;
+    margin-top: 16px;
+    margin-bottom: 16px;
+    .aside {
+      @extend %card-module;
+      min-width: 200px;
+      right: 0;
+      top: 0;
+      position: absolute;
+    }
+    .container-m {
+      max-width: 900px;
+      @extend %card-module;
+      height: 500px;
+      .title-line {
+        background: $grass-yellow;
+        height: 5px;
+        width: 100%;
+      }
+    }
+  }
+
+  .title-control {
+    display: flex;
+    padding: 0 16px;
+  }
+  .post-title {
+    @extend %title-module;
+    padding: 8px 16px;
+  }
+  .title-title {
+    display: flex;
+    align-items: center;
+    margin-bottom: -4px;
+  }
+
+  .title {
+    display: flex;
+    color: $grey-grey;
+  }
+}

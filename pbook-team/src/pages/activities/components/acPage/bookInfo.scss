@@ -1,0 +1,34 @@
+.book_box {
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .book_data {
+    h6 {
+      font-weight: 600;
+      text-align: center;
+      color: #444;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      white-space: normal;
+      height: 30px;
+    }
+    span.info {
+      text-align: center;
+      display: block;
+      small {
+        display: block;
+      }
+    }
+  }
+  .intro {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    white-space: normal;
+    height: 50px;
+  }
+}

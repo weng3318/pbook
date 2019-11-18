@@ -161,7 +161,44 @@ router.post('/edit', (req, res, next)=>{
     })
 })
 
-//前端上傳圖片
+
+//新增會員書籍
+router.post('/addBook', (req, res)=>{
+    let isbn = req.body.isbn
+    let name = req.body.name
+    let author = req.body.author
+    let publishing = req.body.publishing
+    let publishDate = req.body.publishDate
+    let version = req.body.version
+    let price = req.body.price
+    let pages = req.body.pages
+    let savingStatus = req.body.savingStatus
+    let memberNo = req.body.memberNo
+    let categories = req.body.categories
+    let remark = req.body.remark
+
+    db.query(Member.addMemberBoos(isbn, name, author, publishing, 
+        publishDate, version, price, pages, savingStatus, memberNo, 
+        categories, remark), (err, row)=>{
+            console.log(row);
+            if(row == undefined){
+                res.json({
+                    status: "上架書籍失敗",
+                    message: "可能資訊有誤"
+                })
+                return
+            }
+            else{
+                res.json({
+                    status: "上架書籍成功",
+                    message: "可以參加配對活動"
+                })
+            }
+    })
+})
+
+
+//前端上傳圖片單張
 const multer =require('multer')
 const upload =multer({dest:'tmp_uploads/'})
 const fs = require('fs')
@@ -191,6 +228,40 @@ router.post('/upload', upload.single('avatar'),(req, res) =>{
                 filename: ""
             })
         }
+    })
+
+
+//前端上傳圖片多張
+router.post('/imgs', upload.array('avatar', 5),(req, res, next) =>{
+        console.log("avatar",  req.body.avatar);
+
+        for(let i=0; i<req.files.length;i++){
+            if(req.files[i] && req.files[i].mimetype){
+                console.log(req.files.length);
+        
+                switch(req.files[i].mimetype){
+                        case 'image/png':
+                        case 'image/jpeg':
+                            fs.createReadStream(req.files[i].path)
+                                .pipe(
+                                    fs.createWriteStream('public/images/member/' + req.files[i].originalname)
+                                )
+                                
+                                res.json({
+                                filename: req.files[i].originalname
+                                })
+                                break;
+                        default:
+                        return res.send('bad file type')
+                        }
+                            
+                        }else{
+                            res.json({
+                                filename: ""
+                            })
+                        }
+                    }
+        
     })
 
 

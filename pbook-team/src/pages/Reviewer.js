@@ -18,14 +18,14 @@ export class Reviewer extends React.Component {
 }
   componentDidMount() {
     axios
-      // .get('http://localhost:5000/brBookcase')
-      .get('http://localhost:5555/reviewer')
+      // .get('http://localhost:5000/reviewer')
+      .get('http://localhost:5555/reviewer/brReviewerList')
       .then(res => {
         this.setState({ brData: res.data.rows })
-        console.log('取得資料' + res.data.rows)
+        console.log('取得資料' , res.data.rows)
       })
       .catch(function(error) {
-            console.log('沒有取得資料請執行 json-server --watch --port 5555 reviewer_Data.json ' + error)
+            console.log('沒有取得資料請執行 json-server --watch --port 5555 reviewer_Data.json ' , error)
         })
     }
     render() {
@@ -40,24 +40,23 @@ export class Reviewer extends React.Component {
         .map(({ sid, title, img, name, job, intro, bookcase, youtube, facebook, twitter, tube,}) => (
             <BR_ReviewerList
               key={sid}
-              to={'/ReviewerBooks/' + sid}
+              // to={'/ReviewerBooks/' + sid}
               sid={sid}
               title={title}
               img={img}
               name={name}
               job={job}
-              title={title}
+              intro={intro}
               bookcase={bookcase}
               youtube={youtube}
               facebook={facebook}
-              intro={intro}
               twitter={twitter}
               tube={tube}
             ></BR_ReviewerList>
           )
         )}
         {/* {Data */}
-        {this.state.brData
+        {/* {this.state.brData
           .filter(({ name }) => '' == name)
           .map(({ sid, title, img, name, job, intro, bookcase, youtube, facebook, twitter, tube,}) => (
             <BR_ReviewerList
@@ -68,15 +67,14 @@ export class Reviewer extends React.Component {
               img={img}
               name={name}
               job={job}
-              title={title}
+              intro={intro}
               bookcase={bookcase}
               youtube={youtube}
               facebook={facebook}
-              intro={intro}
               twitter={twitter}
               tube={tube}
             ></BR_ReviewerList>
-          ))}
+          ))} */}
       </>
     )
   }

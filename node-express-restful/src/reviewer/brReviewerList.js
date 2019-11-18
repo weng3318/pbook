@@ -4,28 +4,51 @@ const bluebird = require('bluebird');
 const router = express.Router();
 
 const db = mysql.createConnection({
-    host: "192.168.27.186",
+    host: "localhost",
     user: "root",
     password: "root",
     database: "pbook"
 })
 db.connect()
 bluebird.promisifyAll(db)
-
-const perPage = 10
-router.get('/:page?/:keyword?',(req,res)=>{
+// 每一頁數量
+const perPage = 5
+router.get('/brReviewerList/:page?/:keyword?', (req,res)=>{
+    // 頁數資料傳輸
     const output = {};
     output.params = req.params
-    console.log(req.params)
     output.perPage = perPage
-    let page = req.params.page || 1
+    let page = parseInt(req.params.page) || 1
+    let keyword = req.params.keyword || ''
+    let where = 'WHERE 1'
+    if(keyword){
+
+        where += "AND `name` LIKE '%"+ keyword +"%'"
+        output.keyword = keyword
+    }
+
+    let t_sql = 'SELECT COUNT(1) `total` FROM `br_reviewerlist`' + where
+
+    db.queryAsync(t_sql)
+
+            .then((results)=>{
+                // 總筆數 取得第一筆"total"
+                output.totalRows =  results[0][`total`]
+                // 總頁數 = 總筆數/每頁筆數
+                output.totalPage =  Math.ceil(output.totalRows/perPage)
+                if( page < 1 ) page = 1
+                if( page > output.totalRows ) page = output.totalRows
+                output.page = page
     
-    let sql = 'SELECT * FROM `br_reviewerlist` LIMIT '+(page-1)*perPage+','+(perPage)
-    db.queryAsync(sql,(error,results)=>{
+                return db.queryAsync('SELECT * FROM `br_reviewerlist` '+ where +' LIMIT '+(page-1)*perPage+','+(perPage))
 
-        output.rows = results
-
-        res.json(output)
+            .then((results)=>{
+                output.rows = results
+                res.json(output)
+            })
+            .catch((error)=>{
+                console.log('後端出錯了',error)
+            })
     })
 })
 

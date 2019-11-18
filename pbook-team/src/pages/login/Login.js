@@ -57,7 +57,7 @@ class Login extends React.Component {
     })
   }
 
-
+  //輸入轉值
   handleChange(e){
     // const name = e.target.name
     // const obj = {};
@@ -95,6 +95,7 @@ class Login extends React.Component {
     return result
   }
 
+  //照片上傳
   onChangeHandler(e){
     console.log(e.target.files[0]);
     this.setState({
@@ -313,7 +314,7 @@ class Login extends React.Component {
               <img src={require('./icon_MR_m.svg')} alt="" style={{ width: '30px' }} />
               <h2>品書人註冊</h2>
             </div>
-            <input required className="login_input" name="email" id="email" type="text" placeholder="電子郵件" 
+            <input className="login_input" name="email" id="email" type="text" placeholder="電子郵件" 
             value={this.state.email} onChange={this.handleChange} />
             <input
               className="login_input"
