@@ -6,13 +6,7 @@ import axios from 'axios'
 import moment from 'moment'
 import io from 'socket.io-client'
 
-const socket = io.connect('ws://localhost:5000/', {
-  query: {
-    myID: JSON.parse(localStorage.getItem('user'))
-      ? JSON.parse(localStorage.getItem('user')).MR_number
-      : '假資料',
-  },
-})
+const socket = io.connect('ws://localhost:5000/')
 
 class Chat extends React.Component {
   constructor() {
@@ -20,51 +14,62 @@ class Chat extends React.Component {
     this.state = {
       oldDataList: [],
       oldDataMessage: [],
-      myData: [
-        { MR_pic: 'yoko.jpg', MR_number: 'MR00001', myName: '01橫山裕' },
-      ],
       mySearch: '',
-      err: '初始化',
     }
     socket.on('SeverToClientMsg', this.onMsg)
   }
 
   handleSearch = () => {
     // 取得搜尋的字串
-
     var mySearch = this.mySearch.value
-
     this.setState({ mySearch: mySearch })
   }
 
-  handleMessage = () => {
+  handleMessage = async () => {
     this.myDiv.classList.add('hide')
     this.messageSearch.classList.add('show-inline-flex')
-
-    setInterval(() => {
-      axios
-        .get(`http://localhost:5555/nana_use/chatMessage`, {
-          withCredentials: true,
-        })
-        .then(res => {
-          if (res.data === '找不到session.memberId') {
-            this.setState({ err: res.data })
-          } else {
-            this.setState({ oldDataMessage: res.data })
-          }
-        })
-        .catch(error => {
-          console.log('1', error)
-        })
-    }, 300)
+    console.log('點擊左邊那欄第一次拿chatMessage')
+    await axios
+      .post(`http://localhost:5555/nana_use/chatMessage2`, {
+        memberId: JSON.parse(localStorage.getItem('user')).MR_number,
+      })
+      .then(res => {
+        this.setState({ oldDataMessage: res.data })
+      })
+      .catch(error => {
+        console.log('點擊左邊那欄第一次拿chatMessage有錯誤', error)
+      })
   }
 
   onMsg = fullData => {
     console.log('客戶端接收服務端發的消息', fullData)
-    this.setState({
-      oldDataList: fullData.oldDataList,
-      oldDataMessage: [fullData.data, ...this.state.oldDataMessage],
-    })
+    console.log('我是誰?', JSON.parse(localStorage.getItem('user')).MR_number)
+
+    if (
+      fullData.data.myFrom ===
+      JSON.parse(localStorage.getItem('user')).MR_number
+    ) {
+      this.setState({
+        oldDataList: fullData.oldDataList,
+        oldDataMessage: [fullData.data, ...this.state.oldDataMessage],
+      })
+    } else if (
+      fullData.data.myTo === JSON.parse(localStorage.getItem('user')).MR_number
+    ) {
+      axios
+        .post(`http://localhost:5555/nana_use/chatList2`, {
+          memberId: JSON.parse(localStorage.getItem('user')).MR_number,
+        })
+        .then(res => {
+          this.setState({
+            oldDataList: res.data,
+            oldDataMessage: [fullData.data, ...this.state.oldDataMessage],
+          })
+        })
+        .catch(error => {
+          console.log('componentDidMount拿資料時有錯誤', error)
+        })
+    }
   }
 
   handleSubmit = () => {
@@ -140,242 +145,199 @@ class Chat extends React.Component {
   }
 
   componentDidMount() {
-    // 避免set兩次,柏凱寫法
-    // let chatList = await axios.get(`http://localhost:5555/nana_use/chatList`, {
-    //   withCredentials: true,
-    // })
-    // console.log(111, chatList)
-    // let myDataList = await axios.get(
-    //   `http://localhost:5555/nana_use/myDataList`,
-    //   {
-    //     withCredentials: true,
-    //   }
-    // )
-    // this.setState({ oldDataList: chatList, myData: myDataList })
-
-    // 避免set兩次,老師寫法
-    let oldDataList
     axios
-      .get(`http://localhost:5555/nana_use/chatList`, { withCredentials: true })
+      .post(`http://localhost:5555/nana_use/chatList2`, {
+        memberId: JSON.parse(localStorage.getItem('user')).MR_number,
+      })
       .then(res => {
-        oldDataList = res.data
-        return axios.get(`http://localhost:5555/nana_use/myDataList`, {
-          withCredentials: true,
+        this.setState({
+          oldDataList: res.data,
         })
       })
-      .then(res => {
-        if (res.data === '找不到session.memberId') {
-          this.setState({ err: res.data })
-        } else {
-          this.setState({
-            myData: res.data,
-            oldDataList: oldDataList,
-          })
-        }
-      })
       .catch(error => {
-        console.log('3', error)
+        console.log('componentDidMount拿資料時有錯誤', error)
       })
   }
 
   render() {
+    let myId = JSON.parse(localStorage.getItem('user')).MR_number
+    let myPic = JSON.parse(localStorage.getItem('user')).MR_pic
     var count = 0
-    var myPic = this.state.myData[0].MR_pic
-    var myId = this.state.myData[0].MR_number
-    var myName = this.state.myData[0].MR_name
-    // console.log('render', this.state.oldDataList)
+    return (
+      <>
+        <div className="chatWrap">
+          <Tab.Container id="list-group-tabs-example" defaultActiveKey="#link1">
+            <Row>
+              <Col sm={4}>
+                <ListGroup>
+                  <ListGroup.Item>
+                    <form className="form-inline d-flex">
+                      <input
+                        className="form-control form-control-sm mr-3 w-75"
+                        type="text"
+                        placeholder="請輸入您要尋找的姓名..."
+                        aria-label="Search"
+                        ref={search => (this.mySearch = search)}
+                        onChange={this.handleSearch}
+                      />
+                      <span
+                        className="chatSearchBtn"
+                        onClick={this.handleSearch}
+                      >
+                        <i className="fas fa-search" aria-hidden="true"></i>
+                      </span>
+                    </form>
+                  </ListGroup.Item>
 
-    // 因為第一次render會得不到值,會一直報錯!所以要多加判斷,或者給他一個初始值
-    // console.log(
-    //   'render-mypic',
-    //   this.state.myData[0] && this.state.myData[0].MR_pic
-    // )
-    // console.log('render-mypic', myPic)
-    // console.log('render-mypic', myId)
-    // console.log('render-mypic', myName)
-    // console.log('render', this.state.oldDataList)
-    // console.log('this.state.err', this.state.err)
-
-    if (this.state.err !== '初始化') {
-      // console.log('沒有拿到session.memberId,或ajax時有錯誤')
-      return <h1>{this.state.err}</h1>
-    } else {
-      // console.log('正常')
-      return (
-        <>
-          <div className="chatWrap">
-            <Tab.Container
-              id="list-group-tabs-example"
-              defaultActiveKey="#link1"
-            >
-              <Row>
-                <Col sm={4}>
-                  <ListGroup>
-                    <ListGroup.Item>
-                      <form className="form-inline d-flex">
-                        <input
-                          className="form-control form-control-sm mr-3 w-75"
-                          type="text"
-                          placeholder="請輸入您要尋找的姓名..."
-                          aria-label="Search"
-                          ref={search => (this.mySearch = search)}
-                          onChange={this.handleSearch}
-                        />
-                        <span
-                          className="chatSearchBtn"
-                          onClick={this.handleSearch}
-                        >
-                          <i className="fas fa-search" aria-hidden="true"></i>
-                        </span>
-                      </form>
-                    </ListGroup.Item>
-
-                    {this.state.oldDataList
-                      .filter(
-                        item =>
-                          !this.state.mySearch ||
-                          item.MR_name.indexOf(this.state.mySearch) !== -1
-                      )
-                      .map((value, index) => {
-                        count++
-                        return (
-                          <ListGroup.Item
-                            key={index}
-                            action
-                            href={'#' + value.chat_id}
-                            onClick={this.handleMessage}
-                          >
-                            <div className="d-flex">
-                              <div className="chatImgWrap">
-                                <img
-                                  alt="左邊DATALIST大頭照"
-                                  className="chatImg"
-                                  src={require('./images/' + value.MR_pic)}
-                                ></img>
-                              </div>
-                              <div className="d-flex flex-column align-self-center chatTextWrap">
-                                <span className="chatText">
-                                  {'和[' + value.MR_name + ']的聊天室'}
-                                </span>
-                                <span className="chatText">
-                                  {value.content}
-                                </span>
-                              </div>
-                              {value.total === 0 ? (
-                                <div className="d-flex flex-column align-content-center position-absolute newest hide">
-                                  {value.total}
-                                </div>
-                              ) : (
-                                <div className="d-flex flex-column align-content-center position-absolute newest">
-                                  {value.total}
-                                </div>
-                              )}
-                            </div>
-                          </ListGroup.Item>
-                        )
-                      })}
-                    {count === 0 ? (
-                      <ListGroup.Item>找不到符合的資料...</ListGroup.Item>
-                    ) : (
-                      ''
-                    )}
-                  </ListGroup>
-                </Col>
-                <Col sm={8}>
-                  <Tab.Content>
-                    <div className="myDefault" ref={div => (this.myDiv = div)}>
-                      <img
-                        alt="背景圖"
-                        src={require('./images/admin_bg.png')}
-                      ></img>
-                    </div>
-
-                    {this.state.oldDataList.map((value, index) => {
+                  {this.state.oldDataList
+                    .filter(
+                      item =>
+                        !this.state.mySearch ||
+                        item.MR_name.indexOf(this.state.mySearch) !== -1
+                    )
+                    .map((value, index) => {
+                      count++
                       return (
-                        <Tab.Pane key={index} eventKey={'#' + value.chat_id}>
-                          <div className="chatMessageScroll">
-                            {/* eslint-disable-next-line array-callback-return */}
-                            {this.state.oldDataMessage.map((value2, index2) => {
-                              if (value.chat_id === value2.chat_id) {
-                                return (
-                                  <div key={index2}>
-                                    {(function() {
-                                      if (value2.myFrom !== myId) {
-                                        return (
-                                          <div className="myContainer">
-                                            <img
-                                              src={require('./images/' +
-                                                value.MR_pic)}
-                                              alt="Avatar"
-                                            />
-                                            <p>{value2.content}</p>
-                                            <span className="time-right">
-                                              {moment(value2.created_at).format(
-                                                'YYYY-MM-DD HH:mm:ss'
-                                              )}
-                                            </span>
-                                          </div>
-                                        )
-                                      } else {
-                                        return (
-                                          <div className="myContainer darker">
-                                            <img
-                                              src={require('./images/' + myPic)}
-                                              alt="Avatar"
-                                              className="right"
-                                            />
-                                            <p>{value2.content}</p>
-                                            <span className="time-left">
-                                              {moment(value2.created_at).format(
-                                                'YYYY-MM-DD HH:mm:ss'
-                                              )}
-                                            </span>
-                                          </div>
-                                        )
-                                      }
-                                    })()}
-                                  </div>
-                                )
-                              }
-                            })}
+                        <ListGroup.Item
+                          key={index}
+                          action
+                          href={'#' + value.chat_id}
+                          onClick={this.handleMessage}
+                        >
+                          <div className="d-flex">
+                            <div className="chatImgWrap">
+                              <img
+                                alt="左邊DATALIST大頭照"
+                                className="chatImg"
+                                src={
+                                  'http://localhost:5555/images/member/' +
+                                  value.MR_pic
+                                }
+                              ></img>
+                            </div>
+                            <div className="d-flex flex-column align-self-center chatTextWrap">
+                              <span className="chatText">
+                                {'和[' + value.MR_name + ']的聊天室'}
+                              </span>
+                              <span className="chatText">{value.content}</span>
+                            </div>
+                            {value.total === 0 ? (
+                              <div className="d-flex flex-column align-content-center position-absolute newest hide">
+                                {value.total}
+                              </div>
+                            ) : (
+                              <div className="d-flex flex-column align-content-center position-absolute newest">
+                                {value.total}
+                              </div>
+                            )}
                           </div>
-                        </Tab.Pane>
+                        </ListGroup.Item>
                       )
                     })}
+                  {count === 0 ? (
+                    <ListGroup.Item>找不到符合的資料...</ListGroup.Item>
+                  ) : (
+                    ''
+                  )}
+                </ListGroup>
+              </Col>
+              <Col sm={8}>
+                <Tab.Content>
+                  <div className="myDefault" ref={div => (this.myDiv = div)}>
+                    <img
+                      alt="背景圖"
+                      src={require('./images/admin_bg.png')}
+                    ></img>
+                  </div>
+
+                  {this.state.oldDataList.map((value, index) => {
+                    return (
+                      <Tab.Pane key={index} eventKey={'#' + value.chat_id}>
+                        <div className="chatMessageScroll">
+                          {/* eslint-disable-next-line array-callback-return */}
+                          {this.state.oldDataMessage.map((value2, index2) => {
+                            if (value.chat_id === value2.chat_id) {
+                              return (
+                                <div key={index2}>
+                                  {(function() {
+                                    if (value2.myFrom !== myId) {
+                                      return (
+                                        <div className="myContainer">
+                                          <img
+                                            src={
+                                              'http://localhost:5555/images/member/' +
+                                              value.MR_pic
+                                            }
+                                            alt="Avatar"
+                                          />
+                                          <p>{value2.content}</p>
+                                          <span className="time-right">
+                                            {moment(value2.created_at).format(
+                                              'YYYY-MM-DD HH:mm:ss'
+                                            )}
+                                          </span>
+                                        </div>
+                                      )
+                                    } else {
+                                      return (
+                                        <div className="myContainer darker">
+                                          <img
+                                            src={
+                                              'http://localhost:5555/images/member/' +
+                                              myPic
+                                            }
+                                            alt="Avatar"
+                                            className="right"
+                                          />
+                                          <p>{value2.content}</p>
+                                          <span className="time-left">
+                                            {moment(value2.created_at).format(
+                                              'YYYY-MM-DD HH:mm:ss'
+                                            )}
+                                          </span>
+                                        </div>
+                                      )
+                                    }
+                                  })()}
+                                </div>
+                              )
+                            }
+                          })}
+                        </div>
+                      </Tab.Pane>
+                    )
+                  })}
+                  <div
+                    className="input-group md-form form-sm form-2 my-3 hide"
+                    ref={messageSearch => (this.messageSearch = messageSearch)}
+                  >
+                    <input
+                      className="form-control my-0 py-1 lime-border"
+                      type="text"
+                      placeholder="請輸入訊息..."
+                      aria-label="Search"
+                      ref={input => (this.textInput = input)}
+                      onKeyPress={this.handleSubmit2}
+                    />
                     <div
-                      className="input-group md-form form-sm form-2 my-3 hide"
-                      ref={messageSearch =>
-                        (this.messageSearch = messageSearch)
-                      }
+                      className="input-group-append chatMessageSubmit"
+                      onClick={this.handleSubmit}
                     >
-                      <input
-                        className="form-control my-0 py-1 lime-border"
-                        type="text"
-                        placeholder="請輸入訊息..."
-                        aria-label="Search"
-                        ref={input => (this.textInput = input)}
-                        onKeyPress={this.handleSubmit2}
-                      />
-                      <div
-                        className="input-group-append chatMessageSubmit"
-                        onClick={this.handleSubmit}
+                      <span
+                        className="input-group-text lime lighten-2"
+                        id="basic-text1"
                       >
-                        <span
-                          className="input-group-text lime lighten-2"
-                          id="basic-text1"
-                        >
-                          送出
-                        </span>
-                      </div>
+                        送出
+                      </span>
                     </div>
-                  </Tab.Content>
-                </Col>
-              </Row>
-            </Tab.Container>
-          </div>
-        </>
-      )
-    }
+                  </div>
+                </Tab.Content>
+              </Col>
+            </Row>
+          </Tab.Container>
+        </div>
+      </>
+    )
   }
 }
 export default Chat

@@ -56,9 +56,11 @@ app.use(express.static("public"));
 
 app.use("/member", require("./src/member/member"));
 app.use("/forum", require("./src/forum/homepage"));
-app.use("/nana_use", require("./src/nana_use/chatList"));
-app.use("/nana_use", require("./src/nana_use/chatMessage"));
-app.use("/nana_use", require("./src/nana_use/myDataList"));
+app.use("/nana_use", require("./src/nana_use/chatList2"));
+app.use("/nana_use", require("./src/nana_use/chatMessage2"));
+app.use("/nana_use", require("./src/nana_use/myDataList2"));
+app.use("/nana_use", require("./src/nana_use/pairedMemberBooks"));
+app.use("/nana_use", require("./src/nana_use/myBooks"));
 app.use("/nana_use", require("./src/nana_use/countDown"));
 
 app.use("/books", require(__dirname + '/src/books/book_categories'));
