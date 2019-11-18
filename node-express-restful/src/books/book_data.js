@@ -22,17 +22,19 @@ router.get("/book_data/:page?/:categories?/:keyword?", (req, res) => {
   output.perPage = perPage;
   let page = parseInt(req.params.page) || 1; //page預設1
   let keyword = req.params.keyword || ""; //search用
-  let categories = req.params.categories || ""; 
+  let categories = req.params.categories || "";
+
   let where = " WHERE 1 ";
   if (keyword) {
     keyword = keyword.split("'").join("\\'"); // 避免 SQL injection
-    where += " AND `name` LIKE '%" + keyword + "%' ";
+    where += " AND `vb_books`.`name` LIKE '%" + keyword + "%' ";
     output.keyword = keyword; //可以在網址看keyword用
   }
   if (categories) {
-    where += " AND `categories`" + " = " + categories;
+    where += " AND `vb_books`.`categories`" + " = " + categories;
     output.categories = categories;
   }
+  
   let sql = "SELECT COUNT(1) `total` FROM `vb_books`" + where;
   console.log(sql);
   db.queryAsync(sql)
@@ -43,10 +45,8 @@ router.get("/book_data/:page?/:categories?/:keyword?", (req, res) => {
       if (page < 1) page = 1;
       if (page > output.totalPage) page = output.totalPage;
       output.page = page;
-      console.log("SELECT * FROM `vb_books` " + where + " LIMIT ?, ? ",
-      [(page - 1) * perPage, perPage]);
       return db.queryAsync(
-        "SELECT * FROM `vb_books` " + where + " LIMIT ?, ? ",
+        "SELECT `vb_books`.*,`cp_data_list`.`cp_name` FROM `vb_books` LEFT JOIN `cp_data_list` ON `vb_books`.`publishing` = `cp_data_list`.`sid`" + where + " LIMIT ?, ? ",
         [(page - 1) * perPage, perPage]
       );
     })

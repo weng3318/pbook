@@ -74,32 +74,38 @@ export const rtFetch = () => async dispatch => {
 //-------Shop-----------
 export const SHOP_RECEIVE = 'SHOP_RECEIVE'
 export const SHOP_REQUEST = 'SHOP_REQUEST'
-function shopReceive(shopPage, shopCategories, json) {
+function shopReceive(shopPage, shopCategories, shopKeyword, json) {
   return {
     type: SHOP_RECEIVE,
     shopPage,
     shopCategories,
-    // shopKeyword,
+    shopKeyword,
     payload: json,
     receivedAt: Date.now(),
   }
 }
-function shopRequest(shopPage, shopCategories) {
+function shopRequest(shopPage, shopCategories, shopKeyword) {
   return {
     type: SHOP_REQUEST,
     shopPage,
     shopCategories,
-    // shopKeyword,
+    shopKeyword,
   }
 }
-export const shopFetch = (shopPage, shopCategories) => async dispatch => {
-  dispatch(shopRequest(shopPage, shopCategories))
+export const shopFetch = (
+  shopPage,
+  shopCategories,
+  shopKeyword
+) => async dispatch => {
+  dispatch(shopRequest(shopPage, shopCategories, shopKeyword))
   try {
     let response = await fetch(
       'http://localhost:5555/books/book_data/' +
         shopPage +
         '/' +
-        shopCategories,
+        shopCategories +
+        '/' +
+        (shopKeyword ? shopKeyword : ''),
       {
         method: 'GET',
         headers: new Headers({
@@ -108,7 +114,9 @@ export const shopFetch = (shopPage, shopCategories) => async dispatch => {
         }),
       }
     )
-    dispatch(shopReceive(shopPage, shopCategories, await response.json()))
+    dispatch(
+      shopReceive(shopPage, shopCategories, shopKeyword, await response.json())
+    )
   } catch (error) {
     console.log('error ', error)
   }

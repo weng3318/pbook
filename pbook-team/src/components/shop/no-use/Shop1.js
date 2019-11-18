@@ -1,6 +1,6 @@
 import React from 'react'
 import { Container, Row } from 'react-bootstrap'
-import Breadcrumb from './Breadcrumb'
+import Breadcrumb from '../Breadcrumb'
 import Categories from './Categories1'
 import Data from './Data1'
 import './Shop.scss'
