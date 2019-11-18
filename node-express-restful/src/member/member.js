@@ -63,14 +63,12 @@ router.post('/sendPwd', (req, res)=>{
     let email = req.body.email
 
     if(email === ''){
-        console.log(12);
         
         return res.json({
             status: '傳送失敗',
             message: '請輸入正確的信箱'
         })
     }
-    console.log(34);
     
     let transporter = nodemailer.createTransport({
         service: 'Gmail',
@@ -87,7 +85,7 @@ router.post('/sendPwd', (req, res)=>{
         html: '<h1>親愛的品書會員您好:</h1><br><h3>請點擊下方進行重新設定密碼</h3><br><a href="http://localhost:3000/ResetPWD"><h2>重設密碼頁</h2></a>'
     }
     transporter.sendMail(mailOptions, (err, info)=>{
-        console.log(info);
+        // console.log(info);
         res.json({
             status: '傳送成功',
             message: '請到信箱修改密碼'
@@ -217,15 +215,16 @@ router.post('/addBook', (req, res)=>{
     let memberNo = req.body.memberNo
     let categories = req.body.categories
     let remark = req.body.remark
+    let imgs = req.body.imgs
 
     db.query(Member.addMemberBoos(isbn, name, author, publishing, 
-        publishDate, version, price, pages, savingStatus, memberNo, 
+        publishDate, version, price, pages, savingStatus, memberNo, imgs, 
         categories, remark), (err, row)=>{
             console.log(row);
             if(row == undefined){
                 res.json({
                     status: "上架書籍失敗",
-                    message: "可能資訊有誤"
+                    message: "資訊有誤"
                 })
                 return
             }
@@ -273,38 +272,41 @@ router.post('/upload', upload.single('avatar'),(req, res) =>{
 
 //前端上傳圖片多張
 //API用POSTMAN測試可以
-router.post('/imgFiles', upload.array('avatar', 5),(req, res, next) =>{
-        console.log("avatar",  req.body.avatar);
-        console.log("Files", req.files); 
+router.post('/imgFiles', upload.array('avatar', 5 ),(req, res, next) =>{
+        console.log("avatar",  req.body);
+        console.log("Files", req.files.length); 
+        
         let images = []
         for(let i=0; i<req.files.length;i++){
             if(req.files[i] && req.files[i].mimetype){
-                console.log([i]);
+                // console.log([i]);
                 switch(req.files[i].mimetype){
                         case 'image/png':
                         case 'image/jpeg':
                             fs.createReadStream(req.files[i].path)
                                 .pipe(
-                                    fs.createWriteStream('public/images/member/' + req.files[i].originalname)
+                                    fs.createWriteStream('public/images/memberBooks/' + req.files[i].originalname)
                                 )
                                 images.push( req.files[i].originalname)
-                                console.log(images);
-                                
-                                res.json({
-                                pictures: images
-                                })
-                                break;
+                                // console.log(images);            
+                                continue;
                                 default:
                                 return res.send('bad file type')
                         }
                             
-                        }else{
-                            console.log('222');
-                            res.json({
-                                pictures: []
-                            })
-                        }
-                    }
+            }else{
+                    console.log('222');
+                    res.json({
+                        pictures: images
+                    })
+            }
+        }
+        console.log("images", images);
+        
+        res.json({
+            message: "上傳成功",
+            pictures: images
+        })
         
     })
 

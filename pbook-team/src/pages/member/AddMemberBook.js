@@ -78,27 +78,33 @@ class AddMemberBook extends React.Component {
     }
 
     onClickhandler(){
-    const formData = new FormData()
-    formData.append('avatar', this.state.pictures)
-    console.log(formData);
-    
-    fetch('http://localhost:5555/member/imgFiles',{
-      method: 'POST',
-      body: formData
-    })
-    .then(res =>{
-      console.log("res2:", res);
-      // return res.json()
-    })
-    .then(imgs =>{
-      console.log("imgs.files", imgs.filename);
-      
-    })
-    .catch(err=>{
-      console.log("err=", err);
-      
-    })
-  }
+        console.log("pictures",this.state.pictures);
+        
+        const formData = new FormData()
+
+        for (var i = 0; i < this.state.pictures.length; i++) {
+          formData.append('avatar', this.state.pictures[i]);
+        }
+        //formData.append('avatar', this.state.pictures)
+        console.log("formData",formData);
+        
+        fetch('http://localhost:5555/member/imgFiles',{
+          method: 'POST',
+          body: formData
+        })
+        .then(res =>{
+          console.log("res2:", res);
+          return res.json()
+        })
+        .then(imgs =>{
+          console.log("imgs.files", imgs.pictures);
+          this.setState({pictures: imgs.pictures})
+        })
+        .catch(err=>{
+          console.log("err=", err);
+          
+        })
+    }
 
 
 
@@ -130,32 +136,49 @@ class AddMemberBook extends React.Component {
 
 
     //上架書籍
-    addBooks(){
-      
-      this.onClickhandler()
+  async addBooks(){
+      // await this.onClickhandler()
+      // console.log("upload success");
+      const formData = new FormData()
 
-      console.log("upload success");
-      
+        for (var i = 0; i < this.state.pictures.length; i++) {
+          formData.append('avatar', this.state.pictures[i]);
+        }
+        //formData.append('avatar', this.state.pictures)
+        console.log("formData",formData);
+        
+        fetch('http://localhost:5555/member/imgFiles',{
+          method: 'POST',
+          body: formData
+        })
+        .then(res =>{
+          console.log("res2:", res);
+          return res.json()
+        })
+        .then(imgs =>{
+          let images = imgs.pictures
+          console.log("imgs.files", images);
 
-      fetch('http://localhost:5555/member/addBook', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json'
-                },
+            fetch('http://localhost:5555/member/addBook', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
               body: JSON.stringify({
-                isbn : this.state.isbn,
-                name : this.state.name,
-                author : this.state.author,
-                publishing : this.state.publishing,
-                 publishDate : this.state.publishDate,
-                 version : this.state.version,
-                 price : this.state.price,
-                 pages : this.state.pages,
-                 savingStatus : this.state.savingStatus,
-                 memberNo : this.state.memberNo,
-                 categories : this.state.categories,
-                 remark : this.state.remark,
-              })
+              isbn : this.state.isbn,
+              name : this.state.name,
+              author : this.state.author,
+              publishing : this.state.publishing,
+              publishDate : this.state.publishDate,
+              version : this.state.version,
+              price : this.state.price,
+              pages : this.state.pages,
+              savingStatus : this.state.savingStatus,
+              memberNo : this.state.memberNo,
+              imgs: images,
+              categories : this.state.categories,
+              remark : this.state.remark,
+            })
             })
             .then( response =>{
               if(!response) throw new Error(response.statusText)
@@ -176,6 +199,9 @@ class AddMemberBook extends React.Component {
             .catch(error => {
               console.log('error = ' + error);
             })
+
+        })
+      
       
     }
 

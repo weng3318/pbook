@@ -26,7 +26,11 @@ class Login extends React.Component {
       selectedFile: null,
       captcha1: '',
       captcha2: '',
-      forgetPwd: false
+      forgetPwd: false,
+      err_email: '信箱: 合理的EMAIL格式',
+      err_username: '使用者名稱: 至少3個字元',
+      err_password: '至少有一個數字、一個小寫英文字母、密碼長度在 4~8 之間',
+      err_captcha: '請輸入圖上的字',
 
     }
     this.handleChange = this.handleChange.bind(this)
@@ -44,24 +48,36 @@ class Login extends React.Component {
     this.captcha1()
   }
 
-  clearStyle(){
-    // this.setState({ 
-    // name: '',
-    // email: '',
-    // password: '',
-    // password2:'',
-    // captcha2: ''})
-
+  clearStyle = () => {
+   
     let email = document.querySelector('#email')
-    email.classList.remove('error') 
+    email.classList.remove('err_border') 
     let name = document.querySelector('#name')
-    name.classList.remove('error') 
+    name.classList.remove('err_border') 
     let password = document.querySelector('#password')
     let password2 = document.querySelector('#password2')
-    password.classList.remove('error')
-    password2.classList.remove('error')
+    password.classList.remove('err_border')
+    password2.classList.remove('err_border')
     let captcha2 = document.querySelector('#captcha2')
-    captcha2.classList.remove('error')
+    captcha2.classList.remove('err_border')
+    let err_email = document.querySelector('#err_email')
+    err_email.classList.remove('err_text')
+    let err_username = document.querySelector('#err_username')
+    err_username.classList.remove('err_text')
+    let err_password = document.querySelector('#err_password')
+    err_password.classList.remove('err_text')
+
+    this.setState({ 
+      name: '',
+      email: '',
+      password: '',
+      password2:'',
+      captcha2: '',
+      err_email: '信箱: 合理的EMAIL格式',
+      err_username: '使用者名稱: 至少3個字元',
+      err_password: '至少有一個數字、一個小寫英文字母、密碼長度在 4~8 之間',
+      err_captcha: '',
+      })
     
   }
 
@@ -143,7 +159,8 @@ class Login extends React.Component {
         if(data.status === "傳送成功"){
           this.success(status, message)
           setTimeout(() => {
-            window.location.href = '/login'
+           // window.history.back()
+            this.props.history.push('/')
           }, 2000)
         }else{
           this.fail(status, message)
@@ -175,7 +192,7 @@ class Login extends React.Component {
   //判斷密碼格式
   checkPassword(password, password2){
     const re =   /^(?=.*\d)(?=.*[a-z]).{4,8}$/
-    console.log((password === password2) , re.test(password, password2));
+    // console.log((password === password2) , re.test(password, password2));
     const result = (password === password2) && re.test(password, password2)
     return result
   }
@@ -244,14 +261,12 @@ class Login extends React.Component {
       if(status === "登入成功"){
          localStorage.setItem('user', JSON.stringify(data.info))
          this.success(status, message)
-        //  window.location.href = '/'
-        // alert(status + message)
-        // await this.setState({memberData: data.info})
-        this.setState({login: !this.state.login})
-        setTimeout(() => {
-          window.location.href = '/'
-        }, 1000)
-        // console.log("1234", data.info); 
+         this.setState({login: !this.state.login})
+         setTimeout(() => {
+           window.location = window.location.href
+          }, 1000)
+          // console.log("1234", data.info); 
+          // await this.setState({memberData: data.info})
         // await this.props.loginSuccess(data.info)
       }
       if(status === "登入失敗"){
@@ -279,32 +294,46 @@ class Login extends React.Component {
 
     if(this.checkEmail(email) === false){
      //驗證信箱錯誤時的訊息
-      this.setState({email: "帳號格式有誤"})
       let email = document.querySelector('#email')
-      email.classList.add('error') 
+      let err_email = document.querySelector('#err_email')
+      email.classList.add('err_border') 
+      err_email.classList.add('err_text') 
+      this.setState({err_email:'信箱格式有誤'})
+      // return
       }
+      // console.log(1, isPass);
+      
 
     if(this.checkName(name) === false){
       //驗證名稱錯誤時的訊息
-       this.setState({name: "字數太少囉"})
        let name = document.querySelector('#name')
-       name.classList.add('error') 
+       let err_username = document.querySelector('#err_username')
+       name.classList.add('err_border') 
+       err_username.classList.add('err_text') 
+       this.setState({err_username:'使用者名稱字太少'})
+      //  return
      }
-
+    //  console.log(2, isPass);
      if(this.checkPassword(password, password2) === false){
-      this.setState({password: "格式或密碼有誤", password2: "請再重新輸入"})
       let password = document.querySelector('#password')
       let password2 = document.querySelector('#password2')
+      let err_password = document.querySelector('#err_password')
       // password.type = (password.type === "text") ;
       // password2.type = (password2.type === "text") ;
-      password.classList.add('error')
-      password2.classList.add('error')
+      password.classList.add('err_border')
+      password2.classList.add('err_border')
+      err_password.classList.add('err_text')
+      this.setState({err_password:'密碼格式不正確或輸入錯誤'})
+        // return
       }
-
+      // console.log(3, isPass);
       if(captcha1 !== captcha2){
-        this.setState({captcha2: "驗證碼錯誤，請在核對ㄧ次"})
         let captcha2 = document.querySelector('#captcha2')
-        captcha2.classList.add('error')
+        let err_captcha = document.querySelector('#err_captcha')
+        captcha2.classList.add('err_border')
+        err_captcha.classList.add('err_text')
+        this.setState({err_captcha:'驗證碼有誤'})
+        return
       }else{
         isPass = true
       } 
@@ -314,13 +343,12 @@ class Login extends React.Component {
     const formData = new FormData()
       let fileField = document.querySelector("input[type='file']")
       formData.append('avatar', fileField.files[0])
-    
+      // console.log(4, isPass);
     if(isPass){
       let imgFile = ""
       //目前想說新增完圖片再塞入修改資料
       fetch('http://localhost:5555/member/upload',{
             method: 'POST',
-            credentials: 'include',
             body: formData
           })
           .then(res =>{
@@ -357,11 +385,11 @@ class Login extends React.Component {
               console.log("註冊",data);
               if(data.status === "註冊成功"){
                 this.success(status, message)
-                setTimeout(() => {
-                  window.location.href = '/login'
-                }, 2000)
+                // setTimeout(() => {
+                //   window.location = window.location.href
+                //  }, 1000)
               }else{
-                window.location.href = '/login'
+                window.location = '/'
               }
             })
             .catch(error => {
@@ -401,17 +429,18 @@ class Login extends React.Component {
     
     return (
       <>
-  <Router>
+  
     <div className="login_wrap">
      <div>
       <div className="container_login" >
           <div className="container_back">
             <div className="login_singUp">
-              <img src={require('./icon_MR_m.svg')} alt="" style={{ width: '30px' }} />
-              <h2>品書人註冊</h2>
+              <img src={require('./icon_MR_m.svg')} alt="" style={{ width: '60px' }} />
+              <h2 style={{paddingTop: '20px'}}>品書人註冊</h2>
             </div>
             <input className="login_input" name="email" id="email" type="text" placeholder="電子郵件" 
             value={this.state.email} onChange={this.handleChange} />
+            <small className="tip" id="err_email">{this.state.err_email}</small>
             <input
               className="login_input"
               type="text"
@@ -419,10 +448,12 @@ class Login extends React.Component {
               name="name" id="name"
               value={this.state.name} onChange={this.handleChange} 
             />
-             <small className="tip">至少3個字元</small>
+             <small className="tip" id="err_username">{this.state.err_username}</small>
             <input className="login_input" type="password" name="password" id="password" 
             placeholder="密碼" value={this.state.password} onChange={this.handleChange} />
-            <small className="tip">至少有一個數字、一個小寫英文字母、密碼長度在 4~8 之間</small>
+            <small className="tip" id="err_password">
+            {this.state.err_password}
+            </small>
             <input
               className="login_input"
               type="password"
@@ -442,18 +473,21 @@ class Login extends React.Component {
               id="captcha2"
               value={this.state.captcha2} onChange={this.handleChange} 
             />
+            <small className="tip" id="err_captcha">{this.state.err_captcha}</small>
+            <div className="btn-group">
             <button type="button" className="singUp_btn" onClick={this.handleRegister}>
               確認
             </button>
             <button type="button" className="singUp_btn" onClick={this.clearStyle}>
-              取消
+              取消重填
             </button>
+            </div>
           </div>
           {this.state.forgetPwd === false ?
           (<div className="container_front" >
             <div className="login_title">
-              <img src={require('./icon_MR_m.svg')} alt="" style={{ width: '30px' }} onClick={()=>{window.location.href = '/' }}/>
-              <h2>品書人登入</h2>
+              <img src={require('./icon_MR_m.svg')} alt="" style={{ width: '60px' }} onClick={()=>{window.location.href = '/' }}/>
+              <h2 style={{marginLeft: '20px'}}>品書人登入</h2>
             </div>
             <input className="login_input" placeholder="Email" name="email" value={this.state.email} onChange={this.handleChange} />
             <input className="login_input" type="password" placeholder="Password" name="password" value={this.state.password} onChange={this.handleChange}/>
@@ -463,16 +497,16 @@ class Login extends React.Component {
               onClick={()=>{this.setState({forgetPwd: true})}}
             >Forgot your password?</a>
             {/* </Link> */}
-            <div className="social-container ">
+            {/* <div className="social-container ">
               <div className="title">快速登入</div>
               <Link to="/fbLogin">
                 <FbLogin/>
               </Link>
-            </div>
+            </div> */}
           </div>):
           (<div className="container_front" >
             <div className="login_title">
-              <img src={require('./icon_MR_m.svg')} alt="" style={{ width: '30px' }} onClick={()=>{window.location.href = '/' }}/>
+              <img src={require('./icon_MR_m.svg')} alt="" style={{ width: '60px' }} onClick={()=>{window.location.href = '/' }}/>
               <h2>品書人重設密碼</h2>
             </div>
             <input className="login_input" placeholder="Email" name="email" value={this.state.email} 
@@ -480,40 +514,38 @@ class Login extends React.Component {
             onChange={this.handleChange} />
             {/* <input className="login_input" type="password" placeholder="Password" name="password" value={this.state.password} onChange={this.handleChange}/> */}
             <button className="login_btn" onClick={this.sendPWD}>寄送EMAIL</button>
-            <div className="social-container ">
+            {/* <div className="social-container ">
               <div className="title">快速登入</div>
               <Link to="/fbLogin">
               <FbLogin/>
               </Link>
-            </div>
+            </div> */}
           </div>)}
 
 
           <div className="container_left _center">
-            <img src={require('./品書logo.png')}alt="" style={{ width: '120px' }} 
+            <img src={require('./品書logo.png')}alt="" style={{ width: '120px', marginTop: '170px' }} 
               onClick={()=>{window.location.href = '/' }}
             />
-            <h4 style={{ margin: '10px' }}>還沒有帳號就快來加入品書人行列</h4>
+            <h4 style={{ margin: '50px' }}>還沒有帳號就快來加入品書人行列</h4>
             <button className="login_btn" onClick={this.flipSingUp}>
               品書人註冊
             </button>
           </div>
 
           <div className="container_right _center">
-            <img src={require('./品書logo.png')} alt="" style={{ width: '120px' }} 
+            <img src={require('./品書logo.png')} alt="" style={{ width: '120px', marginTop: '200px' }}  
               onClick={()=>{window.location.href = '/' }}
             />
-            <button className="login_btn" onClick={this.flipSingIn}>
+            <button className="login_btn" onClick={this.flipSingIn}
+            style={{ marginTop: '50px' }}  >
               品書人登入
             </button>
         </div>
       </div>
       </div>
       </div>
-      <Switch>
-        <Router exact path="/fbLogin" component={FbLogin}/>
-      </Switch>
-    </Router>
+      
       </>
     )
   }

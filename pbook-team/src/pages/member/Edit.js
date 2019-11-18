@@ -45,14 +45,14 @@ class Edit extends React.Component {
           })
           .then(data =>{
             //   console.log("test", JSON.stringify(data));
-            if( data[0].MR_birthday !== null){
+            if( (data[0].MR_birthday !== null) && (data[0].MR_nickname !== null)){
               let bdy = data[0].MR_birthday
               let birthday = bdy.slice(0, 10)
                 this.setState({
                   name: data[0].MR_name,
                   email: data[0].MR_email,
                   number: data[0].MR_number,
-                  nickname: data[0].MR_nickname,
+                  nickname: '',
                   birthday: birthday,
                   mobile: data[0].MR_mobile,
                   address:data[0].MR_address,
