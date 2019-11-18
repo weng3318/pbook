@@ -1,6 +1,6 @@
 // 引入套件
 const express = require("express"); //EXPRESS(建立路由使用)
-const countDown = express.Router();
+const pairedMemberBooksOld = express.Router();
 const bluebird = require("bluebird"); //青鳥
 const _ = require("lodash"); //loadsh,處理數據的各種方法
 
@@ -18,12 +18,12 @@ db.connect(); //資料庫連線
 bluebird.promisifyAll(db);
 
 
-countDown
-    .route("/countDown")
+pairedMemberBooksOld
+    .route("/pairedMemberBooksOld")
     .post(function (req, res) {
-        console.log('pairedMemberBooksUpdate', req.body.memberId);
+        console.log('pairedMemberBooksOld', req.body.memberId);
         db.queryAsync(
-            `SELECT GameCreatedTime FROM mb_gamelist WHERE MR_number = "${req.body.memberId}"`
+            `SELECT * FROM mb_gamelist WHERE MR_number = "${req.body.memberId}"`
         )
             .then(results => {
                 res.json(results);
@@ -32,6 +32,6 @@ countDown
                 res.send("404-找不到資料");
                 console.log(error);
             });
-    });
-module.exports = countDown;
 
+    });
+module.exports = pairedMemberBooksOld;

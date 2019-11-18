@@ -1,33 +1,32 @@
 import React from 'react'
 import Typist from 'react-typist'
 
-class GameRule extends React.Component {
+class GameRuleAlways extends React.Component {
   constructor() {
     super()
     this.state = {
-      checked: false,
+      show: false,
     }
+  }
+
+  showRule = () => {
+    this.setState({ show: !this.state.show })
   }
 
   handleHideGameRule = () => {
-    if (this.state.checked === true) {
-      localStorage.setItem('GameRuleChecked', true)
-      this.gameRule.classList.add('hide')
-    } else {
-      this.gameRule.classList.add('hide')
-    }
-  }
-
-  handleNeverShowInput = () => {
-    this.setState({ checked: !this.state.checked })
+    this.gameRule.classList.add('hide')
   }
 
   render() {
-    if (localStorage.getItem('GameRuleChecked') === 'true') {
-      return <></>
-    } else {
-      return (
-        <>
+    return (
+      <>
+        <img
+          src={require('./images/question_mark_PNG103.png')}
+          className="GameRuleAlwaysBTN"
+          alt="音樂停止按鈕"
+          onClick={this.showRule}
+        />
+        {this.state.show ? (
           <div
             ref={gameRule => (this.gameRule = gameRule)}
             style={{
@@ -67,32 +66,13 @@ class GameRule extends React.Component {
                 onClick={this.handleHideGameRule}
               />
             </div>
-
-            <div
-              style={{
-                position: 'fixed',
-                right: '0px',
-                bottom: '0px',
-                margin: '5vw',
-              }}
-            >
-              <input
-                type="checkbox"
-                id="gameRuleNeverShowInput"
-                onClick={this.handleNeverShowInput}
-              />
-              <label
-                htmlFor="gameRuleNeverShowInput"
-                style={{ marginLeft: '3px' }}
-              >
-                不再顯示
-              </label>
-            </div>
           </div>
-        </>
-      )
-    }
+        ) : (
+          ''
+        )}
+      </>
+    )
   }
 }
 
-export default GameRule
+export default GameRuleAlways

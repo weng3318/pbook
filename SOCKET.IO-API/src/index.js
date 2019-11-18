@@ -6,7 +6,7 @@ const bluebird = require("bluebird"); //青鳥
 const mysql = require("mysql");
 // 設定資料庫連線
 const db = mysql.createConnection({
-  host: "192.168.31.72",
+  host: "192.168.27.186",
   user: "root",
   password: "root",
   database: "pbook"
