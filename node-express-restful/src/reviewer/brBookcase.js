@@ -22,17 +22,16 @@ router.get('/brBookcase/:page?/:keyword?', (req,res)=>{
     let keyword = req.params.keyword || ''
     let where = 'WHERE 1'
     if(keyword){
-        // todo 2
+
         where += "AND `name` LIKE '%"+ keyword +"%'"
         output.keyword = keyword
+
     }
-    //  sql * 2，總筆、調整、用戶端的page 範圍
     let t_sql = 'SELECT COUNT(1) `total` FROM `br_reviewer_blogger`' + where
 
     db.queryAsync(t_sql)
 
             .then((results)=>{
-                // special
                 // 總筆數 取得第一筆"total"
                 output.totalRows =  results[0][`total`]
                 // 總頁數 = 總筆數/每頁筆數

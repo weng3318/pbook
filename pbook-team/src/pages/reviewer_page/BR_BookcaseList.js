@@ -10,13 +10,14 @@ class BR_BookcaseList extends React.Component {
             {/* 書籍圖片 */}
         <Link to={"/reviewer/reviewerBooks/bookcase/"+this.props.sid} className="d-flex justify-content-center borderLineTop">
           <div className="brAvatarAllBox_Bookcase borderLine">
-            <img className="brBookInfoImg_Bookcase" src={require(`./images_books/${this.props.bookcase}`)}/>
+            {/* <img className="brBookInfoImg_Bookcase" src={require(`./images_books/${this.props.bookcase}`)}/> */}
+            {/* <img className="brBookInfoImg_Bookcase" src={require(`./images_books/${this.props.pic}`)}/> */}
           </div>
         </Link>
           <div className="brInfoBox_Bookcase borderLine"><h5 className="h5_br">書評內容</h5>
                 <div className="brInfoText_Bookcase">
-                    {this.props.bookName}<div className="bookInfo_Bookcase">書名：蔡康永的說話之道</div>
-                    {this.props.bookBy}<div className="bookInfo_Bookcase">作者：蔡康永</div>
+                    <div className="bookInfo_Bookcase">書名：{this.props.name}</div>
+                    {this.props.intro}<div className="bookInfo_Bookcase">作者：蔡康永</div>
                     <br/>
                     {this.props.intro}
                         書評介紹 > 書評介紹 > 書評介紹 > 書評介紹 > 書評介紹 > 

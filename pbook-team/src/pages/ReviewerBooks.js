@@ -13,12 +13,14 @@ class ReviewerBooks extends React.Component {
     this.state = {
       brData: [],
       csData: [],
+      bkData: [],
     }
   }
   componentDidMount() {
     let newbrData
+    let newcsData
+    let newbkData
     axios
-      // .get('http://localhost:5000/brReviewerList')
       .get('http://localhost:5555/reviewer/brReviewerList')
       .then(res => {
         newbrData = res.data.rows
@@ -27,27 +29,34 @@ class ReviewerBooks extends React.Component {
         return axios.get('http://localhost:5555/reviewer/brBookcase')
       })
       .then(res => {
-        this.setState({ brData: newbrData, csData: res.data.rows })
+        // this.setState({ brData: newbrData, csData: res.data.rows })
+        newcsData = res.data.rows
+        return axios.get('http://localhost:5555/reviewer/brbooks')
+      })
+      .then(res=>{
+        this.setState({ brData: newbrData, csData: newcsData, bkData:res.data.rows})
       })
       .catch(function(error) {
         console.log(
           '沒有取得資料請執行 json-server --watch --port 5555 reviewer_Data.json ' +
-            error
-        )
-      })
-  }
-  render(props) {
+          error
+          )
+        })
+      }
+      render(props) {
+        console.log('render brData 書評家',this.state.brData);
+        console.log('render csData 看看書櫃',this.state.csData);
+        console.log('render bkData 書籍資料',this.state.bkData);
+        
     // if (!this.state.brData.length) return <></>
-    console.log('render brData 書評家',this.state.brData);
-    console.log('render csData 看看書櫃',this.state.csData);
-    
     if (this.state.brData.length === 0) return <><h1>取得資料中...</h1></>
-
+    
     let brData = this.state.brData
     let csData = this.state.csData
+    let bkData = this.state.bkData
 
     let reviewerData = null
-    console.log('brData[0].sid', brData[0])
+    console.log('bkData[0].name', bkData[0].name)
     // console.log(brData)
     for (let i = 0; i < brData.length; i++) {
       if (brData[i].sid == this.props.match.params.sid) {
@@ -76,12 +85,19 @@ class ReviewerBooks extends React.Component {
           {/* 熱門書評列表 */}
           <BR_BookcaseHot />
 
-          {/* 書評家書櫃列表 */}
+          {/* 收藏書櫃列表 */}
           {this.state.csData.filter(({number}) => reviewerData.number == number)
           .map(({bookcase, sid})=>(
             <BR_BookcaseList
             to={"/reviewer/reviewerBooks/bookcase/" + sid}
             bookcase={bookcase}
+            ></BR_BookcaseList>
+          ))}
+
+          {this.state.bkData.map(({name,pic})=>(
+            <BR_BookcaseList
+            name={name}
+            pic={pic}
             ></BR_BookcaseList>
           ))}
 

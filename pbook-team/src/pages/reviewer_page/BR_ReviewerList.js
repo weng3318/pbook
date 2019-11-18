@@ -61,6 +61,8 @@ class BR_ReviewerList extends React.Component {
                   data-layout="button_count">
                 </div>
                 </div>
+              {/* <a href='javascript: void(window.open("http://www.facebook.com/share.php?u=".concat
+              (encodeURIComponent("https://youtu.be/0e2Zjz3q0Ko"))));'>點擊分享</a> */}
           </div>
     </div>
         <iframe className="brYouTubeRWD borderLine" width="50%" height="auto" src={this.props.tube} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>

@@ -13,7 +13,7 @@ db.connect()
 bluebird.promisifyAll(db)
 // 每一頁數量
 const perPage = 5
-router.get('/brReviewerList/:page?/:keyword?', (req,res)=>{
+router.get('/brBooks/:page?/:keyword?', (req,res)=>{
     // 頁數資料傳輸
     const output = {};
     output.params = req.params
@@ -25,9 +25,9 @@ router.get('/brReviewerList/:page?/:keyword?', (req,res)=>{
 
         where += "AND `name` LIKE '%"+ keyword +"%'"
         output.keyword = keyword
+        
     }
-
-    let t_sql = 'SELECT COUNT(1) `total` FROM `br_reviewerlist`' + where
+    let t_sql = 'SELECT COUNT(1) `total` FROM `vb_books`' + where
 
     db.queryAsync(t_sql)
 
@@ -40,7 +40,7 @@ router.get('/brReviewerList/:page?/:keyword?', (req,res)=>{
                 if( page > output.totalRows ) page = output.totalRows
                 output.page = page
     
-                return db.queryAsync('SELECT * FROM `br_reviewerlist` '+ where +' LIMIT '+(page-1)*perPage+','+(perPage))
+                return db.queryAsync('SELECT * FROM `vb_books` '+ where +' LIMIT '+(page-1)*perPage+','+(perPage))
 
             .then((results)=>{
                 output.rows = results
