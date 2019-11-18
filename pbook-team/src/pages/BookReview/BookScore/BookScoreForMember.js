@@ -23,7 +23,7 @@ export default function CustomizedRatings(props) {
 
   return (
     <>
-      <Box component="fieldset" ml={2} borderColor="transparent">
+      <Box component="fieldset" mr={3}  >
         <Typography component="legend"></Typography>
         <StyledRating
           key={props.score_star}
@@ -31,6 +31,8 @@ export default function CustomizedRatings(props) {
           value={`${props.score_star}`}
           getLabelText={getLabelText}
           precision={1}
+          name="size-large"
+          size="large"
           icon={<FavoriteIcon fontSize="inherit" />}
         />
       </Box>

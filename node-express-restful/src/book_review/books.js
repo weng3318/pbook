@@ -36,7 +36,7 @@ router.post("/book_reviews/:sid?/data", (req, res) => {
     id: req.body.id,
     book: req.body.book,
     reviewText: req.body.reviewText,
-    star:req.body.star
+    star: req.body.star
   };
   book.push(newbook);
   const sql = `INSERT INTO vb_ratings (member, book, star, message, create_time) VALUES ('${book[0].id}', '${book[0].book}', '${book[0].star}', '${book[0].reviewText}', NOW())`;
@@ -60,6 +60,32 @@ router.get("/memberReview/:book?", (req, res) => {
       return res.json({
         reviews: results
       });
+    }
+  });
+});
+
+router.delete("/deleteReview/:sid?", (req, res) => {
+  let sid = req.params.sid;
+  console.log(sid);
+  const sql = `DELETE FROM vb_ratings WHERE vb_ratings.sid = ${sid}`;
+  db.query(sql, (error, results) => {
+    if (error) {
+      return res.send(error);
+    } else {
+      return res.send("刪除成功");
+    }
+  });
+});
+
+router.put("/editReview/data", (req, res) => {
+  let sid = req.params.sid;
+  console.log(sid);
+  const sql = `DELETE FROM vb_ratings WHERE vb_ratings.sid = ${sid}`;
+  db.query(sql, (error, results) => {
+    if (error) {
+      return res.send(error);
+    } else {
+      return res.send("刪除成功");
     }
   });
 });

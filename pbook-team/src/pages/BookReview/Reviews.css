@@ -115,16 +115,15 @@
 }
 
 .reviews_member_img {
-  max-height: 80%;
-  max-width: 80%;
+  max-height: 50%;
+  max-width: 50%;
   width: 100px;
   height: 100px;
-  margin: 15px 0 0 0px;
-  border: 1px solid #ccc;
+  margin: 0px 0 45px 10px;
 }
 /* 會員暱稱 */
 .reviews_member_nickname {
-  margin: 0 0 0 8px;
+  margin: 2px 0 0 0px;
 }
 
 /* 未登入會員連結 */
@@ -134,6 +133,16 @@
 /* 下方其他會員書評 */
 .reviews_text {
   width: 1000px;
-  height: 120px;
-  padding: 0.7rem;
+  height: 50px;
+  margin: 20px auto;
+}
+/* 下方書評區塊 */
+.reviews_member_text {
+  margin: 0 auto 0 auto;
+}
+.reviews_member_icon {
+  display: flex;
+  justify-content: center;
+  width: 20px;
+  font-size: 20px;
 }

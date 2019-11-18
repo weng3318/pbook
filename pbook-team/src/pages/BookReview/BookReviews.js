@@ -8,6 +8,14 @@ import BookHeart from './BookScore/BookScore'
 import BookStar from './BookScore/BookScoreForBR'
 import BookLineForBR from './BookLine/BookLineForBR'
 import BookScoreForMember from './BookScore/BookScoreForMember'
+import {
+  faTimes,
+  faPen,
+  faTrashAlt,
+  faCheck,
+} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import swal from '@sweetalert/with-react'
 import { Button } from '@material-ui/core'
 
 //---------------------------------------------------------------------------------------------------------
@@ -92,8 +100,8 @@ const BookScore = styled.div`
 const Review = styled.section`
   display: flex;
   width: 1200px;
-  margin: 3rem 0;
-  ${'' /* border-bottom: 1px solid #ccc; */}
+  margin: 0 0 3rem 0;
+  border-bottom: 1px dashed #ccc;
 `
 //會員頭像
 const Member = styled.div`
@@ -121,9 +129,12 @@ const List = () => {
   })
   const [review, setReview] = useState({
     id: '',
+    sid: '',
+    editReview:'',
     reviewText: '',
     book: urlParams,
     star: '1',
+    isEdit: false,
     submitSuccess: false,
     error: false,
   })
@@ -137,11 +148,10 @@ const List = () => {
         pic: data.MR_pic,
         nickname: data.MR_nickname,
       })
-      setReview({...review,id:data.MR_number})
+      setReview({ ...review, id: data.MR_number })
     }
   }, [score])
 
-  //書評分頁資料ajax
   const bookList = () => {
     axios
       .get(`http://localhost:5555/reviews/book_reviews/${urlParams}`)
@@ -170,29 +180,47 @@ const List = () => {
         console.log(error)
       })
   }
+  //書評分頁資料ajax
   const reviewList = () => {
     axios
       .get(`http://localhost:5555/reviews/memberReview/${urlParams}`)
       .then(res => {
         getMemberReview(res.data.reviews)
-        console.log(res.data)
+        // setReview({...review,sid:''})
       })
       .catch(error => {
         console.log(error)
       })
   }
 
+  //輸入時更新資料
   const changeHandler = e => {
-    setReview({
-      ...review,
-      [e.target.name]: e.target.value,
-    })
+    if (review.isEdit) {
+      setReview({
+        ...review,
+        editReview:e.target.value
+      })
+    } else {
+      setReview({
+        ...review,
+        [e.target.name]: e.target.value,
+      })
+    }
   }
+
+  //新增資料
   const submitHandler = e => {
     e.preventDefault()
+    let api
+    if (review.isEdit) {
+      api = `http://localhost:5555/reviews/editReview/data`
+    } else {
+      api = `http://localhost:5555/reviews/book_reviews/${urlParams}/data`
+    }
+
     if (review.reviewText != '') {
       axios
-        .post(`http://localhost:5555/reviews/book_reviews/${urlParams}/data`, {
+        .post(api, {
           id: review.id,
           book: review.book,
           reviewText: review.reviewText,
@@ -220,6 +248,62 @@ const List = () => {
       alert('書評內容為空')
     }
   }
+
+  //刪除資料
+  const deleteHandler = e => {
+    let delete_data = e
+    console.log(delete_data)
+    swal({
+      title: '確定刪除嗎?',
+      icon: 'warning',
+      buttons: true,
+      dangerMode: true,
+    }).then(willDelete => {
+      if (willDelete) {
+        swal('刪除成功!', '1秒後跳轉頁面', {
+          icon: 'success',
+        })
+        axios.delete(
+          `http://localhost:5555/reviews/deleteReview/${delete_data}`
+        )
+        setTimeout(() => {
+          window.location.reload()
+        }, 2000)
+      } else {
+        swal('已取消刪除!')
+      }
+    })
+  }
+
+  //更新資料狀態
+  const EditReview = e => {
+    let sid = e
+    return (
+      <>
+        <FontAwesomeIcon className="reviews_member_icon" icon={faCheck} />
+        <FontAwesomeIcon
+          onClick={() => {
+            setReview({ ...review, isEdit: false, sid: sid })
+          }}
+          className="reviews_member_icon"
+          icon={faTimes}
+        />
+      </>
+    )
+  }
+  //未更新資料狀態
+  const NoEditReview = () => {
+    return (
+      <FontAwesomeIcon
+        onClick={() => {
+          setReview({ ...review, isEdit: true })
+        }}
+        className="reviews_member_icon"
+        icon={faPen}
+      />
+    )
+  }
+
   return (
     <>
       <Main>
@@ -319,34 +403,59 @@ const List = () => {
             </h6>
           )}
         </Review>
-        <h3 className="reviews_push">會員評論</h3>
         {memberReview.map(data => (
-          <Review>
+          <Review key={data.sid}>
             <BookColumnMember>
-              
               <Member>
                 <img
                   className="reviews_member_img"
                   src={`http://localhost:5555/images/member/${data.MR_pic}`}
                 />
-                <h6 className="reviews_member_nickname">{data.MR_nickname}</h6>
               </Member>
             </BookColumnMember>
-            <section className="reviews_form">
+            <div className="reviews_member_text">
               <BookRow>
                 <BookScoreForMember score_star={data.star} />
+                {data.MR_levelName}
+              </BookRow>
+              <BookRow>
+                <h6 className="reviews_member_nickname">{data.MR_nickname}</h6>
+                &nbsp;&nbsp;&nbsp;&nbsp;
                 {new Intl.DateTimeFormat('zh-TW', {
                   year: 'numeric',
                   month: 'numeric',
                   day: 'numeric',
-                  hour: 'numeric',
-                  minute: 'numeric',
-                  second: 'numeric',
                   hour12: false,
-                }).format(new Date(data.create_time))}
+                })
+                  .format(new Date(data.create_time))
+                  .replace(/\//g, '-')}
               </BookRow>
-              <div className="reviews_text">{data.message}</div>
-            </section>
+              <br />
+              {review.isEdit  ? (
+                <textarea
+                  className="reviews_textarea"
+                  name="editReview"
+                  value={review.editReview}
+                  onChange={changeHandler}
+                />
+              ) : (
+                <div className="reviews_text">{data.message}</div>
+              )}
+            </div>
+            {review.id == data.member ? (
+              <div>
+                {review.isEdit ? EditReview(data.sid) : NoEditReview()}
+                <br />
+                <FontAwesomeIcon
+                  onClick={() => deleteHandler(data.sid)}
+                  value={data.sid}
+                  className="reviews_member_icon"
+                  icon={faTrashAlt}
+                />
+              </div>
+            ) : (
+              ''
+            )}
           </Review>
         ))}
       </Main>
