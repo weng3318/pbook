@@ -466,7 +466,7 @@ class Login extends React.Component {
             <div className="social-container ">
               <div className="title">快速登入</div>
               <Link to="/fbLogin">
-              <FbLogin/>
+                <FbLogin/>
               </Link>
             </div>
           </div>):
@@ -514,10 +514,6 @@ class Login extends React.Component {
         <Router exact path="/fbLogin" component={FbLogin}/>
       </Switch>
     </Router>
-
-      <Carousel />
-      <Theme />
-      <Storyteller />
       </>
     )
   }

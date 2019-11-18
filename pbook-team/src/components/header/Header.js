@@ -27,6 +27,7 @@ export default class Header extends React.Component {
     this.state = {
       loginImg: '',
       member:{},
+      login: false
     }
   }
   // 'http://localhost:5555/images/member/yoko.jpg'
@@ -53,6 +54,10 @@ export default class Header extends React.Component {
 
   handleStopPropagation = event => {
     event.stopPropagation()
+  }
+
+  clickLogin = ()=> {
+    this.setState({login: true})
   }
 
   handleLogout = () => {
@@ -207,13 +212,13 @@ export default class Header extends React.Component {
 
           {JSON.parse(localStorage.getItem('user')) === null ? (
             <>
-              <Link
+              <div
                 className="loginButton position-absolute d-flex flex-column justify-content-center align-items-center pointer"
-                to="/login"
+                onClick={this.clickLogin}
               >
                 <span className="titleZh-white">登入</span>
                 <span className="titleEn">LOGIN</span>
-              </Link>
+              </div>
             </>
           ) : (
             <>
@@ -268,6 +273,38 @@ export default class Header extends React.Component {
             </>
           )}
 
+          {(this.state.login === false)?(
+            <>
+            <section className="d-flex justify-content-center titleButton">
+            <Link to="/reviewer" className="myHeaderTextCenter mx-4 pointer">
+              <span className="titleZh">書評家</span>
+              <br />
+              <span className="titleEn">REVIEWER</span>
+            </Link>
+            <Link to="/books" className="myHeaderTextCenter mx-4 pointer">
+              <span className="titleZh">書籍商城</span>
+              <br />
+              <span className="titleEn">BOOKS</span>
+            </Link>
+            <Link to="/activities" className="myHeaderTextCenter mx-4 pointer">
+              <span className="titleZh">品書活動</span>
+              <br />
+              <span className="titleEn">ACTIVITIES</span>
+            </Link>
+            <Link to="/reviews" className="myHeaderTextCenter mx-4 pointer">
+              <span className="titleZh">品書書評</span>
+              <br />
+              <span className="titleEn">REVIEWS</span>
+            </Link>
+            <Link to="/forum" className="myHeaderTextCenter mx-4 pointer">
+              <span className="titleZh">品書討論區</span>
+              <br />
+              <span className="titleEn">FORUM</span>
+            </Link>
+          </section>
+          </>
+          ):(
+          <>
           <section className="d-flex justify-content-center titleButton">
             <Link to="/reviewer" className="myHeaderTextCenter mx-4 pointer">
               <span className="titleZh">書評家</span>
@@ -295,6 +332,10 @@ export default class Header extends React.Component {
               <span className="titleEn">FORUM</span>
             </Link>
           </section>
+          <Login />
+          </>
+          )}
+
 
           <section className="phoneTitleHide">
             <div className="myHeaderMenu" onClick={this.handlePhoneTitle}>
@@ -304,11 +345,10 @@ export default class Header extends React.Component {
               <ul>
                 {JSON.parse(localStorage.getItem('user')) === null ? (
                   <>
-                    (
                     <li>
-                      <Link to="/login" className="myHeaderA">
+                      <div className="myHeaderA" onClick={this.clickLogin}>
                         登入
-                      </Link>
+                      </div>
                     </li>
                     <li>
                       <Link to="/cart" className="myHeaderA">
@@ -340,7 +380,6 @@ export default class Header extends React.Component {
                         品書討論區
                       </Link>
                     </li>
-                    )
                   </>
                 ) : (
                   <>
