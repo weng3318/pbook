@@ -1,3 +1,4 @@
+
 // Action Creators
 export const userHover = hover => ({ type: 'USER_HOVER', status: hover })
 
@@ -5,6 +6,19 @@ export const categoryHover = hover => ({
   type: 'CATEGORY_HOVER',
   status: hover,
 })
+export const AppendImgElement = (addElement,uploading) => ({
+  type: 'APPEND_IMG_ELEMENT',
+  content: addElement,
+  imgData: uploading
+})
+export const AppendTextarea = (addElement) => ({
+  type: 'APPEND_TEXTAREA',
+  content: addElement,
+})
+
+
+
+
 
 //給UserDetailsFetch用=======
 // fetch data list
@@ -20,7 +34,6 @@ const fmUserReceive = json => {
     receivedAt: Date.now(),
   }
 }
-
 export const fmUserFetch = (memberId, fm_category) => async dispatch => {
   dispatch(fmUserRequest())
   try {

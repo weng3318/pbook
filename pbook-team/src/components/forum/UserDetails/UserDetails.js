@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import {
   userHover,
   categoryHover,
-  detailUpdate,
   fmUserFetch,
 } from '../../../pages/Forum/fmAction'
 

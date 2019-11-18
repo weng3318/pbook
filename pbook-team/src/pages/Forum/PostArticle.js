@@ -1,5 +1,9 @@
 import './scss/PostArticle.scss'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { connect } from 'react-redux'
+//action
+import { AppendTextarea } from './fmAction'
+//UI componet
 import CustomizedDialogs from '../../components/Material-UI/Dialog'
 import { makeStyles } from '@material-ui/core/styles'
 import InputLabel from '@material-ui/core/InputLabel'
@@ -11,7 +15,6 @@ import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import ViewHeadlineIcon from '@material-ui/icons/ViewHeadline'
-import TextareaAutosize from 'react-textarea-autosize'
 import Divider from '@material-ui/core/Divider'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import SearchIcon from '@material-ui/icons/Search'
@@ -19,6 +22,8 @@ import InboxIcon from '@material-ui/icons/Inbox'
 import VideoLibraryIcon from '@material-ui/icons/VideoLibrary'
 import PostAddIcon from '@material-ui/icons/PostAdd'
 import CancelIcon from '@material-ui/icons/Cancel'
+//textarea
+import TextareaAutosize from 'react-textarea-autosize'
 
 const useStyles = makeStyles(theme => ({
   formControl: {
@@ -38,27 +43,33 @@ function ListItemLink(props) {
 
 const PostAritcle = props => {
   const classes = useStyles()
-  const [count, setCount] = useState(0)
-  const [data, setData] = useState('')
-  const [append, setAppend] = useState([<div>123</div>, <div>123</div>])
 
-  const handleClick = e => {
-    let arr = [...append, <AppendExample n={count} />]
-    setAppend(arr)
-    console.log(append)
-    setCount(count + 1)
+  useEffect(() => {
+    window.addEventListener('scroll', () => {
+      let sidePanel = document.querySelector('#side-panel')
+      let scrollTop = document.documentElement.scrollTop;
+
+      if (scrollTop < 495) {
+        sidePanel.style.postion = 'relative';
+        sidePanel.style.top = 0;
+        console.log(sidePanel.style.postion,sidePanel.style.top)
+      } else {
+        console.log(sidePanel.style.postion,sidePanel.style.top)
+        sidePanel.style.postion = "fixed";
+        sidePanel.style.top = 0;
+      }
+    });
+  });
+
+  const handleInsertTextarea = (e) => {
+    let element = <TextareaAutosize />
+    props.dispatch(AppendTextarea(element))
   }
-  const handleUpload = e => {
-    let file1 = document.querySelector('#file1').files[0]
-    let reader = new FileReader()
 
-    reader.readAsDataURL(file1)
-    reader.addEventListener('load', function(event) {
-      setData(event.target.result)
-    })
+
+  const handleChange = e => {
+    console.log('hi')
   }
-
-  const handleChange = e => {}
 
   return (
     <div className="post-article">
@@ -68,7 +79,14 @@ const PostAritcle = props => {
       <div className="container end position-r">
         <div className=" aside position-a">
           <div className={classes.root}>
-            <List component="nav" aria-label="main mailbox folders">
+            <List component="nav" aria-label="main mailbox folders" id="side-panel">
+              {/* <CustomizedDialogs
+                handleImgInput={
+                  {
+                    insert: handleInsertImgDemo,
+                    upload: handleUpload,
+                    count: props.imgCount
+                  }} /> */}
               <CustomizedDialogs />
               <ListItem button>
                 <ListItemIcon>
@@ -82,7 +100,7 @@ const PostAritcle = props => {
                 </ListItemIcon>
                 <ListItemText primary="插入影片" />
               </ListItem>
-              <ListItem button>
+              <ListItem button onClick={handleInsertTextarea}>
                 <ListItemIcon>
                   <ViewHeadlineIcon />
                 </ListItemIcon>
@@ -102,7 +120,6 @@ const PostAritcle = props => {
                 <ListItemText primary="取消發表" />
               </ListItem>
             </List>
-            <List component="nav" aria-label="secondary mailbox folders"></List>
           </div>
         </div>
         <div className="container-m">
@@ -124,31 +141,41 @@ const PostAritcle = props => {
                 </FormControl>
               </div>
               <h2 className="title-title" id="title" onClick={handleChange}>
-                <input type="text" placeholder="Title"></input>
+                <input type="text" placeholder="Title..."></input>
               </h2>
             </div>
           </div>
           <section>
-            <button onClick={handleClick}>add</button>
-            {append}
-            {count}
+            <TextareaAutosize >...</TextareaAutosize>
+            {props.addElement}
           </section>
         </div>
       </div>
     </div>
   )
 }
-export default PostAritcle
 
-const imgComponent = (props, handleUpload, data) => {
+const ImgComponent = (props, handleUpload, data) => {
   return (
-    <>
+    <div>
       <input type="file" onChange={handleUpload} id="file1"></input>
       <img src={data} id="demoImg"></img>
-    </>
+    </div>
   )
 }
-const AppendExample = props => {
-  console.log('child')
-  return <div>{props.n}</div>
+const ImgDemo = (props) => {
+  return (<div key={props.imgCount}><img src={props.imgData} id="demoImg"></img></div>)
 }
+const AppendExample = props => {
+  return <div>789</div>
+}
+
+// 綁定props.todos <=> store.todos
+const mapStateToProps = store => ({
+  addElement: store.postArticle.addElement,
+  imgData: store.postArticle.imgData,
+  imgCount: store.postArticle.imgCount
+})
+
+// redux(state)綁定到此元件的props、dispatch方法自動綁定到此元件的props
+export default connect(mapStateToProps)(PostAritcle)
