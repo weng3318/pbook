@@ -130,7 +130,7 @@ const List = () => {
   const [review, setReview] = useState({
     id: '',
     sid: '',
-    editReview:'',
+    editReview: '',
     reviewText: '',
     book: urlParams,
     star: '1',
@@ -138,6 +138,7 @@ const List = () => {
     submitSuccess: false,
     error: false,
   })
+
   useEffect(() => {
     bookList()
     reviewList()
@@ -186,6 +187,7 @@ const List = () => {
       .get(`http://localhost:5555/reviews/memberReview/${urlParams}`)
       .then(res => {
         getMemberReview(res.data.reviews)
+        console.log(res.data)
         // setReview({...review,sid:''})
       })
       .catch(error => {
@@ -198,8 +200,9 @@ const List = () => {
     if (review.isEdit) {
       setReview({
         ...review,
-        editReview:e.target.value
+        [e.target.name]: e.target.value,
       })
+      console.log(review.editReview)
     } else {
       setReview({
         ...review,
@@ -211,12 +214,7 @@ const List = () => {
   //新增資料
   const submitHandler = e => {
     e.preventDefault()
-    let api
-    if (review.isEdit) {
-      api = `http://localhost:5555/reviews/editReview/data`
-    } else {
-      api = `http://localhost:5555/reviews/book_reviews/${urlParams}/data`
-    }
+    let api = `http://localhost:5555/reviews/book_reviews/${urlParams}/data`
 
     if (review.reviewText != '') {
       axios
@@ -247,6 +245,33 @@ const List = () => {
     } else {
       alert('書評內容為空')
     }
+  }
+
+  const updateHandler = e => {
+    let api = `http://localhost:5555/reviews/editReview/data`
+    axios
+      .put(api, {
+        sid: review.sid,
+        editReview: review.editReview,
+      })
+      .then(res => {
+        setReview({
+          error: false,
+          submitSuccess: true,
+        })
+        console.log(res)
+      })
+      .then(
+        setTimeout(function() {
+          window.location.reload()
+        }, 1500)
+      )
+      .catch(error => {
+        setReview({
+          error: true,
+          submitSuccess: false,
+        })
+      })
   }
 
   //刪除資料
@@ -431,20 +456,57 @@ const List = () => {
                   .replace(/\//g, '-')}
               </BookRow>
               <br />
-              {review.isEdit  ? (
-                <textarea
-                  className="reviews_textarea"
-                  name="editReview"
-                  value={review.editReview}
-                  onChange={changeHandler}
-                />
+              {review.isEdit && data.sid == review.sid ? (
+                <form onSubmit={updateHandler}>
+                  <textarea
+                    className="reviews_textarea"
+                    name="editReview"
+                    value={review.editReview}
+                    onChange={changeHandler}
+                  />
+                    <button type="submit" className="reviews_submitBtn">
+                  修改評論
+                </button>
+                </form>
               ) : (
                 <div className="reviews_text">{data.message}</div>
               )}
             </div>
             {review.id == data.member ? (
               <div>
-                {review.isEdit ? EditReview(data.sid) : NoEditReview()}
+                {review.isEdit && data.sid == review.sid ? (
+                  <>
+                    <FontAwesomeIcon
+                      className="reviews_member_icon"
+                      icon={faCheck}
+                    />
+                    <FontAwesomeIcon
+                      onClick={() => {
+                        setReview({
+                          ...review,
+                          isEdit: false,
+                          editReview: data.message,
+                          sid: data.sid,
+                        })
+                      }}
+                      className="reviews_member_icon"
+                      icon={faTimes}
+                    />
+                  </>
+                ) : (
+                  <FontAwesomeIcon
+                    onClick={() => {
+                      setReview({
+                        ...review,
+                        isEdit: true,
+                        sid: data.sid,
+                        editReview: data.message,
+                      })
+                    }}
+                    className="reviews_member_icon"
+                    icon={faPen}
+                  />
+                )}
                 <br />
                 <FontAwesomeIcon
                   onClick={() => deleteHandler(data.sid)}

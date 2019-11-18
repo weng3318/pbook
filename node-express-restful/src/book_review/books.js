@@ -78,16 +78,21 @@ router.delete("/deleteReview/:sid?", (req, res) => {
 });
 
 router.put("/editReview/data", (req, res) => {
-  let sid = req.params.sid;
-  console.log(sid);
-  const sql = `DELETE FROM vb_ratings WHERE vb_ratings.sid = ${sid}`;
+  let data = [];
+  const reviews = {
+    sid: req.body.sid,
+    editReview: req.body.editReview
+  };
+  data.push(reviews);
+  const sql = `UPDATE vb_ratings SET message = '4414', update_time = NOW() WHERE vb_ratings.sid = 1536`;
   db.query(sql, (error, results) => {
     if (error) {
       return res.send(error);
     } else {
-      return res.send("刪除成功");
+      return res.send("更新成功");
     }
   });
+  console.log(data)
 });
 
 module.exports = router;
