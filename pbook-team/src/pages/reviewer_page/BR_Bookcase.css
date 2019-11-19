@@ -71,6 +71,27 @@
     box-shadow: 5px 6px 10px #2d3a3a;
     width: 104%;
 }
+/* 分頁，看看書櫃 (參照偽元素) */
+.reviewerBooks {
+    background: #fff;
+    max-width: 1200px;
+    min-height: 2050px;
+    margin: 0 auto;
+    /* background: url(../reviewer_page/images/02_看看書櫃.png) center center; */
+    background-size:cover;
+}
+/* 分頁，看看書櫃 (參照偽元素) */
+.reviewerBooks::after{
+    /* content: ""; */
+    display: block;
+    background: rgba(0,0,0,.4);
+    position: absolute;
+    left:0;
+    right:0;
+    top:0;
+    bottom:0;
+    width:100%;
+}
 /* 書評家簡介全區域 (縮放限制) */
 .brInfoBox_Bookcase{
     min-width: 265px;

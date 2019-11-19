@@ -8,14 +8,14 @@
     z-index: 1;
 }
 /* 超連結反饋，參照用 */
-a,a:link,a:visited{
-    color:#ffc408;
-    text-decoration: none;
-}
-/* a:hover{
+/* .br:hover,a:hover{
+    color:#ff525b;
     background-color: #cde2d0;
     text-decoration: none;
 } */
+a:hover{
+    text-decoration: none;
+}
 /* 標題，主要文字 */
 .h5_br{
     text-align: center;
@@ -65,27 +65,6 @@ a,a:link,a:visited{
     bottom:0;
     width:100%;
 }
-/* 分頁，看看書櫃 (參照偽元素) */
-.reviewerBooks {
-    background: #fff;
-    max-width: 1200px;
-    min-height: 2050px;
-    margin: 0 auto;
-    /* background: url(../reviewer_page/images/02_看看書櫃.png) center center; */
-    background-size:cover;
-}
-/* 分頁，看看書櫃 (參照偽元素) */
-.reviewerBooks::after{
-    content: "";
-    display: block;
-    background: rgba(0,0,0,.4);
-    position: absolute;
-    left:0;
-    right:0;
-    top:0;
-    bottom:0;
-    width:100%;
-}
 /* 左側簡介，整體區域 (縮放限制) */
 .brAvatarAllBox{    
     min-width: 120px;
@@ -126,8 +105,8 @@ a,a:link,a:visited{
     margin: 10px;
 }
 .brReadBooks:hover{
-    color:#ffc408;
-    text-decoration: none;
+    color:#ff525b;
+    /* background-color: #cde2d0; */
 }
 /* 書評家簡介全區域 (縮放限制) */
 .brInfoBox{
