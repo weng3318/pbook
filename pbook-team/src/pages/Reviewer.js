@@ -22,7 +22,7 @@ export class Reviewer extends React.Component {
       .get('http://localhost:5555/reviewer/brReviewerList')
       .then(res => {
         this.setState({ brData: res.data.rows })
-        console.log('前端取得資料' , res.data.rows)
+        // console.log('前端取得資料' , res.data.rows)
       })
       .catch(function(error) {
             console.log('前端沒有取得資料' , error)
@@ -35,7 +35,7 @@ export class Reviewer extends React.Component {
             <BR_Navbar />
         <h1>書評家</h1>
           {/* {Data */}
-
+<div className="bg_pic">
           {/* {this.state.brData
             .filter(({ name }) => '達克尼斯' == name)
             .map(({ sid, title, img, name, job, intro, bookcase, youtube, facebook, twitter, tube,}) => (
@@ -77,6 +77,7 @@ export class Reviewer extends React.Component {
             ></BR_ReviewerList>
           )
         )}
+</div>
       </>
     )
   }

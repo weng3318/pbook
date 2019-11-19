@@ -21,7 +21,6 @@ class ReviewerBooks extends React.Component {
   componentDidMount() {
     let newbrData
     let newcsData
-    let newbkData
     axios
       .get('http://localhost:5555/reviewer/brReviewerList')
       .then(res => {
@@ -45,9 +44,9 @@ class ReviewerBooks extends React.Component {
         })
       }
       render(props) {
-        console.log('render brData 書評家',this.state.brData);
-        console.log('render csData 看看書櫃',this.state.csData);
-        console.log('render bkData 書籍資料',this.state.bkData);
+        // console.log('render brData 書評家',this.state.brData);
+        // console.log('render csData 看看書櫃',this.state.csData);
+        // console.log('render bkData 書籍資料',this.state.bkData);
         
     // if (!this.state.brData.length) return <></>
     if (this.state.brData.length === 0) return <><h1>取得資料中...</h1></>
@@ -68,7 +67,6 @@ class ReviewerBooks extends React.Component {
     console.log('撈書櫃的書籍', csData)
     return (
       <>
-      <Router>
         <BR_Navbar />
         <h1>看看書櫃</h1>
         <section className="reviewerBooks borderLine">
@@ -84,6 +82,7 @@ class ReviewerBooks extends React.Component {
             tube={reviewerData.tube}
           ></BR_ReviewerList>
 
+      <Router>
           {/* 熱門書評列表 */}
           <div className="HotBookBoxAll_Light">
               <h5 className="h5_hotText">熱門書評</h5>
@@ -105,6 +104,7 @@ class ReviewerBooks extends React.Component {
                       path="/reviewer/reviewerBooks/reviewerBlog/:sid?" 
                       component={ReviewerBlog} />
                 </Switch>
+      </Router>
 
             {/* 全倒出來 - 書櫃列表 */}
           {this.state.bkData.map(({name,pic,author,introduction,sid})=>(
@@ -129,7 +129,6 @@ class ReviewerBooks extends React.Component {
 
         </section>
 
-      </Router>
       </>
     )
   }
