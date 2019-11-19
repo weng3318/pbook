@@ -1,3 +1,9 @@
+/* 超連結反饋，參照用 */
+/* .br:hover,a:hover{
+    color:#ff525b;
+    background-color: #cde2d0;
+    text-decoration: none;
+} */
 /* 熱門書評文字，底線 */
 .h5_hotText{
     font-size: 1.5rem;
@@ -13,13 +19,14 @@
 /* 熱門書評，多本書 (文字設定) */
 .brHotBookText{
     font-size: 1rem;
-    color: #fff;
+    color: #2d3a3a;
     text-align: center;
     bottom: 16px;
     /* 將組件吸回 */
     margin: -30px 20px 10px 20px;
 }
 .brHotBookText:hover{
+    text-decoration: none;
     color:#ffc408;
 }
 /* 熱門書評區域，整體區域 (背景光效) */

@@ -89,13 +89,13 @@ class ReviewerBooks extends React.Component {
               <h5 className="h5_hotText">熱門書評</h5>
               <div className="HotBookBoxAll_Bookcase">
                   {this.state.csData.filter(({number}) => reviewerData.number == number)
-                  .map(({pic, sid, author})=>(
+                  .map(({pic, sid, name})=>(
                     <BR_BookcaseHot_books
                     key={sid}
                     to={"/reviewer/reviewerBooks/reviewerBlog/" + sid}
                     sid={sid}
                     pic={pic}
-                    author={author}
+                    name={name}
                     ></BR_BookcaseHot_books>
                   ))}
               </div>
