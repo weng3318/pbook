@@ -6,15 +6,21 @@ import axios from 'axios'
 import moment from 'moment'
 import io from 'socket.io-client'
 
-const socket = io.connect('ws://localhost:5000/')
+// var socket = io.connect('ws://localhost:5000/')
+var socket
 
 class Chat extends React.Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
       oldDataList: [],
       oldDataMessage: [],
       mySearch: '',
+    }
+    if (localStorage.getItem('user') !== null) {
+      if (this.props.location.pathname === '/chat') {
+        socket = io.connect('ws://localhost:5000/')
+      }
     }
     socket.on('SeverToClientMsg', this.onMsg)
   }
@@ -157,6 +163,11 @@ class Chat extends React.Component {
       .catch(error => {
         console.log('componentDidMount拿資料時有錯誤', error)
       })
+  }
+
+  componentWillUnmount() {
+    console.log('componentWillUnmount')
+    socket.disconnect()
   }
 
   render() {
