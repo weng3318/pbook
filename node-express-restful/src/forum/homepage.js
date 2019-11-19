@@ -93,10 +93,21 @@ router
   .all((req, res, next) => {
     next();
   })
-  .post(upload.array(), (req, res) => {
-    let output = {};
-    console.log(req.body);
-    res.send(req.body);
+  .post(upload.array("imgfile"), (req, res) => {
+    let resData = {};
+    let data = JSON.stringify(req.body);
+    res.json(data);
+    // let sql =
+    //   "INSERT INTO `fm_article`(`fm_articleId`, `fm_category`, `fm_subCategories`, `fm_title`, `fm_subTitle`, `fm_demoImage`, `fm_content`, `fm_memberId`, `fm_featured`, `fm_like`, `fm_read`, `fm_publishTime`, `fm_updateTime`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    // db.query(sql, [+new Date()+data], (error, results, fields) => {
+    //   if (error) throw error;
+    //   if (results.affectedRows === 1) {
+    //     data.message = "新增成功";
+    //   } else {
+    //     data.message = "新增失敗";
+    //   }
+    //   res.json(resData);
+    // });
   });
 
 // router.route("/homepage/:id?").get((req, res) => {

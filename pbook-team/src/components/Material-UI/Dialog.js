@@ -92,7 +92,6 @@ const CustomizedDialogs = props => {
     setOpen(false)
   }
   const handleUpload = e => {
-    console.log('onchange')
     let inputId = `#file${props.imgCount}`
     let file = document.querySelector(inputId).files[0]
     setImageFile(file)

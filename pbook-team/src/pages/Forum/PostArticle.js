@@ -73,7 +73,7 @@ const PostAritcle = props => {
   const [subcate, setSubcate] = useState([1, 2])
   const [imgfile, setImagefile] = useState('')
 
-  let { category } = useParams()
+  let { category, MR_number } = useParams()
 
   useEffect(() => {
     handelAsideFixed()
@@ -82,25 +82,32 @@ const PostAritcle = props => {
   }, [])
 
   useEffect(() => {
-    console.log(textValue)
-    let formData = new FormData()
-    formData.append('textareaCount', textareaCount)
-    formData.append('textareaValue', textValue)
-    formData.append('imgCount', props.imgCount)
-    formData.append('imgData', [...props.imgData])
-    formData.append('element', props.addElement)
-    formData.append('title', props.addElement)
+    if (textValue !== 1) {
+      let subcate = document.querySelector('#grouped-select').value
+      let formData = new FormData()
+      formData.append('textareaCount', textareaCount)
+      formData.append('textareaValue', textValue)
+      formData.append('imgCount', props.imgCount)
+      formData.append('imgData', [...props.imgData])
+      formData.append('element', props.addElement)
+      formData.append('title', props.addElement)
+      formData.append('cate', category)
+      formData.append('subcate', subcate)
+      formData.append('MR_number', MR_number)
+      formData.append('imgfile', imgfile)
 
-    fetch('http://localhost:5555/forum/postNew/', {
-      method: 'POST',
-      body: formData,
-    })
-      .then(response => {
-        return response.text()
+      fetch('http://localhost:5555/forum/postNew/', {
+        method: 'POST',
+        body: formData,
       })
-      .then(result => {
-        // console.log(result)
-      })
+        .then(response => {
+          console.log(response.status)
+          return response.json()
+        })
+        .then(result => {
+          console.log(result)
+        })
+    }
   }, [textValue])
 
   const postNewArticle = () => {
@@ -110,13 +117,24 @@ const PostAritcle = props => {
     for (let i = 0; i < allText.length - 1; i++) {
       textValue1.push(allText[i].value)
     }
-    let select = document.querySelector('#grouped-select').value
-    let title = document.querySelector('#title').value
+    let select = document.querySelector('#grouped-select')
+    let title = document.querySelector('#title')
 
-    if (select !== '' && title !== '') {
+    if (select.value !== '' && title.value !== '') {
+      document.querySelector('.selectControl').classList.remove('show')
+      document.querySelector('#subcate-help').classList.remove('show')
+      document.querySelector('#title').classList.remove('show')
+      document.querySelector('#title-help').classList.remove('show')
       setTextValue(textValue1)
     } else {
-      console.log('title', title, 'select', select)
+      if (select.value === '') {
+        document.querySelector('.selectControl').classList.add('show')
+        document.querySelector('#subcate-help').classList.add('show')
+      }
+      if (title.value === '') {
+        document.querySelector('#title').classList.add('show')
+        document.querySelector('#title-help').classList.add('show')
+      }
     }
   }
   const handelAsideFixed = () => {
@@ -159,7 +177,9 @@ const PostAritcle = props => {
     setImagefile(imageFile)
   }
   const handleCancelPost = e => {
-    props.history.push('/forum')
+    let time = +new Date()
+    console.log(time)
+    // props.history.push('/forum')
   }
 
   return (
@@ -182,7 +202,7 @@ const PostAritcle = props => {
                 </ListItemIcon>
                 <ListItemText primary="Unsplash圖片" />
               </ListItem>
-              <ListItem button onClick={postNewArticle}>
+              <ListItem button onClick={handleCancelPost}>
                 <ListItemIcon>
                   <VideoLibraryIcon />
                 </ListItemIcon>
@@ -212,13 +232,22 @@ const PostAritcle = props => {
         </div>
         <div className="container-m">
           <div className="title-line"></div>
-          <div className="post-title">發表新文章</div>
+          <span className="post-title">
+            發表新文章
+            <span id="subcate-help">請選擇子版</span>
+            <div id="title-help">請輸入標題</div>
+          </span>
+
           <div className="dis-play">
             <div className="title-control ">
-              <div>
+              <div className="select">
                 <FormControl className={classes.formControl}>
                   <InputLabel htmlFor="grouped-select">請選擇子版</InputLabel>
-                  <Select defaultValue="" input={<Input id="grouped-select" />}>
+                  <Select
+                    defaultValue=""
+                    input={<Input id="grouped-select" />}
+                    className="selectControl "
+                  >
                     <MenuItem>
                       <em>None</em>
                     </MenuItem>

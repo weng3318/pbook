@@ -16,6 +16,7 @@ export const MainImageFile = mainImagefile => ({
 export const letMeLogin = () => ({
   type: 'LET_ME_LOGIN',
 })
+
 //給UserDetailsFetch用=======
 // fetch data list
 const fmUserRequest = () => {

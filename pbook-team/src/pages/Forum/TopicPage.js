@@ -5,10 +5,11 @@ import CardS1 from '../../components/forum/CardS1/CardS1'
 import ButtonUI from '../../components/Material-UI/Button'
 import { Nav, Navbar, Form, FormControl, Button } from 'react-bootstrap'
 import Login from '../../pages/login/Login'
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
-
+import { BrowserRouter as Link, useParams } from 'react-router-dom'
+import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
-
+//action
+import { letMeLogin } from './fmAction'
 // 2 3 1 7 10 11 21 13 4
 // const vb_categories = {
 //   1: '文學小說',
@@ -79,15 +80,13 @@ class TopicPage extends React.Component {
     }
   }
   handlePostClick = e => {
-    let user = JSON.parse(localStorage.user)
     if (localStorage.user !== undefined) {
+      let user = JSON.parse(localStorage.user)
       this.props.history.push(
         `/forum/post/${this.props.cate}/${user.MR_number}`
       )
     } else {
-      this.props.history.push(
-        `/forum/post/${this.props.cate}/${user.MR_number}`
-      )
+      this.props.dispatch(letMeLogin())
     }
     // console.log(this.props.location.pathname)
   }
@@ -144,4 +143,10 @@ class TopicPage extends React.Component {
   }
 }
 
-export default withRouter(TopicPage)
+// 綁定props.todos <=> store.todos
+const mapStateToProps = store => ({
+  addElement: store.letMeLogin.loginOrNot,
+})
+
+// redux(state)綁定到此元件的props、dispatch方法自動綁定到此元件的props
+export default withRouter(connect(mapStateToProps)(TopicPage))

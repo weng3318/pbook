@@ -38,7 +38,7 @@ const loginOrNot = {
 function letMeLogin(state = loginOrNot, action) {
   switch (action.type) {
     case 'LET_ME_LOGIN':
-      return { ...state, loginOrNot: !state.loginOrNot }
+      return { ...state, loginOrNot: true }
     default:
       return state
   }

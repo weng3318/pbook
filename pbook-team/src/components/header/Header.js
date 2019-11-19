@@ -273,7 +273,7 @@ class Header extends React.Component {
             </>
           )}
 
-          {this.state.login === false || this.props.loginOrNot ? (
+          {!this.props.loginOrNot || !this.state.login ? (
             <>
               <section className="d-flex justify-content-center titleButton">
                 <Link
@@ -468,7 +468,6 @@ class Header extends React.Component {
             <Route path="/activities" component={Activities} />
             <Route exact path="/reviews" component={Reviews} />
 
-            {/* <Route path="/forum" component={Forum} /> */}
             <Route exact path="/book_reviews/:sid" component={BookReviews} />
 
             <Route
