@@ -35,7 +35,7 @@ gameWaitInsert
                 // console.log('results',results[0].mb_shelveMember);
 
                 return db.queryAsync(
-                    `INSERT INTO mb_gamewait(status, myFrom, myTo, book_sid, book_name, book_pic, created_at) VALUES ("正常","${req.body.memberId}","${results[0].mb_shelveMember}","${req.body.bookSid}","${results[0].mb_name}","${results[0].mb_pic}","${req.body.startTime}")`
+                    `INSERT INTO mb_gamewait(bookStatus, matchStatus, myFrom, myTo, book_sid, book_name, book_pic, created_at) VALUES ("正常","等待同意中","${req.body.memberId}","${results[0].mb_shelveMember}","${req.body.bookSid}","${results[0].mb_name}","${results[0].mb_pic}","${req.body.startTime}")`
                 )
             }).then(results => {
                 res.send('gameWaitInsert 新增成功')

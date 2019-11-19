@@ -25,7 +25,7 @@ gameWait
         console.log('gameWait', req.body.startTime);
 
         db.queryAsync(
-            `SELECT mb_gamewait.*,mr_information.MR_name,mr_information.MR_pic FROM mb_gamewait LEFT JOIN mr_information ON mr_information.MR_number = mb_gamewait.myTo WHERE mb_gamewait.myFrom = "${req.body.memberId}" AND mb_gamewait.created_at= "${req.body.startTime}"`
+            `SELECT mb_gamewait.*,mr_information.MR_name,mr_information.MR_pic FROM mb_gamewait LEFT JOIN mr_information ON mr_information.MR_number = mb_gamewait.myTo WHERE mb_gamewait.myFrom = "${req.body.memberId}" AND mb_gamewait.created_at= "${req.body.startTime}" AND matchStatus = "等待同意中"`
         )
             .then(results => {
                 console.log('results', results);

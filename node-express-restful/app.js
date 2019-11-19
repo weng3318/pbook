@@ -68,6 +68,7 @@ app.use("/nana_use", require("./src/nana_use/pairedMemberBooks"));
 app.use("/nana_use", require("./src/nana_use/pairedMemberBooksInsert"));
 app.use("/nana_use", require("./src/nana_use/pairedMemberBooksUpdate"));
 app.use("/nana_use", require("./src/nana_use/pairedMemberBooksOld"));
+app.use("/nana_use", require("./src/nana_use/gameInviteMe"));
 app.use("/nana_use", require("./src/nana_use/gameWait"));
 app.use("/nana_use", require("./src/nana_use/gameWaitCheck"));
 app.use("/nana_use", require("./src/nana_use/gameWaitInsert"));
