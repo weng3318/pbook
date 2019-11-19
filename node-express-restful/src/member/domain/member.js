@@ -37,7 +37,7 @@ class Member{
     //合併表單查詢， b跟bc是自訂的篩選
     queryBooks(number){
         let sql = `SELECT b.* FROM vb_books b
-                    JOIN br_bookcase bc ON b.name=bc.name
+                    JOIN br_bookcase bc ON b.isbn=bc.isbn
                     WHERE bc.number='${number}'`
         return sql
     }

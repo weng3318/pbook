@@ -68,50 +68,51 @@ $content: 24px;
       width: 1280px;
       border-bottom: 3px solid $yellow;
 
-  }
-  .wrap{
-    margin: 0 auto;
-    width: 100%;
-    column-count:4;
-    column-width: 20%;
-    column-gap: 5px;
-  }
-  .list{
-    // border: 1px solid #000;
-    margin-bottom: 10px;
-    margin-left: 30px;
-    // margin: 5px 10px;
-    /* 防止多列布局，分页媒体和多区域上下文中的意外中断 */
-    break-inside: avoid;
-    overflow: hidden;
-    &:hover{
-      box-shadow: 2px 2px 2px rgba(0, 0, 0, .5);
     }
-  }
-  .listImg{
-    width: 100%;
-    vertical-align: middle;
-  }
-  .bookInfo{
-    padding: 5px 10px;
-  }
-  .avatar {
-    vertical-align: middle;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-  }
-  .booksTitle{
-    font-size: $title;
-    // text-shadow: 2px 2px 2px rgba(0, 0, 0, .3);
-  }
-  .introduction{
-    // border: 1px solid #000;
-    overflow: hidden;
-    text-shadow: 2px 2px 2px rgba(0, 0, 0, .3);
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
+    .wrap{
+      margin: 0 auto;
+      width: 100%;
+      column-count: 4;
+      column-width: 20%;
+      column-gap: 5px;
+    }
+    .list{
+      // border: 1px solid #000;
+      padding-bottom: 10px;
+      margin-left: 30px;
+      // margin: 5px 10px;
+      /* 防止多列布局，分页媒体和多区域上下文中的意外中断 */
+      break-inside: avoid;
+      overflow: hidden;
+      &:hover{
+        box-shadow: 10px 10px 5px rgba(0, 0, 0, .5);
+      }
+    }
+    .listImg{
+      width: 320px;
+      height: 300px;
+      vertical-align: middle;
+    }
+    .bookInfo{
+      padding: 5px 10px;
+    }
+    .avatar {
+      vertical-align: middle;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+    }
+    .booksTitle{
+      font-size: $content;
+      // text-shadow: 2px 2px 2px rgba(0, 0, 0, .3);
+    }
+    .introduction{
+      // border: 1px solid #000;
+      overflow: hidden;
+      text-shadow: 2px 2px 2px rgba(0, 0, 0, .3);
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
 
 }
 

@@ -112,7 +112,7 @@ router.post('/queryEmail', (req, res, next)=>{
     })
 })
 
-//取書櫃書籍資料
+//取個人書櫃書籍資料
 router.post('/queryBookcase', (req,res)=>{
     let number = req.body.number
     console.log(number);
@@ -120,7 +120,6 @@ router.post('/queryBookcase', (req,res)=>{
     db.query(Member.queryBooks(number), (err, rows)=>{
         res.json(rows)
     })
-
 })
 
 
