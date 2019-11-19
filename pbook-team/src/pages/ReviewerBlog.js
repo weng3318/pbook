@@ -27,7 +27,7 @@ export class ReviewerBlog extends React.Component {
     return <>
       <h1>書評部落格</h1>
       <section className="reviewerBlog borderLine">
-          {/* <img className="reviewerList" src={require('../pages/reviewer_page/images/03_評品書.png')}/> */}
+          <img className="BG_Blog" src={require('../pages/reviewer_page/images/03_評品書.png')}/>
       </section>
     </>
   }
