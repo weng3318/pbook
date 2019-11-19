@@ -1,9 +1,11 @@
 import React from 'react'
 import './Shop.scss'
-import { Col, Form, FormControl } from 'react-bootstrap'
+import { Col } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import { Link } from '@material-ui/core'
+import { addSearch } from './ShopActions'
+
 const Breadcrumb = props => {
   let categoriesPayload = props.categoriesPayload && props.categoriesPayload
 
@@ -16,7 +18,6 @@ const Breadcrumb = props => {
       name[i] = categoriesPayload[i].name
     else name[i] = ''
   }
-  console.log(name[props.nowCategories - 1])
 
   return (
     <>
@@ -25,20 +26,21 @@ const Breadcrumb = props => {
           首頁 > 書籍商城 >{' '}
           <span className="active"> {name[props.nowCategories - 1]}</span>
         </div>
-        <div className="mr-5 search">
+        <form className="mr-5 search">
           <input
             className="searchInput py-1 pl-3"
             type="text"
             placeholder="搜尋"
+            // value={props.keyword}
           />
-          <Link
+          {/* <Link
             to={'/books/' + props.nowPage + '/' + props.nowCategories + '/'}
-          >
-            <button className="searchButton">
-              <FontAwesomeIcon icon={faSearch} />
-            </button>
-          </Link>
-        </div>
+          > */}
+          <button className="searchButton" type="submit">
+            <FontAwesomeIcon icon={faSearch} />
+          </button>
+          {/* </Link> */}
+        </form>
       </Col>
     </>
   )

@@ -1,0 +1,19 @@
+.acPageAside {
+  .share {
+    button {
+      border: none;
+      background: none;
+      flex-grow: 1;
+      svg {
+        font-size: 36px;
+      }
+    }
+  }
+  .ac-sign {
+    display: flex;
+    justify-content: center;
+    margin-top: 36px;
+    button {
+    }
+  }
+}

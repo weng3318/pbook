@@ -2,7 +2,7 @@
 
 .detail_wrapper {
   background-image: url('../../../images/bg.png');
-  height: 100vh;
+  height: 400vh;
   .bookTitle {
     font-size: 1.5rem;
   }
@@ -57,34 +57,88 @@
     }
   }
   .addCart {
-    @extend .buyNow ;
+    @extend .buyNow;
     .svg-inline--fa {
       color: $color-green;
     }
   }
   .addFav {
-    @extend .buyNow ;
+    @extend .buyNow;
     padding-left: 2.3rem;
     .svg-inline--fa {
       color: $color-red;
     }
   }
-  .book_star{
+  .book_star {
     width: 10vw;
-    .book_rank{
+    .book_rank {
       font-size: 2rem;
     }
   }
-  .addComment{
-    @extend .buyNow ;
+  .addComment {
+    @extend .buyNow;
     padding-left: 2.3rem;
     color: $color-yellow;
     font-size: 1.5rem;
-    &:hover{
+    &:hover {
       text-decoration: none;
     }
   }
-  .BookProduct{
+  .BookProduct {
     border-top: 1px solid $color-gray;
+    .nav-tabs {
+      border-bottom: 1px solid $color-gray;
+      .nav-link {
+        color: $color-gray;
+      }
+      .active {
+        color: $color-red;
+        background-color: transparent;
+        border-color: $color-gray $color-gray $color-white;
+      }
+    }
+    .tab-content {
+      margin-top: 2rem;
+      .active {
+        .wordLevel {
+          font-size: 1.3rem;
+          .word {
+            background-color: $color-black;
+            border: 1px solid transparent;
+            color: $color-white;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            &:focus {
+              outline: none;
+            }
+          }
+        }
+        &.wordBig {
+          span {
+            font-size: 2rem;
+          }
+          .Big {
+            background-color: $color-red;
+          }
+        }
+        &.wordMid {
+          span {
+            font-size: 1rem;
+          }
+          .Mid {
+            background-color: $color-red;
+          }
+        }
+        &.wordSml {
+          span {
+            font-size: 0.5rem;
+          }
+          .Sml {
+            background-color: $color-red;
+          }
+        }
+      }
+    }
   }
 }

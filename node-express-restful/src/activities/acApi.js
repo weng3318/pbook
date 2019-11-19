@@ -1,8 +1,30 @@
 import express from 'express'
 import AC from './acModel'
 import flatCache from 'flat-cache';
+import getRecommenderBooks from './recommandBook'
 const router = express.Router()
 const cache = flatCache.load('cacheId');
+
+const mysql = require('mysql')
+const bluebird = require('bluebird')
+const db = mysql.createConnection({
+    host: '192.168.27.186',
+    user: 'root',
+    password: 'root',
+    database: 'pbook',
+})
+db.connect();
+bluebird.promisifyAll(db)
+async function sqlQuery(sql) {
+    let data = []
+    try {
+        data = await db.queryAsync(sql)
+    } catch (err) {
+        console.log(err);
+    }
+    return data
+}
+
 
 // 更新資料表亂數
 // UPDATE `pm_general_discounts` SET `discounts`=ROUND(RAND()*30,0) WHERE `type`=6
@@ -11,12 +33,11 @@ const cache = flatCache.load('cacheId');
 const flatCacheMiddleware = (req, res, next) => {
     let key = '__express__' + (req.originalUrl || req.url)
     let cacheContent = cache.getKey(key)
-
     // 如果換日就清光cache
     if (cacheContent) {
         let currentTime = new Date()
         let currentDate = currentTime.toISOString().substr(0, 10)
-        let saveDate = cacheContent.saveTime.substr(0,10)
+        let saveDate = cacheContent.saveTime.substr(0, 10)
         if (currentDate !== saveDate) {
             cache.removeKey(key)
             cacheContent = null
@@ -29,13 +50,31 @@ const flatCacheMiddleware = (req, res, next) => {
         res.sendResponse = res.send
         res.send = (body) => {
             let saveTime = new Date()
-            cache.setKey(key, { body, saveTime:saveTime.toISOString() })
+            cache.setKey(key, { body, saveTime: saveTime.toISOString() })
             cache.save(true /* noPrune */)
             res.sendResponse(body)
         }
         next()
     }
 }
+
+var cache2 = flatCache.load('recommendBook', './src/activities/acCache')
+let flatCacheMiddleware2 = (req, res, next) => {
+    let key = '__express__' + req.originalUrl || req.url
+    let cacheContent = cache2.getKey(key);
+    if (cacheContent) {
+        res.send(cacheContent);
+    } else {
+        res.sendResponse = res.send
+        res.send = (body) => {
+            cache2.setKey(key, body);
+            cache2.save(true /* noPrune */);
+            res.sendResponse(body)
+        }
+        next()
+    }
+};
+
 
 router.get('/offline', async (req, res, next) => {
     res.json(await AC.getOfflineList())
@@ -58,6 +97,14 @@ router.get('/book-discount/:bookId/:memberLevel?', async (req, res, next) => {
 // 對某階級的會員，取得所有書籍折價資訊
 router.get('/book-discount-for-member-level/:memberLevel', flatCacheMiddleware, async (req, res, next) => {
     res.json(await AC.getBooksDiscountForMemberLevel(req.params.memberLevel))
+})
+
+router.get('/recommend-books/:memberNum/:limit?', flatCacheMiddleware2, async (req, res, next) => {
+    // if (req.params.limit) {
+    //     res.json(await getRecommenderBooks(req.params.memberNum, req.params.limit))
+    // } else {
+    //     res.json(await getRecommenderBooks(req.params.memberNum))
+    // }
 })
 
 // router.post('/add', (req, res, next) => {

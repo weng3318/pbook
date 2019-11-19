@@ -4,7 +4,7 @@
     background-color: #cde2d0;
     text-decoration: none;
 } */
-/* 熱門書評文字，底線 */
+/* 熱門書評標題，底線 */
 .h5_hotText{
     font-size: 1.5rem;
     left: 0;
@@ -16,14 +16,24 @@
     padding: 30px 0 10px 0;
     text-align: center;
 }
-/* 熱門書評，多本書 (文字設定) */
+/* 邊框顏色，上下底線 */
+.borderLineUpDown {
+    border-top:3px solid #2d3a3a;
+    border-bottom:3px solid #2d3a3a;
+}
+/* 邊框顏色，右下底線 */
+.borderLineLB {
+    border-right:3px solid #2d3a3a;
+    border-bottom:3px solid #2d3a3a;
+}
+/* 熱門書評，多本書 (文字) */
 .brHotBookText{
-    font-size: 1rem;
+    font-size: 0.9rem;
     color: #2d3a3a;
     text-align: center;
     bottom: 16px;
     /* 將組件吸回 */
-    margin: -30px 20px 10px 20px;
+    margin: 0px 20px 0px 20px;
 }
 .brHotBookText:hover{
     text-decoration: none;
@@ -31,13 +41,15 @@
 }
 /* 熱門書評區域，整體區域 (背景光效) */
 .HotBookBoxAll_Light{
-    box-shadow: inset 0 6px .8rem #cde2d0, inset 0 -10px 1rem #cde2d0;
+    box-shadow: inset 0 6px .8rem #2d3a3a , inset 0 -10px 1rem #2d3a3a;
+    background: url(./images/bg.png) center center no-repeat;
     margin: -30px 0 0 0;
 }
 /* 熱門書評區域，整體區域 (區塊控制) */
 .HotBookBoxAll_Bookcase{
     display: flex;
-    margin: 120px 0 0 0;
+    top: 40px;
+    padding: 50px;
     justify-content: space-around;
     text-align: center;
 }
@@ -45,8 +57,6 @@
 .HotBookBox_Bookcase{
     max-width: 180px;
     padding: 0 0.8rem;
-    left: 0;
-    right: 0;
 }
 /* 熱門書評，多本書 (圖片) */
 .brHotBookImg_Bookcase{
@@ -80,7 +90,7 @@
 }
 /* 分頁，看看書櫃 (參照偽元素) */
 .reviewerBooks {
-    background: #fff;
+    /* background: #fff; */
     max-width: 1200px;
     min-height: 2050px;
     margin: 0 auto;

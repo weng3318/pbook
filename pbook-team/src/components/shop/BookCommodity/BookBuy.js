@@ -9,7 +9,7 @@ import './BookCommodity.scss'
 const BookBuy = props => {
   let data =
     props.shopPayload && props.shopPayload.rows && props.shopPayload.rows[0]
-  console.log(data)
+  // console.log(data)
 
   return (
     <>

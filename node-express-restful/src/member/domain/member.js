@@ -33,6 +33,15 @@ class Member{
         let sql = `SELECT * FROM mr_information WHERE MR_number = '${MR_number}'`
         return sql
     }
+
+    //合併表單查詢， b跟bc是自訂的篩選
+    queryBooks(number){
+        let sql = `SELECT b.* FROM vb_books b
+                    JOIN br_bookcase bc ON b.name=bc.name
+                    WHERE bc.number='${number}'`
+        return sql
+    }
+    
     
     getAddMemberSql(new_number){
         //進行加密
@@ -70,6 +79,8 @@ class Member{
     }
 
 
+    //把書籍加入最愛的sql
+    // let sql = `INSERT INTO `br_bookcase`(`number`, `pic`, `name`, `info`, `like`, `read`, `created_time`) VALUES ("MR00166","","一見峮心 峮峮個人寫真書","",999,1288,now())`
 
 
     //修改會員照片

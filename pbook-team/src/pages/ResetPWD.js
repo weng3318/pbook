@@ -3,7 +3,6 @@ import './member/lukeStyle.scss'
 import swal from '@sweetalert/with-react'
 import CaptchaMini from 'captcha-mini'
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
-import Login from './login/Login'
 
 
 
@@ -11,11 +10,11 @@ class ResetPWD extends React.Component{
     constructor(){
         super()
         this.state = {
-            email: '',
             password1: '',
             password2:'',
             captcha1: '',
             captcha2: '',
+            number: ''
         }
         this.captcha1 = this.captcha1.bind(this)
         this.changePassword = this.changePassword.bind(this)
@@ -27,21 +26,49 @@ class ResetPWD extends React.Component{
 
     componentDidMount(){
         this.captcha1()
+        this.queryNumber()
       }
 
 
-      setEmail(email){
-        this.setState({email})
+      queryNumber = ()=>{
+        let uusid = window.location.href.substr(31)
+        // console.log("uusid", uusid);
+        
+        fetch('http://localhost:5555/member/queryEmail', {
+            method:'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              sid: uusid
+            })
+          })
+          .then(response=>{
+            if(!response) throw new Error(response.statusText)
+            return response.json()
+          })
+          .then(number=>{
+            let MR_number = number.number.MR_number
+            this.setState({number: MR_number})
+          })
+        
       }
 
-      clearStyle(){
+
+
+      clearStyle = () => {
         let password1 = document.querySelector('#password1')
         let password2 = document.querySelector('#password2')
         password1.classList.remove('error')
         password2.classList.remove('error')
         let captcha2 = document.querySelector('#captcha2')
         captcha2.classList.remove('error')
-        
+        this.setState({
+          password1: '',
+          password2:'',
+          captcha1: '',
+          captcha2: '',
+        })
       }
 
       success (status, message){
@@ -82,7 +109,6 @@ class ResetPWD extends React.Component{
      //判斷密碼格式
     checkPassword(password1, password2){
         const re =   /^(?=.*\d)(?=.*[a-z]).{4,8}$/
-        console.log((password1 === password2) , re.test(password1, password2));
         const result = (password1 === password2) && re.test(password1, password2)
         return result
     }
@@ -98,16 +124,17 @@ class ResetPWD extends React.Component{
     }
 
     changePassword(){
-        console.log("checkPassword");
-        console.log(2, JSON.parse(localStorage.getItem('user')).MR_number);
+        // console.log("checkPassword");
+        // console.log(2, JSON.parse(localStorage.getItem('user')).MR_number);
         
         let isPass = false
         let password1 = this.state.password1
         let password2 = this.state.password2
         let captcha1 = this.state.captcha1
         let captcha2 = this.state.captcha2
-        let number =JSON.parse(localStorage.getItem('user')).MR_number
+        let number = this.state.number
         // console.log(captcha1, captcha2);
+        // console.log(number);
         
         if(this.checkPassword(password1, password2) === false){
             this.setState({password1: "格式或密碼有誤", password2: "請再重新輸入"})
@@ -117,19 +144,21 @@ class ResetPWD extends React.Component{
             // password2.type = (password2.type === "text") ;
             password1.classList.add('error')
             password2.classList.add('error')
-            console.log("password err");
+            // console.log("password err");
             }
       
             if(captcha1 !== captcha2){
               this.setState({captcha2: "驗證碼錯誤，請在核對ㄧ次"})
               let captcha2 = document.querySelector('#captcha2')
               captcha2.classList.add('error')
-              console.log("captcha err");
-              
+              // console.log("captcha err");
+              return
             }else{
               isPass = true
             } 
 
+            console.log("isPass", isPass);
+            
         if(isPass){
             fetch('http://localhost:5555/member/changePassword',{
             method: 'POST',
@@ -151,8 +180,8 @@ class ResetPWD extends React.Component{
                 let message = data.message
                 this.success(status, message)
                 setTimeout(() => {
-                    window.location.href = '/login'
-                  }, 2000)
+                    window.location.href = '/'
+                }, 2000)
             })
         }
     }
@@ -160,7 +189,7 @@ class ResetPWD extends React.Component{
 
 
     render(){
-      console.log("resetPWD",this.state.email);
+      // console.log("resetPWD",this.state.email);
       
         return(
             <>
@@ -169,7 +198,7 @@ class ResetPWD extends React.Component{
                     <div className="title">重設密碼</div>   
                     <div className="form-group passwordGroup">
                     <div className="item">請輸入密碼</div>
-                    <input type="text" className="form-control" 
+                    <input type="password" className="form-control" 
                         id="password1" 
                         name="password1" 
                         value={this.state.password1} onChange={this.handleChange} 
@@ -178,7 +207,7 @@ class ResetPWD extends React.Component{
                     <div className="tip">至少有一個數字、一個小寫英文字母、密碼長度在 4~8 之間</div>
                     <div className="form-group passwordGroup">
                     <div className="item">請再次輸入密碼</div>
-                    <input type="text" className="form-control" 
+                    <input type="password" className="form-control" 
                     id="password2" 
                     name="password2"  
                     value={this.state.password2} onChange={this.handleChange} 
@@ -203,7 +232,7 @@ class ResetPWD extends React.Component{
                          className="btn btn-warning"
                           onClick={this.clearStyle}
                           >
-                        &nbsp;取&nbsp;&nbsp;&nbsp;消&nbsp;
+                        &nbsp;取&nbsp;消&nbsp;重&nbsp;填&nbsp;
                         </button>
                       <button
                          style={{ width: '250px' }}
@@ -218,7 +247,6 @@ class ResetPWD extends React.Component{
                     
                </div> 
               </div>
-              <Route exact path="/login" component={()=><Login setEmail={(email)=>{this.setEmail(email)}}/>} />
             </>
         )
     }

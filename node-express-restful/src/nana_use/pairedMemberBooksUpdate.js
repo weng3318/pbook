@@ -30,11 +30,11 @@ pairedMemberBooksUpdate
             `UPDATE mb_gamelist SET GamePairedMemberBooks ='${pairedMemberBooks}',GameCreatedTime='${req.body.startTime}',GameChance='${req.body.GameChance}' WHERE MR_number = '${req.body.memberId}'`
         )
             .then(results => {
-                res.send('資料庫已更新成新資料');
+                res.send('pairedMemberBooksUpdate資料庫已更新成新資料');
             })
             .catch(error => {
-                res.send("404-找不到資料");
-                console.log(error);
+                res.send("pairedMemberBooksUpdate 404-找不到資料");
+                console.log("pairedMemberBooksUpdate錯誤",error);
             });
 
     });

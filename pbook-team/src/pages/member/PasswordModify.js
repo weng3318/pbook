@@ -25,13 +25,18 @@ class PasswordModify extends React.Component{
         this.captcha1()
       }
 
-      clearStyle(){
+      clearStyle = ()=>{
         let password1 = document.querySelector('#password1')
         let password2 = document.querySelector('#password2')
         password1.classList.remove('error')
         password2.classList.remove('error')
         let captcha2 = document.querySelector('#captcha2')
         captcha2.classList.remove('error')
+        this.setState({
+          password1: '',
+          password2:'',
+          captcha2: '',
+        })
         
       }
 
@@ -192,7 +197,7 @@ class PasswordModify extends React.Component{
                          className="btn btn-warning"
                           onClick={this.clearStyle}
                           >
-                        &nbsp;取&nbsp;&nbsp;&nbsp;消&nbsp;
+                        &nbsp;取&nbsp;消&nbsp;重&nbsp;填&nbsp;
                         </button>
                       <button
                          style={{ width: '250px' }}

@@ -31,7 +31,8 @@ chatMessage2
                 res.json(results);
             })
             .catch(error => {
-                res.send("404-找不到資料");
+                res.send("chatMessage2 404-找不到資料");
+                console.log("chatMessage2錯誤", error);
             });
     });
 
