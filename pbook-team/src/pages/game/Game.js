@@ -143,9 +143,7 @@ class Game extends React.Component {
                     title: '您已經成功發出配對邀請!請去察看配對狀態!',
                     icon: 'warning',
                   }).then(res => {
-                    setTimeout(() => {
-                      this.setState({ status: 'matchList' })
-                    }, 1000)
+                    this.setState({ status: 'gameWaitList' })
                   })
                 }
               })
@@ -601,13 +599,232 @@ class Game extends React.Component {
     } else if (this.state.status === 'gameWaitList') {
       return (
         <>
-          <h1>配對狀態頁面</h1>
-        </>
-      )
-    } else if (this.state.status === 'matchList') {
-      return (
-        <>
-          <h1>配對狀態頁面</h1>
+          <audio
+            id="audio"
+            hidden={true}
+            src={require('./sound/yisell_sound_2007_11_14_10_40_498758.mp3')}
+            ref={audio => (this.btnaudio = audio)}
+          ></audio>
+
+          <div
+            style={{
+              width: '100vw',
+              height: '100vh',
+              background: 'URL(' + require('./images/bg.png') + ')',
+              position: 'absolute',
+              top: '0',
+              left: '0',
+              zIndex: 20,
+            }}
+          >
+            <GameRule />
+
+            <div className="changeGameIndexBG">
+              <div id="snow"></div>
+              <div className="position-relative PC-changeGameWaitWrap d-flex">
+                <img
+                  className="position-absolute PC-changeGameWaitContext"
+                  src={require('./images/PC-changeGameWaitContext.png')}
+                  alt="電腦版"
+                />
+                <div className="position-absolute PC-changeGameBookListTableWrap">
+                  <div className="PC-changeGameBookListTable">
+                    <MyCountdown />
+                    <MyChance
+                      chance={this.state.chance}
+                      getNewData={this.getNewData}
+                    />
+                    <table className="table table-bordered table-hover">
+                      <thead className="thead-dark">
+                        <tr>
+                          <th scope="col">選擇</th>
+                          <th scope="col">書籍名稱</th>
+                          <th
+                            scope="col"
+                            className="PC-changeGameBookListBookStatus"
+                          >
+                            +書況
+                          </th>
+                          <th scope="col">書籍照片</th>
+                          <th scope="col">分類</th>
+                          <th scope="col">定價</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {this.state.pairedMemberBooks.map((value, index) => (
+                          <tr key={index}>
+                            <th scope="row">
+                              <input
+                                type="radio"
+                                name="react-tips"
+                                value={value.mb_sid}
+                                onClick={this.handleRadioButtonClick}
+                              ></input>
+                            </th>
+                            <td>{value.mb_name}</td>
+                            <td>{value.mb_savingStatus}</td>
+                            <td>
+                              <ButtonToolbar>
+                                <div
+                                  className="PC-changeGameBookListShow"
+                                  onClick={() =>
+                                    this.handleModalShow({
+                                      bookName: value.mb_name,
+                                      bookPic: value.mb_pic,
+                                      bookRemarks: value.mb_remarks,
+                                    })
+                                  }
+                                >
+                                  +顯示
+                                </div>
+                              </ButtonToolbar>
+
+                              <Modal
+                                show={this.state.modalShow}
+                                onHide={this.handleModalHide}
+                                size="lg"
+                                aria-labelledby="myModal"
+                                centered
+                              >
+                                <Modal.Header>
+                                  <Modal.Title id="myModal">
+                                    {modalData.bookName}
+                                  </Modal.Title>
+                                </Modal.Header>
+                                <Modal.Body>
+                                  <Slider {...pcSettings}>
+                                    {modalData.bookPic.map((value, index) => (
+                                      <div key={index}>
+                                        <img
+                                          style={{
+                                            margin: '0 auto',
+                                            width: '30vw',
+                                            maxHeight: '30vh',
+                                            objectFit: 'contain',
+                                          }}
+                                          src={
+                                            'http://localhost:5555/images/memberBooks/' +
+                                            value
+                                          }
+                                          alt="書籍照片"
+                                        />
+                                      </div>
+                                    ))}
+                                  </Slider>
+                                </Modal.Body>
+                                <Modal.Body>
+                                  書籍備註：{modalData.bookRemarks}
+                                </Modal.Body>
+                                <Modal.Footer>
+                                  <Button onClick={this.handleModalHide}>
+                                    關閉
+                                  </Button>
+                                </Modal.Footer>
+                              </Modal>
+                            </td>
+                            <td>{value.mb_categories}</td>
+                            <td>{value.mb_fixedPrice}元</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                  <div className="d-flex justify-content-end PC-changeGameBookListBtnWrap">
+                    <img
+                      src={require('./images/submit-green.png')}
+                      alt="電腦版確認送出按鈕"
+                      onClick={this.handleCheckedBook}
+                    />
+                    <img
+                      src={require('./images/back-red.png')}
+                      alt="電腦版回到首頁按鈕"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="position-relative PHONE-changeGameBookListWrap">
+                <img
+                  className="PHONE-changeGameBookListContext"
+                  src={require('./images/PHONE-changeGameBookListContext.png')}
+                  alt="手機板"
+                />
+
+                <Slider {...settings}>
+                  {this.state.pairedMemberBooks.map((value, index) => (
+                    <div key={index}>
+                      <div className="text-center" style={{ margin: '10px 0' }}>
+                        <MyCountdown />
+                        <MyChance
+                          chance={this.state.chance}
+                          getNewData={this.getNewData}
+                        />
+                      </div>
+                      <div
+                        style={{
+                          width: '90vw',
+                          margin: '0 auto',
+                        }}
+                      >
+                        <Card.Header className="text-center">
+                          {value.mb_name}
+                        </Card.Header>
+                        <Card.Body className="text-left">
+                          <Card.Text>
+                            <img
+                              src={
+                                'http://localhost:5555/images/memberBooks/' +
+                                value.mb_pic.split(',')[0]
+                              }
+                              alt="手機板書籍照片"
+                              className="PHONE-changeGameBookListImg"
+                            ></img>
+                          </Card.Text>
+                          <Card.Text>
+                            ・選擇：
+                            <input
+                              type="radio"
+                              name="react-tips"
+                              value={value.mb_sid}
+                              onClick={this.handleRadioButtonClick}
+                            ></input>
+                          </Card.Text>
+                          <Card.Text>・書況：{value.mb_savingStatus}</Card.Text>
+                          <Card.Text>・分類：{value.mb_categories}</Card.Text>
+                          <Card.Text>・定價：{value.mb_fixedPrice}元</Card.Text>
+                          <div
+                            className="PHONE-changeGameBookListShow"
+                            onClick={() =>
+                              this.handleModalShow({
+                                bookName: value.mb_name,
+                                bookPic: value.mb_pic,
+                                bookRemarks: value.mb_remarks,
+                              })
+                            }
+                          >
+                            ・點我顯示詳請
+                          </div>
+                        </Card.Body>
+                      </div>
+                    </div>
+                  ))}
+                </Slider>
+                <div className="d-flex PHONE-changeGameBookListBtnWrap">
+                  <img
+                    src={require('./images/submit-green.png')}
+                    alt="手機版確認送出按鈕"
+                    onClick={this.handleCheckedBook}
+                  />
+                  <img
+                    src={require('./images/back-red.png')}
+                    alt="手機版回到首頁按鈕"
+                  />
+                </div>
+              </div>
+            </div>
+            <GameRuleAlways />
+            <BGsound />
+          </div>
         </>
       )
     }
