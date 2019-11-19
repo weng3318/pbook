@@ -5,7 +5,6 @@
     font-size: 1rem;
     margin: 0;
     padding: 0;
-    z-index: 1;
 }
 /* 超連結反饋，參照用 */
 /* .br:hover,a:hover{
@@ -105,7 +104,7 @@ a:hover{
     margin: 10px;
 }
 .brReadBooks:hover{
-    color:#ff525b;
+    color:#ffc408;
     /* background-color: #cde2d0; */
 }
 /* 書評家簡介全區域 (縮放限制) */
