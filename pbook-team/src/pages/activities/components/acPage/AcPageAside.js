@@ -14,20 +14,20 @@ const AcPageAside = props => {
   return (
     <>
       <aside className="col-md-3 acPageAside">
-        <span className="share justify-content-around align-items-center">
-          <a>
+        <span className="share d-flex mt-3 justify-content-around align-items-center">
+          <button title="收藏活動">
             <FavoriteBorderIcon />
-          </a>
-          <a>
+          </button>
+          <button title="聯絡主辦方">
             <MailOutlineIcon />
-          </a>
-          <div className="fbShare d-flex justify-content-end align-items-center">
-            <FacebookProvider appId="468465107359578">
-              <ShareButton href="http://www.facebook.com">
+          </button>
+          <FacebookProvider appId="468465107359578">
+            <ShareButton href="http://www.facebook.com">
+              <div title="分享到臉書">
                 <FacebookIcon />
-              </ShareButton>
-            </FacebookProvider>
-          </div>
+              </div>
+            </ShareButton>
+          </FacebookProvider>
         </span>
         <div className="ac-sign">
           <button>我要報名</button>
