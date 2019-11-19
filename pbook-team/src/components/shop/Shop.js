@@ -4,7 +4,7 @@ import { Container, Row } from 'react-bootstrap'
 import Breadcrumb from './Breadcrumb'
 import Categories from './Categories'
 import Data from './Data'
-import { rtFetch, shopFetch, cgFetch } from './ShopActions'
+import { rtFetch, shopFetch, cgFetch, addSearch } from './ShopActions'
 import './Shop.scss'
 
 const Shop = props => {
@@ -15,7 +15,11 @@ const Shop = props => {
       shopFetch(props.match.params.page, props.match.params.categories)
     )
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.match.params.page, props.match.params.categories])
+  }, [
+    props.match.params.page,
+    props.match.params.categories,
+    // props.addSearch.keyword,
+  ])
   // console.log(props.match.params.categories)
   let categoriesPayload = props.categories.payload
   let shopPayload = props.shop.payload
@@ -28,6 +32,7 @@ const Shop = props => {
           categoriesPayload={categoriesPayload}
           nowCategories={props.match.params.categories}
           nowPage={props.match.params.page}
+          // keyword={props.addSearch.keyword}
         ></Breadcrumb>
         <Container>
           <Row>
@@ -49,5 +54,6 @@ const mapStateToProps = state => ({
   ratings: state.ratings,
   shop: state.shop,
   categories: state.categories,
+  // addSearch: state.addSearch,
 })
 export default connect(mapStateToProps)(Shop)
