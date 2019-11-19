@@ -478,7 +478,7 @@ export default class Header extends React.Component {
             <Route exact path="/chat" component={Chat} />
             <Route exact path="/cart" component={Cart} />
             <Route exact path="/cart" component={Cart} />
-            <Route exact path="/ResetPWD" component={ResetPWD} />
+            <Route path="/ResetPWD/:id" component={ResetPWD} />
             <Route exact component={NoPage} />
           </Switch>
         </Router>
