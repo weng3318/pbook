@@ -41,8 +41,8 @@ const BookRow = styled.div`
 //橫排按鈕
 const BookRowButton = styled.div`
   display: flex;
-  margin: 0 1rem 0 0;
   flex-direction: row-reverse;
+  margin: 1rem 0 0 700px;
 `
 
 //直排
@@ -159,23 +159,23 @@ const List = () => {
       .then(res => {
         let s = res.data.data[0].sid
         setList(res.data.data)
-        setScore(
-          s.five_star + s.four_star + s.three_star + s.two_star + s.one_star ===
-            0 ||
-            Math.round(
-              ((s.five_star * 5 +
-                s.four_star * 4 +
-                s.three_star * 3 +
-                s.two_star * 2 +
-                s.one_star) /
-                (s.five_star +
-                  s.four_star +
-                  s.three_star +
-                  s.two_star +
-                  s.one_star)) *
-                10
-            ) / 10
-        )
+        // setScore(
+        //   s.five_star + s.four_star + s.three_star + s.two_star + s.one_star ===
+        //     0 ||
+        //     Math.round(
+        //       ((s.five_star * 5 +
+        //         s.four_star * 4 +
+        //         s.three_star * 3 +
+        //         s.two_star * 2 +
+        //         s.one_star) /
+        //         (s.five_star +
+        //           s.four_star +
+        //           s.three_star +
+        //           s.two_star +
+        //           s.one_star)) *
+        //         10
+        //     ) / 10
+        // )
       })
       .catch(error => {
         console.log(error)
@@ -216,7 +216,7 @@ const List = () => {
     e.preventDefault()
     let api = `http://localhost:5555/reviews/book_reviews/${urlParams}/data`
 
-    if (review.reviewText != '') {
+    if (review.reviewText !== '') {
       axios
         .post(api, {
           id: review.id,
@@ -225,10 +225,7 @@ const List = () => {
           star: review.star,
         })
         .then(res => {
-          setReview({
-            error: false,
-            submitSuccess: true,
-          })
+          swal('新增成功', '', 'success')
           console.log(res)
         })
         .then(
@@ -243,11 +240,12 @@ const List = () => {
           })
         })
     } else {
-      alert('書評內容為空')
+      swal('書評內容為空')
     }
   }
 
   const updateHandler = e => {
+    e.preventDefault()
     let api = `http://localhost:5555/reviews/editReview/data`
     axios
       .put(api, {
@@ -255,16 +253,13 @@ const List = () => {
         editReview: review.editReview,
       })
       .then(res => {
-        setReview({
-          error: false,
-          submitSuccess: true,
-        })
+        swal('修改成功!')
         console.log(res)
       })
       .then(
         setTimeout(function() {
           window.location.reload()
-        }, 1500)
+        }, 2000)
       )
       .catch(error => {
         setReview({
@@ -379,12 +374,12 @@ const List = () => {
             <BookCase>加入書櫃</BookCase>
             <BookCase>立即購買</BookCase>
           </BookLine>
-          {review.submitSuccess && <p>送出成功</p>}
-          {review.error && <p>送出失敗</p>}
+          {/* {review.submitSuccess && <p>送出成功</p>}
+          {review.error && <p>送出失敗</p>} */}
         </div>
+        <h3 className="reviews_push">發表評論</h3>
         <Review>
           <BookColumnMember>
-            <h3 className="reviews_push">發表評論</h3>
             <Member>
               {user.isLogin ? (
                 <img
@@ -392,10 +387,7 @@ const List = () => {
                   src={`http://localhost:5555/images/member/${user.pic}`}
                 />
               ) : (
-                <img
-                  className="reviews_member_img"
-                  src={require('../../images/forum/2.jpg')}
-                />
+                ''
               )}
               <h6 className="reviews_member_nickname">{user.MR_nickname}</h6>
             </Member>
@@ -415,17 +407,19 @@ const List = () => {
                   score_star={review.star}
                   setScore_star={changeHandler}
                 />
+                <BookRowButton>
+                  <button type="submit" className="reviews_submitBtn">
+                    送出評論
+                  </button>
+                </BookRowButton>
               </BookRow>
-              <BookRowButton>
-                <button type="submit" className="reviews_submitBtn">
-                  送出評論
-                </button>
-              </BookRowButton>
             </form>
           ) : (
-            <h6 className="reviews_Login">
-              <a href="/login">請登入會員填寫評論</a>
-            </h6>
+            <form className="reviews_form">
+              <h6 className="reviews_Login">
+                <a href="/">請登入會員填寫評論</a>
+              </h6>
+            </form>
           )}
         </Review>
         {memberReview.map(data => (
@@ -433,7 +427,7 @@ const List = () => {
             <BookColumnMember>
               <Member>
                 <img
-                  className="reviews_member_img"
+                  className="reviews_memberReview_img"
                   src={`http://localhost:5555/images/member/${data.MR_pic}`}
                 />
               </Member>
@@ -446,17 +440,19 @@ const List = () => {
               <BookRow>
                 <h6 className="reviews_member_nickname">{data.MR_nickname}</h6>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                {new Intl.DateTimeFormat('zh-TW', {
-                  year: 'numeric',
-                  month: 'numeric',
-                  day: 'numeric',
-                  hour12: false,
-                })
-                  .format(new Date(data.create_time))
-                  .replace(/\//g, '-')}
+                <div className="reviews_time">
+                  {new Intl.DateTimeFormat('zh-TW', {
+                    year: 'numeric',
+                    month: 'numeric',
+                    day: 'numeric',
+                    hour12: false,
+                  })
+                    .format(new Date(data.create_time))
+                    .replace(/\//g, '-')}
+                </div>
               </BookRow>
               <br />
-              {review.isEdit && data.sid == review.sid ? (
+              {review.isEdit && data.sid === review.sid ? (
                 <form onSubmit={updateHandler}>
                   <textarea
                     className="reviews_textarea"
@@ -464,22 +460,22 @@ const List = () => {
                     value={review.editReview}
                     onChange={changeHandler}
                   />
-                    <button type="submit" className="reviews_submitBtn">
-                  修改評論
-                </button>
+                  <button type="submit" className="reviews_UpdateBtn">
+                    修改評論
+                  </button>
                 </form>
               ) : (
                 <div className="reviews_text">{data.message}</div>
               )}
+              <textarea
+                className="reviews_reply"
+                placeholder="回覆此書評"
+              ></textarea>
             </div>
-            {review.id == data.member ? (
+            {review.id === data.member ? (
               <div>
-                {review.isEdit && data.sid == review.sid ? (
+                {review.isEdit && data.sid === review.sid ? (
                   <>
-                    <FontAwesomeIcon
-                      className="reviews_member_icon"
-                      icon={faCheck}
-                    />
                     <FontAwesomeIcon
                       onClick={() => {
                         setReview({

@@ -30,7 +30,7 @@ export default function CustomizedRatings(props) {
         <StyledRating
           key={props.score_star}
           onClick={changeScore}
-          value={`${props.score_star}`}
+          value={4}
           getLabelText={getLabelText}
           precision={1}
           name="star"

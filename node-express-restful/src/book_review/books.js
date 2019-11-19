@@ -6,8 +6,8 @@ const bluebird = require("bluebird");
 const router = express.Router();
 const db = mysql.createConnection({
   // host: "192.168.27.186",
-  host: "localhost",
-  user: "opcp",
+  host: "192.168.27.186",
+  user: "shan",
   password: "opcp2428",
   database: "pbook"
 });
@@ -84,7 +84,7 @@ router.put("/editReview/data", (req, res) => {
     editReview: req.body.editReview
   };
   data.push(reviews);
-  const sql = `UPDATE vb_ratings SET message = '4414', update_time = NOW() WHERE vb_ratings.sid = 1536`;
+  const sql = `UPDATE vb_ratings SET message = '${data[0].editReview}', update_time = NOW() WHERE vb_ratings.sid = ${data[0].sid}`;
   db.query(sql, (error, results) => {
     if (error) {
       return res.send(error);
@@ -92,7 +92,7 @@ router.put("/editReview/data", (req, res) => {
       return res.send("更新成功");
     }
   });
-  console.log(data)
+  console.log(data);
 });
 
 module.exports = router;

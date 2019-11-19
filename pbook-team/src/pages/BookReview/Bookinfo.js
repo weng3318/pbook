@@ -55,7 +55,8 @@ function Bookinfo() {
   const CategoryBar = styled.div`
     display: flex;
     flex-wrap: wrap;
-    width: 1100px;
+    margin: 0 auto;
+    width: 810px;
   `
 
   //右上排列方式欄位

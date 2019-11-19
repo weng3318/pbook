@@ -57,12 +57,11 @@ export default function CustomizedRatings(props) {
   }
   return (
     <>
-      {score}
       <Box component="fieldset" mt={0} borderColor="transparent">
         <Typography component="legend"></Typography>
         <StyledRating
           name="customized-color"
-          value={`${score}`}
+          value={5}
           readOnly={true}
           getLabelText={getLabelText}
           precision={0.1}

@@ -8,8 +8,8 @@ const router = express.Router();
 const app = express();
 const db = mysql.createConnection({
   // host: "192.168.27.186",
-  host: "localhost",
-  user: "opcp",
+  host: "192.168.27.186",
+  user: "shan",
   password: "opcp2428",
   database: "pbook"
 });

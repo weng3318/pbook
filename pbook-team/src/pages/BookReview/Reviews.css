@@ -85,7 +85,7 @@
   height: 50px;
   border-radius: 5px;
   background: #cde2d0;
-  margin: 0 0 2rem 0;
+  margin: 0 0 5rem 0;
 }
 
 .reviews_textarea {
@@ -114,21 +114,27 @@
   border: 1px solid #ccc;
 }
 
+/* 發表評論 */
+.reviews_push {
+  margin: 0 0 0 50px;
+}
+
+/* 會員大頭貼 */
 .reviews_member_img {
-  max-height: 50%;
-  max-width: 50%;
+  max-height: 70%;
+  max-width: 70%;
   width: 100px;
   height: 100px;
-  margin: 0px 0 45px 10px;
+  margin: 45px 0 0 50px;
 }
 /* 會員暱稱 */
 .reviews_member_nickname {
-  margin: 2px 0 0 0px;
+  margin: 0 0 0 0px;
 }
 
 /* 未登入會員連結 */
 .reviews_Login {
-  margin: 60px auto 0 auto;
+  margin: 50px auto 80px 400px;
 }
 /* 下方其他會員書評 */
 .reviews_text {
@@ -138,11 +144,44 @@
 }
 /* 下方書評區塊 */
 .reviews_member_text {
-  margin: 0 auto 0 auto;
+  margin: 0 auto 0 70px;
 }
 .reviews_member_icon {
   display: flex;
   justify-content: center;
   width: 20px;
   font-size: 20px;
+}
+
+/* 下方大頭貼 */
+.reviews_memberReview_img {
+  max-height: 70%;
+  max-width: 70%;
+  width: 100px;
+  height: 100px;
+  margin: 0px 0 0 50px;
+}
+
+/* 日期時間 */
+.reviews_time {
+  opacity: 0.5;
+}
+
+/* 修改評論按鈕 */
+.reviews_UpdateBtn {
+  width: 100px;
+  height: 50px;
+  border-radius: 5px;
+  background: #cde2d0;
+  margin: 1rem 0 2rem 880px;
+}
+
+/* 書評下方點評 */
+.reviews_reply {
+  width: 1000px;
+  height: 35px;
+  margin: 0 0 10px 0;
+  border-radius: 0.2rem;
+  padding: 0.2rem;
+  resize: none;
 }
