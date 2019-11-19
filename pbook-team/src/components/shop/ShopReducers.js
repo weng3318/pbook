@@ -1,3 +1,4 @@
+import { reducer as formReducer } from 'redux-form'
 import {
   CATEGORIES_RECEIVE,
   CATEGORIES_REQUEST,
@@ -5,16 +6,14 @@ import {
   RATING_REQUEST,
   SHOP_RECEIVE,
   SHOP_REQUEST,
-  SET_SHOP_PARAMS,
+  ADD_SEARCH,
 } from './ShopActions'
 
-const shopParams = (state = [], action) => {
+const addSearch = (state = [], action) => {
   switch (action.type) {
-    case SET_SHOP_PARAMS:
+    case ADD_SEARCH:
       return {
-        shopPage: action.shopPage,
-        shopCategories: action.shopCategories,
-        // shopKeyword: action.shopKeyword,
+        keyword: action.keyword,
       }
     default:
       return {
@@ -148,6 +147,6 @@ function shop(state = [], action) {
 }
 //---------------------
 
-const ShopReducers = { shopParams, categories, ratings, shop }
+const ShopReducers = { addSearch, categories, ratings, shop, form: formReducer }
 
 export default ShopReducers

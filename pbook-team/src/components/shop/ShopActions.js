@@ -1,10 +1,8 @@
-//-----set shop params-----------
-export const SET_SHOP_PARAMS = 'SET_SHOP_PARAMS'
-export const setShopParams = (shopPage, shopCategories) => ({
-  type: SET_SHOP_PARAMS,
-  shopPage: shopPage,
-  shopCategories: shopCategories,
-  // shopKeyword: shopKeyword,
+//-----addSearch-----------
+export const ADD_SEARCH = 'ADD_SEARCH'
+export const addSearch = keyword => ({
+  type: ADD_SEARCH,
+  keyword: keyword,
 })
 //----------------------
 //-------categories--------

@@ -36,7 +36,7 @@ router.get("/book_data/:page?/:categories?/:keyword?", (req, res) => {
   }
   
   let sql = "SELECT COUNT(1) `total` FROM `vb_books`" + where;
-  console.log(sql);
+  // console.log(sql);
   db.queryAsync(sql)
     .then(results => {
       output.totalRows = results[0]["total"];
