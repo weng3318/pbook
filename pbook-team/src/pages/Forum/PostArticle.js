@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Link, useParams } from 'react-router-dom'
 import { connect } from 'react-redux'
 //action
-import { AppendTextarea } from './fmAction'
+import { AppendTextarea, AppendImgInput, AppendImgElement } from './fmAction'
 //UI componet
 import CustomizedDialogs from '../../components/Material-UI/Dialog'
 import { makeStyles } from '@material-ui/core/styles'
@@ -25,6 +25,7 @@ import PostAddIcon from '@material-ui/icons/PostAdd'
 import CancelIcon from '@material-ui/icons/Cancel'
 //textarea
 import TextareaAutosize from 'react-textarea-autosize'
+import Swal from 'sweetalert2'
 
 const useStyles = makeStyles(theme => ({
   formControl: {
@@ -72,8 +73,11 @@ const PostAritcle = props => {
   const [textValue, setTextValue] = useState(1)
   const [subcate, setSubcate] = useState([1, 2])
   const [imgfile, setImagefile] = useState('')
+  const [uploading, setUploading] = React.useState([])
+  const [img1, setimg1] = React.useState([])
 
   let { category, MR_number } = useParams()
+  const Swal = require('sweetalert2')
 
   useEffect(() => {
     handelAsideFixed()
@@ -83,32 +87,101 @@ const PostAritcle = props => {
 
   useEffect(() => {
     if (textValue !== 1) {
+      let file = document.querySelector(`#file0`).files
+      let jsonTextValue = JSON.stringify(textValue)
+      let jsonElement = JSON.stringify(props.addElement)
       let subcate = document.querySelector('#grouped-select').value
+      let title = document.querySelector('#title').value
       let formData = new FormData()
-      formData.append('textareaCount', textareaCount)
-      formData.append('textareaValue', textValue)
-      formData.append('imgCount', props.imgCount)
-      formData.append('imgData', [...props.imgData])
-      formData.append('element', props.addElement)
-      formData.append('title', props.addElement)
-      formData.append('cate', category)
-      formData.append('subcate', subcate)
-      formData.append('MR_number', MR_number)
-      formData.append('imgfile', imgfile)
+      formData.append('imgfile', file)
+      // formData.append('textareaCount', textareaCount)
+      // formData.append('textareaValue', jsonTextValue)
+      // formData.append('imgCount', props.imgCount)
+      // formData.append('element', jsonElement)
+      // formData.append('title', title)
+      // formData.append('cate', category)
+      // formData.append('subcate', subcate)
+      // formData.append('MR_number', MR_number)
+      // formData.append('imgData', [...props.imgData])
 
       fetch('http://localhost:5555/forum/postNew/', {
         method: 'POST',
         body: formData,
       })
         .then(response => {
-          console.log(response.status)
+          // console.log(response.status)
           return response.json()
         })
         .then(result => {
           console.log(result)
+          if (result.message)
+            Swal.fire({
+              title: '新增成功!',
+              text: '將回到個人首頁',
+              icon: 'success',
+              confirmButtonText: '太棒了',
+            })
+          props.history.push('/forum')
         })
     }
   }, [textValue])
+
+  const handleInsertImg = e => {
+    console.log('un')
+    let element = (
+      <div>
+        <input
+          type="file"
+          id={`file${props.imgCount}`}
+          onChange={handleUpload}
+          accept="image/*"
+          style={{ display: 'none' }}
+        ></input>
+      </div>
+    )
+    props.dispatch(AppendImgInput(element))
+  }
+
+  useEffect(() => {
+    if (props.imgCount !== 0) {
+      document.querySelector(`#file${props.imgCount - 1}`).click()
+    }
+  }, [props.imgCount])
+
+  const handleUpload = e => {
+    let inputId = `#file${props.imgCount}`
+    let file = document.querySelector(inputId).files[0]
+    let reader = new FileReader()
+    reader.readAsDataURL(file)
+    reader.addEventListener('load', function(event) {
+      let element = (
+        <ImgDemo imgData={event.target.result} imgCount={props.imgCount} />
+      )
+      props.dispatch(AppendImgElement(element, event.target.result))
+    })
+  }
+  const test = () => {
+    console.log(document.querySelector(`#file0`).files)
+  }
+  // const tryImg = event => {
+  //   let inputId = `#file2`
+  //   let file = document.querySelector(inputId).files[0]
+  //   const formdata = new FormData()
+  //   formdata.append('file1', file)
+  //   console.log(file)
+  //   fetch('http://localhost:5555/forum/postNew/', {
+  //     method: 'POST',
+  //     body: formdata,
+  //   })
+  //     .then(response => {
+  //       console.log('123')
+  //       return response.json()
+  //     })
+  //     .then(result => {
+  //       console.log(result)
+  //     })
+  //     .catch(error => console.log(error))
+  // }
 
   const postNewArticle = () => {
     let allText1 = document.querySelectorAll('textarea')
@@ -177,9 +250,49 @@ const PostAritcle = props => {
     setImagefile(imageFile)
   }
   const handleCancelPost = e => {
-    let time = +new Date()
-    console.log(time)
+    swalWithBootstrapButtons
+      .fire({
+        title: '確定取消?',
+        text: '剛剛輸入的內容將不會儲存喔!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: '是的',
+        cancelButtonText: '取消',
+        reverseButtons: true,
+      })
+      .then(result => {
+        if (result.value) {
+          props.history.goBack()
+        }
+      })
+
     // props.history.push('/forum')
+  }
+
+  const swalWithBootstrapButtons = Swal.mixin({
+    customClass: {
+      confirmButton: 'btn btn-success',
+      cancelButton: 'btn btn-danger',
+    },
+    buttonsStyling: false,
+  })
+
+  const confirmForPost = () => {
+    swalWithBootstrapButtons
+      .fire({
+        title: '確定發文?',
+        text: '',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: '是的',
+        cancelButtonText: '取消',
+        reverseButtons: true,
+      })
+      .then(result => {
+        if (result.value) {
+          postNewArticle()
+        }
+      })
   }
 
   return (
@@ -195,14 +308,20 @@ const PostAritcle = props => {
               aria-label="main mailbox folders"
               id="side-panel"
             >
-              <CustomizedDialogs handleImgFile={handleImgagefile} />
+              <ListItem button onClick={handleInsertImg}>
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
+                <ListItemText primary="插入圖片" />
+              </ListItem>
+              {/* <CustomizedDialogs handleImgFile={handleImgagefile} /> */}
               <ListItem button>
                 <ListItemIcon>
                   <SearchIcon />
                 </ListItemIcon>
                 <ListItemText primary="Unsplash圖片" />
               </ListItem>
-              <ListItem button onClick={handleCancelPost}>
+              <ListItem button onClick={test}>
                 <ListItemIcon>
                   <VideoLibraryIcon />
                 </ListItemIcon>
@@ -215,13 +334,13 @@ const PostAritcle = props => {
                 <ListItemText primary="插入新段落" />
               </ListItem>
               <Divider />
-              <ListItem button onClick={postNewArticle}>
+              <ListItem button onClick={confirmForPost}>
                 <ListItemIcon>
                   <PostAddIcon />
                 </ListItemIcon>
                 <ListItemText primary="發表文章" />
               </ListItem>
-              <ListItem button onClick={() => props.history.goBack()}>
+              <ListItem button onClick={handleCancelPost}>
                 <ListItemIcon>
                   <CancelIcon />
                 </ListItemIcon>
@@ -266,13 +385,33 @@ const PostAritcle = props => {
               </h2>
             </div>
           </div>
-          <section id="inputTextToSave">{props.addElement}</section>
+          <section id="inputTextToSave" id="ddd">
+            {/* <input
+              type="file"
+              name="file1"
+              id="file2"
+              onChange={tryImg}
+            ></input> */}
+
+            {props.addElement}
+          </section>
         </div>
       </div>
     </div>
   )
 }
 
+const ImgDemo = props => {
+  return (
+    <div key={props.imgCount}>
+      <img
+        className="img-demo"
+        src={props.imgData}
+        id={`demoImg${props.imgCount - 1}`}
+      ></img>
+    </div>
+  )
+}
 // 綁定props.todos <=> store.todos
 const mapStateToProps = store => ({
   addElement: store.postArticle.addElement,

@@ -5,6 +5,10 @@ export const AppendImgElement = (addElement, uploading) => ({
   content: addElement,
   imgData: uploading,
 })
+export const AppendImgInput = addElement => ({
+  type: 'APPEND_IMGINPUT',
+  content: addElement,
+})
 export const AppendTextarea = addElement => ({
   type: 'APPEND_TEXTAREA',
   content: addElement,

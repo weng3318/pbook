@@ -82,13 +82,15 @@ const CustomizedDialogs = props => {
   }
 
   const handleInsertImgDemo = e => {
-    let element = <ImgDemo imgData={uploading} imgCount={props.imgCount} />
-    props.dispatch(AppendImgElement(element, uploading))
-    setUploading('')
     if (mainImg) {
       setMainImg(false)
       props.handleImgFile(imageFile)
+      let element = <></>
     }
+    let element = <ImgDemo imgData={uploading} imgCount={props.imgCount} />
+    props.dispatch(AppendImgElement(element, uploading))
+    setUploading('')
+
     setOpen(false)
   }
   const handleUpload = e => {

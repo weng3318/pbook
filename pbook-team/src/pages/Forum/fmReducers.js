@@ -2,16 +2,21 @@ import React from 'react'
 //---- PostArticle --------
 const postArticleState = {
   imgData: [],
-  imgCount: 1,
+  imgCount: 0,
   addElement: [],
   mainImage: '',
 }
 function postArticle(state = postArticleState, action) {
   switch (action.type) {
+    case 'APPEND_IMGINPUT':
+      return {
+        ...state,
+        addElement: [...state.addElement, action.content],
+        imgCount: state.imgCount + 1,
+      }
     case 'APPEND_IMG_ELEMENT':
       return {
         ...state,
-        imgCount: state.imgCount + 1,
         addElement: [...state.addElement, action.content],
         imgData: [...state.imgData, action.imgData],
       }

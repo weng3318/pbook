@@ -66,7 +66,6 @@ class TopicPage extends React.Component {
       })
   }
   handelSelectSubcate = selectedKey => {
-    console.log(selectedKey)
     if (selectedKey !== '0') {
       let result = this.state.data.filter(value => {
         return `${value.fm_subCategories}` === selectedKey

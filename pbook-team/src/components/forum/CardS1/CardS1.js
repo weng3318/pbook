@@ -48,12 +48,17 @@ class CardS1 extends React.PureComponent {
               onClick={this.handleTitleClick}
             />
             <div className="card-body">
-              <div className="card-title-font" onClick={this.handleTitleClick}>
+              <div
+                className="card-title-font"
+                title={article.fm_title}
+                onClick={this.handleTitleClick}
+              >
                 {article.fm_title}
               </div>
               <div
                 className="card-s1-subTitle card-subtitle-font"
                 onClick={this.handleTitleClick}
+                title={article.fm_subTitle}
               >
                 {article.fm_subTitle}
               </div>
