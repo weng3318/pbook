@@ -6,42 +6,33 @@ import AcPageDiscount from './components/acPage/AcPageDiscount'
 import { connect } from 'react-redux'
 // eslint-disable-next-line no-unused-vars
 import { Route, Link, Switch, Redirect } from 'react-router-dom'
-
-// //redux---------------------------------------------
-// import { createStore, applyMiddleware, compose } from 'redux'
-// import { Provider } from 'react-redux'
-// import thunkMiddleware from 'redux-thunk'
-// import AcReducer from './AcReducers'
-// const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
-// const store = createStore(
-//   AcReducer,
-//   composeEnhancers(applyMiddleware(thunkMiddleware))
-// )
-// //redux---------------------------------------------
+import ScrollToTop from './components/ScrollToTop'
 
 const Activities = props => {
   return (
     <>
-      <Switch>
-        <Route exact path={'/activities/:acType'} component={AcList} />
+      <ScrollToTop>
+        <Switch>
+          <Route exact path={'/activities/:acType'} component={AcList} />
 
-        <Route
-          exact
-          path={'/activities/discount/:acId'}
-          component={AcPageDiscount}
-        />
-        <Route
-          exact
-          path={'/activities/offline/:acId'}
-          component={AcPageOffline}
-        />
+          <Route
+            exact
+            path={'/activities/discount/:acId'}
+            component={AcPageDiscount}
+          />
+          <Route
+            exact
+            path={'/activities/offline/:acId'}
+            component={AcPageOffline}
+          />
 
-        <Redirect
-          exact
-          from={'/activities'}
-          to={'/activities/' + props.acType}
-        />
-      </Switch>
+          <Redirect
+            exact
+            from={'/activities'}
+            to={'/activities/' + props.acType}
+          />
+        </Switch>
+      </ScrollToTop>
     </>
   )
 }
