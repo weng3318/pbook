@@ -45,7 +45,11 @@ const BookInfoRight = props => {
       threeStars[j] = 0
       twoStars[j] = 0
       oneStars[j] = 0
-      for (let i = 0; i < 3500; i++) {
+      for (
+        let i = 0;
+        i < (props.ratingsPayload && props.ratingsPayload.total);
+        i++
+      ) {
         if (pp[i].book == j) {
           switch (pp[i].star) {
             case 5:
@@ -97,8 +101,7 @@ const BookInfoRight = props => {
       else if (oneStars[j] < min[j]) min[j] = oneStars[j]
     }
   }
-  countRate(props.ratingsPayload)
-
+  countRate(props.ratingsPayload && props.ratingsPayload.rows)
   return (
     <>
       <div className="d-flex book_star my-3 flex-column">

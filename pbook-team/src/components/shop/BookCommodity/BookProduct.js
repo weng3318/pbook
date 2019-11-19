@@ -1,14 +1,27 @@
 import React from 'react'
 import moment from 'moment'
+import { Tabs, Tab } from 'react-bootstrap'
+import Word from './Word'
 import './BookCommodity.scss'
 
 const BookProduct = props => {
   let data =
     props.shopPayload && props.shopPayload.rows && props.shopPayload.rows[0]
+  let categoriesPayload = props.categoriesPayload && props.categoriesPayload
+  let name = []
+  for (let i = 0; i < 21; i++) {
+    if (
+      (categoriesPayload && categoriesPayload[i] && categoriesPayload[i].sid) ==
+      props.nowCategories
+    )
+      name[i] = categoriesPayload[i].name
+    else name[i] = ''
+  }
+
   return (
     <>
       <div className="BookProduct mt-5">
-        <div className="d-flex flex-column">
+        <div className="d-flex flex-column mb-5">
           <span className="mt-4">商品資料</span>
           <span className="mt-2">
             作者：{data && data.author} ｜出版社：{data && data.cp_name}
@@ -20,8 +33,37 @@ const BookProduct = props => {
           <span className="mt-2">
             頁數：{data && data.page}頁 ｜ 版次：{data && data.version}
           </span>
-          <span className="mt-2"> 類別：文學小說</span>
+          <span className="mt-2"> 類別：{name[props.nowCategories - 1]}</span>
         </div>
+        <Tabs defaultActiveKey="content" id="uncontrolled-tab-example">
+          <Tab eventKey="content" title="內容簡介"  className="a">
+            <Word></Word>
+            <span
+              dangerouslySetInnerHTML={{ __html: data && data.detailData }}
+            ></span>
+          </Tab>
+          <Tab eventKey="author" title="作者介紹">
+            <Word></Word>
+            <span
+              dangerouslySetInnerHTML={{ __html: data && data.authorIntro }}
+            ></span>
+          </Tab>
+          {/* <Tab eventKey="preface" title="推薦序">
+            1233
+          </Tab>
+          <Tab eventKey="catalog" title="目錄">
+            1233
+          </Tab> */}
+          <Tab eventKey="Notes" title="購物須知">
+            <Word></Word>
+            <span
+              dangerouslySetInnerHTML={{
+                __html:
+                  '退換貨說明：<br><br>會員均享有10天的商品猶豫期（含例假日）。若您欲辦理退換貨，請於取得該商品10日內寄回。<br><br>辦理退換貨時，請保持商品全新狀態與完整包裝（商品本身、贈品、贈票、附件、內外包裝、保證書、隨貨文件等）一併寄回。若退回商品無法回復原狀者，可能影響退換貨權利之行使或須負擔部分費用。<br><br>訂購本商品前請務必詳閱退換貨原則。',
+              }}
+            ></span>
+          </Tab>
+        </Tabs>
       </div>
     </>
   )
