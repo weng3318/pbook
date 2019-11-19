@@ -4,6 +4,7 @@ import React, { useEffect } from 'react'
 import './acPageOffline.scss'
 import { connect } from 'react-redux'
 import { fetchAcList } from '../../AcActions'
+import AcPageAside from './AcPageAside'
 import ScrollToTop from '../ScrollToTop'
 
 // import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
@@ -56,9 +57,7 @@ const AcPageOffline = props => {
                 dangerouslySetInnerHTML={{ __html: item.intro }}
               ></article>
             </main>
-            <aside className="col-md-3">
-              我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊我是資訊
-            </aside>
+            <AcPageAside {...item} />
           </div>
 
           <section className="recommend py-5">
