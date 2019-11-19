@@ -4,6 +4,7 @@ import { SET_AC_TYPE, acTypeConst } from './AcActions'
 // import { AC_REQUEST, AC_RECEIVE } from './AcActions'
 import { FETCH_AC_LIST_BASIC_NAME } from './AcActions'
 import { GET_DISCOUNT_BOOKS_BASIC_NAME } from './AcActions'
+import { GET_RECOMMEND_BOOKS_BASIC_NAME } from './AcActions'
 
 // visibilityFiler
 const { SHOW_ACTIVE } = VisibilityFilterType
@@ -41,8 +42,10 @@ let initAcData = {
     data: [],
   },
 }
+
 const acData = fetchReducerCreator(FETCH_AC_LIST_BASIC_NAME, initAcData)
 const discountBooks = fetchReducerCreator(GET_DISCOUNT_BOOKS_BASIC_NAME)
+const recommendBooks = fetchReducerCreator(GET_RECOMMEND_BOOKS_BASIC_NAME)
 
 // -------------------fetch reducer creator--------------------------
 function fetchReducerCreator(basicActionName, initState = {}) {
@@ -93,5 +96,11 @@ function fetchReducerCreator(basicActionName, initState = {}) {
 }
 // ---------------------------------------------------------------------
 
-const ListReducer = { visibilityFilter, acType, acData, discountBooks }
+const ListReducer = {
+  visibilityFilter,
+  acType,
+  acData,
+  discountBooks,
+  recommendBooks,
+}
 export default ListReducer
