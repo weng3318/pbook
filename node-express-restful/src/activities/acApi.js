@@ -1,29 +1,11 @@
 import express from 'express'
 import AC from './acModel'
 import flatCache from 'flat-cache';
-import getRecommenderBooks from './recommandBook'
+// import getRecommenderBooks from './recommandBook'
 const router = express.Router()
 const cache = flatCache.load('cacheId');
 
-const mysql = require('mysql')
-const bluebird = require('bluebird')
-const db = mysql.createConnection({
-    host: '192.168.27.186',
-    user: 'root',
-    password: 'root',
-    database: 'pbook',
-})
-db.connect();
-bluebird.promisifyAll(db)
-async function sqlQuery(sql) {
-    let data = []
-    try {
-        data = await db.queryAsync(sql)
-    } catch (err) {
-        console.log(err);
-    }
-    return data
-}
+
 
 
 // 更新資料表亂數

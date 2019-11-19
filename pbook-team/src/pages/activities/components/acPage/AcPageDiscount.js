@@ -17,7 +17,8 @@ import ScrollToTop from '../ScrollToTop'
 const AcPageDiscount = props => {
   let acId = props.match.params.acId.toString()
   let allBooksDiscount = false
-  let memberNum = JSON.parse(localStorage.user).MR_number
+  let memberNum = 'MR00001'
+  if (localStorage.user) memberNum = JSON.parse(localStorage.user).MR_number
 
   useEffect(() => {
     // 取得活動列表
