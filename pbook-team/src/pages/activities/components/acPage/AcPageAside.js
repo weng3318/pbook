@@ -11,27 +11,42 @@ import { FacebookProvider, ShareButton } from 'react-facebook'
 // import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 
 const AcPageAside = props => {
+  function clickHandler() {
+    props.history.push('/activities/offline/sign/' + props.match.params.acId)
+  }
   return (
     <>
       <aside className="col-md-3 acPageAside">
-        <span className="share justify-content-around align-items-center">
-          <a>
+        <span className="share d-flex mt-3 justify-content-around align-items-center">
+          <button title="收藏活動">
             <FavoriteBorderIcon />
-          </a>
-          <a>
+          </button>
+          <button title="聯絡主辦方">
             <MailOutlineIcon />
-          </a>
-          <div className="fbShare d-flex justify-content-end align-items-center">
-            <FacebookProvider appId="468465107359578">
-              <ShareButton href="http://www.facebook.com">
+          </button>
+          <FacebookProvider appId="468465107359578">
+            <ShareButton href="http://www.facebook.com">
+              <div title="分享到臉書">
                 <FacebookIcon />
-              </ShareButton>
-            </FacebookProvider>
-          </div>
+              </div>
+            </ShareButton>
+          </FacebookProvider>
         </span>
-        <div className="ac-sign">
-          <button>我要報名</button>
-        </div>
+        {(function() {
+          if (props.quota && !(props.quota === -1))
+            return (
+              <>
+                <div className="sign-info mt-4 pt-3 mb-2 d-flex justify-content-center">
+                  <span>總名額：{props.quota}</span>
+                  <span>剩餘名額：{props.quota - props.registered}</span>
+                  <button className="sign-btn my-2 p-2" onClick={clickHandler}>
+                    {' '}
+                    我要報名
+                  </button>
+                </div>
+              </>
+            )
+        })()}
       </aside>
     </>
   )

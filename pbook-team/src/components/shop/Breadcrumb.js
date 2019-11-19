@@ -3,8 +3,6 @@ import './Shop.scss'
 import { Col } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
-import { Link } from '@material-ui/core'
-import { addSearch } from './ShopActions'
 
 const Breadcrumb = props => {
   let categoriesPayload = props.categoriesPayload && props.categoriesPayload
@@ -26,21 +24,21 @@ const Breadcrumb = props => {
           首頁 > 書籍商城 >{' '}
           <span className="active"> {name[props.nowCategories - 1]}</span>
         </div>
-        <form className="mr-5 search">
+        <div className="mr-5 search">
           <input
             className="searchInput py-1 pl-3"
             type="text"
             placeholder="搜尋"
-            // value={props.keyword}
+            // onKeyPress={() => props.SearchKey()}
           />
-          {/* <Link
-            to={'/books/' + props.nowPage + '/' + props.nowCategories + '/'}
-          > */}
-          <button className="searchButton" type="submit">
+          <button
+            className="searchButton"
+            type="button"
+            onClick={() => props.Search()}
+          >
             <FontAwesomeIcon icon={faSearch} />
           </button>
-          {/* </Link> */}
-        </form>
+        </div>
       </Col>
     </>
   )

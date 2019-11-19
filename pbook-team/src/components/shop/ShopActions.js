@@ -1,10 +1,3 @@
-//-----addSearch-----------
-export const ADD_SEARCH = 'ADD_SEARCH'
-export const addSearch = keyword => ({
-  type: ADD_SEARCH,
-  keyword: keyword,
-})
-//----------------------
 //-------categories--------
 export const CATEGORIES_RECEIVE = 'CATEGORIES_RECEIVE'
 export const CATEGORIES_REQUEST = 'CATEGORIES_REQUEST'

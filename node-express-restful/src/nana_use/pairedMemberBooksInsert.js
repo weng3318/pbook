@@ -30,11 +30,11 @@ pairedMemberBooksInsert
             `INSERT INTO mb_gamelist(MR_number, GamePairedMemberBooks, GameCreatedTime, GameChance) VALUES ('${req.body.memberId}','${pairedMemberBooks}','${req.body.startTime}','${req.body.GameChance}')`
         )
             .then(results => {
-                res.send('創建資料已存到資料庫');
+                res.send('pairedMemberBooksInsert創建資料已存到資料庫');
             })
             .catch(error => {
-                res.send("404-找不到資料");
-                console.log(error);
+                res.send("pairedMemberBooksInsert 404-找不到資料");
+                console.log("pairedMemberBooksInsert錯誤",error);
             });
 
     });
