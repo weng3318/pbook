@@ -1,10 +1,11 @@
 import React from 'react'
 import axios from 'axios'
 import swal from '@sweetalert/with-react'
-import { ButtonToolbar, Button, Modal, Card } from 'react-bootstrap'
+import { ButtonToolbar, Button, Modal, Card, Tabs, Tab } from 'react-bootstrap'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
+import moment from 'moment'
 import './changeGame.css'
 import BGsound from './BGsound'
 import GameRuleAlways from './GameRuleAlways'
@@ -17,6 +18,7 @@ class Game extends React.Component {
     super(props)
     this.state = {
       status: 'start',
+      gameInviteMe: [],
       gameWait: [],
       myBooks: [],
       pairedMemberBooks: [],
@@ -101,7 +103,7 @@ class Game extends React.Component {
     })
   }
 
-  //書籍列表選項按鈕
+  //書籍列表送出按鈕
   handleCheckedBook = () => {
     if (this.state.chosenValue === 0) {
       // 沒選擇書籍
@@ -155,6 +157,7 @@ class Game extends React.Component {
     }
   }
 
+  // 書籍列表radioButton
   handleRadioButtonClick = e => {
     this.setState({
       chosenValue: e.target.value,
@@ -254,7 +257,19 @@ class Game extends React.Component {
           })
       })
       .catch(error => {
-        console.log('COMPONENTDIDMOUNT AJAX時有錯誤', error)
+        console.log('COMPONENTDIDMOUNT AJAX時有錯誤1', error)
+      })
+    axios
+      .post(`http://localhost:5555/nana_use/gameInviteMe`, {
+        memberId: JSON.parse(localStorage.getItem('user')).MR_number,
+      })
+      .then(res => {
+        if (res.data.length !== 0) {
+          this.setState({ gameInviteMe: res.data })
+        }
+      })
+      .catch(error => {
+        console.log('COMPONENTDIDMOUNT AJAX時有錯誤2', error)
       })
   }
 
@@ -627,109 +642,80 @@ class Game extends React.Component {
                   src={require('./images/PC-changeGameWaitContext.png')}
                   alt="電腦版"
                 />
-                <div className="position-absolute PC-changeGameBookListTableWrap">
-                  <div className="PC-changeGameBookListTable">
+                <div className="position-absolute PC-changeGameWaitContextWrap">
+                  <div className="PC-changeGameWaitTable">
                     <MyCountdown />
-                    <MyChance
-                      chance={this.state.chance}
-                      getNewData={this.getNewData}
-                    />
-                    <table className="table table-bordered table-hover">
-                      <thead className="thead-dark">
-                        <tr>
-                          <th scope="col">選擇</th>
-                          <th scope="col">書籍名稱</th>
-                          <th
-                            scope="col"
-                            className="PC-changeGameBookListBookStatus"
-                          >
-                            +書況
-                          </th>
-                          <th scope="col">書籍照片</th>
-                          <th scope="col">分類</th>
-                          <th scope="col">定價</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {this.state.pairedMemberBooks.map((value, index) => (
-                          <tr key={index}>
-                            <th scope="row">
-                              <input
-                                type="radio"
-                                name="react-tips"
-                                value={value.mb_sid}
-                                onClick={this.handleRadioButtonClick}
-                              ></input>
-                            </th>
-                            <td>{value.mb_name}</td>
-                            <td>{value.mb_savingStatus}</td>
-                            <td>
-                              <ButtonToolbar>
-                                <div
-                                  className="PC-changeGameBookListShow"
-                                  onClick={() =>
-                                    this.handleModalShow({
-                                      bookName: value.mb_name,
-                                      bookPic: value.mb_pic,
-                                      bookRemarks: value.mb_remarks,
-                                    })
-                                  }
-                                >
-                                  +顯示
-                                </div>
-                              </ButtonToolbar>
-
-                              <Modal
-                                show={this.state.modalShow}
-                                onHide={this.handleModalHide}
-                                size="lg"
-                                aria-labelledby="myModal"
-                                centered
-                              >
-                                <Modal.Header>
-                                  <Modal.Title id="myModal">
-                                    {modalData.bookName}
-                                  </Modal.Title>
-                                </Modal.Header>
-                                <Modal.Body>
-                                  <Slider {...pcSettings}>
-                                    {modalData.bookPic.map((value, index) => (
-                                      <div key={index}>
-                                        <img
-                                          style={{
-                                            margin: '0 auto',
-                                            width: '30vw',
-                                            maxHeight: '30vh',
-                                            objectFit: 'contain',
-                                          }}
-                                          src={
-                                            'http://localhost:5555/images/memberBooks/' +
-                                            value
-                                          }
-                                          alt="書籍照片"
-                                        />
-                                      </div>
-                                    ))}
-                                  </Slider>
-                                </Modal.Body>
-                                <Modal.Body>
-                                  書籍備註：{modalData.bookRemarks}
-                                </Modal.Body>
-                                <Modal.Footer>
-                                  <Button onClick={this.handleModalHide}>
-                                    關閉
-                                  </Button>
-                                </Modal.Footer>
-                              </Modal>
-                            </td>
-                            <td>{value.mb_categories}</td>
-                            <td>{value.mb_fixedPrice}元</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                    <Tabs
+                      defaultActiveKey="link-1"
+                      id="uncontrolled-tab-example"
+                      className="PC-nav-link"
+                    >
+                      <Tab eventKey="link-1" title="我發出的邀請">
+                        <div className="PC-changeGameWaitTableWrap">
+                          <table className="table table-bordered table-hover">
+                            <thead className="thead-dark">
+                              <tr>
+                                <th scope="col">編號</th>
+                                <th scope="col">書籍狀態</th>
+                                <th scope="col">欲換書籍</th>
+                                <th scope="col">配對狀態</th>
+                                <th scope="col">發出日期/時間</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {this.state.gameWait.map((value, index) => (
+                                <tr key={index}>
+                                  <td>{index + 1}</td>
+                                  <td>{value.bookStatus}</td>
+                                  <td>{value.book_name}</td>
+                                  <td>{value.matchStatus}</td>
+                                  <td>
+                                    {moment(value.created_at * 1).format('lll')}
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </Tab>
+                      <Tab eventKey="link-2" title="向我發出的邀請">
+                        <div className="PC-changeGameWaitTableWrap">
+                          <table className="table table-bordered table-hover">
+                            <thead className="thead-dark">
+                              <tr>
+                                <th scope="col">編號</th>
+                                <th scope="col">發出人</th>
+                                <th scope="col">書籍狀態</th>
+                                <th scope="col">欲換書籍</th>
+                                <th scope="col">配對狀態</th>
+                                <th scope="col">發出日期/時間</th>
+                                <th scope="col">是否同意?</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {this.state.gameInviteMe.map((value, index) => (
+                                <tr key={index}>
+                                  <td>{index + 1}</td>
+                                  <td>發出人</td>
+                                  <td>{value.bookStatus}</td>
+                                  <td>{value.book_name}</td>
+                                  <td>{value.matchStatus}</td>
+                                  <td>
+                                    {moment(value.created_at * 1).format('lll')}
+                                  </td>
+                                  <td>同意</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </Tab>
+                      <Tab eventKey="link-3" title="配對成功列表">
+                        <h1>測試3</h1>
+                      </Tab>
+                    </Tabs>
                   </div>
-                  <div className="d-flex justify-content-end PC-changeGameBookListBtnWrap">
+                  <div className="d-flex justify-content-end PC-changeGameWaitBtnWrap">
                     <img
                       src={require('./images/submit-green.png')}
                       alt="電腦版確認送出按鈕"
