@@ -6,6 +6,7 @@ import Edit from '../../pages/member/Edit'
 import AddMemberBook from '../../pages/member/AddMemberBook'
 import PasswordModify from '../../pages/member/PasswordModify'
 import BooksFavorite from '../../pages/member/BooksFavorite'
+import ViewMemberBooks from '../../pages/member/ViewMemberBooks'
 
 import '../../pages/member/lukeStyle.scss'
 
@@ -22,7 +23,7 @@ const Sidebar = (props) => {
                   variant="link"
                   eventKey="0"
                   className="sidebar_title"
-                  
+                  style={{color: "#2D3A3A",textDecoration: "none",fontSize: "28px"}}
                 >
                   <Link to="/member" style={{color: "#2D3A3A",textDecoration: "none"}}>
                     <h2 >會員資料</h2>
@@ -47,6 +48,7 @@ const Sidebar = (props) => {
                   as={Button}
                   variant="link"
                   eventKey="0"
+                  style={{color: "#2D3A3A",textDecoration: "none",fontSize: "28px"}}
                 >
                   訂單管理
                 </Accordion.Toggle>
@@ -65,6 +67,7 @@ const Sidebar = (props) => {
                   as={Button}
                   variant="link"
                   eventKey="0"
+                  style={{color: "#2D3A3A",textDecoration: "none",fontSize: "28px"}}
                 >
                   個人書櫃
                 </Accordion.Toggle>
@@ -89,7 +92,11 @@ const Sidebar = (props) => {
                   variant="link"
                   eventKey="0"
                 >
+                <Link to='/member/ViewMemberBooks'
+                style={{color: "#2D3A3A",textDecoration: "none",fontSize: "28px"}}
+                >
                   二手書管理
+                </Link>
                 </Accordion.Toggle>
                 <Accordion.Collapse eventKey="0" className="sidebar_item">
                 <Link to="/member/AddMemberBook">
@@ -107,6 +114,7 @@ const Sidebar = (props) => {
           <Route exact path="/member/AddMemberBook" component={AddMemberBook} />
           <Route exact path="/member/PasswordModify" component={PasswordModify} />
           <Route exact path="/member/BooksFavorite" component={BooksFavorite} />
+          <Route exact path="/member/ViewMemberBooks" component={ViewMemberBooks} />
         </Switch>
       </Router>
     </>

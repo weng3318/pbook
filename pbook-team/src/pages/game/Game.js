@@ -7,8 +7,10 @@ import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import './changeGame.css'
 import BGsound from './BGsound'
-import MyCountdown from './MyCountdown'
+import GameRuleAlways from './GameRuleAlways'
 import GameRule from './GameRule'
+import MyCountdown from './MyCountdown'
+import MyChance from './MyChance'
 
 class Game extends React.Component {
   constructor(props) {
@@ -17,7 +19,15 @@ class Game extends React.Component {
       status: 'start',
       myBooks: [],
       pairedMemberBooks: [],
+      startTime: '',
+      chance: 0,
       modalShow: false,
+      modalData: {
+        bookName: '',
+        bookPic: [],
+        bookRemarks: '',
+      },
+      chosenValue: 0,
     }
   }
 
@@ -44,15 +54,50 @@ class Game extends React.Component {
   }
 
   // 書籍列表光箱控制鈕
-  handleModalShow = () => {
-    this.setState({ modalShow: true })
+  handleModalShow = modalData => {
+    console.log('modalData', modalData)
+    var bookPic
+    if (modalData.bookPic !== null) {
+      bookPic = modalData.bookPic.split(',')
+    } else {
+      bookPic = ['品書印章.png']
+    }
+
+    this.setState({
+      modalData: {
+        bookName: modalData.bookName,
+        bookPic: bookPic,
+        bookRemarks: modalData.bookRemarks,
+      },
+      modalShow: true,
+    })
   }
   handleModalHide = () => {
     this.setState({ modalShow: false })
   }
 
+  // 書籍列表重置按鈕
+  getNewData = data => {
+    this.setState({
+      pairedMemberBooks: JSON.parse(data.pairedMemberBooks),
+      chance: data.chance,
+    })
+  }
+
+  //書籍列表選項按鈕
+  handleCheckedBook = () => {
+    // console.log('測試', this.state.chosenValue)
+  }
+
+  handleRadioButtonClick = e => {
+    this.setState({
+      chosenValue: e.target.value,
+    })
+  }
+
   componentDidMount() {
     let startTime = new Date().getTime()
+    let chance = JSON.parse(localStorage.getItem('user')).MR_personLevel - 1
     let myBooks
     axios
       .post(`http://localhost:5555/nana_use/myBooks`, {
@@ -60,55 +105,87 @@ class Game extends React.Component {
       })
       .then(res => {
         myBooks = res.data
-        // 如果書籍列表跟建立時間都為空,則執行ajax去拿資料
-        if (
-          localStorage.getItem('GamePairedMemberBooks') === null &&
-          localStorage.getItem('GameCreatedTime') === null
-        ) {
-          return axios.post(
-            `http://localhost:5555/nana_use/pairedMemberBooks`,
-            {
-              memberId: JSON.parse(localStorage.getItem('user')).MR_number,
-            }
-          )
-        } else if (
-          // 如果書籍列表有資料,但現在時刻大於建立時刻那也可以去拿資料
-          localStorage.getItem('GamePairedMemberBooks') !== null &&
-          startTime >
-            JSON.parse(localStorage.getItem('GameCreatedTime')) + 21600000
-        ) {
-          return axios.post(
-            `http://localhost:5555/nana_use/pairedMemberBooks`,
-            {
-              memberId: JSON.parse(localStorage.getItem('user')).MR_number,
-            }
-          )
-        } else {
-          return '去localStorage拿資料啦'
-        }
-      })
-      .then(res => {
-        if (res === '去localStorage拿資料啦') {
-          this.setState({
-            pairedMemberBooks: JSON.parse(
-              localStorage.getItem('GamePairedMemberBooks')
-            ),
-            myBooks: myBooks,
+        return axios
+          .post(`http://localhost:5555/nana_use/pairedMemberBooksOld`, {
+            memberId: JSON.parse(localStorage.getItem('user')).MR_number,
           })
-        } else {
-          this.setState({
-            pairedMemberBooks: res.data,
-            myBooks: myBooks,
+          .then(res => {
+            // console.log('hihi length', res.data.length)
+            // console.log('hihi', JSON.parse(res.data[0].GamePairedMemberBooks))
+            // console.log('hihi', JSON.parse(res.data[0].GameCreatedTime))
+
+            // 如果回傳資料長度為0,代表尚未建立過配對列表,則執行ajax去創建資料並新增
+            if (res.data.length === 0) {
+              return axios
+                .post(`http://localhost:5555/nana_use/pairedMemberBooks`, {
+                  memberId: JSON.parse(localStorage.getItem('user')).MR_number,
+                })
+                .then(res => {
+                  this.setState({
+                    pairedMemberBooks: res.data,
+                    startTime: startTime,
+                    myBooks: myBooks,
+                    chance: chance,
+                  })
+                  return axios
+                    .post(
+                      `http://localhost:5555/nana_use/pairedMemberBooksInsert`,
+                      {
+                        memberId: JSON.parse(localStorage.getItem('user'))
+                          .MR_number,
+                        pairedMemberBooks: res.data,
+                        startTime: startTime,
+                        GameChance: chance,
+                      }
+                    )
+                    .then(res => {
+                      console.log('pairedMemberBooksInsert', res.data)
+                    })
+                })
+            } else if (
+              startTime >
+              JSON.parse(res.data[0].GameCreatedTime) + 21600000
+            ) {
+              // 如果書籍列表有資料,但現在時刻大於建立時刻+6小時那也可以去創建新資料並更新
+              return axios
+                .post(`http://localhost:5555/nana_use/pairedMemberBooks`, {
+                  memberId: JSON.parse(localStorage.getItem('user')).MR_number,
+                })
+                .then(res => {
+                  this.setState({
+                    pairedMemberBooks: res.data,
+                    startTime: startTime,
+                    myBooks: myBooks,
+                    chance: chance,
+                  })
+                  return axios
+                    .post(
+                      `http://localhost:5555/nana_use/pairedMemberBooksUpdate`,
+                      {
+                        memberId: JSON.parse(localStorage.getItem('user'))
+                          .MR_number,
+                        pairedMemberBooks: res.data,
+                        startTime: startTime,
+                        GameChance: chance,
+                      }
+                    )
+                    .then(res => {
+                      console.log('pairedMemberBooksUpdate', res.data)
+                    })
+                })
+            } else {
+              // 都不符合更新或新增的條件,則直接將舊資料塞進去!
+              console.log('直接塞舊資料')
+              this.setState({
+                pairedMemberBooks: JSON.parse(
+                  res.data[0].GamePairedMemberBooks
+                ),
+                startTime: JSON.parse(res.data[0].GameCreatedTime),
+                chance: JSON.parse(res.data[0].GameChance * 1),
+                myBooks: myBooks,
+              })
+            }
           })
-          localStorage.setItem(
-            'GamePairedMemberBooks',
-            JSON.stringify(res.data)
-          )
-          localStorage.setItem(
-            'GameCreatedTime',
-            JSON.stringify(new Date().getTime())
-          )
-        }
       })
       .catch(error => {
         console.log('COMPONENTDIDMOUNT AJAX時有錯誤', error)
@@ -116,9 +193,18 @@ class Game extends React.Component {
   }
 
   render() {
-    const { myBooks, pairedMemberBooks } = this.state
+    const {
+      myBooks,
+      pairedMemberBooks,
+      startTime,
+      chance,
+      modalData,
+    } = this.state
     console.log('render myBooks', myBooks)
     console.log('render pairedMemberBooks', pairedMemberBooks)
+    console.log('render startTime', startTime)
+    console.log('render chance', chance)
+    console.log('render modalData', modalData)
     var pcSettings = {
       dots: true,
       infinite: true,
@@ -204,6 +290,7 @@ class Game extends React.Component {
                 </div>
               </div>
             </div>
+            <GameRuleAlways />
             <BGsound />
           </div>
         </>
@@ -230,6 +317,7 @@ class Game extends React.Component {
             }}
           >
             <GameRule />
+
             <div className="changeGameIndexBG">
               <div id="snow"></div>
               <div className="position-relative PC-changeGameBookListWrap d-flex">
@@ -241,6 +329,10 @@ class Game extends React.Component {
                 <div className="position-absolute PC-changeGameBookListTableWrap">
                   <div className="PC-changeGameBookListTable">
                     <MyCountdown />
+                    <MyChance
+                      chance={this.state.chance}
+                      getNewData={this.getNewData}
+                    />
                     <table className="table table-bordered table-hover">
                       <thead className="thead-dark">
                         <tr>
@@ -258,111 +350,81 @@ class Game extends React.Component {
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <th scope="row">
-                            <input
-                              type="radio"
-                              name="react-tips"
-                              value="option1"
-                            ></input>
-                          </th>
-                          <td>柱子小隊的資策會人生</td>
-                          <td>A良好</td>
-                          <td>
-                            <ButtonToolbar>
-                              <div
-                                className="PC-changeGameBookListShow"
-                                onClick={this.handleModalShow}
-                              >
-                                +顯示
-                              </div>
+                        {this.state.pairedMemberBooks.map((value, index) => (
+                          <tr key={index}>
+                            <th scope="row">
+                              <input
+                                type="radio"
+                                name="react-tips"
+                                value={value.mb_sid}
+                                onClick={this.handleRadioButtonClick}
+                              ></input>
+                            </th>
+                            <td>{value.mb_name}</td>
+                            <td>{value.mb_savingStatus}</td>
+                            <td>
+                              <ButtonToolbar>
+                                <div
+                                  className="PC-changeGameBookListShow"
+                                  onClick={() =>
+                                    this.handleModalShow({
+                                      bookName: value.mb_name,
+                                      bookPic: value.mb_pic,
+                                      bookRemarks: value.mb_remarks,
+                                    })
+                                  }
+                                >
+                                  +顯示
+                                </div>
+                              </ButtonToolbar>
+
                               <Modal
                                 show={this.state.modalShow}
+                                onHide={this.handleModalHide}
                                 size="lg"
-                                aria-labelledby="contained-modal-title-vcenter"
+                                aria-labelledby="myModal"
                                 centered
                               >
                                 <Modal.Header>
-                                  <Modal.Title id="contained-modal-title-vcenter">
-                                    書籍名稱
+                                  <Modal.Title id="myModal">
+                                    {modalData.bookName}
                                   </Modal.Title>
                                 </Modal.Header>
                                 <Modal.Body>
                                   <Slider {...pcSettings}>
-                                    <div>
-                                      <img
-                                        style={{
-                                          margin: '0 auto',
-                                        }}
-                                        src={require('./images/vb_9573318318.jpg')}
-                                        alt="書籍照片"
-                                      />
-                                    </div>
-                                    <div>
-                                      <img
-                                        style={{
-                                          margin: '0 auto',
-                                        }}
-                                        src={require('./images/vb_9573318318.jpg')}
-                                        alt="書籍照片"
-                                      />
-                                    </div>
+                                    {modalData.bookPic.map((value, index) => (
+                                      <div key={index}>
+                                        <img
+                                          style={{
+                                            margin: '0 auto',
+                                            width: '30vw',
+                                            maxHeight: '30vh',
+                                            objectFit: 'contain',
+                                          }}
+                                          src={
+                                            'http://localhost:5555/images/memberBooks/' +
+                                            value
+                                          }
+                                          alt="書籍照片"
+                                        />
+                                      </div>
+                                    ))}
                                   </Slider>
                                 </Modal.Body>
-                                <Modal.Body>書籍備註：無畫線註記。</Modal.Body>
+                                <Modal.Body>
+                                  書籍備註：{modalData.bookRemarks}
+                                </Modal.Body>
                                 <Modal.Footer>
                                   <Button onClick={this.handleModalHide}>
                                     關閉
                                   </Button>
                                 </Modal.Footer>
                               </Modal>
-                            </ButtonToolbar>
-                          </td>
-                          <td>程式語言</td>
-                          <td>500元</td>
-                        </tr>
-                        <tr>
-                          <th scope="row">
-                            <input
-                              type="radio"
-                              name="react-tips"
-                              value="option2"
-                            ></input>
-                          </th>
-                          <td>柱子小隊的資策會人生</td>
-                          <td>A良好</td>
-                          <td>+顯示</td>
-                          <td>程式語言</td>
-                          <td>500元</td>
-                        </tr>
-                        <tr>
-                          <th scope="row">
-                            <input
-                              type="radio"
-                              name="react-tips"
-                              value="option3"
-                            ></input>
-                          </th>
-                          <td>柱子小隊的資策會人生</td>
-                          <td>A良好</td>
-                          <td>+顯示</td>
-                          <td>程式語言</td>
-                          <td>500元</td>
-                        </tr>
-                        <tr>
-                          <th scope="row">
-                            <input
-                              type="radio"
-                              name="react-tips"
-                              value="option4"
-                            ></input>
-                          </th>
-                          <td>柱子小隊的資策會人生</td>
-                          <td>A良好</td>
-                          <td>+顯示</td>
-                          <td>程式語言</td>
-                          <td>500元</td>
-                        </tr>
+                            </td>
+                            <td>{value.mb_categories}</td>
+                            <td>{value.mb_fixedPrice}元</td>
+                          </tr>
+                        ))}
                       </tbody>
                     </table>
                   </div>
@@ -370,6 +432,7 @@ class Game extends React.Component {
                     <img
                       src={require('./images/submit-green.png')}
                       alt="電腦版確認送出按鈕"
+                      onClick={this.handleCheckedBook}
                     />
                     <img
                       src={require('./images/back-red.png')}
@@ -387,91 +450,69 @@ class Game extends React.Component {
                 />
 
                 <Slider {...settings}>
-                  <div>
-                    <div className="text-center" style={{ margin: '10px 0' }}>
-                      <MyCountdown />
+                  {this.state.pairedMemberBooks.map((value, index) => (
+                    <div key={index}>
+                      <div className="text-center" style={{ margin: '10px 0' }}>
+                        <MyCountdown />
+                        <MyChance
+                          chance={this.state.chance}
+                          getNewData={this.getNewData}
+                        />
+                      </div>
+                      <div
+                        style={{
+                          width: '90vw',
+                          margin: '0 auto',
+                        }}
+                      >
+                        <Card.Header className="text-center">
+                          {value.mb_name}
+                        </Card.Header>
+                        <Card.Body className="text-left">
+                          <Card.Text>
+                            <img
+                              src={
+                                'http://localhost:5555/images/memberBooks/' +
+                                value.mb_pic.split(',')[0]
+                              }
+                              alt="手機板書籍照片"
+                              className="PHONE-changeGameBookListImg"
+                            ></img>
+                          </Card.Text>
+                          <Card.Text>
+                            ・選擇：
+                            <input
+                              type="radio"
+                              name="react-tips"
+                              value={value.mb_sid}
+                              onClick={() => this.handleRadioButtonClick}
+                            ></input>
+                          </Card.Text>
+                          <Card.Text>・書況：{value.mb_savingStatus}</Card.Text>
+                          <Card.Text>・分類：{value.mb_categories}</Card.Text>
+                          <Card.Text>・定價：{value.mb_fixedPrice}元</Card.Text>
+                          <div
+                            className="PHONE-changeGameBookListShow"
+                            onClick={() =>
+                              this.handleModalShow({
+                                bookName: value.mb_name,
+                                bookPic: value.mb_pic,
+                                bookRemarks: value.mb_remarks,
+                              })
+                            }
+                          >
+                            ・點我顯示詳請
+                          </div>
+                        </Card.Body>
+                      </div>
                     </div>
-                    <div
-                      style={{
-                        width: '90vw',
-                        margin: '0 auto',
-                      }}
-                    >
-                      <Card.Header className="text-center">
-                        柱子小隊的資策會人生
-                      </Card.Header>
-                      <Card.Body className="text-left">
-                        <Card.Text>
-                          <img
-                            src={require('./images/hina.jpg')}
-                            alt="手機板書籍照片"
-                            className="PHONE-changeGameBookListImg"
-                          ></img>
-                        </Card.Text>
-                        <Card.Text>
-                          ・選擇：
-                          <input
-                            type="radio"
-                            name="react-tips"
-                            value="option1"
-                          ></input>
-                        </Card.Text>
-                        <Card.Text>・書況：A良好</Card.Text>
-                        <Card.Text>・分類：程式語言</Card.Text>
-                        <Card.Text className="PHONE-changeGameBookListText">
-                          ・書籍備註：CSS不能單獨使用，必須與HTML或XML一起協同工作，為HTML或XML起裝飾作用。本文主要介紹用於裝飾HTML網頁的CSS技術。其中HTML負責確定網頁中有哪些內容，CSS確定以何種外觀(大小、粗細、顏色、對齊和位置)展現這些元素。CSS可以用於設定頁面布局、設定頁面元素樣式、設定適用於所有網頁的全域樣式。CSS可以零散地直接添加在要應用樣式的網頁元素上，也可以集中化內建於網頁、連結式引入網頁以及匯入式引入網頁。[1]
-                          CSS最重要的目標是將檔案的內容與它的顯示分隔開來。在CSS出現前，幾乎所有的HTML檔案內都包含檔案顯示的資訊，比如字型的顏色、背景應該是怎樣的、如何排列、邊緣、連線等等都必須一一在HTML檔案內列出，有時重複列出。CSS使作者可以將這些資訊中的大部分隔離出來，簡化HTML檔案，這些資訊被放在一個輔助的，用CSS語言寫的檔案中。HTML檔案中只包含結構和內容的資訊，CSS檔案中只包含樣式的資訊。
-                          比如HTML中H2標誌這一個二級標題，它在級別上比一級標題H1低，比三級標題H3高。這些資訊都是結構上的資訊。
-                        </Card.Text>
-                        <Card.Text>・定價：500元</Card.Text>
-                      </Card.Body>
-                    </div>
-                  </div>
-                  <div>
-                    <h6 className="text-center" style={{ margin: '10px 0' }}>
-                      2019年9月29日 剩餘時間 5小時3分20秒
-                    </h6>
-                    <div
-                      style={{
-                        width: '90vw',
-                        margin: '0 auto',
-                      }}
-                    >
-                      <Card.Header className="text-center">
-                        柱子小隊的資策會人生
-                      </Card.Header>
-                      <Card.Body className="text-left">
-                        <Card.Text>
-                          <img
-                            src={require('./images/hina.jpg')}
-                            alt="手機板書籍照片"
-                            className="PHONE-changeGameBookListImg"
-                          ></img>
-                        </Card.Text>
-                        <Card.Text>
-                          ・選擇：
-                          <input
-                            type="radio"
-                            name="react-tips"
-                            value="option2"
-                          ></input>
-                        </Card.Text>
-                        <Card.Text>・書況：A良好</Card.Text>
-                        <Card.Text>・分類：程式語言</Card.Text>
-                        <Card.Text className="PHONE-changeGameBookListText">
-                          ・書籍備註：CSS不能單獨使用，必須與HTML或XML一起協同工作，為HTML或XML起裝飾作用。本文主要介紹用於裝飾HTML網頁的CSS技術。其中HTML負責確定網頁中有哪些內容，CSS確定以何種外觀(大小、粗細、顏色、對齊和位置)展現這些元素。CSS可以用於設定頁面布局、設定頁面元素樣式、設定適用於所有網頁的全域樣式。CSS可以零散地直接添加在要應用樣式的網頁元素上，也可以集中化內建於網頁、連結式引入網頁以及匯入式引入網頁。[1]
-                          CSS最重要的目標是將檔案的內容與它的顯示分隔開來。在CSS出現前，幾乎所有的HTML檔案內都包含檔案顯示的資訊，比如字型的顏色、背景應該是怎樣的、如何排列、邊緣、連線等等都必須一一在HTML檔案內列出，有時重複列出。CSS使作者可以將這些資訊中的大部分隔離出來，簡化HTML檔案，這些資訊被放在一個輔助的，用CSS語言寫的檔案中。HTML檔案中只包含結構和內容的資訊，CSS檔案中只包含樣式的資訊。
-                          比如HTML中H2標誌這一個二級標題，它在級別上比一級標題H1低，比三級標題H3高。這些資訊都是結構上的資訊。
-                        </Card.Text>
-                        <Card.Text>・定價：500元</Card.Text>
-                      </Card.Body>
-                    </div>
-                  </div>
+                  ))}
                 </Slider>
                 <div className="d-flex PHONE-changeGameBookListBtnWrap">
                   <img
                     src={require('./images/submit-green.png')}
                     alt="手機版確認送出按鈕"
+                    onClick={this.handleCheckedBook}
                   />
                   <img
                     src={require('./images/back-red.png')}
@@ -480,6 +521,7 @@ class Game extends React.Component {
                 </div>
               </div>
             </div>
+            <GameRuleAlways />
             <BGsound />
           </div>
         </>

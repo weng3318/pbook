@@ -57,10 +57,10 @@ class Member{
     }
 
     //新增會員書籍
-    addMemberBoos(isbn, name, author, publishing, publishDate, version, price, pages, savingStatus, memberNo, categories, remark){
+    addMemberBoos(isbn, name, author, publishing, publishDate, version, price, pages, savingStatus, memberNo, imgs, categories, remark){
         let sql = `INSERT INTO mb_books(mb_isbn, mb_name, mb_author, mb_publishing, mb_publishDate, mb_version, mb_fixedPrice, mb_page, mb_savingStatus, 
-                mb_shelveMember, mb_categories, mb_remarks, mb_shelveDate)
-        VALUES('${isbn}', '${name}', '${author}', '${publishing}', '${publishDate}', '${version}','${price}', '${pages}','${savingStatus}', '${memberNo}','${categories}', '${remark}',now()) `
+                mb_shelveMember, mb_categories,mb_pic, mb_remarks, mb_shelveDate)
+        VALUES('${isbn}', '${name}', '${author}', '${publishing}', '${publishDate}', '${version}','${price}', '${pages}','${savingStatus}', '${memberNo}','${categories}',' ${imgs}', '${remark}',now()) `
         return sql 
 
         // INSERT INTO mb_books(mb_isbn, mb_name, mb_author, mb_publishing, mb_publishDate, mb_version, mb_fixedPrice, mb_page, mb_savingStatus, 

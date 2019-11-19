@@ -68,18 +68,16 @@ class AddMemberBook extends React.Component {
   //     })
   // }
 
-  onDrop(picture) {
-    console.log(picture)
-
-    this.setState({
-      pictures: this.state.pictures.concat(picture),
-    })
-  }
-
   onClickhandler() {
+    console.log('pictures', this.state.pictures)
+
     const formData = new FormData()
-    formData.append('avatar', this.state.pictures)
-    console.log(formData)
+
+    for (var i = 0; i < this.state.pictures.length; i++) {
+      formData.append('avatar', this.state.pictures[i])
+    }
+    //formData.append('avatar', this.state.pictures)
+    console.log('formData', formData)
 
     fetch('http://localhost:5555/member/imgFiles', {
       method: 'POST',
@@ -87,29 +85,15 @@ class AddMemberBook extends React.Component {
     })
       .then(res => {
         console.log('res2:', res)
-        // return res.json()
+        return res.json()
       })
       .then(imgs => {
-        console.log('imgs.files', imgs.filename)
+        console.log('imgs.files', imgs.pictures)
+        this.setState({ pictures: imgs.pictures })
       })
       .catch(err => {
         console.log('err=', err)
       })
-  }
-
-  success(status, message) {
-    swal({
-      title: status,
-      text: message,
-      icon: 'success',
-      button: 'OK',
-    }).then(title => {
-      if (title === '上架書籍成功') {
-        swal('可以參加配對活動!', {
-          icon: 'success',
-        })
-      }
-    })
   }
 
   fail(status, message) {
@@ -165,6 +149,73 @@ class AddMemberBook extends React.Component {
       })
       .catch(error => {
         console.log('error = ' + error)
+      })
+  }
+
+  //上架書籍
+  async addBooks() {
+    // await this.onClickhandler()
+    // console.log("upload success");
+    const formData = new FormData()
+
+    for (var i = 0; i < this.state.pictures.length; i++) {
+      formData.append('avatar', this.state.pictures[i])
+    }
+    //formData.append('avatar', this.state.pictures)
+    console.log('formData', formData)
+
+    fetch('http://localhost:5555/member/imgFiles', {
+      method: 'POST',
+      body: formData,
+    })
+      .then(res => {
+        console.log('res2:', res)
+        return res.json()
+      })
+      .then(imgs => {
+        let images = imgs.pictures
+        console.log('imgs.files', images)
+
+        fetch('http://localhost:5555/member/addBook', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            isbn: this.state.isbn,
+            name: this.state.name,
+            author: this.state.author,
+            publishing: this.state.publishing,
+            publishDate: this.state.publishDate,
+            version: this.state.version,
+            price: this.state.price,
+            pages: this.state.pages,
+            savingStatus: this.state.savingStatus,
+            memberNo: this.state.memberNo,
+            imgs: images,
+            categories: this.state.categories,
+            remark: this.state.remark,
+          }),
+        })
+          .then(response => {
+            if (!response) throw new Error(response.statusText)
+            console.log('3' + response)
+            return response.json()
+          })
+          .then(data => {
+            let status = data.status
+            let message = data.message
+            console.log('新增書籍', data)
+            if (data.status === '上架書籍成功') {
+              this.success(status, message)
+            }
+            if (status === '上架書籍失敗') {
+              this.fail(status, message)
+            }
+          })
+          .catch(error => {
+            console.log('error = ' + error)
+          })
       })
   }
 

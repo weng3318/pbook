@@ -6,22 +6,29 @@ class MyCountdown extends React.Component {
   constructor() {
     super()
     this.state = {
-      oldTime: '',
+      oldTime: 0,
     }
   }
 
   componentDidMount() {
-    axios.get(`http://localhost:5555/nana_use/countDown`).then(res => {
-      this.setState({ oldTime: res.data })
-    })
+    axios
+      .post(`http://localhost:5555/nana_use/countDown`, {
+        memberId: JSON.parse(localStorage.getItem('user')).MR_number,
+      })
+      .then(res => {
+        this.setState({ oldTime: res.data[0].GameCreatedTime * 1 })
+      })
+      .catch(error => {
+        console.log('MyCountdown AJAX時有錯誤', error)
+      })
   }
 
   render() {
     return (
       <>
         <h6 className="countDownText">
-          今日配對剩餘時間：
-          <Countdown date={this.state.oldTime + 86400000} />
+          距離下次重置還有：
+          <Countdown date={this.state.oldTime + 21600000} />
         </h6>
       </>
     )

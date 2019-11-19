@@ -8,7 +8,7 @@
   }
 
 .login_wrap{
-  background: rgba(0, 0, 0, 0.459);
+  background: rgba(0, 0, 0, .6);
   width: 100%;
   height: 100%;
   position: absolute;
@@ -45,7 +45,7 @@
   .login_btn {
     border-radius: 20px;
     border: 1px solid #979D9D;
-    background-color: #979D9D;
+    background-color: #2D3A3A;
     color: #ffffff;
     font-size: 12px;
     font-weight: bold;
@@ -60,31 +60,40 @@
   .login_input {
     background-color: #eee;
     border: none;
+    border-radius: 10px;
     padding: 12px 15px;
     margin: 10px 0;
     width: 100%;
     text-align: center;
   }
   .tip{
-    height: 18px;
+    height: 20px;
     color: #979D9D;
     width: 100%;
     text-align: center;
-    margin: 0;
+    margin:-8px 0 5px 0;
     padding: 0;
   }
 
-  .error {
+  .err_border {
     /* display: block;
     height: 20px;
     font-size: 12px; */
     background-color: #eee;
     border: 1px solid #FF525B;
-    color: #FF525B;
+    /* color: #FF525B; */
     padding: 12px 15px;
     margin: 10px 0;
     width: 100%;
     text-align: center;
+  }
+  .err_text {
+    height: 20px;
+    width: 100%;
+    text-align: center;
+    margin:-8px 0 5px 0;
+    padding: 0;
+    color: #FF525B;
   }
 
   .serial{
@@ -104,11 +113,11 @@
     width: 1100px;
     background-image: url("./bg.png");
     /* max-width: 100%; */
-    height: 700px;
+    height: 750px;
     /* border: 5px solid #000000; */
     position: absolute;
     left: 400px;
-    top: 180px;
+    top: 100px;
   }
 
   @media (max-width: 999.98px) {
@@ -160,12 +169,17 @@
     letter-spacing: 1px;
     text-transform: uppercase;
     /* transition: transform 80ms ease-in; */
-    width: 100%;
-    margin: 10px;
+    width: 200px;
+    margin: 20px;
+  }
+  .btn-group{
+    display: flex;
+    flex-direction: row-reverse;
+
   }
   .container_right{
     background-image: url("./bg.png");
-    min-height: 700px;
+    min-height: 750px;
     width: 50%;
     position: absolute;
     top: 0;
@@ -177,7 +191,7 @@
   }
   .container_left{
     background-image: url("./bg.png");
-    min-height: 700px;
+    min-height: 750px;
     width: 50%;
     position: absolute;
     top: 0;
@@ -188,7 +202,7 @@
   }
   .container_back{
     background-image: url("./bg.png");
-    min-height: 700px;
+    min-height: 750px;
     width: 50%;
     position: absolute;
     top: 0;
@@ -225,12 +239,12 @@
 
   .login_title{
     display: flex;
-    justify-content: center;
     align-items: center;
+    padding: 50px 50px;
+    /* justify-content: center; */
     /* width: 100%; */
     /* padding-top: 20px;
     padding-bottom: 30px; */
-    padding: 50px 50px;
     /* border: 1px solid blue; */
   }
   .login_singUp{
@@ -260,8 +274,9 @@
   ._center{
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
+
+    /* justify-content: center; */
     /* border: 1px solid red; */
     
   }

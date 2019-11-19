@@ -142,7 +142,8 @@ class PasswordModify extends React.Component{
                 let message = data.message
                 this.success(status, message)
                 setTimeout(() => {
-                    window.location.href = '/login'
+                    localStorage.removeItem('user')
+                    window.location.href = '/'
                   }, 2000)
             })
         }
@@ -157,7 +158,7 @@ class PasswordModify extends React.Component{
                     <div className="title">修改密碼</div>   
                     <div className="form-group passwordGroup">
                     <div className="item">請輸入密碼</div>
-                    <input type="text" className="form-control" 
+                    <input type="password" className="form-control" 
                         id="password1" 
                         name="password1" 
                         value={this.state.password1} onChange={this.handleChange} 
@@ -166,7 +167,7 @@ class PasswordModify extends React.Component{
                     <div className="tip">至少有一個數字、一個小寫英文字母、密碼長度在 4~8 之間</div>
                     <div className="form-group passwordGroup">
                     <div className="item">請再次輸入密碼</div>
-                    <input type="text" className="form-control" 
+                    <input type="password" className="form-control" 
                     id="password2" 
                     name="password2"  
                     value={this.state.password2} onChange={this.handleChange} 

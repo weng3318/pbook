@@ -20,18 +20,13 @@ bluebird.promisifyAll(db);
 
 countDown
     .route("/countDown")
-    .get(function (req, res) {
-        req.session.memberId = "MR00001";
-        if (req.session.memberId === undefined) {
-            res.send("找不到資料");
-        }
+    .post(function (req, res) {
+        console.log('pairedMemberBooksUpdate', req.body.memberId);
         db.queryAsync(
-            `SELECT created_at FROM mb_gamelist WHERE 1`
+            `SELECT GameCreatedTime FROM mb_gamelist WHERE MR_number = "${req.body.memberId}"`
         )
             .then(results => {
-                var date = results[0]['created_at']
-                var time = date.getTime()
-                res.json(time);
+                res.json(results);
             })
             .catch(error => {
                 res.send("404-找不到資料");

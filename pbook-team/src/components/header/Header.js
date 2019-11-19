@@ -461,7 +461,7 @@ class Header extends React.Component {
             <Route exact path="/reviewer" component={Reviewer} />
             <Route
               exact
-              path="/ReviewerBooks/:sid?"
+              path="/Reviewer/ReviewerBooks/:sid?"
               component={ReviewerBooks}
             />
             <Route exact path="/books" component={Books} />
@@ -478,7 +478,7 @@ class Header extends React.Component {
             <Route path="/forum" component={Forum} />
 
             {/* <Route exact path="/login" component={()=><Login loginSuccess={(memberData)=>{ this.loginSuccess(memberData) }}/>} /> */}
-            <Route exact path="/login" component={Login} />
+            <Route exact path="/" component={Login} />
             <Route exact path="/member" component={Member} />
             <Route exact path="/game/:id" component={Game} />
             <Route exact path="/chat" component={Chat} />
