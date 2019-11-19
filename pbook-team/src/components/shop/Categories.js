@@ -14,7 +14,7 @@ const Categories = props => {
         {props.categoriesPayload &&
           props.categoriesPayload.map(categories => (
             <NavLink
-              to={'/books/1/' + categories.sid}
+              to={'/books/' + props.mode + '/1/' + categories.sid}
               className="d-flex justify-content-center align-items-center border-bottom categories-color"
               activeClassName="active"
               key={categories.sid}

@@ -36,7 +36,7 @@ let fiveStars = [],
   min = [],
   avg = []
 const BookInfoRight = props => {
-  console.log(props.ratingsPayload)
+  // console.log(props.ratingsPayload)
 
   const classes = useStyles()
   function countRate(pp) {

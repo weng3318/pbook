@@ -36,7 +36,7 @@ const BookProduct = props => {
           <span className="mt-2"> 類別：{name[props.nowCategories - 1]}</span>
         </div>
         <Tabs defaultActiveKey="content" id="uncontrolled-tab-example">
-          <Tab eventKey="content" title="內容簡介"  className="a">
+          <Tab eventKey="content" title="內容簡介" className="a">
             <Word></Word>
             <span
               dangerouslySetInnerHTML={{ __html: data && data.detailData }}

@@ -5,21 +5,7 @@ import {
   RATING_REQUEST,
   SHOP_RECEIVE,
   SHOP_REQUEST,
-  ADD_SEARCH,
 } from './ShopActions'
-
-const addSearch = (state = [], action) => {
-  switch (action.type) {
-    case ADD_SEARCH:
-      return {
-        keyword: action.keyword,
-      }
-    default:
-      return {
-        ...state,
-      }
-  }
-}
 
 //--------categories------
 function cg(
@@ -146,6 +132,6 @@ function shop(state = [], action) {
 }
 //---------------------
 
-const ShopReducers = { addSearch, categories, ratings, shop }
+const ShopReducers = { categories, ratings, shop }
 
 export default ShopReducers
