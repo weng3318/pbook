@@ -1,4 +1,3 @@
-import { reducer as formReducer } from 'redux-form'
 import {
   CATEGORIES_RECEIVE,
   CATEGORIES_REQUEST,
@@ -147,6 +146,6 @@ function shop(state = [], action) {
 }
 //---------------------
 
-const ShopReducers = { addSearch, categories, ratings, shop, form: formReducer }
+const ShopReducers = { addSearch, categories, ratings, shop }
 
 export default ShopReducers
