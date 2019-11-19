@@ -2,7 +2,6 @@
     font-family: '微軟正黑體',Arial, Helvetica, sans-serif;
     position: relative;
     box-sizing: border-box;
-    font-size: 1rem;
     margin: 0;
     padding: 0;
 }
@@ -12,9 +11,14 @@
     background-color: #cde2d0;
     text-decoration: none;
 } */
+/* 移除超連結底線 */
 a:hover{
     text-decoration: none;
 }
+/* 品書背景 */
+/* .bg{
+    background-image: url("./images/bg.png");
+} */
 /* 標題，主要文字 */
 .h5_br{
     text-align: center;
@@ -26,7 +30,7 @@ a:hover{
 .borderLine {
     border: 3px solid #2d3a3a;
 }
-/* 邊框顏色，表格用 */
+/* 邊框顏色，上底線 */
 .borderLineTop {
     border-top:3px solid #2d3a3a;
 }

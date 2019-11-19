@@ -16,7 +16,7 @@ import Cart from '../../pages/Cart'
 import NoPage from '../../pages/nopage/NoPage'
 import Chat from '../../components/member/chat/Chat'
 import ReviewerBooks from '../../pages/ReviewerBooks'
-import BR_ReviewerList from '../../pages/reviewer_page/BR_ReviewerList'
+import ReviewerBlog from '../../pages/ReviewerBlog'
 import BookReviews from '../../pages/BookReview/BookReviews'
 import ResetPWD from '../../pages/ResetPWD'
 import './header.css'
@@ -459,9 +459,13 @@ export default class Header extends React.Component {
             <Route
               exact
               path="/Reviewer/ReviewerBooks/:sid?"
-              component={ReviewerBooks}
-            />
+
+              component={ReviewerBooks} />
+            <Route exact
+              path="/reviewer/reviewerBooks/reviewerBlog/:sid?" 
+              component={ReviewerBlog} />
             <Route path="/books" component={Books} />
+
             <Route path="/activities" component={Activities} />
             <Route exact path="/reviews" component={Reviews} />
 

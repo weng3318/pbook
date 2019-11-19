@@ -13,17 +13,17 @@ class BR_BookcaseList extends React.Component {
       }(document, 'script', 'facebook-jssdk'))
         return (
             <>
-<section className="ReviewerListAllBox_Bookcase reviewerList">
+<section className="ReviewerListAllBox_Bookcase">
     <div className="d-flex">
             {/* 書籍圖片 */}
         <Link to={"/reviewer/reviewerBooks/reviewerBlog/"+this.props.sid} className="d-flex justify-content-center borderLineTop">
-          <div className="brAvatarAllBox_Bookcase borderLine">
+          <div className="brAvatarAllBox_Bookcase borderLineLB">
             {/* <img className="brBookInfoImg_Bookcase" src={require(`./images_books/vb_9789578587823.jpg`)}/> */}
             {/* <img className="brBookInfoImg_Bookcase" src={require(`./images/${this.props.pic}`)}/> */}
             <img className="brBookInfoImg_Bookcase" src={`http://localhost/books/src/venderBooks_Management/vb_images/${this.props.pic}`} alt=""/>
             </div>
         </Link>
-          <div className="brInfoBox_Bookcase borderLine"><h5 className="h5_br">書籍內容</h5>
+          <div className="brInfoBox_Bookcase borderLineUpDown"><h5 className="h5_br">書籍內容</h5>
                 <div className="brInfoText_Bookcase">
                     <span className="bookInfo_Bookcase">書名：</span>{this.props.name}
                     <br/>
