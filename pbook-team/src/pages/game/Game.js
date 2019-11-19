@@ -17,6 +17,7 @@ class Game extends React.Component {
     super(props)
     this.state = {
       status: 'start',
+      gameWait: [],
       myBooks: [],
       pairedMemberBooks: [],
       startTime: '',
@@ -32,18 +33,34 @@ class Game extends React.Component {
   }
 
   // 遊戲首頁到對方的書籍列表(進入遊戲)
-  handleStartGame = () => {
+  handleStartGame = async () => {
     this.btnaudio.cloneNode().play()
+
+    await axios
+      .post(`http://localhost:5555/nana_use/gameWait`, {
+        memberId: JSON.parse(localStorage.getItem('user')).MR_number,
+        startTime: this.state.startTime,
+      })
+      .then(res => {
+        this.setState({ gameWait: res.data })
+      })
+      .catch(err => {
+        console.log('handleStartGame ajax時錯誤', err)
+      })
+
     if (this.state.myBooks.length === 0) {
       swal({
-        title: '您的書櫃裡沒有書唷!請到會員資料的二手書管理內新增配對書籍!',
+        title:
+          '書櫃裡沒有書無法參與遊戲!請到會員資料的二手書管理內新增配對書籍!',
         icon: 'warning',
       }).then(value => {
         // 這邊要記得改!要引導到上架書籍那
         window.location.href = '/'
       })
-    } else {
+    } else if (this.state.gameWait.length === 0) {
       this.setState({ status: 'gameBookList' })
+    } else {
+      this.setState({ status: 'gameWaitList' })
     }
   }
 
@@ -86,7 +103,58 @@ class Game extends React.Component {
 
   //書籍列表選項按鈕
   handleCheckedBook = () => {
-    // console.log('測試', this.state.chosenValue)
+    if (this.state.chosenValue === 0) {
+      // 沒選擇書籍
+      swal({
+        title: '您沒有選擇書籍喔!',
+        icon: 'warning',
+      })
+    } else {
+      // 有選擇書籍
+      axios
+        .post(`http://localhost:5555/nana_use/gameWaitCheck`, {
+          bookSid: this.state.chosenValue,
+        })
+        .then(res => {
+          // 所選的書籍已經被刪除的話....
+          if (res.data.length === 0) {
+            swal({
+              title: '很抱歉!您所選擇的書籍已經被刪除了!我們將替您刷新書籍!',
+              icon: 'warning',
+            })
+            return axios
+              .post(`http://localhost:5555/nana_use/pairedMemberBooks`, {
+                memberId: JSON.parse(localStorage.getItem('user')).MR_number,
+              })
+              .then(res => {
+                this.setState({ pairedMemberBooks: res.data })
+              })
+          } else {
+            // 所選的書籍沒被刪除
+            return axios
+              .post(`http://localhost:5555/nana_use/gameWaitInsert`, {
+                memberId: JSON.parse(localStorage.getItem('user')).MR_number,
+                startTime: this.state.startTime,
+                bookSid: this.state.chosenValue,
+              })
+              .then(res => {
+                if ((res.data = 'gameWaitInsert 新增成功')) {
+                  swal({
+                    title: '您已經成功發出配對邀請!請去察看配對狀態!',
+                    icon: 'warning',
+                  }).then(res => {
+                    setTimeout(() => {
+                      this.setState({ status: 'matchList' })
+                    }, 1000)
+                  })
+                }
+              })
+          }
+        })
+        .catch(err => {
+          console.log('handleCheckedBook ajax時錯誤', err)
+        })
+    }
   }
 
   handleRadioButtonClick = e => {
@@ -199,12 +267,16 @@ class Game extends React.Component {
       startTime,
       chance,
       modalData,
+      gameWait,
+      chosenValue,
     } = this.state
     console.log('render myBooks', myBooks)
     console.log('render pairedMemberBooks', pairedMemberBooks)
     console.log('render startTime', startTime)
+    console.log('render gameWait', gameWait)
     console.log('render chance', chance)
     console.log('render modalData', modalData)
+    console.log('render chosenValue', chosenValue)
     var pcSettings = {
       dots: true,
       infinite: true,
@@ -485,7 +557,7 @@ class Game extends React.Component {
                               type="radio"
                               name="react-tips"
                               value={value.mb_sid}
-                              onClick={() => this.handleRadioButtonClick}
+                              onClick={this.handleRadioButtonClick}
                             ></input>
                           </Card.Text>
                           <Card.Text>・書況：{value.mb_savingStatus}</Card.Text>
@@ -526,10 +598,16 @@ class Game extends React.Component {
           </div>
         </>
       )
-    } else if (this.state.status === 'aaaa') {
+    } else if (this.state.status === 'gameWaitList') {
       return (
         <>
-          <h1>測試2</h1>
+          <h1>配對狀態頁面</h1>
+        </>
+      )
+    } else if (this.state.status === 'matchList') {
+      return (
+        <>
+          <h1>配對狀態頁面</h1>
         </>
       )
     }
