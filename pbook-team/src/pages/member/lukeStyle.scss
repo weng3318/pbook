@@ -28,6 +28,24 @@ $content: 24px;
   border-bottom: 3px solid $yellow;
 }
 
+.err_border {
+  background-color: #eee;
+  border: 1px solid #FF525B;
+  padding: 12px 15px;
+  margin: 10px 0;
+  width: 100%;
+  text-align: center;
+}
+.err_text {
+  height: 20px;
+  width: 100%;
+  text-align: center;
+  margin:-8px 0 5px 0;
+  padding: 0;
+  color: #FF525B;
+}
+
+
 //查看二手書書籍
 .viewMemberBooks{
   @extend .contentWrap;

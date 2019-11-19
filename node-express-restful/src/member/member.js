@@ -3,6 +3,8 @@ import db from './db/database'
 import member from './domain/member'
 import login from './domain/login'
 const router = express.Router()
+const bluebird = require("bluebird");
+bluebird.promisifyAll(db);
 
 var Member = new member()
 
@@ -61,36 +63,64 @@ router.post('/register', (req, res, next) => {
 import nodemailer from 'nodemailer'
 router.post('/sendPwd', (req, res)=>{
     let email = req.body.email
-
-    if(email === ''){
+    console.log(email);
+    let sql = `SELECT * FROM mr_information WHERE MR_email = '${email}'`
+    db.query(sql, (err, row)=>{
+        let uusid = row[0].sid;
+        console.log(uusid);
         
-        return res.json({
-            status: '傳送失敗',
-            message: '請輸入正確的信箱'
-        })
-    }
-    
-    let transporter = nodemailer.createTransport({
-        service: 'Gmail',
-        auth:{
-            user: 'dragonqoo1988@gmail.com',
-            pass: '29894199',
-        
+        if(email === ''){
+            
+            return res.json({
+                status: '傳送失敗',
+                message: '請輸入正確的信箱'
+            })
         }
+        
+        let transporter = nodemailer.createTransport({
+            service: 'Gmail',
+            auth:{
+                user: 'dragonqoo1988@gmail.com',
+                pass: '29894199',
+            
+            }
+        })
+        let mailOptions = {
+            form: '"品書網"<dragonqoo1988@gmail.com>',
+            to: `${email}`,
+            subject: '重設密碼',
+            html: `<h1>親愛的品書會員您好:</h1><br><h3>請點擊下方進行重新設定密碼</h3><br><a href="http://localhost:3000/ResetPWD/${uusid}"><h2>重設密碼頁</h2></a>`
+        }
+        transporter.sendMail(mailOptions, (err, info)=>{
+            // console.log(info);
+            res.json({
+                status: '傳送成功',
+                message: '請到信箱修改密碼'
+                })
+            })
     })
-    let mailOptions = {
-        form: '"品書網"<dragonqoo1988@gmail.com>',
-        to: `${email}`,
-        subject: '重設密碼',
-        html: '<h1>親愛的品書會員您好:</h1><br><h3>請點擊下方進行重新設定密碼</h3><br><a href="http://localhost:3000/ResetPWD"><h2>重設密碼頁</h2></a>'
-    }
-    transporter.sendMail(mailOptions, (err, info)=>{
-        // console.log(info);
+})
+
+//用sid查詢email，再去修改密碼
+router.post('/queryEmail', (req, res, next)=>{
+    let sid = req.body.sid
+    let sql = `SELECT MR_number FROM mr_information WHERE sid = '${sid}'`
+    db.query(sql, (err, row)=>{
         res.json({
-            status: '傳送成功',
-            message: '請到信箱修改密碼'
+            number: row[0]
         })
     })
+})
+
+//取書櫃書籍資料
+router.post('/queryBookcase', (req,res)=>{
+    let number = req.body.number
+    console.log(number);
+    
+    db.query(Member.queryBooks(number), (err, rows)=>{
+        res.json(rows)
+    })
+
 })
 
 

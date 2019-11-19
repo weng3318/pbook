@@ -459,12 +459,13 @@ export default class Header extends React.Component {
             <Route
               exact
               path="/Reviewer/ReviewerBooks/:sid?"
+
               component={ReviewerBooks} />
             <Route exact
               path="/reviewer/reviewerBooks/reviewerBlog/:sid?" 
               component={ReviewerBlog} />
-            
-            <Route exact path="/books" component={Books} />
+            <Route path="/books" component={Books} />
+
             <Route path="/activities" component={Activities} />
             <Route exact path="/reviews" component={Reviews} />
 
@@ -481,7 +482,7 @@ export default class Header extends React.Component {
             <Route exact path="/chat" component={Chat} />
             <Route exact path="/cart" component={Cart} />
             <Route exact path="/cart" component={Cart} />
-            <Route exact path="/ResetPWD" component={ResetPWD} />
+            <Route path="/ResetPWD/:id" component={ResetPWD} />
             <Route exact component={NoPage} />
           </Switch>
         </Router>

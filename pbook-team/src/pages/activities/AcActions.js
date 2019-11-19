@@ -65,3 +65,34 @@ export function getDiscountBooks(acId) {
     payload: { acId, rootName: acId },
   }
 }
+
+// get recommend books
+export const GET_RECOMMEND_BOOKS_BASIC_NAME = 'RECOMMEND_BOOKS'
+export function getRecommendBooks(memberNum, limit = 8) {
+  return {
+    types: [
+      'RECOMMEND_BOOKS_REQUEST',
+      'RECOMMEND_BOOKS_SUCCESS',
+      'RECOMMEND_BOOKS_FAILURE',
+    ],
+    // 檢查快取：
+    shouldCallAPI: state => !state.recommendBooks.length,
+    // 執行抓取資料：
+    callAPI: () =>
+      fetch(
+        'http://localhost:5555/activities/recommend-books/' +
+          memberNum +
+          '/' +
+          limit,
+        {
+          method: 'GET',
+          headers: new Headers({
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          }),
+        }
+      ),
+    // 要在開始/結束 action 注入的參數
+    payload: { memberNum, limit },
+  }
+}

@@ -2,7 +2,15 @@ import React from 'react'
 import './lukeStyle.scss'
 
 class BooksFavorite extends React.Component{
+    constructor(){
+        super()
+        this.state = {
+
+        }
+    }
+
     
+
 
 
 

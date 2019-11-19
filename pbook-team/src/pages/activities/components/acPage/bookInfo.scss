@@ -10,10 +10,11 @@
       text-align: center;
       color: #444;
       display: -webkit-box;
+      overflow: hidden;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       white-space: normal;
-      height: 30px;
+      height: 2.5rem;
     }
     span.info {
       text-align: center;
