@@ -1,12 +1,9 @@
 import express from 'express'
 import AC from './acModel'
 import flatCache from 'flat-cache';
-// import getRecommenderBooks from './recommandBook'
+import getRecommenderBooks from './recommendBook'
 const router = express.Router()
 const cache = flatCache.load('cacheId');
-
-
-
 
 // 更新資料表亂數
 // UPDATE `pm_general_discounts` SET `discounts`=ROUND(RAND()*30,0) WHERE `type`=6
@@ -40,24 +37,6 @@ const flatCacheMiddleware = (req, res, next) => {
     }
 }
 
-var cache2 = flatCache.load('recommendBook', './src/activities/acCache')
-let flatCacheMiddleware2 = (req, res, next) => {
-    let key = '__express__' + req.originalUrl || req.url
-    let cacheContent = cache2.getKey(key);
-    if (cacheContent) {
-        res.send(cacheContent);
-    } else {
-        res.sendResponse = res.send
-        res.send = (body) => {
-            cache2.setKey(key, body);
-            cache2.save(true /* noPrune */);
-            res.sendResponse(body)
-        }
-        next()
-    }
-};
-
-
 router.get('/offline', async (req, res, next) => {
     res.json(await AC.getOfflineList())
 })
@@ -81,13 +60,15 @@ router.get('/book-discount-for-member-level/:memberLevel', flatCacheMiddleware, 
     res.json(await AC.getBooksDiscountForMemberLevel(req.params.memberLevel))
 })
 
-router.get('/recommend-books/:memberNum/:limit?', flatCacheMiddleware2, async (req, res, next) => {
-    // if (req.params.limit) {
-    //     res.json(await getRecommenderBooks(req.params.memberNum, req.params.limit))
-    // } else {
-    //     res.json(await getRecommenderBooks(req.params.memberNum))
-    // }
+// 對特定會員，獲得協同過濾推薦書籍
+router.get('/recommend-books/:memberNum/:limit?', flatCacheMiddleware, async (req, res, next) => {
+    if (req.params.limit) {
+        res.json(await getRecommenderBooks(req.params.memberNum, req.params.limit))
+    } else {
+        res.json(await getRecommenderBooks(req.params.memberNum))
+    }
 })
+
 
 // router.post('/add', (req, res, next) => {
 //   //read product information from request

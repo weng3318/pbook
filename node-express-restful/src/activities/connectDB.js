@@ -9,13 +9,14 @@ const db = mysql.createConnection({
 db.connect();
 bluebird.promisifyAll(db)
 
-async function sqlQuery(sql) {
+function sqlQuery(sql) {
+    let data
     try {
-        var data = await db.queryAsync(sql)
+        data = db.queryAsync(sql)
     } catch (err) {
         console.log(err);
     }
     return data
 }
 
-module.exports =  { db, sqlQuery }
+module.exports = { db, sqlQuery }
