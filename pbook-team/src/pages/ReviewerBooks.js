@@ -85,9 +85,10 @@ class ReviewerBooks extends React.Component {
       <Router>
           {/* 熱門書評列表 */}
           <div className="HotBookBoxAll_Light">
+          <div className="blackBG">
               <h5 className="h5_hotText">熱門書評</h5>
               <div className="HotBookBoxAll_Bookcase">
-                  {this.state.csData.filter(({number}) => reviewerData.number == number)
+                  {this.state.csData.filter(({number}) => reviewerData.number == number )
                   .map(({pic, sid, name})=>(
                     <BR_BookcaseHot_books
                     key={sid}
@@ -99,15 +100,16 @@ class ReviewerBooks extends React.Component {
                   ))}
               </div>
           </div>
+          </div>
                 <Switch>
                       <Route exact 
                       path="/reviewer/reviewerBooks/reviewerBlog/:sid?" 
                       component={ReviewerBlog} />
                 </Switch>
       </Router>
-
-            {/* 全倒出來 - 書櫃列表 */}
-          {this.state.bkData.map(({name,pic,author,introduction,sid})=>(
+          {/* 針對書評家 - 書櫃列表 */}
+          {this.state.csData.filter(({number}) => reviewerData.number == number)
+          .map(({name,pic,author,info,sid})=>(
             <BR_BookcaseList
             sid={sid}
             key={sid}
@@ -115,20 +117,10 @@ class ReviewerBooks extends React.Component {
             name={name}
             author={author}
             pic={pic}
-            introduction={introduction}
+            info={info}
             ></BR_BookcaseList>
           ))}
-          {/* 針對書評家 - 書櫃列表 */}
-          {/* {this.state.csData.filter(({number}) => reviewerData.number == number)
-          .map(({pic, sid})=>(
-            <BR_BookcaseList
-            to={"/reviewer/reviewerBooks/reviewerBlog/" + sid}
-            pic={pic}
-            ></BR_BookcaseList>
-          ))} */}
-
         </section>
-
       </>
     )
   }

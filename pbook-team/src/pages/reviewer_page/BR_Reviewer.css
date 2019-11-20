@@ -6,7 +6,7 @@
     padding: 0;
 }
 /* 超連結反饋，參照用 */
-/* .br:hover,a:hover{
+/* a:hover{
     color:#ff525b;
     background-color: #cde2d0;
     text-decoration: none;
@@ -15,10 +15,6 @@
 a:hover{
     text-decoration: none;
 }
-/* 品書背景 */
-/* .bg{
-    background-image: url("./images/bg.png");
-} */
 /* 標題，主要文字 */
 .h5_br{
     text-align: center;
