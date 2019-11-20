@@ -75,7 +75,9 @@ const vb_categories = {
 const PostAritcle = props => {
   const classes = useStyles()
   const [textareaCount, setTextareaCount] = useState(1)
-  const [textValue, setTextValue] = useState(1)
+  const [titleCheck, setTitleCheck] = useState(1) //title&subcate檢查
+  const [textareaValue, setTextareaValue] = useState('')
+  const [sectionElement, setSectionElement] = useState('')
   const [subcate, setSubcate] = useState([1, 2])
   const [mainImg, setMainImg] = useState(false)
 
@@ -89,13 +91,13 @@ const PostAritcle = props => {
   }, [])
 
   useEffect(() => {
-    if (textValue !== 1) {
+    if (titleCheck !== 1) {
       let formData = new FormData()
       if (mainImg) {
         let file = document.querySelector(`#file0`).files[0]
         formData.append('imgfile', file)
       }
-      let jsonTextValue = JSON.stringify(textValue)
+      let jsonTextValue = textareaValue
       let jsonElement = JSON.stringify(props.addElement)
       let subcate = document.querySelector('#grouped-select').value
       let title = document.querySelector('#title').value
@@ -103,7 +105,7 @@ const PostAritcle = props => {
       formData.append('textareaCount', textareaCount)
       formData.append('textareaValue', jsonTextValue)
       formData.append('imgCount', props.imgCount)
-      formData.append('element', jsonElement)
+      formData.append('element', sectionElement)
       formData.append('title', title)
       formData.append('cate', category)
       formData.append('subcate', subcate)
@@ -137,7 +139,7 @@ const PostAritcle = props => {
           )
         })
     }
-  }, [textValue])
+  }, [titleCheck])
 
   const handleInsertImg = e => {
     console.log('un')
@@ -174,35 +176,13 @@ const PostAritcle = props => {
       props.dispatch(AppendImgElement(element, event.target.result))
     })
   }
-  const test = () => {
-    console.log(document.querySelector(`#file0`).files)
-  }
-  // const tryImg = event => {
-  //   let inputId = `#file2`
-  //   let file = document.querySelector(inputId).files[0]
-  //   const formdata = new FormData()
-  //   formdata.append('file1', file)
-  //   console.log(file)
-  //   fetch('http://localhost:5555/forum/postNew/', {
-  //     method: 'POST',
-  //     body: formdata,
-  //   })
-  //     .then(response => {
-  //       console.log('123')
-  //       return response.json()
-  //     })
-  //     .then(result => {
-  //       console.log(result)
-  //     })
-  //     .catch(error => console.log(error))
-  // }
 
   const postNewArticle = () => {
     let allText1 = document.querySelectorAll('textarea')
     let allText = [...allText1]
-    let textValue1 = []
+    let titleCheck1 = []
     for (let i = 0; i < allText.length - 1; i++) {
-      textValue1.push(allText[i].value)
+      titleCheck1.push(allText[i].value)
     }
     let select = document.querySelector('#grouped-select')
     let title = document.querySelector('#title')
@@ -212,7 +192,7 @@ const PostAritcle = props => {
       document.querySelector('#subcate-help').classList.remove('show')
       document.querySelector('#title').classList.remove('show')
       document.querySelector('#title-help').classList.remove('show')
-      setTextValue(textValue1)
+      setTitleCheck(titleCheck1)
     } else {
       if (select.value === '') {
         document.querySelector('.selectControl').classList.add('show')
@@ -305,7 +285,34 @@ const PostAritcle = props => {
         }
       })
   }
+  const handleSection = () => {
+    let content = document.querySelector('#ddd')
+    let arr = [...content.childNodes]
+    let textContent = arr
+      .filter(item => {
+        return item.nodeName === 'TEXTAREA'
+      })
+      .map(item => item.value)
+    setTextareaValue(textContent)
 
+    let nodeNameSelect = arr.map(item => {
+      if (item.nodeName == 'DIV') {
+        if (item.firstChild.nodeName === 'IMG') {
+          return 'img'
+        } else {
+          return ''
+        }
+      } else if (item.nodeName === 'TEXTAREA') {
+        if (item.value !== '') {
+          return 'textarea'
+        } else {
+          return ''
+        }
+      }
+    })
+    let result = nodeNameSelect.filter(item => item !== '')
+    setSectionElement(result)
+  }
   return (
     <div className="post-article">
       <div className="Navbar">
@@ -326,13 +333,13 @@ const PostAritcle = props => {
                 <ListItemText primary="插入圖片" />
               </ListItem>
               {/* <CustomizedDialogs handleImgFile={handleImgagefile} /> */}
-              <ListItem button>
+              <ListItem button onClick={handleSection}>
                 <ListItemIcon>
                   <SearchIcon />
                 </ListItemIcon>
                 <ListItemText primary="Unsplash圖片" />
               </ListItem>
-              <ListItem button onClick={test}>
+              <ListItem button>
                 <ListItemIcon>
                   <VideoLibraryIcon />
                 </ListItemIcon>
@@ -411,6 +418,25 @@ const PostAritcle = props => {
     </div>
   )
 }
+// const tryImg = event => {
+//   let inputId = `#file2`
+//   let file = document.querySelector(inputId).files[0]
+//   const formdata = new FormData()
+//   formdata.append('file1', file)
+//   console.log(file)
+//   fetch('http://localhost:5555/forum/postNew/', {
+//     method: 'POST',
+//     body: formdata,
+//   })
+//     .then(response => {
+//       console.log('123')
+//       return response.json()
+//     })
+//     .then(result => {
+//       console.log(result)
+//     })
+//     .catch(error => console.log(error))
+// }
 
 const ImgDemo = props => {
   return (

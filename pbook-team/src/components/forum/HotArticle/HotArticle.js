@@ -1,10 +1,10 @@
 import React from 'react'
-import './HotTopic.scss'
+import './HotArticle.scss'
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import { faBookmark } from '@fortawesome/free-solid-svg-icons'
 // import { faBookmark as faBookmarks } from '@fortawesome/free-regular-svg-icons'
 
-class HotTopic extends React.Component {
+class HotArticle extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -39,13 +39,13 @@ class HotTopic extends React.Component {
     let count = 1
     return (
       <>
-        <div className="HotTopic-card">
-          <div className="HotTopic-title">討論區熱門文章</div>
+        <div className="HotArticle-card">
+          <div className="HotArticle-title">討論區熱門文章</div>
           <div className="tilte-line"></div>
           <div className="padding-frame">
             {this.state.article.map(value => {
               return (
-                <div className="HotTopic-item" key={value.fm_articleId}>
+                <div className="HotArticle-item" key={value.fm_articleId}>
                   <div className="dis-flex">
                     <span className="counter">{'0' + count++}</span>
 
@@ -74,4 +74,4 @@ class HotTopic extends React.Component {
     )
   }
 }
-export default HotTopic
+export default HotArticle

@@ -23,12 +23,31 @@ router
   .get((req, res) => {
     let output = {};
     let sql =
-      "SELECT * FROM `fm_article` article JOIN `vb_categories` vb ON article.`fm_category` = vb.`sid` JOIN `mr_information` mr ON article.`fm_memberId`=mr.`MR_number` WHERE article.`fm_featured`=1 ";
+      "SELECT * FROM `fm_article` article JOIN `vb_categories` vb ON article.`fm_category` = vb.`sid` JOIN `mr_information` mr ON article.`fm_memberId`=mr.`MR_number` WHERE article.`fm_featured`=1 ORDER BY RAND() LIMIT 5";
     db.query(sql, (error, results, fields) => {
       if (error) throw error;
       output.featured = results;
       console.log(results);
       res.json(output);
+    });
+  });
+
+//文章列表
+router
+  .route("/articleList/:number")
+  .all((req, res, next) => {
+    next();
+  })
+  .get((req, res) => {
+    let number = req.params.number;
+    let output = {};
+    let sql =
+      "SELECT * FROM `fm_article` article JOIN `vb_categories` vb ON article.`fm_category` = vb.`sid` JOIN `mr_information` mr ON article.`fm_memberId`=mr.`MR_number` LIMIT " +
+      number;
+    db.query(sql, (error, results, fields) => {
+      if (error) throw error;
+      // output.featured = results;
+      res.json(results);
     });
   });
 
@@ -54,6 +73,34 @@ router
     });
   });
 
+//讀取文章
+router
+  .route("/article/:articleId")
+  .all((req, res, next) => {
+    next();
+  })
+  .get((req, res) => {
+    let articleId = req.params.articleId;
+    let output = {};
+    let sql =
+      "SELECT * FROM `fm_article` JOIN  vb_categories vb ON vb.sid=`fm_category` JOIN fm_subCategories sub ON sub.sid= `fm_subCategories` WHERE `fm_articleId`='" +
+      articleId +
+      "'";
+    db.queryAsync(sql)
+      .then(result => {
+        output.article = result[0];
+        sql =
+          "SELECT * FROM `mr_information` WHERE `MR_number`='" +
+          result[0].fm_memberId +
+          "'";
+        return db.queryAsync(sql);
+      })
+      .then(result => {
+        output.member = result[0];
+        res.json(output);
+      });
+  });
+  
 //分類文章
 router
   .route("/cate/:number/:subCate?")

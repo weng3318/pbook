@@ -1,6 +1,7 @@
 import React from 'react'
 import './CardS1.scss'
 import UserDetails from '../UserDetails/UserDetails'
+import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import { faCat } from '@fortawesome/free-solid-svg-icons'
 
@@ -14,21 +15,12 @@ class CardS1 extends React.PureComponent {
     }
   }
 
-  handleTitleClick = event => {
-    console.log('title click')
-  }
-
   render() {
     if (!this.props.data || this.props.data.length === 0) {
       return (
         <>
           <figure className="card-figure">
-            <img
-              className="card-s1-img"
-              alt=""
-              src={require('./2.jpg')}
-              onClick={this.handleTitleClick}
-            />
+            <img className="card-s1-img" alt="" src={require('./2.jpg')} />
           </figure>
         </>
       )
@@ -39,29 +31,29 @@ class CardS1 extends React.PureComponent {
       return (
         <>
           <figure className="card-figure card-module">
-            <img
-              className="card-s1-img"
-              alt=""
-              src={
-                'http://localhost:5555/images/forum/article_key/' + image_name
-              }
-              onClick={this.handleTitleClick}
-            />
+            <Link to={`/forum/article/${article.fm_articleId}`}>
+              <img
+                className="card-s1-img"
+                alt=""
+                src={
+                  'http://localhost:5555/images/forum/article_key/' + image_name
+                }
+              />
+            </Link>
             <div className="card-body">
-              <div
-                className="card-title-font"
-                title={article.fm_title}
-                onClick={this.handleTitleClick}
-              >
-                {article.fm_title}
-              </div>
-              <div
-                className="card-s1-subTitle card-subtitle-font"
-                onClick={this.handleTitleClick}
-                title={article.fm_subTitle}
-              >
-                {article.fm_subTitle}
-              </div>
+              <Link to={`/forum/article/${article.fm_articleId}`}>
+                <div className="card-title-font" title={article.fm_title}>
+                  {article.fm_title}
+                </div>
+              </Link>
+              <Link to={`/forum/article/${article.fm_articleId}`}>
+                <div
+                  className="card-s1-subTitle card-subtitle-font"
+                  title={article.fm_subTitle}
+                >
+                  {article.fm_subTitle}
+                </div>
+              </Link>
               <div className="user-details">
                 <UserDetails
                   read={true}

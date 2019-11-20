@@ -101,7 +101,7 @@ class TopicPage extends React.Component {
         // defaultActiveKey="0"
 
         <>
-          <div className="HotTopicPage container">
+          <div className="HotArticlePage container">
             <div className="subCate-navbar">
               <div className="dis-flex">
                 <div className="subBar-item">
