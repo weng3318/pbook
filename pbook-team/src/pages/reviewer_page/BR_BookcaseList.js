@@ -32,7 +32,7 @@ class BR_BookcaseList extends React.Component {
                     <span className="bookInfo_Bookcase">作者：</span>{this.props.author}
                     <br/>
                     <br/>
-                    <h5 className="brInfoText_Bookcase" dangerouslySetInnerHTML={{__html:this.props.info}}></h5>
+                    <h5 className="brInfoText_Bookcase" dangerouslySetInnerHTML={{__html:this.props.introduction}}></h5>
                 </div>
                 {/* <div className="brInfoText ">{this.props.intro}</div> */}
                 <div className="brIconBox_Bookcase">
