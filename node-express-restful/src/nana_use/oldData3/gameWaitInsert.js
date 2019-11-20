@@ -35,11 +35,15 @@ gameWaitInsert
                 // console.log('results',results[0].mb_shelveMember);
 
                 return db.queryAsync(
-                    `INSERT INTO mb_gamewait(bookStatus, matchStatus, myFrom, myTo, book_sid, book_name, book_pic, created_at) VALUES ("正常","等待同意中","${req.body.memberId}","${results[0].mb_shelveMember}","${req.body.bookSid}","${results[0].mb_name}","${results[0].mb_pic}","${req.body.startTime}")`
+                    `INSERT INTO mb_gamewait(bookStatus, matchStatus, myFrom, myTo, book_sid, book_name, book_pic, created_at) VALUES ("上架中","等待同意中","${req.body.memberId}","${results[0].mb_shelveMember}","${req.body.bookSid}","${results[0].mb_name}","${results[0].mb_pic}","${req.body.startTime}")`
                 )
             }).then(results => {
-                res.send('gameWaitInsert 新增成功')
                 console.log('gameWaitInsert 新增成功');
+                return db.queryAsync(`SELECT mb_gamewait.*,mr_information.MR_name,mr_information.MR_pic FROM mb_gamewait LEFT JOIN mr_information ON mr_information.MR_number = mb_gamewait.myTo WHERE mb_gamewait.myFrom = "${req.body.memberId}" AND matchStatus = "等待同意中"`)
+            })
+            .then(results => {
+                console.log('gameWaitInsert 重新拿資料成功');
+                res.json({ insertSuccess: 'gameWaitInsert 新增成功', gameWait: results })
             })
             .catch(error => {
                 res.send("gameWaitInsert 404-找不到資料");

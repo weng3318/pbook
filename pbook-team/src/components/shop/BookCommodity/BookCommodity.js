@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Container, Row, Col } from 'react-bootstrap'
-import { rtFetch, shopFetch, cgFetch } from '../ShopActions'
+import { shopFetch, cgFetch } from '../ShopActions'
 import Breadcrumb from './Breadcrumb'
 import BookDetail from './BookDetail'
 import BookPic from './BookPic'
@@ -12,7 +12,6 @@ import './BookCommodity.scss'
 
 const BookCommodity = props => {
   useEffect(() => {
-    props.dispatch(rtFetch())
     props.dispatch(cgFetch())
     props.dispatch(
       shopFetch(
@@ -24,7 +23,6 @@ const BookCommodity = props => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   let shopPayload = props.shop.payload
-  let ratingsPayload = props.ratings.payload
   let categoriesPayload = props.categories.payload
   return (
     <>
@@ -38,10 +36,7 @@ const BookCommodity = props => {
           <Row>
             <BookPic shopPayload={shopPayload}></BookPic>
             <BookDetail shopPayload={shopPayload}></BookDetail>
-            <BookBuy
-              ratingsPayload={ratingsPayload}
-              shopPayload={shopPayload}
-            ></BookBuy>
+            <BookBuy shopPayload={shopPayload}></BookBuy>
           </Row>
         </Container>
         <Container>
@@ -62,7 +57,6 @@ const BookCommodity = props => {
 }
 
 const mapStateToProps = state => ({
-  ratings: state.ratings,
   shop: state.shop,
   categories: state.categories,
 })

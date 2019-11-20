@@ -27,7 +27,7 @@ class MyCountdown extends React.Component {
     return (
       <>
         <h6 className="countDownText">
-          距離下次重置還有：
+          距離下次重新配對還有：
           <Countdown date={this.state.oldTime + 21600000} />
         </h6>
       </>

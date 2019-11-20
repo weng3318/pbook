@@ -5,13 +5,12 @@ import Breadcrumb from './Breadcrumb'
 import Categories from './Categories'
 import DataList from './DataList'
 import DataPic from './DataPic'
-import { rtFetch, shopFetch, cgFetch } from './ShopActions'
+import { shopFetch, cgFetch } from './ShopActions'
 import './Shop.scss'
 
 const Shop = props => {
   let [searchValue, setValue] = useState('')
   useEffect(() => {
-    props.dispatch(rtFetch())
     props.dispatch(cgFetch())
     props.dispatch(
       shopFetch(
@@ -27,18 +26,8 @@ const Shop = props => {
     setValue(searchValue)
     return false
   }
-  // function SearchKey(e) {
-  //   if (e.keyCode == 13) {
-  //     searchValue = document.querySelector('.searchInput').value
-  //     setValue(searchValue)
-  //     return false
-  //   }
-  //   return true
-  // }
-  // console.log(props.match.params.categories)
   let categoriesPayload = props.categories.payload
   let shopPayload = props.shop.payload
-  let ratingsPayload = props.ratings.payload
   let Data
   if (props.match.params.mode == 'list') Data = DataList
   else if (props.match.params.mode == 'pic') Data = DataPic
@@ -61,7 +50,6 @@ const Shop = props => {
             ></Categories>
             <Data
               shopPayload={shopPayload}
-              ratingsPayload={ratingsPayload}
               nowCategories={props.match.params.categories}
               nowPage={props.match.params.page}
               mode={props.match.params.mode}
@@ -74,7 +62,6 @@ const Shop = props => {
 }
 
 const mapStateToProps = state => ({
-  ratings: state.ratings,
   shop: state.shop,
   categories: state.categories,
 })
