@@ -392,6 +392,45 @@
   }
 }
 
+@media (max-width: 575.98px){
+  .PC-changeGameWaitWrap {
+    display: none;
+  }
+  .PC-changeGameWaitContext {
+    display: none;
+  }
+  .PC-changeGameWaitContextWrap {
+    display: none;
+  }
+  .PC-nav-link.nav.nav-tabs {
+    display: none;
+  }
+  .PC-nav-link a {
+    display: none;
+  }
+  .PC-nav-link .nav-link.active {
+    display: none;
+  }
+  .PC-changeGameWaitTable table,
+  .PC-changeGameWaitTable td,
+  .PC-changeGameWaitTable th,
+  .PC-changeGameWaitTable tr {
+    display: none;
+  }
+  .PC-changeGameWaitTableWrap {
+    display: none;
+  }
+  .PC-changeGameWaitBtnWrap {
+    display: none;
+  }
+  .PC-changeGameWaitBtnWrap img {
+    display: none;
+  }
+  .PC-changeGameWaitBtnWrap img:hover {
+    display: none;
+  }
+}
+
 /* -------------配對狀態列表------------------ */
 
 /* -------------------------雪花飄落效果----------------------- */
