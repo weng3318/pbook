@@ -7,6 +7,7 @@ import AddMemberBook from '../../pages/member/AddMemberBook'
 import PasswordModify from '../../pages/member/PasswordModify'
 import BooksFavorite from '../../pages/member/BooksFavorite'
 import ViewMemberBooks from '../../pages/member/ViewMemberBooks'
+import ResetPWD from '../../pages/ResetPWD'
 
 import '../../pages/member/lukeStyle.scss'
 
@@ -115,6 +116,7 @@ const Sidebar = (props) => {
           <Route exact path="/member/PasswordModify" component={PasswordModify} />
           <Route exact path="/member/BooksFavorite" component={BooksFavorite} />
           <Route exact path="/member/ViewMemberBooks" component={ViewMemberBooks} />
+          
         </Switch>
       </Router>
     </>

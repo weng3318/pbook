@@ -29,8 +29,8 @@ countDown
                 res.json(results);
             })
             .catch(error => {
-                res.send("404-找不到資料");
-                console.log(error);
+                res.send("countDown 404-找不到資料");
+                console.log("countDown錯誤",error);
             });
     });
 module.exports = countDown;

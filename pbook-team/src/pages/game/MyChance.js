@@ -59,7 +59,7 @@ class MyChance extends React.Component {
               {this.props.chance}
             </button>
           )}
-          次重置機會
+          次刷新的機會
         </h6>
       </>
     )

@@ -5,23 +5,7 @@ import {
   RATING_REQUEST,
   SHOP_RECEIVE,
   SHOP_REQUEST,
-  SET_SHOP_PARAMS,
 } from './ShopActions'
-
-const shopParams = (state = [], action) => {
-  switch (action.type) {
-    case SET_SHOP_PARAMS:
-      return {
-        shopPage: action.shopPage,
-        shopCategories: action.shopCategories,
-        // shopKeyword: action.shopKeyword,
-      }
-    default:
-      return {
-        ...state,
-      }
-  }
-}
 
 //--------categories------
 function cg(
@@ -148,6 +132,6 @@ function shop(state = [], action) {
 }
 //---------------------
 
-const ShopReducers = { shopParams, categories, ratings, shop }
+const ShopReducers = { categories, ratings, shop }
 
 export default ShopReducers

@@ -29,8 +29,8 @@ myBooks
                 res.json(results);
             })
             .catch(error => {
-                res.send("404-找不到資料");
-                console.log(error);
+                res.send("myBooks 404-找不到資料");
+                console.log("myBooks錯誤",error);
             });
 
     });

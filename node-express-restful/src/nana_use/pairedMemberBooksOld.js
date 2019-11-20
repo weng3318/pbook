@@ -29,8 +29,8 @@ pairedMemberBooksOld
                 res.json(results);
             })
             .catch(error => {
-                res.send("404-找不到資料");
-                console.log(error);
+                res.send("pairedMemberBooksOld 404-找不到資料");
+                console.log("pairedMemberBooksOld錯誤",error);
             });
 
     });

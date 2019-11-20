@@ -16,7 +16,7 @@ import Cart from '../../pages/Cart'
 import NoPage from '../../pages/nopage/NoPage'
 import Chat from '../../components/member/chat/Chat'
 import ReviewerBooks from '../../pages/ReviewerBooks'
-import BR_ReviewerList from '../../pages/reviewer_page/BR_ReviewerList'
+import ReviewerBlog from '../../pages/ReviewerBlog'
 import BookReviews from '../../pages/BookReview/BookReviews'
 import ResetPWD from '../../pages/ResetPWD'
 import './header.css'
@@ -462,9 +462,13 @@ class Header extends React.Component {
             <Route
               exact
               path="/Reviewer/ReviewerBooks/:sid?"
-              component={ReviewerBooks}
-            />
-            <Route exact path="/books" component={Books} />
+
+              component={ReviewerBooks} />
+            <Route exact
+              path="/reviewer/reviewerBooks/reviewerBlog/:sid?" 
+              component={ReviewerBlog} />
+            <Route path="/books" component={Books} />
+
             <Route path="/activities" component={Activities} />
             <Route exact path="/reviews" component={Reviews} />
 
@@ -484,7 +488,7 @@ class Header extends React.Component {
             <Route exact path="/chat" component={Chat} />
             <Route exact path="/cart" component={Cart} />
             <Route exact path="/cart" component={Cart} />
-            <Route exact path="/ResetPWD" component={ResetPWD} />
+            <Route path="/ResetPWD/:id" component={ResetPWD} />
             <Route exact component={NoPage} />
           </Switch>
         </Router>

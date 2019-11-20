@@ -29,8 +29,8 @@ myDataList2
                 res.json(results);
             })
             .catch(error => {
-                res.send("404-找不到資料");
-                console.log(error);
+                res.send("myDataList2 404-找不到資料");
+                console.log("myDataList2錯誤",error);
             });
 
     });

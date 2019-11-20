@@ -8,7 +8,9 @@ const Page = props => {
   let pt = props.shopPayload && props.shopPayload.totalPage
   for (let page = 1; page <= pt; page++) {
     page_items.push(
-      <LinkContainer to={'/books/' + page + '/' + props.nowCategories}>
+      <LinkContainer
+        to={'/books/' + props.mode + '/' + page + '/' + props.nowCategories}
+      >
         <Pagination.Item key={page}>{page} </Pagination.Item>
       </LinkContainer>
     )
@@ -22,17 +24,25 @@ const Page = props => {
     <>
       <div className="position-absolute pageWrap pt-5">
         <Pagination className="d-flex justify-content-center">
-          <LinkContainer to={'/books/1/' + props.nowCategories}>
+          <LinkContainer
+            to={'/books/' + props.mode + '/1/' + props.nowCategories}
+          >
             <Pagination.First className="none" key={-1} />
           </LinkContainer>
-          <LinkContainer to={'/books/' + fp + '/' + props.nowCategories}>
+          <LinkContainer
+            to={'/books/' + props.mode + '/' + fp + '/' + props.nowCategories}
+          >
             <Pagination.Prev className="none" key={0} />
           </LinkContainer>
           {page_items}
-          <LinkContainer to={'/books/' + np + '/' + props.nowCategories}>
+          <LinkContainer
+            to={'/books/' + props.mode + '/' + np + '/' + props.nowCategories}
+          >
             <Pagination.Next className="none" key={10000} />
           </LinkContainer>
-          <LinkContainer to={'/books/' + pt + '/' + props.nowCategories}>
+          <LinkContainer
+            to={'/books/' + props.mode + '/' + pt + '/' + props.nowCategories}
+          >
             <Pagination.Last className="none" key={10001} />
           </LinkContainer>
         </Pagination>

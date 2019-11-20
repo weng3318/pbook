@@ -47,7 +47,11 @@ const BookCommodity = props => {
         <Container>
           <Row>
             <Col md={12}>
-              <BookProduct shopPayload={shopPayload}></BookProduct>
+              <BookProduct
+                categoriesPayload={categoriesPayload}
+                nowCategories={props.match.params.categories}
+                shopPayload={shopPayload}
+              ></BookProduct>
               <BookComment></BookComment>
             </Col>
           </Row>

@@ -11,6 +11,11 @@
     color: #444;
   }
 
+  .booksRowInfo {
+    display: block;
+    border-bottom: 1px solid #ccc;
+  }
+
   .recommend {
     border-top: 1px solid #ccc;
     figure {
@@ -23,4 +28,5 @@
       }
     }
   }
+  
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { Col } from 'react-bootstrap'
 import './Shop.scss'
 
@@ -13,13 +13,14 @@ const Categories = props => {
         </div>
         {props.categoriesPayload &&
           props.categoriesPayload.map(categories => (
-            <Link
-              to={'/books/1/' + categories.sid}
+            <NavLink
+              to={'/books/' + props.mode + '/1/' + categories.sid}
               className="d-flex justify-content-center align-items-center border-bottom categories-color"
+              activeClassName="active"
               key={categories.sid}
             >
               {categories.name}
-            </Link>
+            </NavLink>
           ))}
       </Col>
     </>
