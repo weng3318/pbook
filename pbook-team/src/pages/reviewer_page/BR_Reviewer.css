@@ -2,16 +2,16 @@
     font-family: '微軟正黑體',Arial, Helvetica, sans-serif;
     position: relative;
     box-sizing: border-box;
-    font-size: 1rem;
     margin: 0;
     padding: 0;
 }
 /* 超連結反饋，參照用 */
-/* .br:hover,a:hover{
+/* a:hover{
     color:#ff525b;
     background-color: #cde2d0;
     text-decoration: none;
 } */
+/* 移除超連結底線 */
 a:hover{
     text-decoration: none;
 }
@@ -26,7 +26,7 @@ a:hover{
 .borderLine {
     border: 3px solid #2d3a3a;
 }
-/* 邊框顏色，表格用 */
+/* 邊框顏色，上底線 */
 .borderLineTop {
     border-top:3px solid #2d3a3a;
 }

@@ -5,25 +5,7 @@ import flatCache from 'flat-cache';
 const router = express.Router()
 const cache = flatCache.load('cacheId');
 
-const mysql = require('mysql')
-const bluebird = require('bluebird')
-const db = mysql.createConnection({
-    host: '192.168.27.186',
-    user: 'root',
-    password: 'root',
-    database: 'pbook',
-})
-db.connect();
-bluebird.promisifyAll(db)
-async function sqlQuery(sql) {
-    let data = []
-    try {
-        data = await db.queryAsync(sql)
-    } catch (err) {
-        console.log(err);
-    }
-    return data
-}
+
 
 
 // 更新資料表亂數
@@ -33,7 +15,6 @@ async function sqlQuery(sql) {
 const flatCacheMiddleware = (req, res, next) => {
     let key = '__express__' + (req.originalUrl || req.url)
     let cacheContent = cache.getKey(key)
-
     // 如果換日就清光cache
     if (cacheContent) {
         let currentTime = new Date()
@@ -59,6 +40,24 @@ const flatCacheMiddleware = (req, res, next) => {
     }
 }
 
+var cache2 = flatCache.load('recommendBook', './src/activities/acCache')
+let flatCacheMiddleware2 = (req, res, next) => {
+    let key = '__express__' + req.originalUrl || req.url
+    let cacheContent = cache2.getKey(key);
+    if (cacheContent) {
+        res.send(cacheContent);
+    } else {
+        res.sendResponse = res.send
+        res.send = (body) => {
+            cache2.setKey(key, body);
+            cache2.save(true /* noPrune */);
+            res.sendResponse(body)
+        }
+        next()
+    }
+};
+
+
 router.get('/offline', async (req, res, next) => {
     res.json(await AC.getOfflineList())
 })
@@ -81,6 +80,7 @@ router.get('/book-discount/:bookId/:memberLevel?', async (req, res, next) => {
 router.get('/book-discount-for-member-level/:memberLevel', flatCacheMiddleware, async (req, res, next) => {
     res.json(await AC.getBooksDiscountForMemberLevel(req.params.memberLevel))
 })
+
 
 router.get('/recommend-books/:memberNum/:limit?', async (req, res, next) => {
     let sql = 'SELECT `sid` FROM `mr_information` WHERE `MR_number`="' + req.params.memberNum + '"'

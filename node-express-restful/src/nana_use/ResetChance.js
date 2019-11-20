@@ -41,8 +41,8 @@ ResetChance
                 res.json(results)
             })
             .catch(error => {
-                res.send("404-找不到資料");
-                console.log(error);
+                res.send("ResetChance 404-找不到資料");
+                console.log("ResetChance錯誤",error);
             });
     });
 module.exports = ResetChance;

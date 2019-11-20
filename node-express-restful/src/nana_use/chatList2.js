@@ -68,8 +68,8 @@ chatList2.route("/chatList2").post(function(req, res) {
       res.json(mapResult);
     })
     .catch(error => {
-      res.send("404-找不到資料");
-      console.log("chatlist2", error);
+      res.send("chatList2 404-找不到資料");
+      console.log("chatlist2錯誤", error);
     });
 });
 

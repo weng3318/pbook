@@ -1,5 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
+import ReviewerBlog from '../ReviewerBlog'
 
 class BR_BookcaseList extends React.Component {
     render(props) {
@@ -13,24 +14,25 @@ class BR_BookcaseList extends React.Component {
       }(document, 'script', 'facebook-jssdk'))
         return (
             <>
-<section className="ReviewerListAllBox_Bookcase reviewerList">
+            <Router>
+<section className="ReviewerListAllBox_Bookcase">
     <div className="d-flex">
             {/* 書籍圖片 */}
         <Link to={"/reviewer/reviewerBooks/reviewerBlog/"+this.props.sid} className="d-flex justify-content-center borderLineTop">
-          <div className="brAvatarAllBox_Bookcase borderLine">
+          <div className="brAvatarAllBox_Bookcase borderLineLB">
             {/* <img className="brBookInfoImg_Bookcase" src={require(`./images_books/vb_9789578587823.jpg`)}/> */}
             {/* <img className="brBookInfoImg_Bookcase" src={require(`./images/${this.props.pic}`)}/> */}
             <img className="brBookInfoImg_Bookcase" src={`http://localhost/books/src/venderBooks_Management/vb_images/${this.props.pic}`} alt=""/>
             </div>
         </Link>
-          <div className="brInfoBox_Bookcase borderLine"><h5 className="h5_br">書籍內容</h5>
+          <div className="brInfoBox_Bookcase borderLineUpDown"><h5 className="h5_br">書籍內容</h5>
                 <div className="brInfoText_Bookcase">
                     <span className="bookInfo_Bookcase">書名：</span>{this.props.name}
                     <br/>
                     <span className="bookInfo_Bookcase">作者：</span>{this.props.author}
                     <br/>
                     <br/>
-                    {this.props.introduction}
+                    <h5 className="brInfoText_Bookcase" dangerouslySetInnerHTML={{__html:this.props.info}}></h5>
                 </div>
                 {/* <div className="brInfoText ">{this.props.intro}</div> */}
                 <div className="brIconBox_Bookcase">
@@ -53,8 +55,14 @@ class BR_BookcaseList extends React.Component {
             {/* 評分組件 */}
     {/* <div className="brStarBox_Bookcase borderLine"></div> */}
     </section>
-        <h3>測試書本：{this.props.name}</h3>
-        <div style={{height:'30px'}}></div>
+        {/* <h3>測試書本：{this.props.name}</h3> */}
+        {/* <div style={{height:'30px'}}></div> */}
+            <Switch>
+                  <Route exact 
+                  path="/reviewer/reviewerBooks/reviewerBlog/:sid?" 
+                  component={ReviewerBlog} />
+            </Switch>
+            </Router>
         </>
         )
     }

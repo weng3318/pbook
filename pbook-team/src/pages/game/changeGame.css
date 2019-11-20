@@ -44,7 +44,7 @@
   transform: translate3d(1px, 1px, 1px);
   text-shadow: 0.1em 0.1em 0 rgb(173, 173, 173);
 }
-.gameRuleButtonWrap img{
+.gameRuleButtonWrap img {
   width: 200px;
 }
 
@@ -321,6 +321,74 @@
   }
 }
 /* -------------書籍列表-------------- */
+
+/* -------------配對狀態列表------------------ */
+@media (min-width: 576px) {
+  .PC-changeGameWaitWrap {
+    width: 100vw;
+    height: 48vw;
+    top: 48.5%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .PC-changeGameWaitContext {
+    width: 100%;
+    height: 100%;
+  }
+  .PC-changeGameWaitContextWrap {
+    top: 9vw;
+    left: 25vw;
+    width: 65%;
+    height: 35vw;
+    position: relative;
+  }
+  .PC-nav-link.nav.nav-tabs {
+    border-bottom: 1px solid transparent;
+    font-size: 1.5vw;
+  }
+  .PC-nav-link a {
+    color: #979d9d;
+    font-size: 1.5vw;
+  }
+  .PC-nav-link .nav-link.active {
+    color: black;
+    background-color: transparent;
+    border-color: black black transparent;
+    font-size: 1.5vw;
+  }
+  .PC-changeGameWaitTable table,
+  .PC-changeGameWaitTable td,
+  .PC-changeGameWaitTable th,
+  .PC-changeGameWaitTable tr {
+    font-size: 1.5vw;
+    text-align: center;
+    border: 2px solid black !important;
+  }
+  .PC-changeGameWaitTableWrap {
+    margin-top: 1vw;
+    width: 100%;
+    height: 20vw;
+    overflow: auto;
+  }
+  .PC-changeGameWaitBtnWrap {
+    width: 12vw;
+    bottom: 1.5vw;
+    right: 0px;
+    position: absolute;
+  }
+  .PC-changeGameWaitBtnWrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    cursor: pointer;
+  }
+  .PC-changeGameWaitBtnWrap img:hover {
+    transform: translate3d(1px, 1px, 1px);
+    text-shadow: 0.1em 0.1em 0 rgb(173, 173, 173);
+  }
+}
+
+/* -------------配對狀態列表------------------ */
 
 /* -------------------------雪花飄落效果----------------------- */
 #snow {
