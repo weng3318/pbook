@@ -247,10 +247,7 @@ export default class Header extends React.Component {
                   會員資料
                 </Link>
                 <Link
-                  to={
-                    '/game/' +
-                    JSON.parse(localStorage.getItem('user')).MR_number
-                  }
+                  to="/game"
                   className="loginText"
                   onClick={this.handleStopPropagation}
                 >
@@ -397,13 +394,7 @@ export default class Header extends React.Component {
                       </Link>
                     </li>
                     <li>
-                      <Link
-                        to={
-                          '/game/' +
-                          JSON.parse(localStorage.getItem('user')).MR_number
-                        }
-                        className="myHeaderA"
-                      >
+                      <Link to="/game" className="myHeaderA">
                         二手書配對
                       </Link>
                     </li>
@@ -456,8 +447,10 @@ export default class Header extends React.Component {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/reviewer" component={Reviewer} />
+
             <Route exact path="/Reviewer/ReviewerBooks/:sid?" component={ReviewerBooks} />
             <Route exact path="/reviewer/reviewerBooks/reviewerBlog/:sid?" component={ReviewerBlog} />
+
             <Route path="/books" component={Books} />
 
             <Route path="/activities" component={Activities} />
@@ -472,7 +465,7 @@ export default class Header extends React.Component {
             {/* <Route exact path="/login" component={()=><Login loginSuccess={(memberData)=>{ this.loginSuccess(memberData) }}/>} /> */}
             <Route exact path="/" component={Login} />
             <Route exact path="/member" component={Member} />
-            <Route exact path="/game/:id" component={Game} />
+            <Route exact path="/game" component={Game} />
             <Route exact path="/chat" component={Chat} />
             <Route exact path="/cart" component={Cart} />
             <Route exact path="/cart" component={Cart} />
