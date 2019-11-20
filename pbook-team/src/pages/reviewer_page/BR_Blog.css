@@ -41,20 +41,12 @@
 .pbookChick{
     position: absolute;
     width: 50px;
-    right: 8rem;
-    bottom: 2rem;
+    right: 1rem;
+    bottom: 1rem;
 }
-/* 書評家列表，整體區域 ( Display狀態改變) */
-.BlogListAllBox{
-    display: flex;
-}
-@media (max-width: 786px) {
-    /* 書評家列表，整體區域 (狀態改變) */
-    .BlogListAllBox {
-        display: inline-block;
-    }
-    /* 影片顯示，RWD (狀態改變) */
-    .BlogYouTubeRWD{
-        width: 100%;
+@media (max-width: 900px) {
+    /* 部落格，整體區域 (狀態改變) */
+    .reviewerBlog {
+        padding: 20px 80px 20px 80px;
     }
 }

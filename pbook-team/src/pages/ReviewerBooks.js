@@ -63,8 +63,16 @@ class ReviewerBooks extends React.Component {
         reviewerData = brData[i]
       }
     }
+    let bookcaseData = null
+    console.log('csData[0].name', csData[0].name)
+    // console.log(brData)
+    for (let i = 0; i < brData.length; i++) {
+      if (brData[i].sid == this.props.match.params.sid) {
+        bookcaseData = brData[i]
+      }
+    }
 
-    console.log('撈書櫃的書籍', csData)
+    console.log('撈書櫃的書籍 isbn', csData[0].isbn)
     return (
       <>
         <BR_Navbar />
@@ -109,13 +117,14 @@ class ReviewerBooks extends React.Component {
       </Router>
           {/* 針對書評家 - 書櫃列表 */}
           {this.state.csData.filter(({number}) => reviewerData.number == number)
-          .map(({name,pic,author,info,sid})=>(
+          .map(({name,pic,isbn,info,sid})=>(
             <BR_BookcaseList
             sid={sid}
             key={sid}
             to={"/reviewer/reviewerBooks/reviewerBlog/" + sid}
             name={name}
-            author={author}
+            isbn={isbn}
+            author={this.state.bkData.filter(({isbn})=> isbn == isbn).map(({author})=>author)}
             pic={pic}
             info={info}
             ></BR_BookcaseList>
