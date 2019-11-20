@@ -56,29 +56,8 @@ app.use(express.static("public"));
 
 app.use("/member", require("./src/member/member"));
 app.use("/forum", require("./src/forum/homepage"));
-
-// 太多了!!有空我會整理一下...
-// nana聊天室用
-app.use("/nana_use", require("./src/nana_use/chatList2"));
-app.use("/nana_use", require("./src/nana_use/chatMessage2"));
-app.use("/nana_use", require("./src/nana_use/myDataList2"));
-app.use("/nana_use", require("./src/nana_use/myBooks"));
-// nana遊戲用
-app.use("/nana_use", require("./src/nana_use/pairedMemberBooks"));
-app.use("/nana_use", require("./src/nana_use/pairedMemberBooksInsert"));
-app.use("/nana_use", require("./src/nana_use/pairedMemberBooksUpdate"));
-app.use("/nana_use", require("./src/nana_use/pairedMemberBooksOld"));
-app.use("/nana_use", require("./src/nana_use/gameSuccessUpdate"));
-app.use("/nana_use", require("./src/nana_use/gameSuccess"));
-app.use("/nana_use", require("./src/nana_use/gameFalseUpdate"));
-app.use("/nana_use", require("./src/nana_use/gameFalse"));
-app.use("/nana_use", require("./src/nana_use/gameInviteMe"));
-app.use("/nana_use", require("./src/nana_use/gameWait"));
-app.use("/nana_use", require("./src/nana_use/gameWaitCheck"));
-app.use("/nana_use", require("./src/nana_use/gameWaitInsert"));
-app.use("/nana_use", require("./src/nana_use/ResetChance"));
-app.use("/nana_use", require("./src/nana_use/countDown"));
-
+app.use("/nana_use", require("./src/nana_use/chat"));
+app.use("/nana_use", require("./src/nana_use/game"));
 app.use("/books", require(__dirname + '/src/books/book_categories'));
 app.use("/books", require(__dirname + '/src/books/book_data'));
 app.use("/books", require(__dirname + '/src/books/book_ratings'));
