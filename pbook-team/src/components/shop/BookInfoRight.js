@@ -11,10 +11,7 @@ const BookInfoRight = props => {
           <span className="price">{props.data.fixed_price}</span> 元
         </span>
         <button className="addCart mb-2">放入購物車</button>
-        <RatingStatus
-          ratingsPayload={props.ratingsPayload}
-          data={props.data}
-        ></RatingStatus>
+        <RatingStatus data={props.data}></RatingStatus>
         <button className="addReview">+本書短評</button>
       </div>
     </>

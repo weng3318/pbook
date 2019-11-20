@@ -11,7 +11,7 @@ import './Shop.scss'
 const DataList = props => {
   return (
     <>
-      <Col md={10} className="books position-relative">
+      <Col md={10} className="books">
         <div className="book_account mx-3 my-3">
           最新上架書籍共有
           <span className="book_number px-2">
@@ -52,10 +52,7 @@ const DataList = props => {
                 nowPage={props.nowPage}
               ></BookInfoLeft>
               {/*書籍資訊左半*/}
-              <BookInfoRight
-                ratingsPayload={props.ratingsPayload}
-                data={data}
-              ></BookInfoRight>
+              <BookInfoRight data={data}></BookInfoRight>
               {/*書籍資訊右半*/}
             </div>
           ))}

@@ -63,8 +63,16 @@ class ReviewerBooks extends React.Component {
         reviewerData = brData[i]
       }
     }
+    let bookcaseData = null
+    console.log('csData[0].name', csData[0].name)
+    // console.log(brData)
+    for (let i = 0; i < brData.length; i++) {
+      if (brData[i].sid == this.props.match.params.sid) {
+        bookcaseData = brData[i]
+      }
+    }
 
-    console.log('撈書櫃的書籍', csData)
+    console.log('撈書櫃的書籍 isbn', csData[0].isbn)
     return (
       <>
         <BR_Navbar />
@@ -85,9 +93,10 @@ class ReviewerBooks extends React.Component {
       <Router>
           {/* 熱門書評列表 */}
           <div className="HotBookBoxAll_Light">
+          <div className="blackBG">
               <h5 className="h5_hotText">熱門書評</h5>
               <div className="HotBookBoxAll_Bookcase">
-                  {this.state.csData.filter(({number}) => reviewerData.number == number)
+                  {this.state.csData.filter(({number}) => reviewerData.number == number )
                   .map(({pic, sid, name})=>(
                     <BR_BookcaseHot_books
                     key={sid}
@@ -99,36 +108,28 @@ class ReviewerBooks extends React.Component {
                   ))}
               </div>
           </div>
+          </div>
                 <Switch>
                       <Route exact 
                       path="/reviewer/reviewerBooks/reviewerBlog/:sid?" 
                       component={ReviewerBlog} />
                 </Switch>
       </Router>
-
-            {/* 全倒出來 - 書櫃列表 */}
-          {this.state.bkData.map(({name,pic,author,introduction,sid})=>(
+          {/* 針對書評家 - 書櫃列表 */}
+          {this.state.csData.filter(({number}) => reviewerData.number == number)
+          .map(({name,pic,isbn,info,sid})=>(
             <BR_BookcaseList
             sid={sid}
             key={sid}
             to={"/reviewer/reviewerBooks/reviewerBlog/" + sid}
             name={name}
-            author={author}
+            isbn={isbn}
+            author={this.state.bkData.filter(({isbn})=> isbn == isbn).map(({author})=>author)}
             pic={pic}
-            introduction={introduction}
+            info={info}
             ></BR_BookcaseList>
           ))}
-          {/* 針對書評家 - 書櫃列表 */}
-          {/* {this.state.csData.filter(({number}) => reviewerData.number == number)
-          .map(({pic, sid})=>(
-            <BR_BookcaseList
-            to={"/reviewer/reviewerBooks/reviewerBlog/" + sid}
-            pic={pic}
-            ></BR_BookcaseList>
-          ))} */}
-
         </section>
-
       </>
     )
   }
