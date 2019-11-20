@@ -23,6 +23,7 @@ export default function CustomizedRatings(props) {
   const changeScore = e => {
     props.setScore_star(e)
   }
+  console.log(props)
   return (
     <>
       <Box component="fieldset" ml={2} borderColor="transparent">

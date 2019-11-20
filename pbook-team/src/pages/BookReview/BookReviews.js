@@ -4,7 +4,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import styled from '@emotion/styled'
-import BookHeart from './BookScore/BookScore'
+// import BookHeart from './BookScore/BookScore'
 import BookStar from './BookScore/BookScoreForBR'
 import BookLineForBR from './BookLine/BookLineForBR'
 import BookScoreForMember from './BookScore/BookScoreForMember'
@@ -201,7 +201,6 @@ const List = () => {
         ...review,
         [e.target.name]: e.target.value,
       })
-      console.log(review.editReview)
     } else {
       setReview({
         ...review,
@@ -358,7 +357,7 @@ const List = () => {
         <div>
           <BookLine>
             <BookScore>
-              <BookHeart urlParams={urlParams} />
+              {/* <BookHeart urlParams={urlParams} /> */}
             </BookScore>
             <BookRow>
               <BookLineForBR List={List} />
@@ -401,7 +400,7 @@ const List = () => {
                 placeholder="新增評論..."
               />
               <BookRow>
-                <p>幫書籍評分</p>
+                <p style={{ width: '80px' }}>幫書籍評分</p>
                 <BookStar
                   score_star={review.star}
                   setScore_star={changeHandler}
@@ -416,7 +415,7 @@ const List = () => {
           ) : (
             <form className="reviews_form">
               <h6 className="reviews_Login">
-                <a href="/">請登入會員填寫評論</a>
+                <a href="#">請登入會員填寫評論</a>
               </h6>
             </form>
           )}

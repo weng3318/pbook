@@ -2,21 +2,22 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react'
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Link, NavLink } from 'react-router-dom'
 import styled from '@emotion/styled'
+import { LinkContainer } from 'react-router-bootstrap'
 import axios from 'axios'
+import { Pagination } from 'react-bootstrap'
 import BookScore from './BookScore/BookScore'
 import BookLine from './BookLine/BookLine'
 import Category from './Category'
-import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import './Reviews.css'
+
 function Bookinfo() {
   const [bookInformation, setBookInformation] = useState([]) //書籍資料
   const [array, setArray] = useState(1) //排序方式
   const [categorys, setCategorys] = useState([])
   const [page, getPage] = useState()
-  const [goPage, setPage] = useState()
+  const [bs,setBs] = useState([])
   //---------------------------------------------------------------------------
   //分頁功能
 
@@ -68,7 +69,7 @@ function Bookinfo() {
   // 書本外框
   const Book = styled.section`
     display: flex;
-    margin: 5px 0;
+    margin: 30px 0 0 0;
     align-items: center;
   `
   //直排
@@ -84,13 +85,13 @@ function Bookinfo() {
   //書本資訊
   const BookInfo = styled.div`
     width: 800px;
-    height: 155px;
-    margin: 0 2rem 70px 2rem;
+    height: 205px;
+    margin: 5px 2rem 15px 2rem;
     overflow: hidden;
     white-space: wrap;
     text-overflow: ellipsis;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
   `
   //書本星數
@@ -131,19 +132,23 @@ function Bookinfo() {
         console.log(error)
       })
   }
+  
+ 
 
   for (let i = 1; i <= page; i++) {
     pageNum.push(
-      <Link
-        style={{ textDecoration: 'none', color: 'black' }}
-        to={'reviews?' + c + 'p=' + i}
-      >
-        <li value={i} className="reviews_paginationNum">
+      <LinkContainer to={'reviews?' + c + 'p=' + i}>
+        <Pagination.Item
+          className="reviews_paginationNum"
+          value={i}
+        >
           {i}
-        </li>
-      </Link>
+        </Pagination.Item>
+      </LinkContainer>
     )
   }
+
+ 
   return (
     <>
       <CategoryBar>
@@ -212,19 +217,34 @@ function Bookinfo() {
           ))}
         </BookColumn>
         <BookColumn>
-          <BookLine List={bookInformation} />
+        <BookScore bookInformation={bookInformation}/>
         </BookColumn>
       </Book>
 
-      <ul className="reviews_pagination">
+      <Pagination className="reviews_pagination">
         {p >= 2 && (
-          <FontAwesomeIcon className="reviews_fontSize" icon={faAngleLeft} />
+          <LinkContainer to={'/reviews?' + c + 'p=1'}>
+            <Pagination.First className="pageNum" />
+          </LinkContainer>
+        )}
+        {p >= 2 && (
+          <LinkContainer to={'/reviews?' + c + 'p=' + Number(p - 1)}>
+            <Pagination.Prev className="pageNum" />
+          </LinkContainer>
         )}
         {pageNum}
         {p < page && (
-          <FontAwesomeIcon className="reviews_fontSize" icon={faAngleRight} />
+          <LinkContainer to={'/reviews?' + c + 'p=' + (Number(p) + 1)}>
+            <Pagination.Next className="pageNum" />
+          </LinkContainer>
         )}
-      </ul>
+        {p < page && (
+          <LinkContainer to={'/reviews?' + c + 'p=' + page}>
+            <Pagination.Last className="pageNum" />
+          </LinkContainer>
+        )}
+      </Pagination>
+         
     </>
   )
 }

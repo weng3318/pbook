@@ -31,8 +31,6 @@ export default function CustomizedRatings(props) {
           value={`${props.score_star}`}
           getLabelText={getLabelText}
           precision={1}
-          name="size-large"
-          size="large"
           icon={<FavoriteIcon fontSize="inherit" />}
         />
       </Box>

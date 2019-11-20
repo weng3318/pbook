@@ -1,11 +1,32 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react'
-import { withStyles } from '@material-ui/core/styles'
+import axios from 'axios'
+import { lighten, makeStyles, withStyles } from '@material-ui/core/styles'
+import LinearProgress from '@material-ui/core/LinearProgress'
 import Rating from '@material-ui/lab/Rating'
 import FavoriteIcon from '@material-ui/icons/Favorite'
-import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
-import axios from 'axios'
+
+const BorderLinearProgress = withStyles({
+  root: {
+    height: 10,
+    backgroundColor: lighten('#cde2d0', 0),
+  },
+  bar: {
+    borderRadius: 20,
+    backgroundColor: '#ffc408',
+  },
+})(LinearProgress)
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    margin: '0px auto 30px auto  ',
+  },
+  margin: {
+    margin: theme.spacing(0.5),
+    borderRadius: '20px',
+    width: '180px',
+  },
+}))
 
 const StyledRating = withStyles({
   iconFilled: {
@@ -16,59 +37,170 @@ const StyledRating = withStyles({
   },
 })(Rating)
 
-function getLabelText(value) {
-  return `${value} Heart${value !== 1 ? 's' : ''}`
-}
 
-export default function CustomizedRatings(props) {
-  const [score, setScore] = useState([])
+const BookScore = props => {
+  const [bs, setBs] = useState([])
+  const { bookInformation } = props
   useEffect(() => {
-    reviewList()
-  }, [score])
+    star()
+  })
 
-  //書評分頁資料ajax
-  const reviewList = () => {
-    axios
-      .get(`http://localhost:5555/reviews/book_reviews/${props.urlParams}`)
-      .then(res => {
-        let s = res.data.data[0]
-        // console.log(res.data)
-        setScore(
-          s.five_star + s.four_star + s.three_star + s.two_star + s.one_star ===
-            0 ||
-            Math.round(
-              ((s.five_star * 5 +
-                s.four_star * 4 +
-                s.three_star * 3 +
-                s.two_star * 2 +
-                s.one_star) /
-                (s.five_star +
-                  s.four_star +
-                  s.three_star +
-                  s.two_star +
-                  s.one_star)) *
-                10
-            ) / 10
-        )
-      })
-      .catch(error => {
-        console.log(error)
-      })
+  //資料ajax
+  const star = () => {
+    axios.get('http://localhost:5555/books/book_ratings').then(res => {
+      setBs(res.data.rows)
+    })
   }
+
+  let fiveStars = [],
+    fourStars = [],
+    threeStars = [],
+    twoStars = [],
+    oneStars = [],
+    max = [],
+    min = [],
+    avg = []
+
+  const classes = useStyles()
+  function countRate(bs) {
+    for (let j = 1; j <= 124; j++) {
+      fiveStars[j] = 0
+      fourStars[j] = 0
+      threeStars[j] = 0
+      twoStars[j] = 0
+      oneStars[j] = 0
+      for (let i = 0; i < bs.length; i++) {
+        if (bs[i].book == j) {
+          switch (bs[i].star) {
+            case 5:
+              fiveStars[j]++
+              break
+            case 4:
+              fourStars[j]++
+              break
+            case 3:
+              threeStars[j]++
+              break
+            case 2:
+              twoStars[j]++
+              break
+            case 1:
+              oneStars[j]++
+              break
+            default:
+              break
+          }
+        }
+      }
+    }
+    for (let j = 1; j <= 124; j++) {
+      avg[j] = (
+        (fiveStars[j] * 5 +
+          fourStars[j] * 4 +
+          threeStars[j] * 3 +
+          twoStars[j] * 2 +
+          oneStars[j]) /
+        (fiveStars[j] +
+          fourStars[j] +
+          threeStars[j] +
+          twoStars[j] +
+          oneStars[j])
+      ).toFixed(1)
+      max[j] = fiveStars[j]
+      min[j] = fiveStars[j]
+      if (fourStars[j] > max[j]) max[j] = fourStars[j]
+      else if (fourStars[j] < min[j]) min[j] = fourStars[j]
+
+      if (threeStars[j] > max[j]) max[j] = threeStars[j]
+      else if (threeStars[j] < min[j]) min[j] = threeStars[j]
+
+      if (twoStars[j] > max[j]) max[j] = twoStars[j]
+      else if (twoStars[j] < min[j]) min[j] = twoStars[j]
+
+      if (oneStars[j] > max[j]) max[j] = oneStars[j]
+      else if (oneStars[j] < min[j]) min[j] = oneStars[j]
+    }
+  }
+  countRate(bs)
+
   return (
     <>
-      <Box component="fieldset" mt={0} borderColor="transparent">
-        <Typography component="legend"></Typography>
-        <StyledRating
-          name="customized-color"
-          value={5}
-          readOnly={true}
-          getLabelText={getLabelText}
-          precision={0.1}
-          size="small"
-          icon={<FavoriteIcon fontSize="inherit" />}
-        />
-      </Box>
+      {bookInformation.map(data => (
+        <section >
+          <div className="col">
+            <span className="bol">{avg[data.sid]}</span>
+            <Box component="fieldset" mt={0} borderColor="transparent">
+              <StyledRating
+                name="customized-color"
+                value={avg[data.sid]}
+                precision={0.1}
+                readOnly
+                icon={<FavoriteIcon fontSize="inherit" />}
+              />
+            </Box>
+            <span>
+              {fiveStars[data.sid] +
+                fourStars[data.sid] +
+                threeStars[data.sid] +
+                twoStars[data.sid] +
+                oneStars[data.sid]}
+              篇評論
+            </span>
+          </div>
+
+          <div className="d-flex book_star mb-2">
+            <div className={classes.root}>
+              <div className="d-flex">
+                <span style={{ fontSize: '0.5rem' }}>5</span>
+                <BorderLinearProgress
+                  className={classes.margin}
+                  variant="determinate"
+                  color="secondary"
+                  value={(fiveStars[data.sid] / max[data.sid]) * 100}
+                />
+              </div>
+              <div className="d-flex">
+                <span style={{ fontSize: '0.5rem' }}>4</span>
+                <BorderLinearProgress
+                  className={classes.margin}
+                  variant="determinate"
+                  color="secondary"
+                  value={(fourStars[data.sid] / max[data.sid]) * 100}
+                />
+              </div>
+              <div className="d-flex">
+                <span style={{ fontSize: '0.5rem' }}>3</span>
+                <BorderLinearProgress
+                  className={classes.margin}
+                  variant="determinate"
+                  color="secondary"
+                  value={(threeStars[data.sid] / max[data.sid]) * 100}
+                />
+              </div>
+              <div className="d-flex">
+                <span style={{ fontSize: '0.5rem' }}>2</span>
+                <BorderLinearProgress
+                  className={classes.margin}
+                  variant="determinate"
+                  color="secondary"
+                  value={(twoStars[data.sid] / max[data.sid]) * 100}
+                />
+              </div>
+              <div className="d-flex">
+                <span style={{ fontSize: '0.5rem' }}>1</span>
+                <BorderLinearProgress
+                  className={classes.margin}
+                  variant="determinate"
+                  color="secondary"
+                  value={(oneStars[data.sid] / max[data.sid]) * 100}
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+      ))}
     </>
   )
 }
+
+export default BookScore
