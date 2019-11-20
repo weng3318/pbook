@@ -56,6 +56,7 @@ app.use(express.static("public"));
 
 app.use("/member", require("./src/member/member"));
 app.use("/forum", require("./src/forum/homepage"));
+app.use("/books", require('./src/books/bookApi'));
 
 // 太多了!!有空我會整理一下...
 app.use("/nana_use", require("./src/nana_use/chatList2"));
@@ -69,9 +70,6 @@ app.use("/nana_use", require("./src/nana_use/pairedMemberBooksOld"));
 app.use("/nana_use", require("./src/nana_use/ResetChance"));
 app.use("/nana_use", require("./src/nana_use/countDown"));
 
-app.use("/books", require(__dirname + '/src/books/book_categories'));
-app.use("/books", require(__dirname + '/src/books/book_data'));
-app.use("/books", require(__dirname + '/src/books/book_ratings'));
 app.use('/activities', require('./src/activities/acApi'))
 app.use('/reviews', require('./src/book_review/reviews'))
 

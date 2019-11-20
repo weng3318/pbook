@@ -1,9 +1,10 @@
 import React from 'react'
+import StepOne from '../components/cart/StepOne'
 
 const Cart = () => {
   return (
     <>
-      <h1>購物車</h1>
+      <StepOne></StepOne>
     </>
   )
 }

@@ -1,7 +1,7 @@
 import express from 'express'
 import AC from './acModel'
 import flatCache from 'flat-cache';
-import getRecommenderBooks from './recommandBook'
+// import getRecommenderBooks from './recommandBook'
 const router = express.Router()
 const cache = flatCache.load('cacheId');
 
@@ -87,11 +87,11 @@ router.get('/recommend-books/:memberNum/:limit?', async (req, res, next) => {
     let memberId = +(await sqlQuery(sql))[0].sid
     console.log(memberId);
     
-    if (req.params.limit) {
-        res.json(await getRecommenderBooks(memberId, req.params.limit))
-    } else {
-        res.json(await getRecommenderBooks(memberId))
-    }
+    // if (req.params.limit) {
+    //     res.json(await getRecommenderBooks(memberId, req.params.limit))
+    // } else {
+    //     res.json(await getRecommenderBooks(memberId))
+    // }
 })
 
 // router.post('/add', (req, res, next) => {

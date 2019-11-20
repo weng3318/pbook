@@ -58,11 +58,11 @@ const BookInfoLeft = props => {
           <Link
             to={
               '/books/' +
+              'information/' +
               props.nowPage +
               '/' +
               props.nowCategories +
               '/' +
-              'information/' +
               props.data.name
             }
             className="ml-auto mt-auto moreInfo"
