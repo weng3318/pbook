@@ -3,7 +3,12 @@ import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Link, useParams } from 'react-router-dom'
 import { connect } from 'react-redux'
 //action
-import { AppendTextarea, AppendImgInput, AppendImgElement } from './fmAction'
+import {
+  AppendTextarea,
+  AppendImgInput,
+  AppendImgElement,
+  clearPostAritcleState,
+} from './fmAction'
 //UI componet
 import CustomizedDialogs from '../../components/Material-UI/Dialog'
 import { makeStyles } from '@material-ui/core/styles'
@@ -72,9 +77,7 @@ const PostAritcle = props => {
   const [textareaCount, setTextareaCount] = useState(1)
   const [textValue, setTextValue] = useState(1)
   const [subcate, setSubcate] = useState([1, 2])
-  const [imgfile, setImagefile] = useState('')
-  const [uploading, setUploading] = React.useState([])
-  const [img1, setimg1] = React.useState([])
+  const [mainImg, setMainImg] = useState(false)
 
   let { category, MR_number } = useParams()
   const Swal = require('sweetalert2')
@@ -87,29 +90,32 @@ const PostAritcle = props => {
 
   useEffect(() => {
     if (textValue !== 1) {
-      let file = document.querySelector(`#file0`).files
+      let formData = new FormData()
+      if (mainImg) {
+        let file = document.querySelector(`#file0`).files[0]
+        formData.append('imgfile', file)
+      }
       let jsonTextValue = JSON.stringify(textValue)
       let jsonElement = JSON.stringify(props.addElement)
       let subcate = document.querySelector('#grouped-select').value
       let title = document.querySelector('#title').value
-      let formData = new FormData()
-      formData.append('imgfile', file)
-      // formData.append('textareaCount', textareaCount)
-      // formData.append('textareaValue', jsonTextValue)
-      // formData.append('imgCount', props.imgCount)
-      // formData.append('element', jsonElement)
-      // formData.append('title', title)
-      // formData.append('cate', category)
-      // formData.append('subcate', subcate)
-      // formData.append('MR_number', MR_number)
-      // formData.append('imgData', [...props.imgData])
+
+      formData.append('textareaCount', textareaCount)
+      formData.append('textareaValue', jsonTextValue)
+      formData.append('imgCount', props.imgCount)
+      formData.append('element', jsonElement)
+      formData.append('title', title)
+      formData.append('cate', category)
+      formData.append('subcate', subcate)
+      formData.append('MR_number', MR_number)
+      formData.append('imgData', [...props.imgData])
 
       fetch('http://localhost:5555/forum/postNew/', {
         method: 'POST',
         body: formData,
       })
         .then(response => {
-          // console.log(response.status)
+          console.log(response.status)
           return response.json()
         })
         .then(result => {
@@ -122,6 +128,13 @@ const PostAritcle = props => {
               confirmButtonText: '太棒了',
             })
           props.history.push('/forum')
+          props.dispatch(clearPostAritcleState())
+        })
+        .catch(function(error) {
+          console.log(
+            'There has been a problem with your fetch operation: ',
+            error.message
+          )
         })
     }
   }, [textValue])
@@ -157,6 +170,7 @@ const PostAritcle = props => {
       let element = (
         <ImgDemo imgData={event.target.result} imgCount={props.imgCount} />
       )
+      setMainImg(true)
       props.dispatch(AppendImgElement(element, event.target.result))
     })
   }
@@ -246,9 +260,6 @@ const PostAritcle = props => {
     props.dispatch(AppendTextarea(element))
   }
 
-  const handleImgagefile = imageFile => {
-    setImagefile(imageFile)
-  }
   const handleCancelPost = e => {
     swalWithBootstrapButtons
       .fire({

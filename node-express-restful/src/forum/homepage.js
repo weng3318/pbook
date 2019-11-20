@@ -97,70 +97,65 @@ router
   .get((req, res) => {
     res.send("get");
   })
-  .post(upload.array("imgfile"), (req, res) => {
-    console.log(req.file);
+  .post(upload.single("imgfile"), (req, res) => {
+    let resData = {};
+    let data = req.body;
+    let articleId = +new Date() + data.MR_number;
+    let filename = "";
+    console.log(filename);
+    // console.log(req.file);
     if (req.file && req.file.mimetype) {
-      switch (req.files[0].mimetype) {
+      filename = articleId + "." + req.file.mimetype.slice(6, 10);
+      switch (req.file.mimetype) {
         case "image/png":
         case "image/jpeg":
-          fs.createReadStream(req.files[0].path).pipe(
-            fs.createWriteStream(
-              "public/images/forum/article_key/" + req.files[0].originalname
-            )
+          fs.createReadStream(req.file.path).pipe(
+            fs.createWriteStream("public/images/forum/article_key/" + filename)
           );
-          res.json({
-            filename: req.files[0].originalname
-          });
+          resData.filename = filename;
           break;
         default:
           return res.send("bad file type");
       }
     } else {
-      res.json({
-        filename: ""
-      });
+      resData.filename = "no img file";
     }
-    // let resData = {};
-    // let data = req.body;
-    // let articleId = +new Date() + data.MR_number;
-    // let category = data.cate;
-    // let subCategories = data.subcate;
-    // let title = data.title;
-    // let subTitle = JSON.parse(data.textareaValue)[0];
-    // let demoImage = articleId + ".jpg";
-    // // let content = JSON.parse(data.element);
-    // // let contentFile = articleId;
-    // let content = data.element;
-    // let memberId = data.MR_number;
-    // res.send("1223");
-
-    // let sql =
-    //   "INSERT INTO `fm_article`(`fm_articleId`, `fm_category`, `fm_subCategories`, `fm_title`, `fm_subTitle`, `fm_demoImage`, `fm_content`, `fm_memberId`, `fm_featured`, `fm_like`, `fm_read`, `fm_publishTime`, `fm_updateTime`) VALUES (?,?,?,?,?,?,?,?,?,?,?,NOW() ,NOW() )";
-    // db.query(
-    //   sql,
-    //   [
-    //     articleId,
-    //     category,
-    //     subCategories,
-    //     title,
-    //     subTitle,
-    //     demoImage,
-    //     content,
-    //     memberId,
-    //     1,
-    //     1,
-    //     1
-    //   ],
-    //   (error, results, fields) => {
-    //     if (error) throw error;
-    //     if (results.affectedRows === 1) {
-    //       resData.message = true;
-    //     } else {
-    //       resData.message = false;
-    //     }
-    //     res.json(resData);
-    //   }
-    // );
+    let category = data.cate;
+    let subCategories = data.subcate;
+    let title = data.title;
+    let subTitle = JSON.parse(data.textareaValue)[0];
+    let demoImage = filename;
+    // let content = JSON.parse(data.element);
+    let contentFile = articleId;
+    let content = data.element;
+    let memberId = data.MR_number;
+    let sql =
+      "INSERT INTO `fm_article`(`fm_articleId`, `fm_category`, `fm_subCategories`, `fm_title`, `fm_subTitle`, `fm_demoImage`, `fm_content`, `fm_memberId`, `fm_featured`, `fm_like`, `fm_read`, `fm_publishTime`, `fm_updateTime`) VALUES (?,?,?,?,?,?,?,?,?,?,?,NOW() ,NOW() )";
+    db.query(
+      sql,
+      [
+        articleId,
+        category,
+        subCategories,
+        title,
+        subTitle,
+        demoImage,
+        content,
+        memberId,
+        1,
+        1,
+        1
+      ],
+      (error, results, fields) => {
+        if (error) throw error;
+        if (results.affectedRows === 1) {
+          resData.message = true;
+        } else {
+          resData.message = false;
+        }
+        res.json(resData);
+      }
+    );
   });
 
 // router.route("/homepage/:id?").get((req, res) => {

@@ -20,13 +20,15 @@ function postArticle(state = postArticleState, action) {
         addElement: [...state.addElement, action.content],
         imgData: [...state.imgData, action.imgData],
       }
-    case 'MAIN_IMAGE':
-      console.log('action.mainImagefile', action.mainImagefile)
-      return { ...state, mainImage: action.mainImagefile }
+
     case 'APPEND_TEXTAREA':
       return {
         ...state,
         addElement: [...state.addElement, action.content],
+      }
+    case 'CLEAR_POST_DATA':
+      return {
+        ...postArticleState,
       }
 
     default:

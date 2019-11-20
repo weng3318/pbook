@@ -13,9 +13,8 @@ export const AppendTextarea = addElement => ({
   type: 'APPEND_TEXTAREA',
   content: addElement,
 })
-export const MainImageFile = mainImagefile => ({
-  type: 'MAIN_IMAGE',
-  mainImagefile: mainImagefile,
+export const clearPostAritcleState = () => ({
+  type: 'CLEAR_POST_DATA',
 })
 export const letMeLogin = () => ({
   type: 'LET_ME_LOGIN',
