@@ -1,0 +1,18 @@
+@import '../../color.scss';
+.acListHeader {
+  button {
+    border: 1px solid transparent;
+    background: $color-black;
+    color: $color-white;
+    margin-right: 1rem;
+    border-radius: 5px;
+    &:hover {
+      border: 1px solid $color-yellow;
+    }
+    &:focus,
+    &.active {
+      outline: none;
+      color: $color-yellow;
+    }
+  }
+}
