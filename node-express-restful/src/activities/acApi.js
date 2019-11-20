@@ -81,11 +81,16 @@ router.get('/book-discount-for-member-level/:memberLevel', flatCacheMiddleware, 
     res.json(await AC.getBooksDiscountForMemberLevel(req.params.memberLevel))
 })
 
-router.get('/recommend-books/:memberNum/:limit?', flatCacheMiddleware2, async (req, res, next) => {
+
+router.get('/recommend-books/:memberNum/:limit?', async (req, res, next) => {
+    let sql = 'SELECT `sid` FROM `mr_information` WHERE `MR_number`="' + req.params.memberNum + '"'
+    let memberId = +(await sqlQuery(sql))[0].sid
+    console.log(memberId);
+    
     // if (req.params.limit) {
-    //     res.json(await getRecommenderBooks(req.params.memberNum, req.params.limit))
+    //     res.json(await getRecommenderBooks(memberId, req.params.limit))
     // } else {
-    //     res.json(await getRecommenderBooks(req.params.memberNum))
+    //     res.json(await getRecommenderBooks(memberId))
     // }
 })
 
