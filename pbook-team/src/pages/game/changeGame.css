@@ -1,3 +1,7 @@
+.pointer{
+  cursor: pointer;
+}
+
 .changeGameIndexBG {
   width: 100%;
   height: 100vh;
@@ -166,10 +170,14 @@
     top: 11vw;
     left: 25vw;
     width: 65%;
-    height: 30vw;
+    height: 33vw;
+    position: relative;
+  }
+  .PC-changeGameBookListTable {
+    width: 100%;
+    height: 20vw;
     overflow: auto;
   }
-
   .PC-changeGameBookListTable table,
   .PC-changeGameBookListTable td,
   .PC-changeGameBookListTable th,
@@ -178,13 +186,11 @@
     text-align: center;
     border: 2px solid black !important;
   }
-
   .PC-changeGameBookListBookStatus {
     cursor: pointer;
     position: relative;
     z-index: 10;
   }
-
   .PC-changeGameBookListBookStatus:hover:after {
     font-size: 1vw;
     cursor: pointer;
@@ -199,7 +205,6 @@
     padding: 5px;
     text-align: left;
   }
-
   .PC-changeGameBookListShow {
     font-size: 1.5vw;
     margin: 0 auto;
@@ -209,13 +214,15 @@
     color: #ffffff;
     cursor: pointer;
   }
-
   .PC-changeGameBookListBtnWrap {
-    width: 99%;
+    width: 12vw;
+    bottom: 1.5vw;
+    right: 0px;
+    position: absolute;
   }
   .PC-changeGameBookListBtnWrap img {
-    width: 20%;
-    height: 20%;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
     cursor: pointer;
   }
@@ -227,7 +234,6 @@
   .PHONE-changeGameBookListWrap {
     display: none;
   }
-
   .PHONE-changeGameBookListContext {
     display: none;
   }
@@ -249,29 +255,27 @@
   .PC-changeGameBookListTableWrap {
     display: none;
   }
-
+  .PC-changeGameBookListTable {
+    display: none;
+  }
   .PC-changeGameBookListTable table,
   .PC-changeGameBookListTable td,
   .PC-changeGameBookListTable th,
   .PC-changeGameBookListTable tr {
     display: none;
   }
-
   .PC-changeGameBookListBookStatus {
     display: none;
   }
-
   .PC-changeGameBookListBookStatus:hover:after {
     display: none;
   }
-
   .PC-changeGameBookListShow {
     display: none;
   }
   .PC-changeGameBookListShow:hover {
     display: none;
   }
-
   .PC-changeGameBookListBtnWrap {
     display: none;
   }
@@ -315,7 +319,7 @@
     color: #cc2929;
     cursor: pointer;
   }
-
+  
   .slick-arrow.slick-next {
     display: none !important;
   }
@@ -360,7 +364,7 @@
   .PC-changeGameWaitTable td,
   .PC-changeGameWaitTable th,
   .PC-changeGameWaitTable tr {
-    font-size: 1.5vw;
+    font-size: 1vw;
     text-align: center;
     border: 2px solid black !important;
   }
