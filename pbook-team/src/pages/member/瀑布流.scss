@@ -1,10 +1,11 @@
-$main_color: #cde2e0;
-$black: #2d3a3a;
-$yellow: #ffc408;
-$grey: #979d9d;
+$main_color : #CDE2E0;
+$black: #2D3A3A;
+$yellow: #FFC408;
+$grey: #979D9D;
 $big_text: 32px;
 $title: 28px;
 $content: 24px;
+
 
 * {
   margin: 0;
@@ -17,7 +18,7 @@ $content: 24px;
   width: 1280px;
 }
 
-.MB_title {
+.MB_title{
   margin: 20px;
   font-size: 32px;
   margin-top: 50px;
@@ -29,7 +30,7 @@ $content: 24px;
 
 .err_border {
   background-color: #eee;
-  border: 1px solid #ff525b;
+  border: 1px solid #FF525B;
   padding: 12px 15px;
   margin: 10px 0;
   width: 100%;
@@ -39,21 +40,23 @@ $content: 24px;
   height: 20px;
   width: 100%;
   text-align: center;
-  margin: -8px 0 5px 0;
+  margin:-8px 0 5px 0;
   padding: 0;
-  color: #ff525b;
+  color: #FF525B;
 }
 
+
 //查看二手書書籍
-.viewMemberBooks {
+.viewMemberBooks{
   @extend .contentWrap;
-  .Book_title {
+  .Book_title{
     @extend .MB_title;
   }
 }
 
+
 //收藏書籍
-.booksContent {
+.booksContent{
   position: absolute;
   right: 0;
   left: 320px;
@@ -66,67 +69,68 @@ $content: 24px;
   margin: 0;
   // width: 85%;
   transition: 0.5s;
+  
+    &::before {
+      content: "";
+      display: block;
+      background: rgba(0,0,0,.7);
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+  } 
 
-  &::before {
-    content: '';
-    display: block;
-    background: rgba(0, 0, 0, 0.7);
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
+  .title{
+      // margin: 20px;
+      // margin-top: 50px;
+      // margin: 80px 0px 20px 40px;
+      // font-size: 32px;
+      // padding-left: 60px;
+      // padding-bottom: 50px;
+      // width: 1280px;
+      // border-bottom: 3px solid $yellow;
+      @extend .MB_title;
+  }
+  .wrap{
+    // border: 1px solid #000;
+    // margin: 10px 20px;
     width: 100%;
+    column-count: 5;
+    column-width: 18%;
+    column-gap: 5px;
   }
-
-  .title {
-    @extend .MB_title;
-  }
-
-  .wrap {
-    width: 100%;
-    height: 900px;
-    // background: #000;
-    display: flex;
-  }
-  .list {
+  .list{
     padding-bottom: 10px;
-    margin: 25px 30px 15px 30px;
-    transition: 0.5s;
-    width: 200px;
-    height: 300px;
-    // border: 1px solid #ff525b;
-    position: relative;
-    // background: rgb(255, 0, 0);
-  }
+    margin: 25px 20px 15px 15px;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    overflow: hidden;
+    transition: .5s;
+    min-width: 160px;
+    max-width: 200px;
+    //  &:hover{
+    //   //  box-shadow: 10px 10px 5px rgba(0, 0, 0, .5);
+    //   width: 105%;
+    //   box-shadow: 0px 0px 12px #cde2d0;
+    //  }
+  } 
 
-  .listImg {
-    width: 100%;
+  .listImg{
+    width: 250px;
+    height: 240px;
     left: 50%;
     transform: translateX(-50%);
     vertical-align: middle;
-    transition: 0.5s;
+    &:hover{
+      //  box-shadow: 10px 10px 5px rgba(0, 0, 0, .5);
+      width: 105%;
+      box-shadow: 0px 0px 12px #cde2d0;
+     }
   }
-  .listImg:hover {
-    //  box-shadow: 10px 10px 5px rgba(0, 0, 0, .5);
-    width: 240px;
-    box-shadow: 0px 0px 12px #cde2d0;
-  }
-
-  .bookInfo {
+  .bookInfo{
     padding: 5px 10px;
-  }
-
-  .booksTitle {
-    position: absolute;
-    // background: chartreuse;
-    font-size: 20px;
-    color: #fff;
-    // bottom: 0px;
-    // left: 0px;
-    left: 50%;
-    bottom: auto;
-    transform: translateX(-50%);
   }
   .avatar {
     vertical-align: middle;
@@ -134,26 +138,41 @@ $content: 24px;
     height: 30px;
     border-radius: 50%;
   }
-  .introduction {
+  .booksTitle{
+    margin-top: 10px;
+    font-size: 20px;
+    text-align: center;
+    color: #fff;
+    // text-shadow: 2px 2px 2px rgba(0, 0, 0, .3);
+    &:hover{
+      text-decoration: none;
+      color: #ffc408;
+    }
+  }
+  .introduction{
     // border: 1px solid #000;
     overflow: hidden;
-    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.6);
+    text-shadow: 2px 2px 2px rgba(0, 0, 0, .6);
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+
 }
 
+
+
+
 //修改密碼
-.passwordContent {
+.passwordContent{
   @extend .contentWrap;
-  .title {
+  .title{
     @extend .MB_title;
   }
 
-  .tip {
+  .tip{
     // border: 1px solid #000;
     height: 50px;
-    color: #979d9d;
+    color: #979D9D;
     width: 100%;
     text-align: center;
     margin: 0;
@@ -165,63 +184,71 @@ $content: 24px;
     height: 20px;
     font-size: 12px; */
     background-color: #eee;
-    border: 1px solid #ff525b;
-    color: #ff525b;
+    border: 1px solid #FF525B;
+    color: #FF525B;
     padding: 12px 15px;
     margin: 10px 0;
     width: 100%;
     text-align: center;
   }
-  .serial {
+  .serial{
     width: 100%;
     height: 70px;
     margin-bottom: 50px;
   }
 
-  .passwordGroup {
+
+  .passwordGroup{
     // border: 1px solid #000;
     width: 50%;
     margin: auto;
     padding: 30px;
 
-    .item {
+    .item{
       text-align: center;
       font-size: $big_text;
       padding: 20px;
+
     }
+    
   }
-  button {
+  button{
     margin: 35px;
   }
+
 }
 
 //新增會員書籍
-.addMemberBook {
-  .Book_title {
-    margin: 20px;
-    font-size: 32px;
-    margin-top: 50px;
-    padding-left: 60px;
-    padding-bottom: 50px;
-    width: 1400px;
-    border-bottom: 3px solid $yellow;
-  }
-  .button-group {
-    // border: 1px solid #000;
-    margin: 30px 0px 100px 300px;
-    justify-content: flex-start;
-    button {
-      // border: 1px solid red;
-      margin: 20px 100px;
+.addMemberBook{
+
+    .Book_title{
+      margin: 20px;
+      font-size: 32px;
+      margin-top: 50px;
+      padding-left: 60px;
+      padding-bottom: 50px;
+      width: 1400px;
+      border-bottom: 3px solid $yellow;
     }
-  }
+    .button-group{
+      // border: 1px solid #000;
+      margin: 30px 0px 100px 300px;
+      justify-content: flex-start;
+        button{
+            // border: 1px solid red;
+            margin: 20px 100px;
+          }
+
+    }
+
 }
 
+
 //會員編輯的樣式
-.editWrap {
+.editWrap{
   @extend .contentWrap;
   // border: 1px solid rgb(109, 34, 34);
-
+  
   .MB_title {
     // border: 1px solid #000;
     @extend .MB_title;
@@ -233,10 +260,10 @@ $content: 24px;
     margin-top: 50px;
     padding-left: 80px;
 
-    .form-group {
+    .form-group{
       // border: 1px solid #000;
-
-      label {
+      
+      label{
         // border: 1px solid #000;
         padding: 20px;
       }
@@ -251,18 +278,18 @@ $content: 24px;
       margin: 20px;
       padding: 20px 10px;
     }
-    input {
+    input{
       // border: 1px solid #000;
       margin-top: 40px;
-      height: 30px;
+      height:30px;
       width: 300px;
-    }
+   }
   }
   .list-r {
     // border: 1px solid #000;
     margin-top: 50px;
 
-    .itemTitle {
+    .itemTitle{
       font-size: $big_text;
       display: flex;
       justify-content: center;
@@ -278,12 +305,12 @@ $content: 24px;
       padding-top: 50px;
       /* border: 1px solid #000; */
 
-      .chang_btn {
+      .chang_btn{
         display: flex;
         justify-content: center;
       }
 
-      figure {
+      figure{
         width: 300px;
         height: 300px;
         border-radius: 99em;
@@ -291,22 +318,25 @@ $content: 24px;
         object-fit: cover;
       }
     }
-
+ 
     h3 {
       display: block;
       width: 200px;
     }
   }
 
-  .button-group {
+  .button-group{
     // border: 1px solid #000;
     margin: 80px;
     justify-content: center;
-    button {
+    button{
       margin: 20px 100px;
     }
   }
+
 }
+
+
 
 //會員資訊的樣式
 .infoWrap {
@@ -347,7 +377,7 @@ $content: 24px;
       /* border: 1px solid #000; */
     }
 
-    figure {
+    figure{
       // border: 1px solid #000;
       width: 300px;
       height: 300px;
@@ -355,6 +385,7 @@ $content: 24px;
       // background-repeat: no-repeat;
       background-size: cover;
       // object-fit: cover;
+      
     }
     h3 {
       display: block;
@@ -365,16 +396,16 @@ $content: 24px;
 
 //sidebar內樣式
 .side-menu {
-  width: 320px;
-  height: 80vw;
-  padding: 30px 0;
-  box-sizing: border-box;
-  background-color: #cde2d0;
-  /* opacity: 0.6; */
-  display: flex;
-  flex-direction: column;
-  // box-shadow: 5px 5px 10px #2D3A3A;
-  text-decoration: none;
+    width: 320px;
+    height: 80vw;
+    padding: 30px 0;
+    box-sizing: border-box;
+    background-color: #CDE2D0;
+    /* opacity: 0.6; */
+    display: flex;
+    flex-direction: column;
+    // box-shadow: 5px 5px 10px #2D3A3A; 
+    text-decoration: none;
 
   .sidebar {
     padding-left: 60px;
