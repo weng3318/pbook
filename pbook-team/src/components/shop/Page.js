@@ -22,7 +22,7 @@ const Page = props => {
 
   return (
     <>
-      <div className="position-absolute pageWrap pt-5">
+      <div className="pageWrap pt-5">
         <Pagination className="d-flex justify-content-center">
           <LinkContainer
             to={'/books/' + props.mode + '/1/' + props.nowCategories}

@@ -447,16 +447,10 @@ export default class Header extends React.Component {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/reviewer" component={Reviewer} />
-            <Route
-              exact
-              path="/Reviewer/ReviewerBooks/:sid?"
-              component={ReviewerBooks}
-            />
-            <Route
-              exact
-              path="/reviewer/reviewerBooks/reviewerBlog/:sid?"
-              component={ReviewerBlog}
-            />
+
+            <Route exact path="/Reviewer/ReviewerBooks/:sid?" component={ReviewerBooks} />
+            <Route exact path="/reviewer/reviewerBooks/reviewerBlog/:sid?" component={ReviewerBlog} />
+
             <Route path="/books" component={Books} />
 
             <Route path="/activities" component={Activities} />

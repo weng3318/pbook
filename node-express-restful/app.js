@@ -56,11 +56,11 @@ app.use(express.static("public"));
 
 app.use("/member", require("./src/member/member"));
 app.use("/forum", require("./src/forum/homepage"));
+
 app.use("/nana_use", require("./src/nana_use/chat"));
 app.use("/nana_use", require("./src/nana_use/game"));
-app.use("/books", require(__dirname + '/src/books/book_categories'));
-app.use("/books", require(__dirname + '/src/books/book_data'));
-app.use("/books", require(__dirname + '/src/books/book_ratings'));
+app.use("/books", require('./src/books/bookApi'));
+
 app.use('/activities', require('./src/activities/acApi'))
 app.use('/reviews', require('./src/book_review/reviews'))
 
