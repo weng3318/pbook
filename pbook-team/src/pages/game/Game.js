@@ -201,28 +201,38 @@ class Game extends React.Component {
     })
   }
 
+  //配對狀態列表去聊天室按鈕
+  handleGoChat = () => {
+    this.btnaudio.cloneNode().play()
+    setTimeout(() => {
+      window.location = 'http://localhost:3000/chat'
+    }, 300)
+  }
+
   // 配對狀態列表收回/拒絕按鈕
   handleGameFalse = e => {
     // console.log('測試一下', e.target.getAttribute("data-value"))
-    let bookSid = e.target.getAttribute("data-value")
+    let bookSid = e.target.getAttribute('data-value')
 
-    axios.post(`http://localhost:5555/nana_use/gameFalseUpdate`, {
-      memberId: JSON.parse(localStorage.getItem('user')).MR_number,
-      bookSid: bookSid,
-    }).then(res => {
-      if (res.data.gameFalseUpdate = 'gameFalseUpdate 修改成配對失敗成功') {
-        swal({
-          title: '配對狀態已更改為配對失敗!請去查看配對失敗列表!',
-          icon: 'success',
-        }).then(results => {
-          this.setState({
-            gameWait: res.data.gameWait,
-            gameInviteMe: res.data.gameInviteMe,
-            gameFalse: res.data.gameFalse
+    axios
+      .post(`http://localhost:5555/nana_use/gameFalseUpdate`, {
+        memberId: JSON.parse(localStorage.getItem('user')).MR_number,
+        bookSid: bookSid,
+      })
+      .then(res => {
+        if ((res.data.gameFalseUpdate = 'gameFalseUpdate 修改成配對失敗成功')) {
+          swal({
+            title: '配對狀態已更改為配對失敗!請去查看配對失敗列表!',
+            icon: 'success',
+          }).then(results => {
+            this.setState({
+              gameWait: res.data.gameWait,
+              gameInviteMe: res.data.gameInviteMe,
+              gameFalse: res.data.gameFalse,
+            })
           })
-        })
-      }
-    })
+        }
+      })
       .catch(err => {
         console.log('handleGameFalse ajax時錯誤', err)
       })
@@ -231,25 +241,30 @@ class Game extends React.Component {
   //配對狀態列表同意配對按鈕
   handleGameSuccess = e => {
     // console.log('測試一下', e.target.getAttribute("data-value"))
-    let bookSid = e.target.getAttribute("data-value")
+    let bookSid = e.target.getAttribute('data-value')
 
-    axios.post(`http://localhost:5555/nana_use/gameSuccessUpdate`, {
-      memberId: JSON.parse(localStorage.getItem('user')).MR_number,
-      bookSid: bookSid,
-    }).then(res => {
-      if (res.data.gameSuccessUpdate = 'gameSuccessUpdate 修改成配對成功成功') {
-        swal({
-          title: '配對狀態已更改為配對成功!請去查看配對成功列表!',
-          icon: 'success',
-        }).then(results => {
-          this.setState({
-            gameWait: res.data.gameWait,
-            gameInviteMe: res.data.gameInviteMe,
-            gameSuccess: res.data.gameSuccess
+    axios
+      .post(`http://localhost:5555/nana_use/gameSuccessUpdate`, {
+        memberId: JSON.parse(localStorage.getItem('user')).MR_number,
+        bookSid: bookSid,
+        memberName: JSON.parse(localStorage.getItem('user')).MR_name,
+      })
+      .then(res => {
+        if (
+          (res.data.gameSuccessUpdate = 'gameSuccessUpdate 修改成配對成功成功')
+        ) {
+          swal({
+            title: '配對狀態已更改為配對成功!請去查看配對成功列表!',
+            icon: 'success',
+          }).then(results => {
+            this.setState({
+              gameWait: res.data.gameWait,
+              gameInviteMe: res.data.gameInviteMe,
+              gameSuccess: res.data.gameSuccess,
+            })
           })
-        })
-      }
-    })
+        }
+      })
       .catch(err => {
         console.log('handleGameFalse ajax時錯誤', err)
       })
@@ -359,13 +374,19 @@ class Game extends React.Component {
         return axios.post(`http://localhost:5555/nana_use/gameFalse`, {
           memberId: JSON.parse(localStorage.getItem('user')).MR_number,
         })
-      }).then(res => {
+      })
+      .then(res => {
         gameFalse = res.data
         return axios.post(`http://localhost:5555/nana_use/gameSuccess`, {
           memberId: JSON.parse(localStorage.getItem('user')).MR_number,
         })
-      }).then(res => {
-        this.setState({ gameInviteMe: gameInviteMe, gameFalse: gameFalse, gameSuccess: res.data })
+      })
+      .then(res => {
+        this.setState({
+          gameInviteMe: gameInviteMe,
+          gameFalse: gameFalse,
+          gameSuccess: res.data,
+        })
       })
       .catch(error => {
         console.log('COMPONENTDIDMOUNT AJAX時有錯誤2', error)
@@ -383,7 +404,7 @@ class Game extends React.Component {
       chosenValue,
       gameInviteMe,
       gameFalse,
-      gameSuccess
+      gameSuccess,
     } = this.state
     console.log('render myBooks', myBooks)
     console.log('render pairedMemberBooks', pairedMemberBooks)
@@ -624,12 +645,12 @@ class Game extends React.Component {
                   </div>
                   <div className="d-flex justify-content-end PC-changeGameBookListBtnWrap">
                     <img
-                      src={require('./images/submit-green.png')}
+                      src={require('./images/submit-yellow.png')}
                       alt="電腦版確認送出按鈕"
                       onClick={this.handleCheckedBook}
                     />
                     <img
-                      src={require('./images/back-red.png')}
+                      src={require('./images/back-black2.png')}
                       alt="電腦版回到首頁按鈕"
                       onClick={this.handleBackToGameIndex}
                     />
@@ -705,12 +726,12 @@ class Game extends React.Component {
                 </Slider>
                 <div className="d-flex PHONE-changeGameBookListBtnWrap">
                   <img
-                    src={require('./images/submit-green.png')}
+                    src={require('./images/submit-yellow.png')}
                     alt="手機版確認送出按鈕"
                     onClick={this.handleCheckedBook}
                   />
                   <img
-                    src={require('./images/back-red.png')}
+                    src={require('./images/back-black2.png')}
                     alt="手機版回到首頁按鈕"
                     onClick={this.handleBackToGameIndex}
                   />
@@ -869,7 +890,13 @@ class Game extends React.Component {
                               {this.state.gameSuccess.map((value, index) => (
                                 <tr key={index}>
                                   <td>{index + 1}</td>
-                                  <td>{value.MR_name === JSON.parse(localStorage.getItem('user')).MR_name ? '我' : value.MR_name}</td>
+                                  <td>
+                                    {value.MR_name ===
+                                    JSON.parse(localStorage.getItem('user'))
+                                      .MR_name
+                                      ? '我'
+                                      : value.MR_name}
+                                  </td>
                                   <td>{value.bookStatus}</td>
                                   <td>{value.book_name}</td>
                                   <td>{value.matchStatus}</td>
@@ -899,7 +926,13 @@ class Game extends React.Component {
                               {this.state.gameFalse.map((value, index) => (
                                 <tr key={index}>
                                   <td>{index + 1}</td>
-                                  <td>{value.MR_name === JSON.parse(localStorage.getItem('user')).MR_name ? '我' : value.MR_name}</td>
+                                  <td>
+                                    {value.MR_name ===
+                                    JSON.parse(localStorage.getItem('user'))
+                                      .MR_name
+                                      ? '我'
+                                      : value.MR_name}
+                                  </td>
                                   <td>{value.bookStatus}</td>
                                   <td>{value.book_name}</td>
                                   <td>{value.matchStatus}</td>
@@ -916,7 +949,12 @@ class Game extends React.Component {
                   </div>
                   <div className="d-flex justify-content-end PC-changeGameWaitBtnWrap">
                     <img
-                      src={require('./images/back-red.png')}
+                      src={require('./images/gochat-yellow.png')}
+                      alt="電腦版回到首頁按鈕"
+                      onClick={this.handleGoChat}
+                    />
+                    <img
+                      src={require('./images/back-black2.png')}
                       alt="電腦版回到首頁按鈕"
                       onClick={this.handleBackToGameIndex}
                     />
@@ -992,12 +1030,12 @@ class Game extends React.Component {
                 </Slider>
                 <div className="d-flex PHONE-changeGameBookListBtnWrap">
                   <img
-                    src={require('./images/submit-green.png')}
+                    src={require('./images/submit-yellow.png')}
                     alt="手機版確認送出按鈕"
                     onClick={this.handleCheckedBook}
                   />
                   <img
-                    src={require('./images/back-red.png')}
+                    src={require('./images/back-black2.png')}
                     alt="手機版回到首頁按鈕"
                   />
                 </div>
