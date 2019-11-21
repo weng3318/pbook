@@ -276,6 +276,11 @@ const List = () => {
     })
   }
 
+  const login = () => {
+    let loginBtn = document.querySelector('.loginButton')
+    loginBtn.click()
+  }
+
   //更新資料狀態
   const EditReview = e => {
     let sid = e
@@ -396,7 +401,9 @@ const List = () => {
           ) : (
             <form className="reviews_form">
               <h6 className="reviews_Login">
-                <a href="#">請登入會員填寫評論</a>
+                <a onClick={login} href="#">
+                  請登入會員填寫評論
+                </a>
               </h6>
             </form>
           )}
