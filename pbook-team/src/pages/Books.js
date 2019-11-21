@@ -11,7 +11,7 @@ import BookCommodity from '../components/shop/BookCommodity/BookCommodity'
 class Books extends React.Component {
   render() {
     return (
-      <Router>
+   
         <>
           <Switch>
             <Redirect exact from={'/books'} to={'/books/list/1/1'} />
@@ -27,7 +27,7 @@ class Books extends React.Component {
             ></Route>
           </Switch>
         </>
-      </Router>
+    
     )
   }
 }

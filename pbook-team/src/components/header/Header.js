@@ -19,6 +19,7 @@ import ReviewerBooks from '../../pages/ReviewerBooks'
 import ReviewerBlog from '../../pages/ReviewerBlog'
 import BookReviews from '../../pages/BookReview/BookReviews'
 import ResetPWD from '../../pages/ResetPWD'
+import { browserHistory } from 'react-router'
 import './header.css'
 
 export default class Header extends React.Component {
@@ -192,7 +193,7 @@ export default class Header extends React.Component {
           alt=""
         />
 
-        <Router>
+        <Router   >
           <Link
             to="/"
             className="myHeaderLogo position-absolute pointer"
