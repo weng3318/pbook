@@ -3,6 +3,8 @@ import {
   CATEGORIES_REQUEST,
   SHOP_RECEIVE,
   SHOP_REQUEST,
+  BOOKINFO_RECEIVE,
+  BOOKINFO_REQUEST,
 } from './ShopActions'
 
 //--------categories------
@@ -46,47 +48,6 @@ function categories(state = [], action) {
   }
 }
 //--------------------
-//-------rating-------
-// function rt(
-//   state = {
-//     isFetching: false,
-//     didInvalidate: false,
-//   },
-//   action
-// ) {
-//   switch (action.type) {
-//     case RATING_RECEIVE:
-//       return {
-//         ...state,
-//         isFetching: false,
-//         didInvalidate: false,
-//         payload: action.payload,
-//         lastUpdated: action.receivedAt,
-//       }
-//     case RATING_REQUEST:
-//       return {
-//         ...state,
-//         isFetching: true,
-//         didInvalidate: false,
-//       }
-//     default:
-//       return state
-//   }
-// }
-
-// function ratings(state = [], action) {
-//   switch (action.type) {
-//     case RATING_RECEIVE:
-//     case RATING_REQUEST:
-//       return {
-//         ...state,
-//         ...rt(state[action], action),
-//       }
-//     default:
-//       return state
-//   }
-// }
-//---------------------
 //-------shop-------
 function sp(
   state = {
@@ -129,7 +90,48 @@ function shop(state = [], action) {
   }
 }
 //---------------------
+//-------shop-------
+function bi(
+  state = {
+    isFetching: false,
+    didInvalidate: false,
+    payload: [],
+  },
+  action
+) {
+  switch (action.type) {
+    case BOOKINFO_RECEIVE:
+      return {
+        ...state,
+        isFetching: false,
+        didInvalidate: false,
+        payload: action.payload,
+        lastUpdated: action.receivedAt,
+      }
+    case BOOKINFO_REQUEST:
+      return {
+        ...state,
+        isFetching: true,
+        didInvalidate: false,
+      }
+    default:
+      return state
+  }
+}
 
-const ShopReducers = { categories, shop }
+function bookInfo(state = [], action) {
+  switch (action.type) {
+    case BOOKINFO_RECEIVE:
+    case BOOKINFO_REQUEST:
+      return {
+        ...state,
+        ...bi(state[action], action),
+      }
+    default:
+      return state
+  }
+}
+//---------------------
+const ShopReducers = { bookInfo, categories, shop }
 
 export default ShopReducers

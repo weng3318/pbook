@@ -10,6 +10,9 @@ import './Shop.scss'
 
 const Shop = props => {
   let [searchValue, setValue] = useState('')
+  let mode = localStorage.getItem('mode')
+    ? localStorage.getItem('mode')
+    : 'list'
   useEffect(() => {
     props.dispatch(cgFetch())
     props.dispatch(
@@ -29,8 +32,14 @@ const Shop = props => {
   let categoriesPayload = props.categories.payload
   let shopPayload = props.shop.payload
   let Data
-  if (props.match.params.mode == 'list') Data = DataList
-  else if (props.match.params.mode == 'pic') Data = DataPic
+
+  if (mode === 'list') {
+    Data = DataList
+    localStorage.setItem('mode', 'list')
+  } else if (mode === 'pic') {
+    Data = DataPic
+    localStorage.setItem('mode', 'pic')
+  }
   return (
     <>
       <Container className="px-0 book_wrapper" fluid={true}>
@@ -39,15 +48,10 @@ const Shop = props => {
           nowCategories={props.match.params.categories}
           nowPage={props.match.params.page}
           Search={Search}
-          // SearchKey={SearchKey}
-          // keyword={props.addSearch.keyword}
         ></Breadcrumb>
         <Container>
           <Row>
-            <Categories
-              categoriesPayload={categoriesPayload}
-              mode={props.match.params.mode}
-            ></Categories>
+            <Categories categoriesPayload={categoriesPayload}></Categories>
             <Data
               shopPayload={shopPayload}
               nowCategories={props.match.params.categories}
