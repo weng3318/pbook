@@ -69,14 +69,12 @@ class ReviewerBooks extends React.Component {
     let bookcaseData = null
     for (let i = 0; i < csData.length; i++) {
       if (csData[i].number == reviewerData.number) {
-        bookcaseData += csData[i].isbn
+        bookcaseData = csData[i].isbn
         console.log('bookcaseData的資料', bookcaseData)
-
       }
     }
-    // 不能+=否則變字串
+
     console.log('bookcaseData',typeof bookcaseData)
-    // 雖然保持物件類型，但無法裝填多筆資料
     console.log('從',reviewerData.name,'書櫃，取isbn「',bookcaseData,'」進行配對。')
     
     // 進行配對，取得書籍完整資料
@@ -87,9 +85,6 @@ class ReviewerBooks extends React.Component {
       }
     }
     console.log('取得 書籍：完整資料',bookData)
-    console.log('csData[2]雙層判斷',csData[2].name)
-    console.log('bkData[122]雙層判斷',bkData[122].name)
-
     return (
       <>
         <BR_Navbar />
@@ -114,7 +109,7 @@ class ReviewerBooks extends React.Component {
               <h5 className="h5_hotText">熱門書評</h5>
               <div className="HotBookBoxAll_Bookcase">
                   {this.state.csData.filter(({number}) => reviewerData.number == number )
-                  .map(({pic, sid, name})=>(
+                  .map(({pic, sid, name, introduction})=>(
                     <BR_BookcaseHot_books
                     key={sid}
                     to={"/reviewer/reviewerBooks/reviewerBlog/" + sid}
@@ -131,19 +126,32 @@ class ReviewerBooks extends React.Component {
                       path="/reviewer/reviewerBooks/reviewerBlog/:sid?" 
                       component={ReviewerBlog} />
                 </Switch>
+
       </Router>
           {/* 針對書評家 - 書櫃列表 */}
-          {this.state.bkData.filter(({isbn}) => csData[2].isbn == isbn )
+
+            {this.state.csData.filter(({number})=>  number == reviewerData.number)
+            .map(({name, pic, author, sid, introduction, info,})=>(
+            <BR_BookcaseList
+            sid={sid}
+            pic={pic}
+            name={name}
+            author={author}
+            info={info}
+            introduction={introduction}
+            ></BR_BookcaseList>))}
+
+
+          {/* try */}
+           {/* {this.state.bkData.filter(({isbn}) => isbn ===
+           this.state.csData.filter(({number}) => number === reviewerData.number).map(({isbn})=> isbn))
            .map(({sid, name, pic, author, introduction })=>((
             <BR_BookcaseList
             name={name}
             key={sid}
             sid={sid}
-            author={author}
-            pic={pic}
-            introduction={introduction}
             ></BR_BookcaseList>
-          )))}
+          )))} */}
 
         </section>
       </>

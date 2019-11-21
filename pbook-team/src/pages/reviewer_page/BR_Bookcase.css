@@ -50,6 +50,7 @@
     padding: 20px 6px 0 6px;
     justify-content: space-around;
     text-align: center;
+    overflow: hidden;
 }
 /* 熱門書評，多本書 (文字) */
 .brHotBookText{
@@ -122,7 +123,7 @@
 }
 /* 書評家簡介全區域 (縮放限制) */
 .brInfoBox_Bookcase{
-    min-width: 265px;
+    width: 100%;
     min-height: 310px;
 }
 /* 書評家簡介，(文字、限制行數) */
@@ -169,8 +170,14 @@
 }
 @media (max-width: 786px) {
     /* 書評家列表，整體區域 (狀態改變) */
-    .ReviewerListAllBox_Bookcase {
-        display: inline-block;
+    .brInfoBox_Bookcase {
+       height: 400px;
+    }
+    /* 書評家簡介，(文字、限制行數) */
+    .brInfoText_Bookcase{
+        max-height: 300px;
+        margin: 6px 20px 0px 20px;
+        -webkit-line-clamp: 10;
     }
     /* 星評組件，RWD (狀態消失，換位todo..) */
     .brStarBox_Bookcase{

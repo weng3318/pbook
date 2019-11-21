@@ -16,7 +16,6 @@ class BR_BookcaseList extends React.Component {
             <>
             <Router>
 <section className="ReviewerListAllBox_Bookcase">
-    <div className="d-flex">
             {/* 書籍圖片 */}
         <Link to={"/reviewer/reviewerBooks/reviewerBlog/"+this.props.sid} className="d-flex justify-content-center borderLineTop">
           <div className="brAvatarAllBox_Bookcase borderLineLB">
@@ -32,7 +31,7 @@ class BR_BookcaseList extends React.Component {
                     <span className="bookInfo_Bookcase">作者：</span>{this.props.author}
                     <br/>
                     <br/>
-                    <h5 className="brInfoText_Bookcase" dangerouslySetInnerHTML={{__html:this.props.introduction}}></h5>
+                    <h5 className="brInfoText_Bookcase" dangerouslySetInnerHTML={{__html:this.props.introduction? this.props.introduction:this.props.info}}></h5>
                 </div>
                 {/* <div className="brInfoText ">{this.props.intro}</div> */}
                 <div className="brIconBox_Bookcase">
@@ -50,7 +49,6 @@ class BR_BookcaseList extends React.Component {
                         </div>
                     </div>
               </div>
-          </div>
     </div>
             {/* 評分組件 */}
     {/* <div className="brStarBox_Bookcase borderLine"></div> */}
