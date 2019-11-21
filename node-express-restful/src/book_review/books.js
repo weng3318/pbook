@@ -30,6 +30,19 @@ router.get("/book_reviews/:sid?", (req, res) => {
   });
 });
 
+router.get("/book_ratings", (req, res) => {
+  const sql = `SELECT star,book FROM vb_ratings WHERE 1`;
+  db.query(sql, (error, results) => {
+    if (error) {
+      return res.send(error);
+    } else {
+      return res.json({
+        data: results
+      });
+    }
+  });
+});
+
 router.post("/book_reviews/:sid?/data", (req, res) => {
   let book = [];
   const newbook = {

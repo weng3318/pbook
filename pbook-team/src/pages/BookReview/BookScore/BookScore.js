@@ -19,7 +19,7 @@ const BorderLinearProgress = withStyles({
 
 const useStyles = makeStyles(theme => ({
   root: {
-    margin: '0px auto 30px auto  ',
+    margin: '0px auto -10px auto  ',
   },
   margin: {
     margin: theme.spacing(0.5),
@@ -37,7 +37,6 @@ const StyledRating = withStyles({
   },
 })(Rating)
 
-
 const BookScore = props => {
   const [bs, setBs] = useState([])
   const { bookInformation } = props
@@ -47,9 +46,10 @@ const BookScore = props => {
 
   //資料ajax
   const star = () => {
-    axios.get('http://localhost:5555/books/book_ratings').then(res => {
-      setBs(res.data.rows)
-    })
+    axios.get('http://localhost:5555/reviews/book_ratings').then(res => {
+      setBs(res.data.data)
+      console.log(res)
+    }, [])
   }
 
   let fiveStars = [],
@@ -70,7 +70,7 @@ const BookScore = props => {
       twoStars[j] = 0
       oneStars[j] = 0
       for (let i = 0; i < bs.length; i++) {
-        if (bs[i].book == j) {
+        if (bs[i].book === j) {
           switch (bs[i].star) {
             case 5:
               fiveStars[j]++
@@ -124,30 +124,9 @@ const BookScore = props => {
   countRate(bs)
 
   return (
-    <>
+    <div className="right">
       {bookInformation.map(data => (
-        <section >
-          <div className="col">
-            <span className="bol">{avg[data.sid]}</span>
-            <Box component="fieldset" mt={0} borderColor="transparent">
-              <StyledRating
-                name="customized-color"
-                value={avg[data.sid]}
-                precision={0.1}
-                readOnly
-                icon={<FavoriteIcon fontSize="inherit" />}
-              />
-            </Box>
-            <span>
-              {fiveStars[data.sid] +
-                fourStars[data.sid] +
-                threeStars[data.sid] +
-                twoStars[data.sid] +
-                oneStars[data.sid]}
-              篇評論
-            </span>
-          </div>
-
+        <section key={data.sid} className="sec">
           <div className="d-flex book_star mb-2">
             <div className={classes.root}>
               <div className="d-flex">
@@ -197,9 +176,30 @@ const BookScore = props => {
               </div>
             </div>
           </div>
+          <div className="col">
+            <span className="bol">{avg[data.sid]}</span>
+            <Box component="fieldset" mt={0} borderColor="transparent">
+              <StyledRating
+                name="customized-color"
+                value={avg[data.sid]}
+                precision={0.1}
+                readOnly
+                size="small"
+                icon={<FavoriteIcon fontSize="inherit" />}
+              />
+            </Box>
+            <span>
+              {fiveStars[data.sid] +
+                fourStars[data.sid] +
+                threeStars[data.sid] +
+                twoStars[data.sid] +
+                oneStars[data.sid]}
+              篇評論
+            </span>
+          </div>
         </section>
       ))}
-    </>
+    </div>
   )
 }
 

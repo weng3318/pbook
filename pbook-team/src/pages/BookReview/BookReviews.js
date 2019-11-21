@@ -152,37 +152,20 @@ const List = () => {
     }
   }, [score])
 
-  const bookList = () => {
-    axios
+  const bookList = async () => {
+    await axios
       .get(`http://localhost:5555/reviews/book_reviews/${urlParams}`)
       .then(res => {
         let s = res.data.data[0].sid
         setList(res.data.data)
-        // setScore(
-        //   s.five_star + s.four_star + s.three_star + s.two_star + s.one_star ===
-        //     0 ||
-        //     Math.round(
-        //       ((s.five_star * 5 +
-        //         s.four_star * 4 +
-        //         s.three_star * 3 +
-        //         s.two_star * 2 +
-        //         s.one_star) /
-        //         (s.five_star +
-        //           s.four_star +
-        //           s.three_star +
-        //           s.two_star +
-        //           s.one_star)) *
-        //         10
-        //     ) / 10
-        // )
       })
       .catch(error => {
         console.log(error)
       })
   }
   //書評分頁資料ajax
-  const reviewList = () => {
-    axios
+  const reviewList = async () => {
+    await axios
       .get(`http://localhost:5555/reviews/memberReview/${urlParams}`)
       .then(res => {
         getMemberReview(res.data.reviews)
@@ -356,9 +339,7 @@ const List = () => {
         ))}
         <div>
           <BookLine>
-            <BookScore>
-              {/* <BookHeart urlParams={urlParams} /> */}
-            </BookScore>
+            <BookScore>{/* <BookHeart urlParams={urlParams} /> */}</BookScore>
             <BookRow>
               <BookLineForBR List={List} />
             </BookRow>

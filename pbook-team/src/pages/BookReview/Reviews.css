@@ -7,10 +7,19 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: -15px 0 0px 0;
 }
 /* 分數文字 */
 .bol {
   font-size: 1.5rem;
+}
+.sec {
+  margin: 135px auto;
+  display: flex;
+}
+.right {
+  margin: 15px auto;
+  transform: translate(0, -20px);
 }
 
 .reviews_btn {
@@ -96,7 +105,6 @@
   max-width: 100%;
   width: 150px;
   height: 150px;
-  margin: 0 0 75px 0;
   border: 1px solid #ccc;
 }
 
