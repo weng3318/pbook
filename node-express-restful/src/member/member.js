@@ -122,6 +122,16 @@ router.post('/queryBookcase', (req,res)=>{
     })
 })
 
+//書籍加入個人書櫃
+router.post('addBookcase', (req, res)=>{
+    let number = req.body.number
+    let isbn = req.body.isbn
+    db.query(Member.addToBookcase(number, isbn), (err, result)=>{
+        console.log(result);
+        
+    })
+})
+
 
 
 //登入
