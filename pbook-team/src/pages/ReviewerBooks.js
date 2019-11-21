@@ -21,21 +21,20 @@ class ReviewerBooks extends React.Component {
   componentDidMount() {
     let newbrData
     let newcsData
+    let newbkData
     axios
       .get('http://localhost:5555/reviewer/brReviewerList')
       .then(res => {
         newbrData = res.data.rows
-        // this.setState({ brData: res.data.rows })
-        // console.log( res.data.rows[0])
         return axios.get('http://localhost:5555/reviewer/brBookcase')
       })
       .then(res => {
-        // this.setState({ brData: newbrData, csData: res.data.rows })
         newcsData = res.data.rows
         return axios.get('http://localhost:5555/reviewer/brbooks')
       })
       .then(res=>{
-        this.setState({ brData: newbrData, csData: newcsData, bkData:res.data.rows})
+        newbkData = res.data.rows
+        this.setState({ brData: newbrData, csData: newcsData, bkData:newbkData})
         // console.log('前端取得資料' , res.data.rows)
       })
       .catch(function(error) {
@@ -50,6 +49,8 @@ class ReviewerBooks extends React.Component {
         
     // if (!this.state.brData.length) return <></>
     if (this.state.brData.length === 0) return <><h1>取得資料中...</h1></>
+    if (this.state.csData.length === 0) return <><h1>取得資料中...</h1></>
+    if (this.state.bkData.length === 0) return <><h1>取得資料中...</h1></>
     
     let brData = this.state.brData
     let csData = this.state.csData
@@ -60,20 +61,35 @@ class ReviewerBooks extends React.Component {
     for (let i = 0; i < brData.length; i++) {
       if (brData[i].sid == this.props.match.params.sid) {
         reviewerData = brData[i]
+        console.log('取得會員',reviewerData.name,'為對象。')
       }
     }
+    // 拿到指定會員的書櫃資料，並進行配對
     
     let bookcaseData = null
-    
     for (let i = 0; i < csData.length; i++) {
       if (csData[i].number == reviewerData.number) {
-        bookcaseData = csData[i]
+        bookcaseData += csData[i].isbn
+        console.log('bookcaseData的資料', bookcaseData)
+
       }
     }
-    console.log('從ckData完整資料撈出：isbn', bookcaseData.isbn,
-    '從ckData完整資料撈出：cs書名',bookcaseData.name)
-    console.log('從bkData完整資料撈出：isbn', bkData[0].isbn,'從bkData完整資料撈出：bk書名',bkData[0].name)
-    console.log('撈書櫃的書籍 會員編號', csData[0].number)
+    // 不能+=否則變字串
+    console.log('bookcaseData',typeof bookcaseData)
+    // 雖然保持物件類型，但無法裝填多筆資料
+    console.log('從',reviewerData.name,'書櫃，取isbn「',bookcaseData,'」進行配對。')
+    
+    // 進行配對，取得書籍完整資料
+    let bookData = null
+    for (let i = 0; i < bkData.length; i++) {
+      if (bkData[i].isbn == bookcaseData) {
+        bookData = bkData[i]
+      }
+    }
+    console.log('取得 書籍：完整資料',bookData)
+    console.log('csData[2]雙層判斷',csData[2].name)
+    console.log('bkData[122]雙層判斷',bkData[122].name)
+
     return (
       <>
         <BR_Navbar />
@@ -93,7 +109,7 @@ class ReviewerBooks extends React.Component {
 
       <Router>
           {/* 熱門書評列表 */}
-          <div className="HotBookBoxAll_Light">
+      <div className="HotBookBoxAll_Light">
           <div className="blackBG">
               <h5 className="h5_hotText">熱門書評</h5>
               <div className="HotBookBoxAll_Bookcase">
@@ -109,7 +125,7 @@ class ReviewerBooks extends React.Component {
                   ))}
               </div>
           </div>
-          </div>
+      </div>
                 <Switch>
                       <Route exact
                       path="/reviewer/reviewerBooks/reviewerBlog/:sid?" 
@@ -117,46 +133,18 @@ class ReviewerBooks extends React.Component {
                 </Switch>
       </Router>
           {/* 針對書評家 - 書櫃列表 */}
-          {this.state.bkData.filter(({isbn}) => bookcaseData.isbn == isbn)
-          .map(({name,pic,introduction,sid})=>(
+          {this.state.bkData.filter(({isbn}) => csData[2].isbn == isbn )
+           .map(({sid, name, pic, author, introduction })=>((
             <BR_BookcaseList
-            sid={sid}
-            key={sid}
-            to={"/reviewer/reviewerBooks/reviewerBlog/" + sid}
             name={name}
-            author={bookcaseData.isbn}
-            // author={this.state.bkData.filter(({isbn})=> isbn == isbn).map(({author})=>author)}
-            pic={pic}
-            introduction={introduction}
-            ></BR_BookcaseList>
-          ))}
-            {/* 完整資料全部倒出來，測試 */}
-          {this.state.bkData.map(({name,pic,introduction,sid,author})=>(
-            <BR_BookcaseList
-            sid={sid}
             key={sid}
-            to={"/reviewer/reviewerBooks/reviewerBlog/" + sid}
-            name={name}
+            sid={sid}
             author={author}
-            // author={this.state.bkData.filter(({isbn})=> isbn == isbn).map(({author})=>author)}
             pic={pic}
             introduction={introduction}
             ></BR_BookcaseList>
-          ))}
-          {/* {this.state.csData.filter(({number}) => reviewerData.number == number)
-          .map(({name,pic,isbn,info,sid})=>(
-            <BR_BookcaseList
-            sid={sid}
-            key={sid}
-            to={"/reviewer/reviewerBooks/reviewerBlog/" + sid}
-            name={name}
-            isbn={isbn}
-            author={bookcaseData.isbn}
-            // author={this.state.bkData.filter(({isbn})=> isbn == isbn).map(({author})=>author)}
-            pic={pic}
-            info={info}
-            ></BR_BookcaseList>
-          ))} */}
+          )))}
+
         </section>
       </>
     )
