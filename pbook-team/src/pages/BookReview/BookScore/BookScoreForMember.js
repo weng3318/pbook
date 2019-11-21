@@ -20,20 +20,17 @@ function getLabelText(value) {
 }
 
 export default function CustomizedRatings(props) {
-  const changeScore = e => {
-    props.setScore_star(e)
-  }
+
   return (
     <>
-      <Box component="fieldset" ml={2} borderColor="transparent">
+      <Box component="fieldset" mr={3}  >
         <Typography component="legend"></Typography>
         <StyledRating
           key={props.score_star}
-          onClick={changeScore}
+          readOnly={true}
           value={`${props.score_star}`}
           getLabelText={getLabelText}
           precision={1}
-          name="star"
           icon={<FavoriteIcon fontSize="inherit" />}
         />
       </Box>
