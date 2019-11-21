@@ -87,7 +87,7 @@ router.get("/book_data/:page?/:categories?/:keyword?", (req, res) => {
           twoStars[j] = 0;
           oneStars[j] = 0;
           for (let i = 0; i < output.total; i++) {
-            if (j + (page - 1) * 8 + 1 == results[i].sid) {
+            if (output.rows[j].sid == results[i].sid) {
               switch (results[i].star) {
                 case 5:
                   fiveStars[j]++;
@@ -151,7 +151,7 @@ router.get("/book_data/:page?/:categories?/:keyword?", (req, res) => {
           twoStars[j] = 0;
           oneStars[j] = 0;
           for (let i = 0; i < output.total; i++) {
-            if (j + (page - 1) * 8 + 1 == results[i].sid) {
+            if (output.rows[j].sid == results[i].sid) {
               switch (results[i].star) {
                 case 5:
                   fiveStars[j]++;
