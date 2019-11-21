@@ -78,10 +78,12 @@ const PostAritcle = props => {
   const [titleCheck, setTitleCheck] = useState(1) //title&subcate檢查
   const [textareaValue, setTextareaValue] = useState('')
   const [sectionElement, setSectionElement] = useState('')
+  const [canIPost, setCanIPost] = useState(0)
   const [subcate, setSubcate] = useState([1, 2])
-  const [mainImg, setMainImg] = useState(false)
+  const [mainImg, setMainImg] = useState(0)
 
   let { category, MR_number } = useParams()
+  
   const Swal = require('sweetalert2')
 
   useEffect(() => {
@@ -91,58 +93,77 @@ const PostAritcle = props => {
   }, [])
 
   useEffect(() => {
+    if (props.imgCount !== 0) {
+      document.querySelector(`#file${props.imgCount - 1}`).click()
+    }
+  }, [props.imgCount])
+  useEffect(() => {
     if (titleCheck !== 1) {
-      let formData = new FormData()
-      if (mainImg) {
-        let file = document.querySelector(`#file0`).files[0]
-        formData.append('imgfile', file)
-      }
-      let jsonTextValue = textareaValue
-      let jsonElement = JSON.stringify(props.addElement)
-      let subcate = document.querySelector('#grouped-select').value
-      let title = document.querySelector('#title').value
-
-      formData.append('textareaCount', textareaCount)
-      formData.append('textareaValue', jsonTextValue)
-      formData.append('imgCount', props.imgCount)
-      formData.append('element', sectionElement)
-      formData.append('title', title)
-      formData.append('cate', category)
-      formData.append('subcate', subcate)
-      formData.append('MR_number', MR_number)
-      formData.append('imgData', [...props.imgData])
-
-      fetch('http://localhost:5555/forum/postNew/', {
-        method: 'POST',
-        body: formData,
-      })
-        .then(response => {
-          console.log(response.status)
-          return response.json()
-        })
-        .then(result => {
-          console.log(result)
-          if (result.message)
-            Swal.fire({
-              title: '新增成功!',
-              text: '將回到個人首頁',
-              icon: 'success',
-              confirmButtonText: '太棒了',
-            })
-          props.history.push('/forum')
-          props.dispatch(clearPostAritcleState())
-        })
-        .catch(function(error) {
-          console.log(
-            'There has been a problem with your fetch operation: ',
-            error.message
-          )
-        })
+      handleSection()
     }
   }, [titleCheck])
 
+  useEffect(() => {
+    if (canIPost) {
+      confirmPost()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [canIPost])
+
+  const confirmPost = () => {
+    let formData = new FormData()
+    for (let i = 0; i < mainImg; i++) {
+      let file = document.querySelector(`#file${i}`).files[0]
+      formData.append('imgFile[]', file)
+    }
+    let subcate1 = document.querySelector('#grouped-select').value
+    let title = document.querySelector('#title').value
+    formData.append('imgCount', mainImg)
+    if (sectionElement !== '') {
+      sectionElement.forEach(v => {
+        formData.append('element[]', v)
+      })
+    }
+    textareaValue.forEach(v => {
+      formData.append('textareaValue[]', v)
+    })
+    formData.append('title', title)
+    formData.append('cate', category)
+    formData.append('subcate', subcate1)
+    formData.append('MR_number', MR_number)
+    // props.imgData.forEach(v => {
+    //   formData.append('imgData[]', v)
+    // })
+    console.log('post')
+
+    fetch('http://localhost:5555/forum/postNew/', {
+      method: 'POST',
+      body: formData,
+    })
+      .then(response => {
+        console.log(response.status)
+        return response.json()
+      })
+      .then(result => {
+        console.log(result)
+        if (result.message)
+          Swal.fire({
+            title: '新增成功!',
+            text: '將回到個人首頁',
+            icon: 'success',
+            confirmButtonText: '太棒了',
+          })
+        props.dispatch(clearPostAritcleState())
+        props.history.push('/forum')
+      })
+      .catch(function(error) {
+        console.log(
+          'There has been a problem with your fetch operation: ',
+          error.message
+        )
+      })
+  }
   const handleInsertImg = e => {
-    console.log('un')
     let element = (
       <div>
         <input
@@ -157,12 +178,6 @@ const PostAritcle = props => {
     props.dispatch(AppendImgInput(element))
   }
 
-  useEffect(() => {
-    if (props.imgCount !== 0) {
-      document.querySelector(`#file${props.imgCount - 1}`).click()
-    }
-  }, [props.imgCount])
-
   const handleUpload = e => {
     let inputId = `#file${props.imgCount}`
     let file = document.querySelector(inputId).files[0]
@@ -172,12 +187,12 @@ const PostAritcle = props => {
       let element = (
         <ImgDemo imgData={event.target.result} imgCount={props.imgCount} />
       )
-      setMainImg(true)
+      setMainImg(mainImg + 1)
       props.dispatch(AppendImgElement(element, event.target.result))
     })
   }
 
-  const postNewArticle = () => {
+  const handleTitleCheck = () => {
     let allText1 = document.querySelectorAll('textarea')
     let allText = [...allText1]
     let titleCheck1 = []
@@ -281,11 +296,12 @@ const PostAritcle = props => {
       })
       .then(result => {
         if (result.value) {
-          postNewArticle()
+          handleTitleCheck()
         }
       })
   }
   const handleSection = () => {
+    console.log('section')
     let content = document.querySelector('#ddd')
     let arr = [...content.childNodes]
     let textContent = arr
@@ -311,7 +327,9 @@ const PostAritcle = props => {
       }
     })
     let result = nodeNameSelect.filter(item => item !== '')
+    // console.log(nodeNameSelect)
     setSectionElement(result)
+    setCanIPost(1)
   }
   return (
     <div className="post-article">
@@ -339,7 +357,7 @@ const PostAritcle = props => {
                 </ListItemIcon>
                 <ListItemText primary="Unsplash圖片" />
               </ListItem>
-              <ListItem button>
+              <ListItem button onClick={confirmPost}>
                 <ListItemIcon>
                   <VideoLibraryIcon />
                 </ListItemIcon>
@@ -391,7 +409,7 @@ const PostAritcle = props => {
                     {subcate.map(item => {
                       return (
                         <MenuItem key={item.sid} value={item.sid}>
-                          {item.name}
+                          {item.subname}
                         </MenuItem>
                       )
                     })}

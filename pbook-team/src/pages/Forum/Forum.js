@@ -2,7 +2,6 @@ import React from 'react'
 // eslint-disable-next-line no-unused-vars
 import { BrowserRouter as Route, Link } from 'react-router-dom'
 import CardS1 from '../../components/forum/CardS1/CardS1'
-import CardS2 from '../../components/forum/CardS2/CardS2'
 import Listitem from '../../components/forum/ListItem/ListItem'
 import HotArticle from '../../components/forum/HotArticle/HotArticle'
 import './scss/Forum.scss'
@@ -81,14 +80,7 @@ class Forum extends React.Component {
     window.removeEventListener('scroll', () => {})
   }
   render() {
-    // <CardS2
-    //             update={this.state.update}
-    //             data={[
-    //               this.state.data[2],
-    //               this.state.data[3],
-    //               this.state.data[4],
-    //             ]}
-    //           />
+   
     return (
       <>
         <div className="container">

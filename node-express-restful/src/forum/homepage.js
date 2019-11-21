@@ -2,8 +2,9 @@ const express = require("express");
 const router = express.Router();
 const mysql = require("mysql");
 const multer = require("multer");
-const upload = multer({ dest: "tmp_uploads/" });
-const fs = require("fs");
+const upload = multer({ dest: "tmp_uploads/" }); //圖片上傳
+const fs = require("fs"); //檔案處理
+const moment = require("moment-timezone");
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -27,7 +28,6 @@ router
     db.query(sql, (error, results, fields) => {
       if (error) throw error;
       output.featured = results;
-      console.log(results);
       res.json(output);
     });
   });
@@ -100,7 +100,7 @@ router
         res.json(output);
       });
   });
-  
+
 //分類文章
 router
   .route("/cate/:number/:subCate?")
@@ -144,40 +144,68 @@ router
   .get((req, res) => {
     res.send("get");
   })
-  .post(upload.single("imgfile"), (req, res) => {
+  .post(upload.array("imgFile[]"), (req, res) => {
+    console.log("post article");
     let resData = {};
     let data = req.body;
     let articleId = +new Date() + data.MR_number;
     let filename = "";
-    console.log(filename);
-    // console.log(req.file);
-    if (req.file && req.file.mimetype) {
-      filename = articleId + "." + req.file.mimetype.slice(6, 10);
-      switch (req.file.mimetype) {
-        case "image/png":
-        case "image/jpeg":
-          fs.createReadStream(req.file.path).pipe(
-            fs.createWriteStream("public/images/forum/article_key/" + filename)
-          );
-          resData.filename = filename;
-          break;
-        default:
-          return res.send("bad file type");
-      }
-    } else {
-      resData.filename = "no img file";
+    let mainImg = "";
+    // res.json(req.files);
+
+    if (data.imgCount === '0') {
+      mainImg = Math.floor(Math.random() * 10) + 1 + "0.jpg";
     }
+    for (let i = 0; i < data.imgCount; i++) {
+      console.log("123312");
+      if (req.files[i] && req.files[i].mimetype) {
+        filename = articleId + i + "." + req.files[i].mimetype.slice(6, 10);
+        if (i === 0) {
+          mainImg = filename;
+        }
+
+        switch (req.files[i].mimetype) {
+          case "image/png":
+          case "image/jpeg":
+            fs.createReadStream(req.files[i].path).pipe(
+              fs.createWriteStream(
+                "public/images/forum/article_key/" + filename
+              )
+            );
+            resData.filename = filename;
+            break;
+          default:
+            return res.send("bad file type");
+        }
+      } else {
+        resData.filename = "no img file";
+      }
+    }
+
     let category = data.cate;
     let subCategories = data.subcate;
     let title = data.title;
-    let subTitle = JSON.parse(data.textareaValue)[0];
-    let demoImage = filename;
-    // let content = JSON.parse(data.element);
-    let contentFile = articleId;
-    let content = data.element;
+    let subTitle = data.textareaValue[0].slice(0,200);
+    let demoImage = mainImg;
+    let content = {
+      element: data.element,
+      textareaValue: data.textareaValue
+    };
+    fs.writeFile(
+      __dirname + "/../../public/forum/content/" + articleId + ".json",
+      JSON.stringify(content),
+      error => {
+        if (error) return console.log(error);
+      }
+    );
     let memberId = data.MR_number;
+    const timeFormat = "YYYY-MM-DD  HH:mm:ss";
+    let time = moment(new Date()).format(timeFormat);
+    // res.json(time);
+    resData.content = content;
     let sql =
-      "INSERT INTO `fm_article`(`fm_articleId`, `fm_category`, `fm_subCategories`, `fm_title`, `fm_subTitle`, `fm_demoImage`, `fm_content`, `fm_memberId`, `fm_featured`, `fm_like`, `fm_read`, `fm_publishTime`, `fm_updateTime`) VALUES (?,?,?,?,?,?,?,?,?,?,?,NOW() ,NOW() )";
+      "INSERT INTO `fm_article`(`fm_articleId`, `fm_category`, `fm_subCategories`, `fm_title`, `fm_subTitle`, `fm_demoImage`, `fm_content`, `fm_memberId`, `fm_featured`, `fm_like`, `fm_read`, `fm_publishTime`, `fm_updateTime`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,NOW() )";
+
     db.query(
       sql,
       [
@@ -187,11 +215,12 @@ router
         title,
         subTitle,
         demoImage,
-        content,
+        articleId + ".json",
         memberId,
         1,
         1,
-        1
+        1,
+        time
       ],
       (error, results, fields) => {
         if (error) throw error;

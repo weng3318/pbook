@@ -114,7 +114,9 @@ class TopicPage extends React.Component {
                     {this.state.subcategory.map(value => {
                       return (
                         <Nav.Item key={value.sid}>
-                          <Nav.Link eventKey={value.sid}>{value.name}</Nav.Link>
+                          <Nav.Link eventKey={value.sid}>
+                            {value.subname}
+                          </Nav.Link>
                         </Nav.Item>
                       )
                     })}

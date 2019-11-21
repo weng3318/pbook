@@ -2,6 +2,7 @@ import React from 'react'
 import './Listitem.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBookmark, faEllipsisH } from '@fortawesome/free-solid-svg-icons'
+import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 
 import {
   faBookmark as faBookmarks,
@@ -35,10 +36,14 @@ class Listitem extends React.Component {
           <div className="forum-list-item dis-flex">
             <div className="item-left">
               <div className="list-item-category">{article.name}</div>
-              <div className="card-title-font">{article.fm_title}</div>
-              <div className="card-subtitle-font fm-subtitle">
-                {article.fm_subTitle}
-              </div>
+              <Link to={`/forum/article/${article.fm_articleId}`}>
+                <div className="card-title-font">{article.fm_title}</div>
+              </Link>
+              <Link to={`/forum/article/${article.fm_articleId}`}>
+                <div className="card-subtitle-font fm-subtitle">
+                  {article.fm_subTitle}
+                </div>
+              </Link>
               <div className="list-item-details">{article.MR_nickname}</div>
               <div className="list-item-time dis-flex ">
                 <div>
@@ -82,16 +87,18 @@ class Listitem extends React.Component {
                 </div>
               </div>
             </div>
-            <div className="item-right">
-              <img
-                className="img"
-                src={
-                  'http://localhost:5555/images/forum/article_key/' +
-                  article.fm_demoImage
-                }
-                alt=""
-              />
-            </div>
+            <Link to={`/forum/article/${article.fm_articleId}`}>
+              <div className="item-right">
+                <img
+                  className="img"
+                  src={
+                    'http://localhost:5555/images/forum/article_key/' +
+                    article.fm_demoImage
+                  }
+                  alt=""
+                />
+              </div>
+            </Link>
           </div>
         </>
       )
@@ -120,8 +127,7 @@ class Listitem extends React.Component {
                         'likeOrNot position-a ' +
                         (this.state.like ? 'displayBlock' : ' displayNone')
                       }
-                    >
-                    </div>
+                    ></div>
                   </span>
                 </div>
               </div>

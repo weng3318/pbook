@@ -35,6 +35,8 @@ const ArticleContent = props => {
 
   const [login, setLogin] = useState(false)
   const [data, setData] = useState('')
+  const [contentUpdated, setContentUpdated] = useState(false) //讀取內容json
+  const [addElement, setAddElement] = useState(0) //render element
 
   useEffect(() => {
     if (localStorage.user !== undefined) {
@@ -46,6 +48,7 @@ const ArticleContent = props => {
     })
       .then(response => {
         if (!response) throw new Error(response.statusText)
+        setContentUpdated(true)
         return response.json()
       })
       .then(result => {
@@ -53,13 +56,65 @@ const ArticleContent = props => {
       })
   }, [])
 
-  const handleFollow = () => {
-    console.log(data.article.fm_title)
+  useEffect(() => {
+    if (contentUpdated) {
+      handleContentUpdated()
+    }
+  }, [data])
+
+  const handleContentUpdated = () => {
+    console.log('update')
+    fetch(
+      'http://localhost:5555/forum/content/' +
+        data.article.fm_articleId +
+        '.json'
+    )
+      .then(res => {
+        if (!res.ok) throw new Error(res.statusText)
+        return res.json()
+      })
+      .then(result => {
+        console.log(result)
+        let imgCount = 0
+        let textAreaCount = 0
+        let type = data.article.fm_demoImage.split('.')[1]
+        let body = result.element.map(item => {
+          switch (item) {
+            case 'textarea':
+              let uni = `textarea${textAreaCount}`
+              let textareaElement = (
+                <div id={uni} className="contentDiv" key={uni}>
+                  {result.textareaValue[textAreaCount]}
+                </div>
+              )
+              textAreaCount++
+              return textareaElement
+            case 'img':
+              let uni1 = `img${imgCount}`
+              let imgElement = (
+                <img
+                  className="contentImg"
+                  alt=""
+                  key={uni1}
+                  id={uni1}
+                  src={`http://localhost:5555/images/forum/article_key/${data.article.fm_articleId}${imgCount}.${type}`}
+                ></img>
+              )
+              imgCount++
+              return imgElement
+            default:
+              return 'nothing'
+          }
+        })
+        setAddElement([...body])
+      })
   }
+  const handleFollow = () => {}
   const wantToResponse = () => {
     document.documentElement.scrollTop = 0
     props.dispatch(letMeLogin())
   }
+  // if (!contentUpdated) {
   if (!data) {
     return <CircularIndeterminate />
   } else {
@@ -83,12 +138,12 @@ const ArticleContent = props => {
               ></img>
             </figure>
             <div>
-              <div className="writer-item name">
-                <span className="name">{data.member.MR_number}</span>
+              <div className="writer-item ">
+                <span className="name1">{data.member.MR_nickname}</span>
                 <Button
                   variant="outlined"
                   color="secondary"
-                  onClick={handleFollow}
+                  onClick={handleContentUpdated}
                 >
                   追蹤作者
                 </Button>
@@ -100,7 +155,7 @@ const ArticleContent = props => {
             </div>
           </div>
           <hr></hr>
-          <section>{JSON.parse(data.article.fm_content)}</section>
+          <section>{addElement}</section>
           <div className="social-area">
             <div className="dis-flex thumb">
               <div className="thumb-frame">
