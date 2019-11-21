@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import {
   userHover,
   categoryHover,
-  detailUpdate,
   fmUserFetch,
 } from '../../../pages/Forum/fmAction'
 
@@ -16,6 +15,8 @@ class UserDetails extends React.Component {
     this.state = {
       update: false,
       user: false,
+      userHover: false,
+      categoryHover: false,
     }
   }
 
@@ -36,23 +37,17 @@ class UserDetails extends React.Component {
     console.log('User click')
   }
   //Category details hover frame
-  handleCategoryMouseIn = event => {
-    let hover = true
-    this.props.dispatch(categoryHover(hover))
+  handleCategoryMouseInOut = event => {
+    this.setState({
+      categoryHover: !this.state.categoryHover,
+    })
   }
-  handleCategoryMouseOut = event => {
-    let hover = false
-    this.props.dispatch(categoryHover(hover))
-  }
+
   //user details hover frame
-  handleUserMouseIn = event => {
-    let hover = true
-    this.props.dispatch(userHover(hover))
-  }
-  handleUserMouseOut = event => {
-    let hover = false
-    console.log(this.props.article)
-    this.props.dispatch(userHover(hover))
+  handleUserMouseInOut = event => {
+    this.setState({
+      userHover: !this.state.userHover,
+    })
   }
   render() {
     if (!this.props.update) {
@@ -78,14 +73,14 @@ class UserDetails extends React.Component {
                   href="#1"
                   className="card-user-link"
                   onClick={this.handleUserClick}
-                  onMouseEnter={this.handleUserMouseIn}
-                  onMouseLeave={this.handleUserMouseOut}
+                  onMouseEnter={this.handleUserMouseInOut}
+                  onMouseLeave={this.handleUserMouseInOut}
                 >
                   {user.MR_nickname}
                   <div
                     className={
                       'userFrame ' +
-                      (this.props.userHover ? 'displayBlock' : 'displayNone')
+                      (this.state.userHover ? 'displayBlock' : 'displayNone')
                     }
                   >
                     user details<br></br>user details<br></br>user details
@@ -97,14 +92,14 @@ class UserDetails extends React.Component {
                   href="#2"
                   className="card-category-link"
                   onClick={this.handleCategoryClick}
-                  onMouseEnter={this.handleCategoryMouseIn}
-                  onMouseLeave={this.handleCategoryMouseOut}
+                  onMouseEnter={this.handleCategoryMouseInOut}
+                  onMouseLeave={this.handleCategoryMouseInOut}
                 >
                   {user.name}
                   <div
                     className={
                       'userFrame ' +
-                      (this.props.categoryHover
+                      (this.state.categoryHover
                         ? 'displayBlock'
                         : 'displayNone')
                     }

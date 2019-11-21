@@ -3,7 +3,8 @@ import { Nav, Navbar, Form, FormControl, Button } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 import Forum from './Forum'
-import PostArticle from '../../pages/Forum/PostArticle'
+import PostArticle from './PostArticle'
+import ArticleContent from './ArticleContent'
 import TopicPage from './TopicPage'
 import './scss/ForumNavBar.scss'
 
@@ -127,6 +128,11 @@ const ForumNavBar = () => {
             exact
             path="/forum/humanities"
             render={props => <TopicPage {...props} cate={4} subCate={0} />}
+          ></Route>
+          <Route
+            exact
+            path="/forum/article/:articleId"
+            render={props => <ArticleContent />}
           ></Route>
         </Switch>
       </div>

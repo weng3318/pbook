@@ -2,9 +2,8 @@ import React from 'react'
 // eslint-disable-next-line no-unused-vars
 import { BrowserRouter as Route, Link } from 'react-router-dom'
 import CardS1 from '../../components/forum/CardS1/CardS1'
-import CardS2 from '../../components/forum/CardS2/CardS2'
 import Listitem from '../../components/forum/ListItem/ListItem'
-import HotTopic from '../../components/forum/HotTopic/HotTopic'
+import HotArticle from '../../components/forum/HotArticle/HotArticle'
 import './scss/Forum.scss'
 
 class Forum extends React.Component {
@@ -14,6 +13,9 @@ class Forum extends React.Component {
       update: false,
       items: 20,
       data: [],
+      articleList: [],
+      number: 5,
+      outOfList: false,
     }
   }
   componentDidMount() {
@@ -25,26 +27,60 @@ class Forum extends React.Component {
         return response.json()
       })
       .then(async result => {
-        await this.setState({
-          data: result.featured,
-          update: true,
+        fetch(`http://localhost:5555/forum/articleList/5`, {
+          method: 'GET',
         })
+          .then(res => {
+            if (!res.ok) throw new Error(res.statusText)
+            return res.json()
+          })
+          .then(result2 => {
+            this.setState({
+              data: result.featured,
+              articleList: result2,
+              update: true,
+            })
+          })
       })
       .catch(error => {
         //這裡可以顯示一些訊息
         console.error(error)
       })
+    window.addEventListener('scroll', () => {
+      let contentTop = document.documentElement.clientHeight
+      let scrollTop = document.documentElement.scrollTop
+      let scrollHeight = document.documentElement.scrollHeight
+      let reLoadValue = scrollHeight - contentTop - 100
+      let stopValue = scrollHeight - contentTop - 50
+      if (!this.state.outOfList) {
+        if (scrollTop > reLoadValue) {
+          let newNumber = this.state.number + 5
+          fetch(`http://localhost:5555/forum/articleList/${newNumber}`, {
+            method: 'GET',
+          })
+            .then(res => {
+              if (!res.ok) throw new Error(res.statusText)
+              return res.json()
+            })
+            .then(result2 => {
+              this.setState({
+                articleList: result2,
+                number: newNumber,
+              })
+              document.documentElement.scrollTop = reLoadValue
+            })
+        }
+        if (scrollTop === stopValue) {
+          this.setState({ outOfList: true })
+        }
+      }
+    })
   }
-
+  componentWillUnmount() {
+    window.removeEventListener('scroll', () => {})
+  }
   render() {
-    // <CardS2
-    //             update={this.state.update}
-    //             data={[
-    //               this.state.data[2],
-    //               this.state.data[3],
-    //               this.state.data[4],
-    //             ]}
-    //           />
+   
     return (
       <>
         <div className="container">
@@ -57,19 +93,33 @@ class Forum extends React.Component {
             </div>
             <div style={{ color: 'transparent' }}>更多精選</div>
             <Link to="" className="more-featured position-a">
-              更多精選 +{' '}
+              更多精選 +
             </Link>
           </div>
           <hr></hr>
           <div className="position-r">
             <div className="forum-list-wrapper card-module">
               <div className="articleList-title">文章列表</div>
-              {this.state.data.map(value => {
-                return <Listitem key={value.fm_articleId} article={value} />
+              {this.state.articleList.map(value => {
+                return (
+                  <Listitem
+                    key={value.fm_articleId}
+                    article={value}
+                    empty={false}
+                  />
+                )
               })}
+              {!this.state.outOfList ? (
+                <>
+                  <Listitem empty={true} />
+                  <Listitem empty={true} />
+                </>
+              ) : (
+                ''
+              )}
             </div>
-            <div className="HotTopic-wrapper card-module position-a">
-              <HotTopic />
+            <div className="HotArticle-wrapper card-module position-a">
+              <HotArticle />
             </div>
           </div>
         </div>
