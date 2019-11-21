@@ -111,16 +111,18 @@ a:hover{
 .brInfoBox{
     min-width: 265px;
     max-width: 600px;
+    height: 349px;
+    /* height: 100%; */
 }
 /* 書評家簡介，(文字、限制行數) */
 .brInfoText{
-    font-size: 1rem;
+    font-size: 1.2rem;
     margin: 24px;
     /* color: rgba(255,255,255,.7); */
     color: #2d3a3a;
     overflow : hidden;
     display: -webkit-box;
-    -webkit-line-clamp: 11;
+    -webkit-line-clamp: 9;
     -webkit-box-orient: vertical;
 }
 /* 書評家的影片區域 (縮放限制) iFrame設定高度Auto，此區域限制用百分比設定 */

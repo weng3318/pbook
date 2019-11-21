@@ -52,7 +52,7 @@ export class ReviewerBlog extends React.Component {
           ></BR_BlogList>
       </section>
       {/* 效果圖 開發使用 */}
-          {/* <img className="BlogBG" src={require('../pages/reviewer_page/images/03_評品書.png')}/> */}
+      {/* <img className="BlogBG" src={require('../pages/reviewer_page/images/03_評品書.png')}/> */}
     </>
     )
   }
