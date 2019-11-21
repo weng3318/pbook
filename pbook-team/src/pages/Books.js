@@ -14,12 +14,17 @@ class Books extends React.Component {
       <Router>
         <>
           <Switch>
-            <Redirect exact from={'/books'} to={'/books/1/1'} />
+            <Redirect exact from={'/books'} to={'/books/list/1/1'} />
             <Route
-              path="/books/:page/:categories/information/:name"
+              exact
+              path="/books/:mode/:page/:categories"
+              component={Shop}
+            ></Route>
+            <Route
+              exact
+              path="/books/information/:page/:categories/:name"
               component={BookCommodity}
             ></Route>
-            <Route path="/books/:page/:categories" component={Shop}></Route>
           </Switch>
         </>
       </Router>

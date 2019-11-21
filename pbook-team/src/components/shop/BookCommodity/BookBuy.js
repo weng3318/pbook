@@ -9,7 +9,7 @@ import './BookCommodity.scss'
 const BookBuy = props => {
   let data =
     props.shopPayload && props.shopPayload.rows && props.shopPayload.rows[0]
-  // console.log(data)
+  console.log(data)
 
   return (
     <>
@@ -26,10 +26,7 @@ const BookBuy = props => {
           <FontAwesomeIcon icon={faBookmark} className="mr-2" />
           加入收藏
         </button>
-        <RatingStatus
-          ratingsPayload={props.ratingsPayload}
-          data={data}
-        ></RatingStatus>
+        <RatingStatus data={data}></RatingStatus>
         <Link to={{ hash: '#' }} className="addComment my-2">
           +我想評語
         </Link>

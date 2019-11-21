@@ -1,3 +1,5 @@
+@import '../../color.scss';
+
 .book_box {
   img {
     width: 100%;
@@ -31,5 +33,22 @@
     -webkit-box-orient: vertical;
     white-space: normal;
     height: 50px;
+  }
+  a {
+    color: $color-gray;
+    .price {
+      color: $color-red;
+    }
+  }
+  .addCart {
+    background-color: $color-green;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    width: 6vw;
+    height: 1.6vw;
+    font-size: 1rem;
+    &:focus {
+      outline: none;
+    }
   }
 }

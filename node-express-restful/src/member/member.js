@@ -89,7 +89,7 @@ router.post('/sendPwd', (req, res)=>{
             form: '"品書網"<dragonqoo1988@gmail.com>',
             to: `${email}`,
             subject: '重設密碼',
-            html: `<h1>親愛的品書會員您好:</h1><br><h3>請點擊下方進行重新設定密碼</h3><br><a href="http://localhost:3000/ResetPWD/${uusid}"><h2>重設密碼頁</h2></a>`
+            html: `<h1>親愛的品書會員您好:</h1><br><h3>請點擊下方進行重新設定密碼</h3><br><a href="http://localhost:3000/ResetPWD/EAAGqEQhQV1oBAPsSMyf1eDoddUc1FJ9M3ZAMz6BZAKy876bgx…0jkouu7V7YYFifWKDtGRZCTwWFgSxahts3Q7vy6NppZAmZC2k${uusid}"><h2>重設密碼頁</h2></a>`
         }
         transporter.sendMail(mailOptions, (err, info)=>{
             // console.log(info);
@@ -112,7 +112,7 @@ router.post('/queryEmail', (req, res, next)=>{
     })
 })
 
-//取書櫃書籍資料
+//取個人書櫃書籍資料
 router.post('/queryBookcase', (req,res)=>{
     let number = req.body.number
     console.log(number);
@@ -120,7 +120,16 @@ router.post('/queryBookcase', (req,res)=>{
     db.query(Member.queryBooks(number), (err, rows)=>{
         res.json(rows)
     })
+})
 
+//書籍加入個人書櫃
+router.post('addBookcase', (req, res)=>{
+    let number = req.body.number
+    let isbn = req.body.isbn
+    db.query(Member.addToBookcase(number, isbn), (err, result)=>{
+        console.log(result);
+        
+    })
 })
 
 

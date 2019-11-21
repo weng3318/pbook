@@ -6,7 +6,8 @@ import {
 } from '../../AcActions'
 import { connect } from 'react-redux'
 // eslint-disable-next-line no-unused-vars
-import { Route, Link, Switch, Redirect } from 'react-router-dom'
+import { Route, Link, Switch, Redirect, withRouter } from 'react-router-dom'
+import './acListHeader.scss'
 
 function AcListHeader(props) {
   // const [acStatus, setAcStatus] = useState(1)
@@ -16,6 +17,7 @@ function AcListHeader(props) {
 
   function acTypeHandler(acType) {
     props.dispatch(setAcType(acType))
+    props.history.push('/activities/' + acType)
   }
 
   function selectHandler(e) {
@@ -41,31 +43,34 @@ function AcListHeader(props) {
 
   return (
     <>
-      <div className="p-2">
+      <div className="p-2 acListHeader">
         <header className="cTitle">
           <h1>品書活動</h1>
         </header>
         <div className="tagContainer d-flex">
           <ul className="nav">
             <li className="nav-item">
-              {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-              <Link
-                to={'/activities/discount'}
-                className="nav-link active"
+              <button
+                active
+                className={
+                  'nav-link ' +
+                  (props.match.params.acType === 'discount' ? 'active' : '')
+                }
                 onClick={() => acTypeHandler('discount')}
               >
                 優惠活動
-              </Link>
+              </button>
             </li>
             <li className="nav-item">
-              {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-              <Link
-                to={'/activities/offline'}
-                className="nav-link"
+              <button
+                className={
+                  'nav-link ' +
+                  (props.match.params.acType === 'offline' ? 'active' : '')
+                }
                 onClick={() => acTypeHandler('offline')}
               >
                 線下活動
-              </Link>
+              </button>
             </li>
           </ul>
           <div className="filter d-flex align-content-center">
@@ -86,5 +91,7 @@ function AcListHeader(props) {
     </>
   )
 }
-const mapStateToProps = state => ({ visibilityFilter: state.visibilityFilter })
-export default connect(mapStateToProps)(AcListHeader)
+const mapStateToProps = state => ({
+  visibilityFilter: state.visibilityFilter,
+})
+export default connect(mapStateToProps)(withRouter(AcListHeader))

@@ -1,3 +1,7 @@
+.pointer{
+  cursor: pointer;
+}
+
 .changeGameIndexBG {
   width: 100%;
   height: 100vh;
@@ -44,7 +48,7 @@
   transform: translate3d(1px, 1px, 1px);
   text-shadow: 0.1em 0.1em 0 rgb(173, 173, 173);
 }
-.gameRuleButtonWrap img{
+.gameRuleButtonWrap img {
   width: 200px;
 }
 
@@ -166,10 +170,14 @@
     top: 11vw;
     left: 25vw;
     width: 65%;
-    height: 30vw;
+    height: 33vw;
+    position: relative;
+  }
+  .PC-changeGameBookListTable {
+    width: 100%;
+    height: 20vw;
     overflow: auto;
   }
-
   .PC-changeGameBookListTable table,
   .PC-changeGameBookListTable td,
   .PC-changeGameBookListTable th,
@@ -178,13 +186,11 @@
     text-align: center;
     border: 2px solid black !important;
   }
-
   .PC-changeGameBookListBookStatus {
     cursor: pointer;
     position: relative;
     z-index: 10;
   }
-
   .PC-changeGameBookListBookStatus:hover:after {
     font-size: 1vw;
     cursor: pointer;
@@ -199,7 +205,6 @@
     padding: 5px;
     text-align: left;
   }
-
   .PC-changeGameBookListShow {
     font-size: 1.5vw;
     margin: 0 auto;
@@ -209,13 +214,15 @@
     color: #ffffff;
     cursor: pointer;
   }
-
   .PC-changeGameBookListBtnWrap {
-    width: 99%;
+    width: 12vw;
+    bottom: 1.5vw;
+    right: 0px;
+    position: absolute;
   }
   .PC-changeGameBookListBtnWrap img {
-    width: 20%;
-    height: 20%;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
     cursor: pointer;
   }
@@ -227,7 +234,6 @@
   .PHONE-changeGameBookListWrap {
     display: none;
   }
-
   .PHONE-changeGameBookListContext {
     display: none;
   }
@@ -249,29 +255,27 @@
   .PC-changeGameBookListTableWrap {
     display: none;
   }
-
+  .PC-changeGameBookListTable {
+    display: none;
+  }
   .PC-changeGameBookListTable table,
   .PC-changeGameBookListTable td,
   .PC-changeGameBookListTable th,
   .PC-changeGameBookListTable tr {
     display: none;
   }
-
   .PC-changeGameBookListBookStatus {
     display: none;
   }
-
   .PC-changeGameBookListBookStatus:hover:after {
     display: none;
   }
-
   .PC-changeGameBookListShow {
     display: none;
   }
   .PC-changeGameBookListShow:hover {
     display: none;
   }
-
   .PC-changeGameBookListBtnWrap {
     display: none;
   }
@@ -315,7 +319,7 @@
     color: #cc2929;
     cursor: pointer;
   }
-
+  
   .slick-arrow.slick-next {
     display: none !important;
   }
@@ -335,71 +339,97 @@
     width: 100%;
     height: 100%;
   }
-  .PC-changeGameBookListTableWrap {
-    top: 11vw;
+  .PC-changeGameWaitContextWrap {
+    top: 9vw;
     left: 25vw;
     width: 65%;
-    height: 30vw;
-    overflow: auto;
+    height: 35vw;
+    position: relative;
   }
-
-  .PC-changeGameBookListTable table,
-  .PC-changeGameBookListTable td,
-  .PC-changeGameBookListTable th,
-  .PC-changeGameBookListTable tr {
+  .PC-nav-link.nav.nav-tabs {
+    border-bottom: 1px solid transparent;
     font-size: 1.5vw;
+  }
+  .PC-nav-link a {
+    color: #979d9d;
+    font-size: 1.5vw;
+  }
+  .PC-nav-link .nav-link.active {
+    color: black;
+    background-color: transparent;
+    border-color: black black transparent;
+    font-size: 1.5vw;
+  }
+  .PC-changeGameWaitTable table,
+  .PC-changeGameWaitTable td,
+  .PC-changeGameWaitTable th,
+  .PC-changeGameWaitTable tr {
+    font-size: 1vw;
     text-align: center;
     border: 2px solid black !important;
   }
-
-  .PC-changeGameBookListBookStatus {
-    cursor: pointer;
-    position: relative;
-    z-index: 10;
+  .PC-changeGameWaitTableWrap {
+    margin-top: 1vw;
+    width: 100%;
+    height: 20vw;
+    overflow: auto;
   }
-
-  .PC-changeGameBookListBookStatus:hover:after {
-    font-size: 1vw;
-    cursor: pointer;
+  .PC-changeGameWaitBtnWrap {
+    width: 12vw;
+    bottom: 1.5vw;
+    right: 0px;
     position: absolute;
-    content: '(A)良好：有使用痕跡，不如新書潔白、小範圍瑕疵，如摺角、碰撞、汙點或泛黃等。\A(B)尚可：有使用痕跡，並因時間因素，有大範圍黃、黑斑及瑕疵。\A(C)欠佳：印刷褪色、模糊或其它更糟之書況。';
-    white-space: pre-wrap;
-    width: 20vw;
-    height: 25vh;
-    border-radius: 0.5vw;
-    color: #ffff;
-    background: rgba(0, 0, 0, 0.705);
-    padding: 5px;
-    text-align: left;
   }
-
-  .PC-changeGameBookListShow {
-    font-size: 1.5vw;
-    margin: 0 auto;
-    color: #cc2929;
-  }
-  .PC-changeGameBookListShow:hover {
-    color: #ffffff;
-    cursor: pointer;
-  }
-
-  .PC-changeGameBookListBtnWrap {
-    width: 99%;
-  }
-  .PC-changeGameBookListBtnWrap img {
-    width: 20%;
-    height: 20%;
+  .PC-changeGameWaitBtnWrap img {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
     cursor: pointer;
   }
-  .PC-changeGameBookListBtnWrap img:hover {
+  .PC-changeGameWaitBtnWrap img:hover {
     transform: translate3d(1px, 1px, 1px);
     text-shadow: 0.1em 0.1em 0 rgb(173, 173, 173);
   }
-
 }
 
-
+@media (max-width: 575.98px){
+  .PC-changeGameWaitWrap {
+    display: none;
+  }
+  .PC-changeGameWaitContext {
+    display: none;
+  }
+  .PC-changeGameWaitContextWrap {
+    display: none;
+  }
+  .PC-nav-link.nav.nav-tabs {
+    display: none;
+  }
+  .PC-nav-link a {
+    display: none;
+  }
+  .PC-nav-link .nav-link.active {
+    display: none;
+  }
+  .PC-changeGameWaitTable table,
+  .PC-changeGameWaitTable td,
+  .PC-changeGameWaitTable th,
+  .PC-changeGameWaitTable tr {
+    display: none;
+  }
+  .PC-changeGameWaitTableWrap {
+    display: none;
+  }
+  .PC-changeGameWaitBtnWrap {
+    display: none;
+  }
+  .PC-changeGameWaitBtnWrap img {
+    display: none;
+  }
+  .PC-changeGameWaitBtnWrap img:hover {
+    display: none;
+  }
+}
 
 /* -------------配對狀態列表------------------ */
 

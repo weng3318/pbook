@@ -6,7 +6,7 @@ import { faCaretRight } from '@fortawesome/free-solid-svg-icons'
 import './bookInfo.scss'
 function BookInfo(props) {
   return (
-    <div className="book_box col-md-3 mb-4">
+    <div className="book_box col-md-3 mb-5">
       <figure className="mb-1">
         <Link
           to={'/books/information/' + props.sid}
@@ -23,12 +23,12 @@ function BookInfo(props) {
           </div>
           <div className="book_data">
             <h6
-              className="px-3 mt-2"
+              className="px-3 mt-2 mb-1"
               title={props.name + '\n\n' + props.introduction}
             >
               {props.name}
             </h6>
-            <span className="info my-2">
+            <span className="info mb-2 mt-1">
               <span>作者：{props.author}</span>
               <div className="">
                 <span className="price">79</span> 折

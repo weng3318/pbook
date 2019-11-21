@@ -1,14 +1,17 @@
 import React from 'react'
 import { Col } from 'react-bootstrap'
-import Page from './Page'
+import { Link } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faGripHorizontal, faList } from '@fortawesome/free-solid-svg-icons'
 import BookInfoRight from './BookInfoRight'
 import BookInfoLeft from './BookInfoLeft'
+import Page from './Page'
 import './Shop.scss'
 
-const Data = props => {
+const DataList = props => {
   return (
     <>
-      <Col md={10} className="books position-relative">
+      <Col md={10} className="books">
         <div className="book_account mx-3 my-3">
           最新上架書籍共有
           <span className="book_number px-2">
@@ -17,7 +20,17 @@ const Data = props => {
           本
         </div>
         <div className="book_order mx-4 my-3 px-5 d-flex justify-content-between">
-          <span>顯示模式</span>
+          <div>
+            <span className="mr-2">顯示模式</span>
+            <Link>
+              <FontAwesomeIcon icon={faList} className="active" />
+            </Link>
+            <Link
+              to={'/books/pic/' + props.nowPage + '/' + props.nowCategories}
+            >
+              <FontAwesomeIcon icon={faGripHorizontal} />
+            </Link>
+          </div>
           <div>
             <span className="mr-2">排序依</span>
             <select>
@@ -39,10 +52,7 @@ const Data = props => {
                 nowPage={props.nowPage}
               ></BookInfoLeft>
               {/*書籍資訊左半*/}
-              <BookInfoRight
-                ratingsPayload={props.ratingsPayload}
-                data={data}
-              ></BookInfoRight>
+              <BookInfoRight data={data}></BookInfoRight>
               {/*書籍資訊右半*/}
             </div>
           ))}
@@ -50,6 +60,7 @@ const Data = props => {
           shopPayload={props.shopPayload}
           nowCategories={props.nowCategories}
           nowPage={props.nowPage}
+          mode={props.mode}
         ></Page>
         {/*Pagination*/}
       </Col>
@@ -57,4 +68,4 @@ const Data = props => {
   )
 }
 
-export default Data
+export default DataList

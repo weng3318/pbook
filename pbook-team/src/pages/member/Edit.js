@@ -1,6 +1,7 @@
 import React from 'react'
 import './lukeStyle.scss'
 import swal from '@sweetalert/with-react'
+import {withRouter} from 'react-router-dom'
 
 class Edit extends React.Component {
   constructor(){
@@ -226,7 +227,7 @@ class Edit extends React.Component {
                   </div>
                   <div className="d-flex item">
                     <h4>手機 : </h4>
-                    <input type="text" id="mobile" name="mobile" value={this.state.mobile} onChange={this.handleChange}/>
+                    <input type="text" id="mobile" name="mobile" value={this.state.mobile && this.state.mobile} onChange={this.handleChange}/>
                   </div>
                   <div className="d-flex item">
                     <h4>地址 : </h4>
@@ -294,4 +295,4 @@ class Edit extends React.Component {
     }
 }
 
-export default Edit
+export default withRouter(Edit)

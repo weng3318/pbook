@@ -31,7 +31,7 @@ class ResetPWD extends React.Component{
 
 
       queryNumber = ()=>{
-        let uusid = window.location.href.substr(31)
+        let uusid = window.location.href.substr(139)
         // console.log("uusid", uusid);
         
         fetch('http://localhost:5555/member/queryEmail', {
@@ -145,8 +145,9 @@ class ResetPWD extends React.Component{
             password1.classList.add('error')
             password2.classList.add('error')
             // console.log("password err");
-            }
-      
+            return
+        }
+        console.log("isPass1", isPass);
             if(captcha1 !== captcha2){
               this.setState({captcha2: "驗證碼錯誤，請在核對ㄧ次"})
               let captcha2 = document.querySelector('#captcha2')
@@ -157,7 +158,7 @@ class ResetPWD extends React.Component{
               isPass = true
             } 
 
-            console.log("isPass", isPass);
+            console.log("isPass2", isPass);
             
         if(isPass){
             fetch('http://localhost:5555/member/changePassword',{
