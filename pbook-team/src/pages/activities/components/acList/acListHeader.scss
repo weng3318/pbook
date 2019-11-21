@@ -7,10 +7,12 @@
     margin-right: 1rem;
     border-radius: 5px;
     &:hover {
+      background: darken($color-black, 5%);
       border: 1px solid $color-yellow;
     }
     &:focus,
     &.active {
+      background: darken($color-black, 5%);
       outline: none;
       color: $color-yellow;
     }
