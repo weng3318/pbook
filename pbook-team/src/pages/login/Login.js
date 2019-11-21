@@ -518,10 +518,10 @@ class Login extends React.Component {
               <h2>品書人重設密碼</h2>
             </div>
             <input className="login_input" placeholder="Email" name="email" value={this.state.email} 
-            style={{margin: '50px 0px'}}
+            style={{margin: '10px 0px'}}
             onChange={this.handleChange} />
             {/* <input className="login_input" type="password" placeholder="Password" name="password" value={this.state.password} onChange={this.handleChange}/> */}
-            <button className="login_btn" onClick={this.sendPWD}>寄送EMAIL</button>
+            <button className="login_btn" onClick={this.sendPWD} >寄送EMAIL</button>
             {/* <div className="social-container ">
               <div className="title">快速登入</div>
               <Link to="/fbLogin">
