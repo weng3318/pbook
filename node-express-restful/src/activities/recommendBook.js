@@ -35,7 +35,7 @@ async function getUsersRateData() {
 }
 
 
-function recommendationsPromise(usersRateMatrix, member) {
+function allUsersCosSimilarity(usersRateMatrix, member) {
     let x = usersRateMatrix[member]
     let similarityArray = []
     let cos = 0
@@ -54,9 +54,12 @@ function computeCosineSimilarity(x, y) {
     let y_norm = 0
     let cosxy = 0
     for (let i = 0; i < vlength; i++) {
-        x_norm += x[i] * x[i]
-        y_norm += y[i] * y[i]
-        cosxy += x[i] * y[i]
+        let xy = x[i] * y[i]
+        cosxy += xy
+        if (xy !== 0) {
+            x_norm += x[i] * x[i]
+            y_norm += y[i] * y[i]
+        }
     }
     x_norm = Math.sqrt(x_norm)
     y_norm = Math.sqrt(y_norm)
@@ -70,15 +73,61 @@ function computeCosineSimilarity(x, y) {
 
 async function getRecommenderBooks(memberNum, limit = 8) {
 
+    // 測試
+    // let matrix = []
+    // matrix[0] = [4,2,0,5,4]
+    // matrix[1] = [5,3,4,0,3]
+    // matrix[2] = [3,0,4,4,3]
+    // let n = 0
+    // let memberRating = matrix[n]
+    // let usersRateMatrix = matrix
+    // let cosMatrix = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+    // for (let i = 0; i < 3; i++) {
+    //     for (let j = 0; j < 3; j++) {
+    //         cosMatrix[i][j] = computeCosineSimilarity(matrix[i], matrix[j])
+    //     }
+    // }
+    // let sortSimilarityArray = allUsersCosSimilarity(matrix, n)
+    // console.log(sortSimilarityArray)
+    // let predictArray = []
+    // for (let i = 0; i < memberRating.length; i++) {
+    //     memberRating[i] = 1.0 * memberRating[i]
+    //     if (memberRating[i]) continue
+    //     let weightSum = 0
+    //     let count = 0
+    //     for (let j = 0; j < usersRateMatrix.length - 1; j++) {
+    //         let userJRating = 1.0 * usersRateMatrix[sortSimilarityArray[j].member][i]
+    //         if (!userJRating) {
+    //             continue
+    //         }
+    //         count++
+    //         if (count > 7) break
+    //         let weight = 1.0 * sortSimilarityArray[j].cos
+    //         memberRating[i] += weight * userJRating
+    //         weightSum += weight
+    //     }
+    //     if (weightSum === 0) {
+    //         memberRating[i] = 0
+    //     } else {
+    //         memberRating[i] = memberRating[i] / weightSum
+    //     }
+    //     predictArray.push({ bookId: bookArray[i], rating: memberRating[i] })
+    // }
+    // console.log(memberRating)
+
+    //------------
+
+
     let usersRateMatrix = await getUsersRateData()
     let member = memberArray.indexOf(memberNum)
     if (member === -1) member = 0
     let memberRating = usersRateMatrix[member]
-    let similarityArray = recommendationsPromise(usersRateMatrix, member)
+    let similarityArray = allUsersCosSimilarity(usersRateMatrix, member)
     let sortSimilarityArray = similarityArray.sort((a, b) => b.cos - a.cos)
     let predictArray = []
     // console.log(sortSimilarityArray)
 
+    // 計算加權平均
     for (let i = 0; i < memberRating.length; i++) {
         memberRating[i] = 1.0 * memberRating[i]
         if (memberRating[i]) continue
@@ -89,7 +138,7 @@ async function getRecommenderBooks(memberNum, limit = 8) {
             if (!userJRating) {
                 continue
             }
-            count++            
+            count++
             if (count > 7) break
             let weight = 1.0 * sortSimilarityArray[j].cos
             memberRating[i] += weight * userJRating

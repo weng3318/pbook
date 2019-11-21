@@ -15,7 +15,7 @@
 }
 /* 書評部落格 (參照背景) */
 .reviewerBlog {
-    padding: 20px 200px 20px 200px;
+    padding: 30px 200px 50px 200px;
     /* background: #fff; */
     /* background: url(../reviewer_page//images/03_評品書.png) center center; */
     max-width: 1920px;

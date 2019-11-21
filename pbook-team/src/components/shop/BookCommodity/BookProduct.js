@@ -6,17 +6,9 @@ import './BookCommodity.scss'
 
 const BookProduct = props => {
   let data =
-    props.shopPayload && props.shopPayload.rows && props.shopPayload.rows[0]
-  let categoriesPayload = props.categoriesPayload && props.categoriesPayload
-  let name = []
-  for (let i = 0; i < 21; i++) {
-    if (
-      (categoriesPayload && categoriesPayload[i] && categoriesPayload[i].sid) ==
-      props.nowCategories
-    )
-      name[i] = categoriesPayload[i].name
-    else name[i] = ''
-  }
+    props.bookInfoPayload &&
+    props.bookInfoPayload.rows &&
+    props.bookInfoPayload.rows[0]
 
   return (
     <>
@@ -33,7 +25,7 @@ const BookProduct = props => {
           <span className="mt-2">
             頁數：{data && data.page}頁 ｜ 版次：{data && data.version}
           </span>
-          <span className="mt-2"> 類別：{name[props.nowCategories - 1]}</span>
+          <span className="mt-2"> 類別：{data && data.categoriesName}</span>
         </div>
         <Tabs defaultActiveKey="content" id="uncontrolled-tab-example">
           <Tab eventKey="content" title="內容簡介" className="a">

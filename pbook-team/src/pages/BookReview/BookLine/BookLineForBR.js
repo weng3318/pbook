@@ -36,31 +36,31 @@ export default function CustomizedProgressBars(props) {
               className={classes.margin}
               variant="determinate"
               color="secondary"
-              value={data.five_star}
+              value={5}
             />
             <BorderLinearProgress
               className={classes.margin}
               variant="determinate"
               color="secondary"
-              value={data.four_star}
+              value={5}
             />
             <BorderLinearProgress
               className={classes.margin}
               variant="determinate"
               color="secondary"
-              value={data.three_star}
+              value={5}
             />
             <BorderLinearProgress
               className={classes.margin}
               variant="determinate"
               color="secondary"
-              value={data.two_star}
+              value={5}
             />
             <BorderLinearProgress
               className={classes.margin}
               variant="determinate"
               color="secondary"
-              value={data.one_star}
+              value={5}
             />
           </div>
         </section>

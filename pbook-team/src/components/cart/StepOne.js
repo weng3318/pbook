@@ -1,20 +1,13 @@
 import React from 'react'
-import { Container, Row, Col } from 'react-bootstrap'
+import ShopDetail from './ShopDetail'
+import CartSummary from './CartSummary'
 import './Cart.scss'
 
 const StepOne = props => {
   return (
     <>
-      <Container className="px-0" fluid={true}>
-        <Container>
-          <Row>
-            <Col md={12}></Col>
-          </Row>
-        </Container>
-        <Container>
-          <Row></Row>
-        </Container>
-      </Container>
+      <ShopDetail></ShopDetail>
+      <CartSummary></CartSummary>
     </>
   )
 }

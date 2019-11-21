@@ -1,57 +1,98 @@
 import React from 'react'
-import Button from '@material-ui/core/Button'
-import TextField from '@material-ui/core/TextField'
-import Dialog from '@material-ui/core/Dialog'
-import DialogActions from '@material-ui/core/DialogActions'
-import DialogContent from '@material-ui/core/DialogContent'
-import DialogContentText from '@material-ui/core/DialogContentText'
-import DialogTitle from '@material-ui/core/DialogTitle'
+import { Modal, Button } from 'react-bootstrap'
 import './acSign.scss'
 
 function AcSign(props) {
+  let user = localStorage.user ? JSON.parse(localStorage.user) : false
+  const [inputData, setInputData] = React.useState({
+    acId: props.match.params.acId,
+    memberNum: user ? user.MR_number : 'not login',
+    name: user ? user.MR_name : '',
+    phone: '',
+    email: '',
+  })
+  function handleSubmit() {
+    fetch('http://localhost:5555/activities/ac-sign', {
+      method: 'POST',
+      body: JSON.stringify(inputData),
+      headers: {
+        'content-type': 'application/json',
+      },
+    })
+      .then(response => response.json())
+      .then(result => {
+        console.log(result)
+        props.handleClose()
+      })
+      .catch(err => console.log(err))
+  }
+  function handleChange(e) {
+    setInputData({ ...inputData, [e.target.name]: e.target.value })
+  }
   return (
     <>
-      <div className="acSing">
-        <Dialog
-          open={props.open}
-          onClose={props.handleClose}
-          aria-labelledby="form-dialog-title"
-        >
-          <DialogTitle id="form-dialog-title">活動報名</DialogTitle>
-          <DialogContent>
-            <DialogContentText>報名此活動</DialogContentText>
-            <TextField
-              margin="normal"
-              id="name"
-              label="姓名"
-              type="name"
-              fullWidth
-            />
-            <TextField
-              margin="normal"
-              id="phone"
-              label="手機"
-              type="text"
-              fullWidth
-            />
-            <TextField
-              margin="normal"
-              id="email"
-              label="電子郵件"
-              type="email"
-              fullWidth
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={props.handleClose} color="primary">
-              Cancel
-            </Button>
-            <Button onClick={props.handleClose} color="primary">
-              Subscribe
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </div>
+      <Modal className="acSign" show={props.show} onHide={props.handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>活動報名</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <form>
+            <div className="form-group">
+              <label htmlFor="memberName">姓名</label>
+              <input
+                type="text"
+                name="name"
+                className="form-control"
+                id="memberName"
+                aria-describedby="memberNameHelp"
+                placeholder="請輸入姓名"
+                value={inputData.name}
+                onChange={handleChange}
+              />
+              <small
+                id="memberNameHelp"
+                className="form-text text-muted"
+              ></small>
+            </div>
+            <div className="form-group my-4">
+              <label htmlFor="phone">手機</label>
+              <input
+                type="text"
+                name="phone"
+                className="form-control"
+                id="phone"
+                aria-describedby="phoneHelp"
+                placeholder="0987654321"
+                value={inputData.phone}
+                onChange={handleChange}
+              />
+              <small id="phoneHelp" className="form-text text-muted"></small>
+            </div>
+            <div className="form-group mb-4">
+              <label htmlFor="email">電子郵件</label>
+              <input
+                type="email"
+                name="email"
+                className="form-control"
+                id="email"
+                aria-describedby="emailHelp"
+                placeholder="example@gmail.com"
+                value={inputData.email}
+                onChange={handleChange}
+              />
+              <small id="emailHelp" className="form-text text-muted"></small>
+            </div>
+          </form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={props.handleClose}>
+            關閉
+          </Button>
+          <Button variant="primary" onClick={handleSubmit}>
+            送出
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   )
 }
