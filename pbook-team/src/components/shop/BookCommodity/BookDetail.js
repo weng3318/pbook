@@ -11,7 +11,11 @@ import './BookCommodity.scss'
 
 const BookDetail = props => {
   let data =
-    props.shopPayload && props.shopPayload.rows && props.shopPayload.rows[0]
+    props.bookInfoPayload &&
+    props.bookInfoPayload.rows &&
+    props.bookInfoPayload.rows[0]
+  console.log(data && data.fiveStars)
+
   return (
     <>
       <Col md={5}>
@@ -26,7 +30,15 @@ const BookDetail = props => {
             </div>
             <div className="marks d-flex align-items-center justify-content-center mr-3">
               <FontAwesomeIcon icon={faBookmark} className="mr-2" />
-              <span className="fav">1296</span>評論
+              <span className="fav">
+                {data &&
+                  data.fiveStars + data &&
+                  data.fourStars + data &&
+                  data.threeStars + data &&
+                  data.twoStars + data &&
+                  data.oneStars}
+              </span>
+              評論
             </div>
           </div>
           <div className="d-flex flex-column bookPrice my-3">

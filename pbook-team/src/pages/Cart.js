@@ -1,10 +1,10 @@
 import React from 'react'
-import StepOne from '../components/cart/StepOne'
+import Buy from '../components/cart/Buy'
 
 const Cart = () => {
   return (
     <>
-      <StepOne></StepOne>
+      <Buy></Buy>
     </>
   )
 }

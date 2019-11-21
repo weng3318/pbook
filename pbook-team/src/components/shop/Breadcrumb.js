@@ -10,10 +10,11 @@ const Breadcrumb = props => {
   let name = []
   for (let i = 0; i < 21; i++) {
     if (
-      (categoriesPayload && categoriesPayload[i] && categoriesPayload[i].sid) ==
-      props.nowCategories
+      (categoriesPayload &&
+        categoriesPayload[i] &&
+        categoriesPayload[i].sid) === +props.nowCategories
     )
-      name[i] = categoriesPayload[i].name
+      name[i] = categoriesPayload[i].categoriesName
     else name[i] = ''
   }
 
