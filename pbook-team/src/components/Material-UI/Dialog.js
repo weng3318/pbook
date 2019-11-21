@@ -1,4 +1,8 @@
 import React from 'react'
+import { connect } from 'react-redux'
+// action
+import { AppendImgElement, MainImageFile } from '../../pages/Forum/fmAction'
+
 import { withStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
@@ -58,8 +62,17 @@ const DialogActions = withStyles(theme => ({
   },
 }))(MuiDialogActions)
 
-export default function CustomizedDialogs(props) {
+const style = {
+  maxWidth: '600px',
+  maxHeight: '400px',
+  objectFit: 'contain',
+}
+
+const CustomizedDialogs = props => {
   const [open, setOpen] = React.useState(false)
+  const [uploading, setUploading] = React.useState('')
+  const [mainImg, setMainImg] = React.useState(true)
+  const [imageFile, setImageFile] = React.useState('')
 
   const handleClickOpen = () => {
     setOpen(true)
@@ -67,10 +80,30 @@ export default function CustomizedDialogs(props) {
   const handleClose = () => {
     setOpen(false)
   }
-  const handleUpload = () => {
-    console.log('2')
-    console.log(this)
+
+  const handleInsertImgDemo = e => {
+    if (mainImg) {
+      setMainImg(false)
+      props.handleImgFile(imageFile)
+      let element = <></>
+    }
+    let element = <ImgDemo imgData={uploading} imgCount={props.imgCount} />
+    props.dispatch(AppendImgElement(element, uploading))
+    setUploading('')
+
+    setOpen(false)
   }
+  const handleUpload = e => {
+    let inputId = `#file${props.imgCount}`
+    let file = document.querySelector(inputId).files[0]
+    setImageFile(file)
+    let reader = new FileReader()
+    reader.readAsDataURL(file)
+    reader.addEventListener('load', function(event) {
+      setUploading(event.target.result)
+    })
+  }
+
   return (
     <div>
       <ListItem button onClick={handleClickOpen}>
@@ -91,12 +124,19 @@ export default function CustomizedDialogs(props) {
         </DialogTitle>
         <DialogContent dividers>
           <Typography gutterBottom>
-            <input type="file" id="file1" onChange={handleUpload}></input>
-            <div></div>
+            <input
+              type="file"
+              id={`file${props.imgCount}`}
+              onChange={handleUpload}
+              accept="image/*"
+            ></input>
+            <div>
+              <img src={uploading} id="demoImg" style={style}></img>
+            </div>
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleClose} color="primary">
+          <Button autoFocus onClick={handleInsertImgDemo} color="primary">
             確認上傳
           </Button>
         </DialogActions>
@@ -104,3 +144,24 @@ export default function CustomizedDialogs(props) {
     </div>
   )
 }
+
+const ImgDemo = props => {
+  return (
+    <div key={props.imgCount}>
+      <img
+        className="img-demo"
+        src={props.imgData}
+        id={`demoImg${props.imgCount}`}
+      ></img>
+    </div>
+  )
+}
+
+// 綁定props.todos <=> store.todos
+const mapStateToProps = store => ({
+  addElement: store.postArticle.addElement,
+  imgData: store.postArticle.imgData,
+  imgCount: store.postArticle.imgCount,
+})
+// export default CustomizedDialogs
+export default connect(mapStateToProps)(CustomizedDialogs)

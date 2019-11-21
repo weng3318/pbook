@@ -21,8 +21,11 @@ import BookReviews from '../../pages/BookReview/BookReviews'
 import ResetPWD from '../../pages/ResetPWD'
 import { browserHistory } from 'react-router'
 import './header.css'
+import { connect } from 'react-redux'
+//action
+import { letMeLogin } from '../../pages/Forum/fmAction'
 
-export default class Header extends React.Component {
+class Header extends React.Component {
   constructor() {
     super()
     this.state = {
@@ -267,8 +270,7 @@ export default class Header extends React.Component {
               </div>
             </>
           )}
-
-          {this.state.login === false ? (
+          {!(this.props.loginOrNot || this.state.login) ? (
             <>
               <section className="d-flex justify-content-center titleButton">
                 <Link
@@ -462,10 +464,13 @@ export default class Header extends React.Component {
             <Route path="/activities" component={Activities} />
             <Route exact path="/reviews" component={Reviews} />
 
-            {/* <Route path="/forum" component={Forum} /> */}
             <Route exact path="/book_reviews/:sid" component={BookReviews} />
 
-            <Route exact path="/forum/post" component={PostArticle} />
+            <Route
+              exact
+              path="/forum/post/:category/:MR_number"
+              component={PostArticle}
+            />
             <Route path="/forum" component={Forum} />
 
             {/* <Route exact path="/login" component={()=><Login loginSuccess={(memberData)=>{ this.loginSuccess(memberData) }}/>} /> */}
@@ -489,3 +494,11 @@ export default class Header extends React.Component {
     )
   }
 }
+
+// 綁定props.todos <=> store.todos
+const mapStateToProps = store => ({
+  loginOrNot: store.letMeLogin.loginOrNot,
+})
+
+// redux(state)綁定到此元件的props、dispatch方法自動綁定到此元件的props
+export default connect(mapStateToProps)(Header)
