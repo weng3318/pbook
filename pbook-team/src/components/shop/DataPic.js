@@ -8,6 +8,9 @@ import './Shop.scss'
 import BookInfoPic from './BookInfoPic'
 
 const DataPic = props => {
+  function setMode() {
+    localStorage.setItem('mode', 'list')
+  }
   return (
     <>
       <Col md={10} className="books position-relative">
@@ -21,12 +24,10 @@ const DataPic = props => {
         <div className="book_order mx-4 my-3 px-5 d-flex justify-content-between">
           <div>
             <span className="mr-2">顯示模式</span>
-            <Link
-              to={'/books/list/' + props.nowPage + '/' + props.nowCategories}
-            >
+            <Link to="/books/1/1" onClick={() => setMode()}>
               <FontAwesomeIcon icon={faList} />
             </Link>
-            <Link>
+            <Link to="/books/1/1">
               <FontAwesomeIcon icon={faGripHorizontal} className="active" />
             </Link>
           </div>
@@ -51,7 +52,6 @@ const DataPic = props => {
               >
                 <BookInfoPic
                   data={data}
-                  ratingsPayload={props.ratingsPayload}
                   nowCategories={props.nowCategories}
                   nowPage={props.nowPage}
                 ></BookInfoPic>
@@ -62,7 +62,6 @@ const DataPic = props => {
           shopPayload={props.shopPayload}
           nowCategories={props.nowCategories}
           nowPage={props.nowPage}
-          mode={props.mode}
         ></Page>
         {/*Pagination*/}
       </Col>

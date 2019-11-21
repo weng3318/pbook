@@ -9,9 +9,12 @@ import Page from './Page'
 import './Shop.scss'
 
 const DataList = props => {
+  function setMode() {
+    localStorage.setItem('mode', 'pic')
+  }
   return (
     <>
-      <Col md={10} className="books position-relative">
+      <Col md={10} className="books">
         <div className="book_account mx-3 my-3">
           最新上架書籍共有
           <span className="book_number px-2">
@@ -22,12 +25,10 @@ const DataList = props => {
         <div className="book_order mx-4 my-3 px-5 d-flex justify-content-between">
           <div>
             <span className="mr-2">顯示模式</span>
-            <Link>
+            <Link to="/books/1/1">
               <FontAwesomeIcon icon={faList} className="active" />
             </Link>
-            <Link
-              to={'/books/pic/' + props.nowPage + '/' + props.nowCategories}
-            >
+            <Link to="/books/1/1" onClick={() => setMode()}>
               <FontAwesomeIcon icon={faGripHorizontal} />
             </Link>
           </div>
@@ -52,10 +53,7 @@ const DataList = props => {
                 nowPage={props.nowPage}
               ></BookInfoLeft>
               {/*書籍資訊左半*/}
-              <BookInfoRight
-                ratingsPayload={props.ratingsPayload}
-                data={data}
-              ></BookInfoRight>
+              <BookInfoRight data={data}></BookInfoRight>
               {/*書籍資訊右半*/}
             </div>
           ))}
@@ -63,7 +61,6 @@ const DataList = props => {
           shopPayload={props.shopPayload}
           nowCategories={props.nowCategories}
           nowPage={props.nowPage}
-          mode={props.mode}
         ></Page>
         {/*Pagination*/}
       </Col>

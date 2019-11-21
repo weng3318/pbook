@@ -10,37 +10,16 @@ const BookInfoLeft = props => {
     <>
       <div className="d-flex">
         <div className="book_pic mr-3">
-          <Link
-            to={
-              '/books/' +
-              'information/' +
-              props.nowPage +
-              '/' +
-              props.nowCategories +
-              '/' +
-              props.data.name
-            }
-          >
+          <Link to={'/books/information/' + props.data.sid}>
             <img
-              src={
-                'http://localhost/books/src/venderBooks_Management/vb_images/' +
-                props.data.pic
-              }
+              src={'http://localhost:5555/images/books/' + props.data.pic}
               alt=""
             />
           </Link>
         </div>
         <div className="d-flex flex-column book_data">
           <Link
-            to={
-              '/books/' +
-              'information/' +
-              props.nowPage +
-              '/' +
-              props.nowCategories +
-              '/' +
-              props.data.name
-            }
+            to={'/books/information/' + props.data.sid}
             className="book_name"
           >
             {props.data.name}
@@ -56,15 +35,7 @@ const BookInfoLeft = props => {
             {props.data.introduction}
           </div>
           <Link
-            to={
-              '/books/' +
-              props.nowPage +
-              '/' +
-              props.nowCategories +
-              '/' +
-              'information/' +
-              props.data.name
-            }
+            to={'/books/information/' + props.data.sid}
             className="ml-auto mt-auto moreInfo"
           >
             ... {''} <FontAwesomeIcon icon={faCaretRight} /> more

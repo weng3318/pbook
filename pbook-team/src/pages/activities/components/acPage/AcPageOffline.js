@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-has-content */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import './acPageOffline.scss'
 import { connect } from 'react-redux'
 import { fetchAcList } from '../../AcActions'

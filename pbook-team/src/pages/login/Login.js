@@ -29,6 +29,8 @@ class Login extends React.Component {
       err_username: '使用者名稱: 至少3個字元',
       err_password: '至少有一個數字、一個小寫英文字母、密碼長度在 4~8 之間',
       err_captcha: '請輸入圖上的字',
+      picture: '請選擇個人頭像',
+
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleLogin = this.handleLogin.bind(this)
@@ -132,14 +134,11 @@ class Login extends React.Component {
       headers: {
         'Content-Type': 'application/json',
       },
-      credentials: 'include',
       body: JSON.stringify({
         email: email,
-      }),
-    })
-      .then(res => {
-        console.log(11)
-
+        })
+      })
+      .then(res=>{
         return res.json()
       })
       .then(data => {
@@ -149,10 +148,9 @@ class Login extends React.Component {
         if (data.status === '傳送成功') {
           this.success(status, message)
           setTimeout(() => {
-            // window.history.back()
-            this.props.history.push('/')
-          }, 2000)
-        } else {
+            window.location.href = '/'
+          }, 1000)
+        }else{
           this.fail(status, message)
         }
       })
@@ -348,8 +346,30 @@ class Login extends React.Component {
               filename: imgFile,
             }),
           })
-            .then(response => {
-              if (!response) throw new Error(response.statusText)
+          .then(img =>{
+            if(img.filename === ""){
+              imgFile = "品書印章.png"
+            }
+            else{
+              imgFile = img.filename
+            }
+            
+          
+            fetch('http://localhost:5555/member/register', {
+              method: 'POST',
+              credentials: 'include',  //跨網域取得session資訊
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                name: this.state.name,
+                email: this.state.email,
+                password: this.state.password,
+                filename: imgFile
+              })
+            })
+            .then( response => {
+              if(!response) throw new Error(response.statusText)
               // console.log('3'+response);
 
               return response.json()
@@ -396,179 +416,93 @@ class Login extends React.Component {
 
     return (
       <>
-        <div className="login_wrap">
-          <div>
-            <div className="container_login">
-              <div className="container_back">
-                <div className="login_singUp">
-                  <img
-                    src={require('./icon_MR_m.svg')}
-                    alt=""
-                    style={{ width: '60px' }}
-                  />
-                  <h2 style={{ paddingTop: '20px' }}>品書人註冊</h2>
-                </div>
-                <input
-                  className="login_input"
-                  name="email"
-                  id="email"
-                  type="text"
-                  placeholder="電子郵件"
-                  value={this.state.email}
-                  onChange={this.handleChange}
-                />
-                <small className="tip" id="err_email">
-                  {this.state.err_email}
-                </small>
-                <input
-                  className="login_input"
-                  type="text"
-                  placeholder="使用者名稱"
-                  name="name"
-                  id="name"
-                  value={this.state.name}
-                  onChange={this.handleChange}
-                />
-                <small className="tip" id="err_username">
-                  {this.state.err_username}
-                </small>
-                <input
-                  className="login_input"
-                  type="password"
-                  name="password"
-                  id="password"
-                  placeholder="密碼"
-                  value={this.state.password}
-                  onChange={this.handleChange}
-                />
-                <small className="tip" id="err_password">
-                  {this.state.err_password}
-                </small>
-                <input
-                  className="login_input"
-                  type="password"
-                  placeholder="請再次確認密碼"
-                  name="password2"
-                  id="password2"
-                  value={this.state.password2}
-                  onChange={this.handleChange}
-                />
-                <input
-                  className="login_input"
-                  type="file"
-                  name="file"
-                  onChange={this.onChangeHandler}
-                />
-                {/* <button type="button" className="btn btn-success btn-block" onClick={this.onClickhandler}>Upload</button>  */}
-                {/* <div className="serial"></div> */}
-                <canvas
-                  className="serial"
-                  id="captcha1"
-                  onClick={this.captcha1}
-                ></canvas>
-                <input
-                  className="login_input"
-                  type="text"
-                  placeholder="輸入驗證碼"
-                  name="captcha2"
-                  id="captcha2"
-                  value={this.state.captcha2}
-                  onChange={this.handleChange}
-                />
-                <small className="tip" id="err_captcha">
-                  {this.state.err_captcha}
-                </small>
-                <div className="btn-group">
-                  <button
-                    type="button"
-                    className="singUp_btn"
-                    onClick={this.handleRegister}
-                  >
-                    確認
-                  </button>
-                  <button
-                    type="button"
-                    className="singUp_btn"
-                    onClick={this.clearStyle}
-                  >
-                    取消重填
-                  </button>
-                </div>
-              </div>
-              {this.state.forgetPwd === false ? (
-                <div className="container_front">
-                  <div className="login_title">
-                    <img
-                      src={require('./icon_MR_m.svg')}
-                      alt=""
-                      style={{ width: '60px' }}
-                      onClick={() => {
-                        window.location.href = '/'
-                      }}
-                    />
-                    <h2 style={{ marginLeft: '20px' }}>品書人登入</h2>
-                  </div>
-                  <input
-                    className="login_input"
-                    placeholder="Email"
-                    name="email"
-                    value={this.state.email}
-                    onChange={this.handleChange}
-                  />
-                  <input
-                    className="login_input"
-                    type="password"
-                    placeholder="Password"
-                    name="password"
-                    value={this.state.password}
-                    onChange={this.handleChange}
-                  />
-                  <button className="login_btn" onClick={this.handleLogin}>
-                    登入
-                  </button>
-                  {/* <Link to="/forgetPWD"> */}
-                  <a
-                    className="forgetPassword"
-                    onClick={() => {
-                      this.setState({ forgetPwd: true })
-                    }}
-                  >
-                    Forgot your password?
-                  </a>
-                  {/* </Link> */}
-                  {/* <div className="social-container ">
+  
+    <div className="login_wrap">
+     <div>
+      <div className="container_login" >
+          <div className="container_back">
+            <div className="login_singUp">
+              <img src={require('./icon_MR_m.svg')} alt="" style={{ width: '60px' }} />
+              <h2 style={{paddingTop: '20px'}}>品書人註冊</h2>
+            </div>
+            <input className="login_input" name="email" id="email" type="text" placeholder="電子郵件" 
+            value={this.state.email} onChange={this.handleChange} />
+            <small className="tip" id="err_email">{this.state.err_email}</small>
+            <input
+              className="login_input"
+              type="text"
+              placeholder="使用者名稱"
+              name="name" id="name"
+              value={this.state.name} onChange={this.handleChange} 
+            />
+             <small className="tip" id="err_username">{this.state.err_username}</small>
+            <input className="login_input" type="password" name="password" id="password" 
+            placeholder="密碼" value={this.state.password} onChange={this.handleChange} />
+            <small className="tip" id="err_password">
+            {this.state.err_password}
+            </small>
+            <input
+              className="login_input"
+              type="password"
+              placeholder="請再次確認密碼"
+              name="password2" id="password2"
+              value={this.state.password2} onChange={this.handleChange} 
+            />
+            <input className="login_input" type="file" name="file" onChange={this.onChangeHandler} />
+            <small className="tip">
+                {this.state.picture}
+            </small>
+            {/* <button type="button" className="btn btn-success btn-block" onClick={this.onClickhandler}>Upload</button>  */}
+            {/* <div className="serial"></div> */}
+            <canvas  className="serial" id="captcha1" onClick={this.captcha1}></canvas>
+            <input
+              className="login_input"
+              type="text"
+              placeholder="輸入驗證碼"
+              name="captcha2"
+              id="captcha2"
+              value={this.state.captcha2} onChange={this.handleChange} 
+            />
+            <small className="tip" id="err_captcha">{this.state.err_captcha}</small>
+            <div className="btn-group">
+            <button type="button" className="singUp_btn" onClick={this.handleRegister}>
+              確認
+            </button>
+            <button type="button" className="singUp_btn" onClick={this.clearStyle}>
+              取消重填
+            </button>
+            </div>
+          </div>
+          {this.state.forgetPwd === false ?
+          (<div className="container_front" >
+            <div className="login_title">
+              <img src={require('./icon_MR_m.svg')} alt=""  onClick={()=>{window.location.href = '/' }}/>
+              <h2 className="h2_title" style={{marginLeft: '20px'}}>品書人登入</h2>
+            </div>
+            <input className="login_input" placeholder="Email" name="email" value={this.state.email} onChange={this.handleChange} />
+            <input className="login_input" type="password" placeholder="Password" name="password" value={this.state.password} onChange={this.handleChange}/>
+            <button className="login_btn" onClick={this.handleLogin}>登入</button>
+            <a className="forgetPassword"
+              onClick={()=>{this.setState({forgetPwd: true})}}
+            >Forgot your password?</a>
+            {/* <div className="social-container ">
               <div className="title">快速登入</div>
               <Link to="/fbLogin">
                 <FbLogin/>
               </Link>
             </div> */}
-                </div>
-              ) : (
-                <div className="container_front">
-                  <div className="login_title">
-                    <img
-                      src={require('./icon_MR_m.svg')}
-                      alt=""
-                      style={{ width: '60px' }}
-                      onClick={() => {
-                        window.location.href = '/'
-                      }}
-                    />
-                    <h2>品書人重設密碼</h2>
-                  </div>
-                  <input
-                    className="login_input"
-                    placeholder="Email"
-                    name="email"
-                    value={this.state.email}
-                    style={{ margin: '50px 0px' }}
-                    onChange={this.handleChange}
-                  />
-                  {/* <input className="login_input" type="password" placeholder="Password" name="password" value={this.state.password} onChange={this.handleChange}/> */}
-                  <button className="login_btn" onClick={this.sendPWD}>
-                    寄送EMAIL
-                  </button>
-                  {/* <div className="social-container ">
+          </div>):
+          (<div className="container_front" >
+            <div className="resend_title">
+              <img src={require('./icon_MR_m.svg')} alt="" style={{ width: '60px' }} onClick={()=>{window.location.href = '/' }}/>
+              <h2>品書人重設密碼</h2>
+            </div>
+            <input className="login_input" placeholder="Email" name="email" value={this.state.email} 
+            style={{margin: '10px 0px'}}
+            onChange={this.handleChange} />
+            {/* <input className="login_input" type="password" placeholder="Password" name="password" value={this.state.password} onChange={this.handleChange}/> */}
+            <button className="login_btn" onClick={this.sendPWD} >寄送EMAIL</button>
+            {/* <div className="social-container ">
               <div className="title">快速登入</div>
               <Link to="/fbLogin">
               <FbLogin/>

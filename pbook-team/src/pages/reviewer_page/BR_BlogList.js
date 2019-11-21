@@ -6,9 +6,11 @@ class BR_BlogList extends React.Component {
     return (
       <>
           <h5 className="h5_br">{this.props.name}</h5>
+          <br/>
         <section className="ReviewerListAllBox reviewerList">
           <h5 className="" dangerouslySetInnerHTML={{__html:this.props.info}}></h5>
         </section>
+          <img className="pbookChick" src={require('./images/品書印章.png')}/>
       </>
     )
   }

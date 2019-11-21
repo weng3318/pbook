@@ -116,8 +116,6 @@ class Info extends React.Component {
                                           style={{
                                             backgroundImage: `url(${newPic})`
                                             }}>
-                                          
-                                        
                                           </figure>
                                       </div>
                           </div>

@@ -28,9 +28,10 @@ router.get('/brBookcase/:page?/:keyword?', (req,res)=>{
         output.keyword = keyword
 
     }
-    let t_sql = 'SELECT COUNT(1) `total` FROM `br_bookcase`' + where
+    // let t_sql = 'SELECT COUNT(1) `total` FROM `br_bookcase`' + where
+    let w_sql = 'SELECT `br_bookcase`.* ,`vb_books`.`name`,`vb_books`.`author`,`vb_books`.`pic`,`vb_books`.`introduction`,`vb_books`.`detailData` FROM `br_bookcase`LEFT JOIN `vb_books` ON `vb_books`.`isbn`=`br_bookcase`.`isbn`' + where
 
-    db.queryAsync(t_sql)
+    db.queryAsync(w_sql)
 
             .then((results)=>{
                 // 總筆數 取得第一筆"total"
@@ -41,7 +42,7 @@ router.get('/brBookcase/:page?/:keyword?', (req,res)=>{
                 if( page > output.totalRows ) page = output.totalRows
                 output.page = page
     
-                return db.queryAsync('SELECT * FROM `br_bookcase` '+ where +' LIMIT '+(page-1)*perPage+','+(perPage))
+                return db.queryAsync('SELECT `br_bookcase`.* ,`vb_books`.`author`,`vb_books`.`pic`,`vb_books`.`introduction`,`vb_books`.`detailData`,`vb_books`.`name` FROM `br_bookcase`LEFT JOIN `vb_books` ON `vb_books`.`isbn`=`br_bookcase`.`isbn`' + where +' LIMIT '+(page-1)*perPage+','+(perPage))
 
             .then((results)=>{
                 output.rows = results
@@ -52,5 +53,19 @@ router.get('/brBookcase/:page?/:keyword?', (req,res)=>{
             })
     })
 })
-
+// 31
+// router.get("/book_case", (req, res) => {
+//     let w_sql =
+//       "SELECT `br_bookcase`.* ,`vb_books`.`author`,`vb_books`.`introduction`,`vb_books`.`detailData`,`vb_books`.`name` FROM `br_bookcase`LEFT JOIN `vb_books` ON `vb_books`.`isbn`=`br_bookcase`.`isbn`";
+//       db.query(w_sql,(error,results)=>{
+//           if(error){
+//               return res.send(error)
+//           }else{
+//               return res.json({
+//                   data:results
+//               })
+//           }
+//       })
+  
+//   });
 module.exports = router;

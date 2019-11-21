@@ -9,13 +9,19 @@ export class ReviewerBlog extends React.Component {
     super(props)
     this.state = {
       csData: [],
+      bkData:[],
     }
   }
   componentDidMount() {
+    let newcsData
     axios
       .get('http://localhost:5555/reviewer/brBookcase')
       .then(res => {
-        this.setState({ csData: res.data.rows })
+        newcsData = res.data.rows
+        return axios.get('http://localhost:5555/reviewer/brbooks')
+      })
+      .then(res=>{
+        this.setState({ csData:newcsData, bkData: res.data.rows })
       })
       .catch(function(error) {
         console.log('前端沒有取得資料',error)
@@ -25,6 +31,8 @@ export class ReviewerBlog extends React.Component {
     // if (!this.state.csData.length) return <></>
     if (this.state.csData.length === 0) return <><h1>取得資料中...</h1></>
     let csData = this.state.csData
+    let bkData = this.state.bkData
+
     let BlogData = null
       console.log('csData[0].name', csData[0].name)
       for (let i = 0; i < csData.length; i++) {
@@ -35,15 +43,16 @@ export class ReviewerBlog extends React.Component {
     console.log('render csData 書評部落格資料',this.state.csData);
     return (
     <>
-      {/* <BR_Navbar /> */}
-      <h1>書評部落格</h1>
+      {/* todo.. 比對兩張資料表的作者{author} */}
+      <h3 className="h3_br">Blogger</h3>
       <section className="reviewerBlog borderLine">
           <BR_BlogList
           name={BlogData.name}
           info={BlogData.info}
           ></BR_BlogList>
       </section>
-          {/* <img className="BG_Blog" src={require('../pages/reviewer_page/images/03_評品書.png')}/> */}
+      {/* 效果圖 開發使用 */}
+      {/* <img className="BlogBG" src={require('../pages/reviewer_page/images/03_評品書.png')}/> */}
     </>
     )
   }

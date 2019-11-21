@@ -6,38 +6,14 @@ const BookInfoPic = props => {
   return (
     <>
       <div className="book_pic mr-3">
-        <Link
-          to={
-            '/books/' +
-            'information/' +
-            props.nowPage +
-            '/' +
-            props.nowCategories +
-            '/' +
-            props.data.name
-          }
-        >
+        <Link to={'/books/information/' + props.data.sid}>
           <img
-            src={
-              'http://localhost/books/src/venderBooks_Management/vb_images/' +
-              props.data.pic
-            }
+            src={'http://localhost:5555/images/books/' + props.data.pic}
             alt=""
           />
         </Link>
       </div>
-      <Link
-        to={
-          '/books/' +
-          'information/' +
-          props.nowPage +
-          '/' +
-          props.nowCategories +
-          '/' +
-          props.data.name
-        }
-        className="book_name"
-      >
+      <Link to={'/books/information/' + props.data.sid} className="book_name">
         {props.data.name}
       </Link>
       <span className="font-big pb-2">

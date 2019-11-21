@@ -5,13 +5,15 @@ import Breadcrumb from './Breadcrumb'
 import Categories from './Categories'
 import DataList from './DataList'
 import DataPic from './DataPic'
-import { rtFetch, shopFetch, cgFetch } from './ShopActions'
+import { shopFetch, cgFetch } from './ShopActions'
 import './Shop.scss'
 
 const Shop = props => {
   let [searchValue, setValue] = useState('')
+  let mode = localStorage.getItem('mode')
+    ? localStorage.getItem('mode')
+    : 'list'
   useEffect(() => {
-    props.dispatch(rtFetch())
     props.dispatch(cgFetch())
     props.dispatch(
       shopFetch(
@@ -27,21 +29,17 @@ const Shop = props => {
     setValue(searchValue)
     return false
   }
-  // function SearchKey(e) {
-  //   if (e.keyCode == 13) {
-  //     searchValue = document.querySelector('.searchInput').value
-  //     setValue(searchValue)
-  //     return false
-  //   }
-  //   return true
-  // }
-  // console.log(props.match.params.categories)
   let categoriesPayload = props.categories.payload
   let shopPayload = props.shop.payload
-  let ratingsPayload = props.ratings.payload
   let Data
-  if (props.match.params.mode == 'list') Data = DataList
-  else if (props.match.params.mode == 'pic') Data = DataPic
+
+  if (mode === 'list') {
+    Data = DataList
+    localStorage.setItem('mode', 'list')
+  } else if (mode === 'pic') {
+    Data = DataPic
+    localStorage.setItem('mode', 'pic')
+  }
   return (
     <>
       <Container className="px-0 book_wrapper" fluid={true}>
@@ -50,18 +48,12 @@ const Shop = props => {
           nowCategories={props.match.params.categories}
           nowPage={props.match.params.page}
           Search={Search}
-          // SearchKey={SearchKey}
-          // keyword={props.addSearch.keyword}
         ></Breadcrumb>
         <Container>
           <Row>
-            <Categories
-              categoriesPayload={categoriesPayload}
-              mode={props.match.params.mode}
-            ></Categories>
+            <Categories categoriesPayload={categoriesPayload}></Categories>
             <Data
               shopPayload={shopPayload}
-              ratingsPayload={ratingsPayload}
               nowCategories={props.match.params.categories}
               nowPage={props.match.params.page}
               mode={props.match.params.mode}
@@ -74,7 +66,6 @@ const Shop = props => {
 }
 
 const mapStateToProps = state => ({
-  ratings: state.ratings,
   shop: state.shop,
   categories: state.categories,
 })

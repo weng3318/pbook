@@ -1,6 +1,7 @@
 import React from 'react'
 import './lukeStyle.scss'
 import swal from '@sweetalert/with-react'
+import {withRouter} from 'react-router-dom'
 
 class Edit extends React.Component {
   constructor() {
@@ -184,22 +185,44 @@ class Edit extends React.Component {
       '書評家',
     ]
 
-    return (
-      <>
-        <div className="editWrap">
-          <div className=" wrap">
-            <div className="MB_title">會員資料修改</div>
-            <div className="d-flex">
-              <div className="list">
-                <div className="d-flex item">
-                  <h4>帳號 : </h4>
-                  <input
-                    type="text"
-                    id="email"
-                    name="email"
-                    value={this.state.email}
-                    onChange={this.handleChange}
-                  />
+      return (
+        <>
+          <div className="editWrap">
+            <div className=" wrap">
+              <div className="MB_title">會員資料修改</div>
+              <div className="d-flex">
+                <div className="list">
+                  <div className="d-flex item">
+                    <h4>帳號 : </h4>
+                    <input type="text" id="email" name="email" value={this.state.email} onChange={this.handleChange}/>
+                  </div>
+                  <div className="d-flex item">
+                    <h4>姓名 : </h4>
+                    <input type="text" id="name" name="name" value={this.state.name} onChange={this.handleChange}/>
+                  </div>
+                  <div className="d-flex item">
+                    <h4>暱稱 : </h4>
+                    <input type="text" id="nickname" name="nickname" value={this.state.nickname} onChange={this.handleChange}/>
+                  </div>
+                  <div className="d-flex item">
+                    <h4>生日 : </h4>
+                    <input type="text" id="birthday" name="birthday" value={this.state.birthday} onChange={this.handleChange}/>
+                  </div>
+                  <div className="d-flex item">
+                    <h4>手機 : </h4>
+                    <input type="text" id="mobile" name="mobile" value={this.state.mobile && this.state.mobile} onChange={this.handleChange}/>
+                  </div>
+                  <div className="d-flex item">
+                    <h4>地址 : </h4>
+                    <textarea
+                      name="address"
+                      id=""
+                      cols="30"
+                      rows="5"
+                      style={{ width: '300px', minHeight: '50px', resize: 'none' }}
+                      value={this.state.address} onChange={this.handleChange}
+                    ></textarea>
+                  </div>
                 </div>
                 <div className="d-flex item">
                   <h4>姓名 : </h4>
@@ -318,4 +341,4 @@ class Edit extends React.Component {
   }
 }
 
-export default Edit
+export default withRouter(Edit)

@@ -1,5 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
+import ReviewerBlog from '../ReviewerBlog'
 
 class BR_BookcaseList extends React.Component {
     render(props) {
@@ -13,8 +14,8 @@ class BR_BookcaseList extends React.Component {
       }(document, 'script', 'facebook-jssdk'))
         return (
             <>
+            <Router>
 <section className="ReviewerListAllBox_Bookcase">
-    <div className="d-flex">
             {/* 書籍圖片 */}
         <Link to={"/reviewer/reviewerBooks/reviewerBlog/"+this.props.sid} className="d-flex justify-content-center borderLineTop">
           <div className="brAvatarAllBox_Bookcase borderLineLB">
@@ -30,7 +31,7 @@ class BR_BookcaseList extends React.Component {
                     <span className="bookInfo_Bookcase">作者：</span>{this.props.author}
                     <br/>
                     <br/>
-                    {this.props.introduction}
+                    <h5 className="brInfoText_Bookcase" dangerouslySetInnerHTML={{__html:this.props.introduction? this.props.introduction:this.props.info}}></h5>
                 </div>
                 {/* <div className="brInfoText ">{this.props.intro}</div> */}
                 <div className="brIconBox_Bookcase">
@@ -48,13 +49,18 @@ class BR_BookcaseList extends React.Component {
                         </div>
                     </div>
               </div>
-          </div>
     </div>
             {/* 評分組件 */}
     {/* <div className="brStarBox_Bookcase borderLine"></div> */}
     </section>
-        <h3>測試書本：{this.props.name}</h3>
-        <div style={{height:'30px'}}></div>
+        {/* <h3>測試書本：{this.props.name}</h3> */}
+        {/* <div style={{height:'30px'}}></div> */}
+            <Switch>
+                  <Route exact 
+                  path="/reviewer/reviewerBooks/reviewerBlog/:sid?" 
+                  component={ReviewerBlog} />
+            </Switch>
+            </Router>
         </>
         )
     }

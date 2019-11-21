@@ -1,0 +1,10 @@
+@import '../../color.scss';
+.acItem {
+  a {
+    color: $color-black;
+    &:hover {
+      color: $color-yellow;
+      text-shadow: 0 0 1px;
+    }
+  }
+}
