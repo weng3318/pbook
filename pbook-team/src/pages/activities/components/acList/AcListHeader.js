@@ -7,6 +7,7 @@ import {
 import { connect } from 'react-redux'
 // eslint-disable-next-line no-unused-vars
 import { Route, Link, Switch, Redirect, withRouter } from 'react-router-dom'
+import './acListHeader.scss'
 
 function AcListHeader(props) {
   // const [acStatus, setAcStatus] = useState(1)
@@ -42,26 +43,34 @@ function AcListHeader(props) {
 
   return (
     <>
-      <div className="p-2">
+      <div className="p-2 acListHeader">
         <header className="cTitle">
           <h1>品書活動</h1>
         </header>
         <div className="tagContainer d-flex">
           <ul className="nav">
             <li className="nav-item">
-              {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-              <a
-                className="nav-link active"
+              <button
+                active
+                className={
+                  'nav-link ' +
+                  (props.match.params.acType === 'discount' ? 'active' : '')
+                }
                 onClick={() => acTypeHandler('discount')}
               >
                 優惠活動
-              </a>
+              </button>
             </li>
             <li className="nav-item">
-              {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-              <a className="nav-link" onClick={() => acTypeHandler('offline')}>
+              <button
+                className={
+                  'nav-link ' +
+                  (props.match.params.acType === 'offline' ? 'active' : '')
+                }
+                onClick={() => acTypeHandler('offline')}
+              >
                 線下活動
-              </a>
+              </button>
             </li>
           </ul>
           <div className="filter d-flex align-content-center">
@@ -82,5 +91,7 @@ function AcListHeader(props) {
     </>
   )
 }
-const mapStateToProps = state => ({ visibilityFilter: state.visibilityFilter })
+const mapStateToProps = state => ({
+  visibilityFilter: state.visibilityFilter,
+})
 export default connect(mapStateToProps)(withRouter(AcListHeader))

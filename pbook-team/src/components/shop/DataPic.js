@@ -51,7 +51,6 @@ const DataPic = props => {
               >
                 <BookInfoPic
                   data={data}
-                  ratingsPayload={props.ratingsPayload}
                   nowCategories={props.nowCategories}
                   nowPage={props.nowPage}
                 ></BookInfoPic>

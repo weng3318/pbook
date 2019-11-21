@@ -11,7 +11,7 @@ class FbLogin extends React.Component{
       };
 
     responseFacebook = response => {
-          console.log(response);
+          console.log("response", response);
           
         this.setState({
             isLoggedIn: true,
@@ -30,6 +30,7 @@ class FbLogin extends React.Component{
 
     render(){
         let fbContent;
+        
         if(this.state.isLoggedIn){
             fbContent = (
                window.location.href='/'

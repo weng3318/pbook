@@ -5,8 +5,8 @@ import './chat.css'
 import axios from 'axios'
 import moment from 'moment'
 import io from 'socket.io-client'
+import ChatRule from './ChatRule'
 
-// var socket = io.connect('ws://localhost:5000/')
 var socket
 
 class Chat extends React.Component {
@@ -177,6 +177,7 @@ class Chat extends React.Component {
     return (
       <>
         <div className="chatWrap">
+          <ChatRule oldDataList={this.state.oldDataList} />
           <Tab.Container id="list-group-tabs-example" defaultActiveKey="#link1">
             <Row>
               <Col sm={4}>

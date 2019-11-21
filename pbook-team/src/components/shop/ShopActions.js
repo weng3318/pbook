@@ -32,35 +32,35 @@ export const cgFetch = () => async dispatch => {
 }
 //------------------------
 //-------rating-----------
-export const RATING_RECEIVE = 'RATING_RECEIVE'
-export const RATING_REQUEST = 'RATING_REQUEST'
-function rtReceive(json) {
-  return {
-    type: RATING_RECEIVE,
-    payload: json,
-    receivedAt: Date.now(),
-  }
-}
-function rtRequest() {
-  return {
-    type: RATING_REQUEST,
-  }
-}
-export const rtFetch = () => async dispatch => {
-  dispatch(rtRequest())
-  try {
-    let response = await fetch('http://localhost:5555/books/book_ratings', {
-      method: 'GET',
-      headers: new Headers({
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      }),
-    })
-    dispatch(rtReceive(await response.json()))
-  } catch (error) {
-    console.log('error ', error)
-  }
-}
+// export const RATING_RECEIVE = 'RATING_RECEIVE'
+// export const RATING_REQUEST = 'RATING_REQUEST'
+// function rtReceive(json) {
+//   return {
+//     type: RATING_RECEIVE,
+//     payload: json,
+//     receivedAt: Date.now(),
+//   }
+// }
+// function rtRequest() {
+//   return {
+//     type: RATING_REQUEST,
+//   }
+// }
+// export const rtFetch = () => async dispatch => {
+//   dispatch(rtRequest())
+//   try {
+//     let response = await fetch('http://localhost:5555/books/book_ratings', {
+//       method: 'GET',
+//       headers: new Headers({
+//         Accept: 'application/json',
+//         'Content-Type': 'application/json',
+//       }),
+//     })
+//     dispatch(rtReceive(await response.json()))
+//   } catch (error) {
+//     console.log('error ', error)
+//   }
+// }
 //-------------------------
 //-------Shop-----------
 export const SHOP_RECEIVE = 'SHOP_RECEIVE'

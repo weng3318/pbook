@@ -6,7 +6,8 @@ class BooksFavorite extends React.Component{
         super()
         this.state = {
             path: 'http://localhost/books/src/venderBooks_Management/vb_images/',
-            booksData: []
+            booksData: [],
+            heightNum: {},
         }
     }
 
@@ -37,13 +38,10 @@ class BooksFavorite extends React.Component{
     }
 
 
-
-
-
     render(){
         let data = this.state.booksData
         //因為第一次渲染是空的會報錯
-        console.log(data[0] && data[0].name);
+        console.log(data && data);
         console.log(data.length);
         
 
@@ -53,21 +51,24 @@ class BooksFavorite extends React.Component{
             <>
                 <div className="booksContent">
                     <div className="title">收藏書籍</div>
+
+
+                <div className="wrap flex-wrap">                      
                     {(data && data).map(data =>(
-                        <div className="wrap">                      
-                        <div className="list">
-                            <img className="listImg" src={'http://localhost/books/src/venderBooks_Management/vb_images/' + (data.pic)} />
-                            <div className="booksInfo">
-                                <div className="booksTitle">{data.name}</div>
+                        <div className="list" >
+                            <img className="listImg" src={this.state.path + (data.pic)} />
+                            <div className="booksTitle">{data.name}</div>
+                            {/* <div className="booksInfo"> */}
                                 {/* 預留小圖示 */}
                                 {/* <img class="avatar" src="../images/gift.png" alt=""/> */}
-                                <div className="introduction">
+                                {/* <div className="introduction">
                                    {data.introduction}
-                                </div>
-                            </div>
+                                </div> */}
+                            {/* </div> */}
                         </div>
-                    </div>
                     )) }
+                    </div>
+
                 </div>
             </>
         )

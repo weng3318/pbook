@@ -31,6 +31,7 @@ class Login extends React.Component {
       err_username: '使用者名稱: 至少3個字元',
       err_password: '至少有一個數字、一個小寫英文字母、密碼長度在 4~8 之間',
       err_captcha: '請輸入圖上的字',
+      picture: '請選擇個人頭像',
 
     }
     this.handleChange = this.handleChange.bind(this)
@@ -142,14 +143,11 @@ class Login extends React.Component {
       headers:{
         'Content-Type': 'application/json'
       },
-      credentials: 'include',
       body: JSON.stringify({
         email: email,
         })
       })
       .then(res=>{
-        console.log(11);
-        
         return res.json()
       })
       .then( data=>{
@@ -159,9 +157,8 @@ class Login extends React.Component {
         if(data.status === "傳送成功"){
           this.success(status, message)
           setTimeout(() => {
-           // window.history.back()
-            this.props.history.push('/')
-          }, 2000)
+            window.location.href = '/'
+          }, 1000)
         }else{
           this.fail(status, message)
         }
@@ -356,9 +353,13 @@ class Login extends React.Component {
             return res.json()
           })
           .then(img =>{
-            imgFile = img.filename
-            // console.log(imgFile);
-
+            if(img.filename === ""){
+              imgFile = "品書印章.png"
+            }
+            else{
+              imgFile = img.filename
+            }
+            
           
             fetch('http://localhost:5555/member/register', {
               method: 'POST',
@@ -461,7 +462,10 @@ class Login extends React.Component {
               name="password2" id="password2"
               value={this.state.password2} onChange={this.handleChange} 
             />
-            <input className="login_input" type="file" name="file" onChange={this.onChangeHandler}/>
+            <input className="login_input" type="file" name="file" onChange={this.onChangeHandler} />
+            <small className="tip">
+                {this.state.picture}
+            </small>
             {/* <button type="button" className="btn btn-success btn-block" onClick={this.onClickhandler}>Upload</button>  */}
             {/* <div className="serial"></div> */}
             <canvas  className="serial" id="captcha1" onClick={this.captcha1}></canvas>
@@ -486,17 +490,15 @@ class Login extends React.Component {
           {this.state.forgetPwd === false ?
           (<div className="container_front" >
             <div className="login_title">
-              <img src={require('./icon_MR_m.svg')} alt="" style={{ width: '60px' }} onClick={()=>{window.location.href = '/' }}/>
-              <h2 style={{marginLeft: '20px'}}>品書人登入</h2>
+              <img src={require('./icon_MR_m.svg')} alt=""  onClick={()=>{window.location.href = '/' }}/>
+              <h2 className="h2_title" style={{marginLeft: '20px'}}>品書人登入</h2>
             </div>
             <input className="login_input" placeholder="Email" name="email" value={this.state.email} onChange={this.handleChange} />
             <input className="login_input" type="password" placeholder="Password" name="password" value={this.state.password} onChange={this.handleChange}/>
             <button className="login_btn" onClick={this.handleLogin}>登入</button>
-            {/* <Link to="/forgetPWD"> */}
             <a className="forgetPassword"
               onClick={()=>{this.setState({forgetPwd: true})}}
             >Forgot your password?</a>
-            {/* </Link> */}
             {/* <div className="social-container ">
               <div className="title">快速登入</div>
               <Link to="/fbLogin">
@@ -505,15 +507,15 @@ class Login extends React.Component {
             </div> */}
           </div>):
           (<div className="container_front" >
-            <div className="login_title">
+            <div className="resend_title">
               <img src={require('./icon_MR_m.svg')} alt="" style={{ width: '60px' }} onClick={()=>{window.location.href = '/' }}/>
               <h2>品書人重設密碼</h2>
             </div>
             <input className="login_input" placeholder="Email" name="email" value={this.state.email} 
-            style={{margin: '50px 0px'}}
+            style={{margin: '10px 0px'}}
             onChange={this.handleChange} />
             {/* <input className="login_input" type="password" placeholder="Password" name="password" value={this.state.password} onChange={this.handleChange}/> */}
-            <button className="login_btn" onClick={this.sendPWD}>寄送EMAIL</button>
+            <button className="login_btn" onClick={this.sendPWD} >寄送EMAIL</button>
             {/* <div className="social-container ">
               <div className="title">快速登入</div>
               <Link to="/fbLogin">
