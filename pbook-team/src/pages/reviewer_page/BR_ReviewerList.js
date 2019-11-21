@@ -56,10 +56,10 @@ class BR_ReviewerList extends React.Component {
           <div className="brInfoBox borderLine"><h5 className="h5_br">書評家簡介</h5>
               <div className="brInfoText ">{this.props.intro}</div>
                 <div className="fbBox">
-                <div className="fb-share-button" 
-                  data-href={this.props.tube}
-                  data-layout="button_count">
-                </div>
+                  <div className="fb-share-button" 
+                    data-href={this.props.tube}
+                    data-layout="button_count">
+                  </div>
                 </div>
           </div>
     </div>
