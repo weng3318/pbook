@@ -58,13 +58,10 @@ $content: 24px;
   right: 0;
   left: 320px;
   height: 100%;
-  // background: #2D3A3A;
   padding: 31px;
   color: $yellow;
-  // border: 1px solid #000;
   box-shadow: inset 0 20px 6rem #2d3a3a, inset 0 20px 6rem #2d3a3a;
   margin: 0;
-  // width: 85%;
   transition: 0.5s;
 
   &::before {
@@ -80,53 +77,57 @@ $content: 24px;
   }
 
   .title {
-    @extend .MB_title;
+    margin: 20px;
+    font-size: 32px;
+    margin-top: 50px;
+    margin-bottom: 60px;
+    padding-left: 60px;
+    padding-bottom: 50px;
+    width: 1180px;
+    border-bottom: 3px solid $yellow;
   }
 
   .wrap {
-    width: 100%;
+    // width: 100%;
     height: 900px;
-    // background: #000;
     display: flex;
   }
   .list {
     padding-bottom: 10px;
     margin: 25px 30px 15px 30px;
     transition: 0.5s;
-    width: 200px;
-    height: 300px;
-    // border: 1px solid #ff525b;
-    position: relative;
-    // background: rgb(255, 0, 0);
+    min-width: 110px;
+    max-width: 200px;
+    height: 250px;
   }
 
   .listImg {
     width: 100%;
-    left: 50%;
+    top: 30%;
+    left: 0%;
     transform: translateX(-50%);
-    vertical-align: middle;
+    transform: translateY(-50%);
     transition: 0.5s;
   }
   .listImg:hover {
-    //  box-shadow: 10px 10px 5px rgba(0, 0, 0, .5);
-    width: 240px;
+    width: 105%;
     box-shadow: 0px 0px 12px #cde2d0;
   }
-
-  .bookInfo {
-    padding: 5px 10px;
-  }
-
   .booksTitle {
+    width: 100%;
     position: absolute;
     // background: chartreuse;
     font-size: 20px;
     color: #fff;
-    // bottom: 0px;
-    // left: 0px;
+    bottom: 0px;
     left: 50%;
-    bottom: auto;
+    margin-top: 100px;
+    text-align: center;
     transform: translateX(-50%);
+  }
+
+  .bookInfo {
+    padding: 5px 10px;
   }
   .avatar {
     vertical-align: middle;
@@ -396,7 +397,7 @@ $content: 24px;
     font-size: 24px;
 
     a {
-      font-size: $title;
+      font-size: 24px;
       color: $black;
     }
     a:hover {

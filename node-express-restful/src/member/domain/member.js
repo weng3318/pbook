@@ -35,7 +35,7 @@ class Member{
         return sql
     }
 
-    //合併表單查詢， b跟bc是自訂的篩選
+    //書櫃查詢資料，合併表單查詢， b跟bc是自訂的篩選
     queryBooks(number){
         let sql = `SELECT b.* FROM vb_books b
                     JOIN br_bookcase bc ON b.isbn=bc.isbn
@@ -44,21 +44,20 @@ class Member{
     }
     
     //註冊會員
-    getAddMemberSql(new_number){
+    getAddMemberSql(new_number, hash){
         //進行加密
         // this.MR_password = encryption(this.MR_password)
         //塞入資料
-        let sql = `INSERT INTO mr_information(MR_name, MR_number , MR_email, MR_password, MR_pic,  MR_personLevel, MR_createdDate) 
-                        VALUES('${this.MR_name}', '${new_number}', '${this.MR_email}', '${this.MR_password}', '${this.MR_pic}', 1, now()) `
+        let sql = `INSERT INTO mr_information(MR_name, MR_number , MR_email, MR_password, MR_pic, tokenId,  MR_personLevel, MR_createdDate) 
+                        VALUES('${this.MR_name}', '${new_number}', '${this.MR_email}', '${this.MR_password}', '${this.MR_pic}', '${hash}', 1, now()) `
         return sql
     }
 
     //新增書籍到書櫃
     addToBookcase(number, isbn){
          //把書籍加入最愛的sql
-    // let sql = `INSERT INTO `br_bookcase`(`number`, `pic`, `name`, `info`, `like`, `read`, `created_time`) VALUES ("MR00166","","一見峮心 峮峮個人寫真書","",999,1288,now())`
-        let sql = `INSERT INTO br_bookcase(number, pic, isbn,  name, info, like, read, created_time) 
-            VALUES('${number}}', '', '${isbn}', '', '', 66,188, now()) `
+        let sql = `INSERT INTO br_bookcase(number, pic, isbn, name, info, likebook, readbook, created_time) 
+            VALUES('${number}', '', '${isbn}', '', '', 66,188, now()) `
         return sql
     }
 

@@ -10,6 +10,11 @@ var Member = new member()
 
 //註冊
 router.post('/register', (req, res, next) => {
+    const crypto = require('crypto')
+    let sha1 = crypto.createHash('sha1')
+    let hash = sha1.update(req.body.email).digest('hex')
+    // console.log(hash);
+    // return
     let Member = new member(req.body.name, req.body.email, req.body.password, req.body.filename)
     let number_blank = "MR00000"
     let new_number =""
@@ -34,11 +39,10 @@ router.post('/register', (req, res, next) => {
                      })
                      return
                 }else{
-
                     db.query(`SELECT MAX(sid) FROM mr_information`,(err, data)=>{
                        new_number = number_blank.slice(0, -3)+ (data[0]['MAX(sid)']+1)
                     //    res.json(new_number)
-                       db.query(Member.getAddMemberSql(new_number), (err, data) => {
+                       db.query(Member.getAddMemberSql(new_number, hash), (err, data) => {
                            if(err){
                                res.json({
                                    status: "伺服器錯誤，請稍後在試",
@@ -63,20 +67,19 @@ router.post('/register', (req, res, next) => {
 import nodemailer from 'nodemailer'
 router.post('/sendPwd', (req, res)=>{
     let email = req.body.email
-    console.log(email);
+    // console.log(email);
     let sql = `SELECT * FROM mr_information WHERE MR_email = '${email}'`
     db.query(sql, (err, row)=>{
-        let uusid = row[0].sid;
-        console.log(uusid);
+        console.log(row);
         
-        if(email === ''){
-            
+        if(! row.length){
             return res.json({
-                status: '傳送失敗',
-                message: '請輸入正確的信箱'
+                status: '寄送失敗',
+                message: '這個信箱還未註冊過'
             })
         }
-        
+        console.log(123);
+        let token = row[0].tokenId;
         let transporter = nodemailer.createTransport({
             service: 'Gmail',
             auth:{
@@ -89,7 +92,7 @@ router.post('/sendPwd', (req, res)=>{
             form: '"品書網"<dragonqoo1988@gmail.com>',
             to: `${email}`,
             subject: '重設密碼',
-            html: `<h1>親愛的品書會員您好:</h1><br><h3>請點擊下方進行重新設定密碼</h3><br><a href="http://localhost:3000/ResetPWD/EAAGqEQhQV1oBAPsSMyf1eDoddUc1FJ9M3ZAMz6BZAKy876bgx…0jkouu7V7YYFifWKDtGRZCTwWFgSxahts3Q7vy6NppZAmZC2k${uusid}"><h2>重設密碼頁</h2></a>`
+            html: `<h1>親愛的品書會員您好:</h1><br><h3>請點擊下方進行重新設定密碼</h3><br><a href="http://localhost:3000/ResetPWD/${token}"><h2>重設密碼頁</h2></a>`
         }
         transporter.sendMail(mailOptions, (err, info)=>{
             // console.log(info);
@@ -101,11 +104,20 @@ router.post('/sendPwd', (req, res)=>{
     })
 })
 
-//用sid查詢email，再去修改密碼
+//用token查詢email，再去修改密碼
 router.post('/queryEmail', (req, res, next)=>{
-    let sid = req.body.sid
-    let sql = `SELECT MR_number FROM mr_information WHERE sid = '${sid}'`
+    let token = req.body.token
+    let sql = `SELECT MR_number FROM mr_information WHERE tokenId = '${token}'`
     db.query(sql, (err, row)=>{
+
+        //空陣列的判斷
+        if (! row.length){
+            // console.log(111);
+            res.json({
+                status: "找不到這個token",
+            })
+            return
+        }
         res.json({
             number: row[0]
         })
@@ -113,9 +125,19 @@ router.post('/queryEmail', (req, res, next)=>{
 })
 
 //取個人書櫃書籍資料
-router.post('/queryBookcase', (req,res)=>{
+// router.post('/queryBookcase', (req,res)=>{
+//     let number = req.body.number
+//     console.log(number);
+    
+//     db.query(Member.queryBooks(number), (err, rows)=>{
+//         res.json(rows)
+//     })
+// })
+router.post('/queryBookcase/:page?/:keyword?', (req,res)=>{
     let number = req.body.number
-    console.log(number);
+    let output = {}
+    let perPage = 15 //每頁幾筆
+
     
     db.query(Member.queryBooks(number), (err, rows)=>{
         res.json(rows)
@@ -123,12 +145,15 @@ router.post('/queryBookcase', (req,res)=>{
 })
 
 //書籍加入個人書櫃
-router.post('addBookcase', (req, res)=>{
+router.post('/addBookcase', (req, res)=>{
     let number = req.body.number
     let isbn = req.body.isbn
     db.query(Member.addToBookcase(number, isbn), (err, result)=>{
-        console.log(result);
-        
+        console.log("addBookcase",result);
+        res.json({
+            status: "新增到書櫃",
+            message: "加入到書櫃成功"
+        })
     })
 })
 

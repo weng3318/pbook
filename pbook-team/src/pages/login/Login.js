@@ -143,14 +143,11 @@ class Login extends React.Component {
       headers:{
         'Content-Type': 'application/json'
       },
-      credentials: 'include',
       body: JSON.stringify({
         email: email,
         })
       })
       .then(res=>{
-        console.log(11);
-        
         return res.json()
       })
       .then( data=>{
@@ -160,9 +157,8 @@ class Login extends React.Component {
         if(data.status === "傳送成功"){
           this.success(status, message)
           setTimeout(() => {
-           // window.history.back()
-            window.location.href('/')
-          }, 2000)
+            window.location.href = '/'
+          }, 1000)
         }else{
           this.fail(status, message)
         }
@@ -494,17 +490,15 @@ class Login extends React.Component {
           {this.state.forgetPwd === false ?
           (<div className="container_front" >
             <div className="login_title">
-              <img src={require('./icon_MR_m.svg')} alt="" style={{ width: '60px' }} onClick={()=>{window.location.href = '/' }}/>
+              <img src={require('./icon_MR_m.svg')} alt=""  onClick={()=>{window.location.href = '/' }}/>
               <h2 className="h2_title" style={{marginLeft: '20px'}}>品書人登入</h2>
             </div>
             <input className="login_input" placeholder="Email" name="email" value={this.state.email} onChange={this.handleChange} />
             <input className="login_input" type="password" placeholder="Password" name="password" value={this.state.password} onChange={this.handleChange}/>
             <button className="login_btn" onClick={this.handleLogin}>登入</button>
-            {/* <Link to="/forgetPWD"> */}
             <a className="forgetPassword"
               onClick={()=>{this.setState({forgetPwd: true})}}
             >Forgot your password?</a>
-            {/* </Link> */}
             {/* <div className="social-container ">
               <div className="title">快速登入</div>
               <Link to="/fbLogin">
@@ -513,7 +507,7 @@ class Login extends React.Component {
             </div> */}
           </div>):
           (<div className="container_front" >
-            <div className="login_title">
+            <div className="resend_title">
               <img src={require('./icon_MR_m.svg')} alt="" style={{ width: '60px' }} onClick={()=>{window.location.href = '/' }}/>
               <h2>品書人重設密碼</h2>
             </div>

@@ -13,7 +13,6 @@ class BooksFavorite extends React.Component{
 
     componentDidMount(){
         this.queryBooks()
-        this.randomNum()
     }
     
     queryBooks = () => {
@@ -38,19 +37,12 @@ class BooksFavorite extends React.Component{
        
     }
 
-    randomNum = ()=>{
-        let list = document.querySelector('#list')
-        let height = Math.floor(Math.random() * 500) + 300;
-    } 
-
-
 
     render(){
         let data = this.state.booksData
         //因為第一次渲染是空的會報錯
-        // console.log(data[0] && data[0].name);
-        // console.log(data.length);
-        // console.log("heightNum", this.state.heightNum);
+        console.log(data && data);
+        console.log(data.length);
         
 
         
@@ -61,7 +53,7 @@ class BooksFavorite extends React.Component{
                     <div className="title">收藏書籍</div>
 
 
-                        <div className="wrap flex-wrap">                      
+                <div className="wrap flex-wrap">                      
                     {(data && data).map(data =>(
                         <div className="list" >
                             <img className="listImg" src={this.state.path + (data.pic)} />

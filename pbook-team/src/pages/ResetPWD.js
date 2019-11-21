@@ -31,7 +31,7 @@ class ResetPWD extends React.Component{
 
 
       queryNumber = ()=>{
-        let uusid = window.location.href.substr(139)
+        let uusid = window.location.href.substr(31)
         // console.log("uusid", uusid);
         
         fetch('http://localhost:5555/member/queryEmail', {
@@ -40,7 +40,7 @@ class ResetPWD extends React.Component{
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-              sid: uusid
+              token: uusid
             })
           })
           .then(response=>{
@@ -48,6 +48,7 @@ class ResetPWD extends React.Component{
             return response.json()
           })
           .then(number=>{
+            
             let MR_number = number.number.MR_number
             this.setState({number: MR_number})
           })

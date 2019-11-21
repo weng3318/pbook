@@ -58,13 +58,10 @@ $content: 24px;
   right: 0;
   left: 320px;
   height: 100%;
-  // background: #2D3A3A;
   padding: 31px;
   color: $yellow;
-  // border: 1px solid #000;
   box-shadow: inset 0 20px 6rem #2d3a3a, inset 0 20px 6rem #2d3a3a;
   margin: 0;
-  // width: 85%;
   transition: 0.5s;
 
   &::before {
@@ -86,7 +83,6 @@ $content: 24px;
   .wrap {
     width: 100%;
     height: 900px;
-    // background: #000;
     display: flex;
   }
   .list {
@@ -112,21 +108,21 @@ $content: 24px;
     width: 240px;
     box-shadow: 0px 0px 12px #cde2d0;
   }
-
-  .bookInfo {
-    padding: 5px 10px;
-  }
-
   .booksTitle {
+    width: 100%;
     position: absolute;
     // background: chartreuse;
     font-size: 20px;
     color: #fff;
-    // bottom: 0px;
-    // left: 0px;
+    bottom: 0px;
     left: 50%;
-    bottom: auto;
+    margin-top: 100px;
+    text-align: center;
     transform: translateX(-50%);
+  }
+
+  .bookInfo {
+    padding: 5px 10px;
   }
   .avatar {
     vertical-align: middle;
