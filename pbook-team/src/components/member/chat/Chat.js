@@ -1,11 +1,11 @@
 import React from 'react'
-import { ListGroup, Tab, Row, Col } from 'react-bootstrap'
+import { ListGroup, Tab, Row, Col, Tabs } from 'react-bootstrap'
 import './chat.css'
 
 import axios from 'axios'
 import moment from 'moment'
 import io from 'socket.io-client'
-import ChatRule from './ChatRule'
+import swal from '@sweetalert/with-react'
 
 var socket
 
@@ -150,15 +150,41 @@ class Chat extends React.Component {
     }
   }
 
+  handleMessageDelete = e => {
+    let MessageSid = e.target.getAttribute('data-value')
+    swal({
+      title: '您確定要收回嗎?',
+      text: '一旦收回,將會沒辦法復原喔!',
+      icon: 'warning',
+      buttons: true,
+      dangerMode: true,
+      buttons: ['取消', '確定'],
+    }).then(willDelete => {
+      if (willDelete) {
+        swal('您的訊息已經被收回!', {
+          icon: 'success',
+        })
+      }
+    })
+    console.log(MessageSid)
+  }
+
   componentDidMount() {
     axios
       .post(`http://localhost:5555/nana_use/chatList2`, {
         memberId: JSON.parse(localStorage.getItem('user')).MR_number,
       })
       .then(res => {
-        this.setState({
-          oldDataList: res.data,
-        })
+        if (res.data.length === 0) {
+          this.setState({
+            visible: true,
+            oldDataList: res.data,
+          })
+        } else {
+          this.setState({
+            oldDataList: res.data,
+          })
+        }
       })
       .catch(error => {
         console.log('componentDidMount拿資料時有錯誤', error)
@@ -177,7 +203,6 @@ class Chat extends React.Component {
     return (
       <>
         <div className="chatWrap">
-          <ChatRule oldDataList={this.state.oldDataList} />
           <Tab.Container id="list-group-tabs-example" defaultActiveKey="#link1">
             <Row>
               <Col sm={4}>
@@ -271,7 +296,7 @@ class Chat extends React.Component {
                             if (value.chat_id === value2.chat_id) {
                               return (
                                 <div key={index2}>
-                                  {(function() {
+                                  {(() => {
                                     if (value2.myFrom !== myId) {
                                       return (
                                         <div className="myContainer">
@@ -307,6 +332,16 @@ class Chat extends React.Component {
                                               'YYYY-MM-DD HH:mm:ss'
                                             )}
                                           </span>
+                                          <i
+                                            className="fas fa-undo-alt messageDelete"
+                                            data-value={value2.sid}
+                                            onClick={this.handleMessageDelete}
+                                          >
+                                            <span>收回</span>
+                                          </i>
+                                          <i className="fas fa-edit messageEdit">
+                                            <span>修改</span>
+                                          </i>
                                         </div>
                                       )
                                     }
