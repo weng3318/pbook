@@ -50,7 +50,7 @@ class BooksFavorite extends React.Component {
             <div className="wrap flex-wrap">
               {(data && data).map(data => (
                 <Link
-                  to={'/books/information/1/' + data.categories + '/' + data.name}
+                  to={'/books/information/' + data.sid }
                 >
                   <div className="list">
                     <img className="listImg" src={this.state.path + data.pic} />
@@ -67,7 +67,7 @@ class BooksFavorite extends React.Component {
               ))}
             </div>
 
-            
+
         </div>
       </>
     )
