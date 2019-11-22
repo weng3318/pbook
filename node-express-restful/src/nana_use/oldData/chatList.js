@@ -8,7 +8,7 @@ const _ = require("lodash"); //loadsh,處理數據的各種方法
 const mysql = require("mysql");
 // 設定資料庫連線
 const db = mysql.createConnection({
-  host: "localhost",
+  host: '192.168.27.186',
   user: "root",
   password: "root",
   database: "pbook"
@@ -81,15 +81,15 @@ chatList
           });
 
 
-          console.log('final',req.session.memberData.memberId);
-          console.log('final',req.headers.cookie);
-          console.log('final',mapResult);
+          console.log('final', req.session.memberData.memberId);
+          console.log('final', req.headers.cookie);
+          console.log('final', mapResult);
 
           res.json(mapResult);
         })
         .catch(error => {
           res.send("404-找不到資料");
-          console.log('chatlist',error);
+          console.log('chatlist', error);
         });
 
     }

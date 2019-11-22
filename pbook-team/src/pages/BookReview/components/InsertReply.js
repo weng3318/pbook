@@ -1,4 +1,5 @@
-import React from 'react'
+/* eslint-disable jsx-a11y/alt-text */
+import React, { useRef, useEffect } from 'react'
 import styled from '@emotion/styled'
 import BookScoreForBR from '../BookScore/BookScoreForBR'
 
@@ -30,13 +31,14 @@ function InsertReply(props) {
     margin: 0 0 3rem 0;
     border-bottom: 1px dashed #ccc;
   `
-  //橫排按鈕
-  const BookRowButton = styled.div`
-    display: flex;
-    flex-direction: row-reverse;
-    margin: 1rem 0 0 700px;
-  `
-  const { user, review, submitHandler, changeHandler } = props
+  const { user, review, submitHandler, changeHandler, login } = props
+  // useEffect(() => {}, [changeHandler, submitHandler, review])
+  const txt = useRef(null)
+
+  useEffect(() => {
+    txt.current.focus()
+  }, [])
+
   return (
     <>
       <h3 className="reviews_push">發表評論</h3>
@@ -62,24 +64,25 @@ function InsertReply(props) {
               value={review.reviewText}
               onChange={changeHandler}
               placeholder="新增評論..."
+              ref={txt}
             />
             <BookRow>
-              <span>幫書籍評分</span>
+              <p style={{ width: '80px' }}>幫書籍評分</p>
               <BookScoreForBR
                 score_star={review.star}
                 setScore_star={changeHandler}
               />
-              <BookRowButton>
-                <button type="submit" className="reviews_submitBtn">
-                  送出評論
-                </button>
-              </BookRowButton>
+              <button type="submit" className="reviews_submitBtn">
+                送出評論
+              </button>
             </BookRow>
           </form>
         ) : (
           <form className="reviews_form">
             <h6 className="reviews_Login">
-              <a href="/">請登入會員填寫評論</a>
+              <a onClick={login} href="#">
+                請登入會員填寫評論
+              </a>
             </h6>
           </form>
         )}

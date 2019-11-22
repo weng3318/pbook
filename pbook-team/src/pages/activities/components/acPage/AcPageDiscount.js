@@ -7,6 +7,7 @@ import {
   getDiscountBooks,
   fetchAcList,
   getRecommendBooks,
+  getDiscountAmount,
 } from '../../AcActions'
 import BookInfo from './BookInfo'
 import AcPageAside from './AcPageAside'
@@ -18,8 +19,11 @@ const AcPageDiscount = props => {
   let acId = props.match.params.acId.toString()
   let allBooksDiscount = false
   let memberNum = 'MR00001'
-  if (localStorage.user) memberNum = JSON.parse(localStorage.user).MR_number
-
+  let memberLevel = 1
+  if (localStorage.user) {
+    memberNum = JSON.parse(localStorage.user).MR_number
+    memberLevel = JSON.parse(localStorage.user).MR_personLevel
+  }
   useEffect(() => {
     // 取得活動列表
     if (!props.acData.offline.data.length) {
@@ -28,6 +32,8 @@ const AcPageDiscount = props => {
 
     // 獲取折價書籍
     props.dispatch(getDiscountBooks(acId))
+    // 獲取折價比例
+    props.dispatch(getDiscountAmount(memberLevel))
 
     // 獲取推薦書籍
     props.dispatch(getRecommendBooks(memberNum, 12))
@@ -92,7 +98,9 @@ const AcPageDiscount = props => {
               <section className="books row">
                 {discountBook.books &&
                   discountBook.books.map(v => {
-                    return <BookInfo {...v} key={v.sid} />
+                    return (
+                      <BookInfo {...v} key={v.sid} memberLevel={memberLevel} />
+                    )
                   })}
               </section>
             </main>
