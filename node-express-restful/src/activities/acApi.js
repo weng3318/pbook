@@ -71,9 +71,12 @@ router.get('/recommend-books/:memberNum/:limit?', async (req, res, next) => {
     }
 })
 
-// 線下活動報名
+// 線下活動報名API
+router.get('/ac-sign/:memberNum', async (req, res, next) => {
+    res.json(await AC.getSignedActivities(req))
+})
 router.post('/ac-sign', async (req, res, next) => {
-    res.json(await AC.signUpActivity(req.body))
+    res.json(await AC.signUpActivity(req))
 })
 
 

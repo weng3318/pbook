@@ -150,18 +150,19 @@ class AC {
     }
 
     // 線下活動報名
-    static async signUpActivity(inputData) {
+    static async signUpActivity(req) {
+        let inputData = req.body
         let sql = ''
         let result = {
             type: 1,
             description: '報名成功'
         }
-        inputData.memberId = (await AC.memberSidMapArray())[inputData.memberNum] || 0
-        
+        inputData.memberId = (await AC.memberSidMapArray())[inputData.memberNum] || req.sessionID
+
         // 檢查是否已報名
-        if (inputData.memberId) {
-            let sql = 'SELECT COUNT(1) FROM `ac_sign` WHERE `acId`=' + inputData.acId + ' AND `memberId`=' + inputData.memberId
-            let isSign = (await sqlQuery(sql))[0]
+        if (inputData.memberNum !== 'not login' && inputData.memberId) {
+            let sql = 'SELECT COUNT(1) FROM `ac_sign` WHERE `acId`=' + inputData.acId + ' AND `memberId`="' + inputData.memberId + '"'
+            let isSign = (await sqlQuery(sql))[0]['COUNT(1)']
             if (isSign) {
                 result.type = 0
                 result.description = '已經報名過了'
@@ -181,7 +182,7 @@ class AC {
         // 寫入報名資料
         let currentTime = (new Date()).toLocaleString()
         sql = 'INSERT INTO `ac_sign`(`acId`, `memberId`, `name`, `phone`, `email`, `sign_up_time`)'
-        sql += `VALUES (${inputData.acId},${inputData.memberId},"${inputData.name}","${inputData.phone}","${inputData.email}","`
+        sql += `VALUES (${inputData.acId},"${inputData.memberId}","${inputData.name}","${inputData.phone}","${inputData.email}","`
         sql += currentTime.substr(0, currentTime.length - 3) + '")'
         await sqlQuery(sql)
 
@@ -190,6 +191,16 @@ class AC {
         await sqlQuery(sql)
 
         return result
+    }
+
+    // 獲得線下活動報名資料
+    static async getSignedActivities(req) {
+        let memberNum = req.params.memberNum
+        let memberId = (await AC.memberSidMapArray())[memberNum]
+        if (!memberId) memberId = req.sessionID
+        let sql = 'SELECT * FROM `ac_sign` WHERE `memberId`="' + memberId + '"'
+        let signedAc = await sqlQuery(sql)
+        return signedAc
     }
 
 }
