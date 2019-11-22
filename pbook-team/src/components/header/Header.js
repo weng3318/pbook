@@ -475,7 +475,7 @@ class Header extends React.Component {
 
             {/* <Route exact path="/login" component={()=><Login loginSuccess={(memberData)=>{ this.loginSuccess(memberData) }}/>} /> */}
             <Route exact path="/" component={Login} />
-            <Route exact path="/member" component={Member} />
+            <Route path="/member" component={Member} />
             <Route exact path="/game" component={Game} />
             <Route exact path="/chat" component={Chat} />
             <Route exact path="/cart" component={Cart} />

@@ -15,7 +15,7 @@ import '../../pages/member/lukeStyle.scss'
 const Sidebar = (props) => {
   return (
     <>
-      <Router>
+     
         <div className="side-menu">
           <nav className="sidebar">
             <Accordion defaultActiveKey="0">
@@ -81,9 +81,6 @@ const Sidebar = (props) => {
                 <Accordion.Collapse eventKey="0" className="sidebar_item">
                   <a href="css">收藏書評家</a>
                 </Accordion.Collapse>
-                <Accordion.Collapse eventKey="0" className="sidebar_item">
-                  <a href="css">收藏書評</a>
-                </Accordion.Collapse>
               </div>
             </Accordion>
             <Accordion defaultActiveKey="0">
@@ -137,10 +134,10 @@ const Sidebar = (props) => {
           <Route exact path="/member/AddMemberBook" component={AddMemberBook} />
           <Route exact path="/member/PasswordModify" component={PasswordModify} />
           <Route path="/member/BooksFavorite" component={BooksFavorite} />
-          <Route exact path="/member/ViewMemberBooks" component={ViewMemberBooks} />
+          <Route path="/member/ViewMemberBooks" component={ViewMemberBooks} />
           
         </Switch>
-      </Router>
+     
     </>
   )
 }
