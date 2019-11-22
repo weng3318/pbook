@@ -19,6 +19,10 @@ export const clearPostAritcleState = () => ({
 export const letMeLogin = () => ({
   type: 'LET_ME_LOGIN',
 })
+export const readMoreResponse = number => ({
+  type: 'MORE_RESPONSES',
+  number: number,
+})
 
 //給UserDetailsFetch用=======
 // fetch data list

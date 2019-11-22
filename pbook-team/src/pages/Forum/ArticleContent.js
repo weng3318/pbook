@@ -3,30 +3,27 @@ import { BrowserRouter as Link, useParams } from 'react-router-dom'
 import { connect } from 'react-redux'
 import './scss/ArticleContent.scss'
 //action
-import { letMeLogin } from './fmAction'
+import { letMeLogin, readMoreResponse } from './fmAction'
 //Material Icons
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder'
 import BookmarkIcon from '@material-ui/icons/Bookmark'
-import Button from '@material-ui/core/Button'
 import ThumbUpIcon from '@material-ui/icons/ThumbUp'
-import { makeStyles } from '@material-ui/core/styles'
-import CircularProgress from '@material-ui/core/CircularProgress'
+import FacebookIcon from '@material-ui/icons/Facebook'
 
+import CircularProgress from '@material-ui/core/CircularProgress'
+import {
+  createMuiTheme,
+  withStyles,
+  makeStyles,
+  ThemeProvider,
+} from '@material-ui/core/styles'
+import Button from '@material-ui/core/Button'
+import { green, purple } from '@material-ui/core/colors'
+//component
+import Message from '../../components/forum/Messgae/Message'
 import avatar from './2.jpg'
 import TextareaAutosize from 'react-textarea-autosize'
-
-const useStyles = makeStyles(theme => ({
-  button: {
-    width: '100%',
-    margin: '8px 8px',
-  },
-  root: {
-    display: 'flex',
-    '& > * + *': {
-      marginLeft: theme.spacing(2),
-    },
-  },
-}))
+import { FacebookProvider, Share, ShareButton } from 'react-facebook'
 
 const ArticleContent = props => {
   const classes = useStyles()
@@ -37,13 +34,15 @@ const ArticleContent = props => {
   const [data, setData] = useState('')
   const [contentUpdated, setContentUpdated] = useState(false) //讀取內容json
   const [addElement, setAddElement] = useState(0) //render element
+  const [textareaValue, setTextareaValue] = useState('')
+  const [shouldRender, setShouldRender] = useState(0)
 
   useEffect(() => {
     if (localStorage.user !== undefined) {
       let user = JSON.parse(localStorage.user)
       setLogin(true)
     }
-    fetch('http://localhost:5555/forum/article/' + articleId, {
+    fetch('http://localhost:5555/forum/article/content/' + articleId, {
       method: 'GET',
     })
       .then(response => {
@@ -63,7 +62,6 @@ const ArticleContent = props => {
   }, [data])
 
   const handleContentUpdated = () => {
-    console.log('update')
     fetch(
       'http://localhost:5555/forum/content/' +
         data.article.fm_articleId +
@@ -74,7 +72,6 @@ const ArticleContent = props => {
         return res.json()
       })
       .then(result => {
-        console.log(result)
         let imgCount = 0
         let textAreaCount = 0
         let type = data.article.fm_demoImage.split('.')[1]
@@ -83,9 +80,9 @@ const ArticleContent = props => {
             case 'textarea':
               let uni = `textarea${textAreaCount}`
               let textareaElement = (
-                <div id={uni} className="contentDiv" key={uni}>
+                <pre id={uni} className="contentPre" key={uni}>
                   {result.textareaValue[textAreaCount]}
-                </div>
+                </pre>
               )
               textAreaCount++
               return textareaElement
@@ -106,18 +103,34 @@ const ArticleContent = props => {
               return 'nothing'
           }
         })
+        setTextareaValue(result.textareaValue)
         setAddElement([...body])
       })
   }
   const handleFollow = () => {}
+  const handleClickArticleLike = () => {
+    fetch(`http://localhost:5555/forum//article/like/${data.article.fm_like}`)
+      .then(res => {
+        return res.json()
+      })
+      .then(result => {
+        setShouldRender(shouldRender + 1)
+      })
+  }
   const wantToResponse = () => {
     document.documentElement.scrollTop = 0
     props.dispatch(letMeLogin())
+  }
+  const handleReadMore = () => {
+    props.dispatch(readMoreResponse(5))
+    console.log(props.showResponse)
   }
   // if (!contentUpdated) {
   if (!data) {
     return <CircularIndeterminate />
   } else {
+    let countRes = data.responseNO['COUNT(1)'] - props.showResponse
+
     return (
       <div className="container">
         <div>path</div>
@@ -164,11 +177,14 @@ const ArticleContent = props => {
               <span>{data.article.fm_like}</span>
             </div>
             <div className="social-icons">
-              <ThumbUpIcon></ThumbUpIcon>
-              <ThumbUpIcon></ThumbUpIcon>
-              <ThumbUpIcon></ThumbUpIcon>
-              <ThumbUpIcon></ThumbUpIcon>
-              <BookmarkBorderIcon></BookmarkBorderIcon>
+              <FacebookProvider appId="2545805135652577">
+                <ShareButton href="https://www.google.com.tw/">
+                  <div title="分享到臉書">
+                    <FacebookIcon style={{ fontSize: 40, color: '#3b5998' }} />
+                  </div>
+                </ShareButton>
+              </FacebookProvider>
+              <BookmarkBorderIcon style={{ fontSize: 40 }}></BookmarkBorderIcon>
             </div>
           </div>
           <hr></hr>
@@ -197,18 +213,41 @@ const ArticleContent = props => {
           <hr></hr>
           <div className="massage-frame dis-flex">
             <div className="avatar-md">
-              <img src={avatar}></img>
+              <img
+                alt=""
+                src={
+                  login
+                    ? 'http://localhost:5555/images/member/' +
+                      data.member.MR_pic
+                    : avatar
+                }
+              ></img>
             </div>
-            <TextareaAutosize placeholder="寫個留言吧......" />
+
+            <TextareaAutosize
+              placeholder="寫個留言吧......"
+              onClick={login ? '' : wantToResponse}
+            />
+            {login ? (
+              <BootstrapButton
+                variant="contained"
+                color="primary"
+                className={classes.margin}
+              >
+                <span>回覆文章</span>
+              </BootstrapButton>
+            ) : (
+              ''
+            )}
           </div>
-          <Massage></Massage>
-          <div className="button">
+          <Message articleId={articleId}></Message>
+          <div className="button" onClick={handleReadMore}>
             <Button
               variant="outlined"
               color="primary"
               className={classes.button}
             >
-              看更多回應(16)
+              看更多回應({countRes < 0 ? 0 : countRes})
             </Button>
           </div>
           {!login ? (
@@ -228,33 +267,17 @@ const ArticleContent = props => {
     )
   }
 }
-const Massage = props => {
-  return (
-    <div>
-      <div className="massage-frame">
-        <div className="avatar-sm">
-          <img src={avatar}></img>
-        </div>
-        <div>kasjflkdsjfldksjfaklsjfkldfjlsajfdls</div>
-        <div className="social-area2">
-          <div className="dis-flex thumb-sm">
-            <div className="thumb-frame">
-              <ThumbUpIcon style={{ fontSize: 20 }} />
-            </div>
-            <span>4566</span>
-          </div>
-          <div className="social-icons">
-            <ThumbUpIcon></ThumbUpIcon>
-            <ThumbUpIcon></ThumbUpIcon>
-            <ThumbUpIcon></ThumbUpIcon>
-            <ThumbUpIcon></ThumbUpIcon>
-            <BookmarkBorderIcon></BookmarkBorderIcon>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
+
+// 綁定props.todos <=> store.todos
+const mapStateToProps = store => ({
+  showResponse: store.readMoreResponse.number,
+})
+// redux(state)綁定到此元件的props、dispatch方法自動綁定到此元件的props
+
+export default connect(mapStateToProps)(ArticleContent)
+
+//components
+
 function CircularIndeterminate() {
   const classes = useStyles()
   return (
@@ -265,8 +288,39 @@ function CircularIndeterminate() {
   )
 }
 
-// 綁定props.todos <=> store.todos
-const mapStateToProps = store => ({})
-
-// redux(state)綁定到此元件的props、dispatch方法自動綁定到此元件的props
-export default connect(mapStateToProps)(ArticleContent)
+//Material UI style
+const useStyles = makeStyles(theme => ({
+  button: {
+    width: '100%',
+    margin: '8px 8px',
+  },
+  root: {
+    display: 'flex',
+    '& > * + *': {
+      marginLeft: theme.spacing(2),
+    },
+  },
+}))
+const BootstrapButton = withStyles({
+  root: {
+    fontSize: '1rem',
+    width: '130px',
+    padding: '8px 24px',
+    // border: '1px solid',
+    backgroundColor: '#2d3a3a',
+    // fontFamily: [
+    //   '-apple-system',
+    //   'Roboto',
+    //   '"Helvetica Neue"',
+    //   'Arial',
+    // ].join(','),
+    '&:hover': {
+      backgroundColor: '#2d3a3a',
+      color: '#ffc408',
+      boxShadow: 'none',
+    },
+    // '&:focus': {
+    //   boxShadow: '0 0 0 0.2rem rgba(0,123,255,.5)',
+    // },
+  },
+})(Button)

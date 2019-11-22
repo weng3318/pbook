@@ -15,7 +15,7 @@ db.connect();
 const bluebird = require("bluebird");
 bluebird.promisifyAll(db);
 
-//精選文章
+//精選文章 featured
 router
   .route("/homepage/")
   .all((req, res, next) => {
@@ -32,7 +32,7 @@ router
     });
   });
 
-//文章列表
+//文章列表 article list
 router
   .route("/articleList/:number")
   .all((req, res, next) => {
@@ -51,7 +51,7 @@ router
     });
   });
 
-//card1 讀取作者資料
+//card1 讀取作者資料 writer
 router
   .route("/homepage/:memberId/:category")
   .all((req, res, next) => {
@@ -73,9 +73,9 @@ router
     });
   });
 
-//讀取文章
+//讀取文章內容 article content
 router
-  .route("/article/:articleId")
+  .route("/article/content/:articleId")
   .all((req, res, next) => {
     next();
   })
@@ -97,8 +97,39 @@ router
       })
       .then(result => {
         output.member = result[0];
+        sql = `SELECT COUNT(1) FROM fm_articleresponse WHERE fm_articleId='${articleId}'`;
+        return db.queryAsync(sql);
+      })
+      .then(result => {
+        output.responseNO = result[0];
         res.json(output);
       });
+  });
+
+//喜歡文章 like 11/22 todo 更新like數量
+router
+  .route("/article/like/:prevLike")
+  .all((req, res, next) => {
+    next();
+  })
+  .get((req, res) => {
+   
+    });
+  });
+
+//讀取留言 message
+router
+  .route("/message/content/:articleId")
+  .all((req, res, next) => {
+    next();
+  })
+  .get((req, res) => {
+    let articleId = req.params.articleId;
+
+    let sql = `SELECT * FROM fm_articleresponse JOIN mr_information mr ON mr.MR_number = fm_responseId WHERE fm_articleId="${articleId}"`;
+    db.queryAsync(sql).then(results => {
+      res.json(results);
+    });
   });
 
 //分類文章
@@ -153,7 +184,7 @@ router
     let mainImg = "";
     // res.json(req.files);
 
-    if (data.imgCount === '0') {
+    if (data.imgCount === "0") {
       mainImg = Math.floor(Math.random() * 10) + 1 + "0.jpg";
     }
     for (let i = 0; i < data.imgCount; i++) {
@@ -185,7 +216,7 @@ router
     let category = data.cate;
     let subCategories = data.subcate;
     let title = data.title;
-    let subTitle = data.textareaValue[0].slice(0,200);
+    let subTitle = data.textareaValue[0].slice(0, 200);
     let demoImage = mainImg;
     let content = {
       element: data.element,

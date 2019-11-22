@@ -69,6 +69,25 @@ function UserDetails(state = detailInitState, action) {
 }
 //---- UserDetails End --------
 
-const ListReducer = { UserDetails, postArticle, letMeLogin }
+//-----readMore response----
+const NumberInitState = {
+  number: 3,
+}
+
+function readMoreResponse(state = NumberInitState, action) {
+  switch (action.type) {
+    case 'MORE_RESPONSES':
+      return { ...state, number: state.number + action.number }
+    default:
+      return state
+  }
+}
+//-----readMore response end----
+const ListReducer = {
+  UserDetails,
+  postArticle,
+  letMeLogin,
+  readMoreResponse,
+}
 
 export default ListReducer

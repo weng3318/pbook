@@ -49,8 +49,11 @@ $deepsea: #58b2dc;
 .dis-flex {
   display: flex;
 }
-.dis-flex-flex-between{
+.dis-flex-between{
   justify-content: space-between;
+}
+.flex-align-center{
+  align-items: center;
 }
 .container {
   max-width: 1200px;
