@@ -51,7 +51,6 @@ function AcListHeader(props) {
           <ul className="nav">
             <li className="nav-item">
               <button
-                active
                 className={
                   'nav-link ' +
                   (props.match.params.acType === 'discount' ? 'active' : '')
