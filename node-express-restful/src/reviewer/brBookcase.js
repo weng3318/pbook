@@ -5,7 +5,6 @@ const router = express.Router();
 
 const db = mysql.createConnection({
     host: "192.168.27.186",
-    // host: '192.168.27.186',
     user: "root",
     password: "root",
     database: "pbook"
@@ -13,8 +12,8 @@ const db = mysql.createConnection({
 db.connect()
 bluebird.promisifyAll(db)
 // 每一頁數量
-const perPage = 10
-router.get('/brBookcase/:page?/:keyword?', (req, res) => {
+const perPage = 20
+router.get('/brBookcase/:page?/:keyword?', (req,res)=>{
     // 頁數資料傳輸
     const output = {};
     output.params = req.params
@@ -29,7 +28,8 @@ router.get('/brBookcase/:page?/:keyword?', (req, res) => {
 
     }
     // let t_sql = 'SELECT COUNT(1) `total` FROM `br_bookcase`' + where
-    let w_sql = 'SELECT `br_bookcase`.* ,`vb_books`.`name`,`vb_books`.`author`,`vb_books`.`pic`,`vb_books`.`introduction`,`vb_books`.`detailData` FROM `br_bookcase`LEFT JOIN `vb_books` ON `vb_books`.`isbn`=`br_bookcase`.`isbn`' + where
+    // let w_sql = 'SELECT `br_bookcase`.* ,`vb_books`.`name`,`vb_books`.`author`,`vb_books`.`pic`,`vb_books`.`introduction`,`vb_books`.`detailData` FROM `br_bookcase`LEFT JOIN `vb_books` ON `vb_books`.`isbn`=`br_bookcase`.`isbn`' + where
+    let w_sql = 'SELECT `br_bookcase`.* ,`br_reviewerlist`.`tube`,`vb_books`.`name`,`vb_books`.`author`,`vb_books`.`pic`,`vb_books`.`introduction`,`vb_books`.`detailData` FROM `br_bookcase`LEFT JOIN `vb_books` ON `vb_books`.`isbn`=`br_bookcase`.`isbn` LEFT JOIN `br_reviewerlist` ON `br_reviewerlist`.`number`=`br_bookcase`.`number`' + where
 
     db.queryAsync(w_sql)
 

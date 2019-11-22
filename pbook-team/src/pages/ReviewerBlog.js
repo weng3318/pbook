@@ -39,23 +39,28 @@ export class ReviewerBlog extends React.Component {
     let bkData = this.state.bkData
 
     let BlogData = null
-    console.log('csData[0].name', csData[0].name)
-    for (let i = 0; i < csData.length; i++) {
-      if (csData[i].sid == this.props.match.params.sid) {
-        BlogData = csData[i]
-      }
+      console.log('csData[0].name', csData[0].name)
+      
+      for (let i = 0; i < csData.length; i++) {
+        if (csData[i].sid == this.props.match.params.sid) {
+          BlogData = csData[i]
+        }
     }
     console.log('render csData 書評部落格資料', this.state.csData)
     return (
-      <>
-        {/* todo.. 比對兩張資料表的作者{author} */}
-        <h3 className="h3_br">Blogger</h3>
-        <section className="reviewerBlog borderLine">
-          <BR_BlogList name={BlogData.name} info={BlogData.info}></BR_BlogList>
-        </section>
-        {/* 效果圖 開發使用 */}
-        {/* <img className="BlogBG" src={require('../pages/reviewer_page/images/03_評品書.png')}/> */}
-      </>
+    <>
+      {/* todo.. 比對兩張資料表的作者{author} */}
+      <h3 className="h3_br">Blogger</h3>
+      <section className="reviewerBlog borderLine">
+          <BR_BlogList
+          name={BlogData.name}
+          blog={BlogData.blog}
+          tube={BlogData.tube}
+          ></BR_BlogList>
+      </section>
+      {/* 效果圖 開發使用 */}
+      {/* <img className="BlogBG" src={require('../pages/reviewer_page/images/03_評品書.png')}/> */}
+    </>
     )
   }
 }
