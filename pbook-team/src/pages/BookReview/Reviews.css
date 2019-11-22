@@ -3,7 +3,7 @@
   outline: none;
 }
 /* 右側愛心區塊 */
-.col {
+.colLove {
   display: flex;
   flex-direction: column;
   align-items: center;

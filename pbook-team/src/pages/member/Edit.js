@@ -44,7 +44,7 @@ class Edit extends React.Component {
         return response.json()
       })
       .then(data => {
-        //   console.log("test", JSON.stringify(data));
+          console.log("test", JSON.stringify(data));
         if (data[0].MR_birthday !== null && data[0].MR_nickname !== null) {
           let bdy = data[0].MR_birthday
           let birthday = bdy.slice(0, 10)
@@ -52,7 +52,7 @@ class Edit extends React.Component {
             name: data[0].MR_name,
             email: data[0].MR_email,
             number: data[0].MR_number,
-            nickname: '',
+            nickname: data[0].MR_nickname,
             birthday: birthday,
             mobile: data[0].MR_mobile,
             address: data[0].MR_address,
@@ -65,7 +65,7 @@ class Edit extends React.Component {
           name: data[0].MR_name,
           email: data[0].MR_email,
           number: data[0].MR_number,
-          nickname: data[0].MR_nickname,
+          nickname: '',
           birthday: '',
           mobile: data[0].MR_mobile,
           address: data[0].MR_address,
@@ -173,8 +173,10 @@ class Edit extends React.Component {
 
   render() {
     let member = this.state.member
+    // console.log("member", member);
+    
     let newPic = 'http://localhost:5555/images/member/' + member.MR_pic
-    // console.log(newPic);
+    // console.log("newPic",newPic);
     let level = [
       '',
       '品書會員',
@@ -185,89 +187,70 @@ class Edit extends React.Component {
       '書評家',
     ]
 
-    return (
-      <>
-        <div className="editWrap">
-          <div className=" wrap">
-            <div className="MB_title">會員資料修改</div>
-            <div className="d-flex">
-              <div className="list">
-                <div className="d-flex item">
-                  <h4>帳號 : </h4>
-                  <input
-                    type="text"
-                    id="email"
-                    name="email"
-                    value={this.state.email}
-                    onChange={this.handleChange}
-                  />
+
+      return (
+        <>
+              <div className="editWrap">
+            <div className=" wrap">
+              <div className="MB_title">會員資料修改</div>
+              <div className="d-flex">
+                <div className="list">
+                  <div className="d-flex item">
+                    <h4>帳號 : </h4>
+                    <input type="text" id="email" name="email" value={this.state.email} onChange={this.handleChange}/>
+                  </div>
+                  <div className="d-flex item">
+                    <h4>姓名 : </h4>
+                    <input type="text" id="name" name="name" value={this.state.name} onChange={this.handleChange}/>
+                  </div>
+                  <div className="d-flex item">
+                    <h4>暱稱 : </h4>
+                    <input type="text" id="nickname" name="nickname" value={this.state.nickname} onChange={this.handleChange}/>
+                  </div>
+                  <div className="d-flex item">
+                    <h4>生日 : </h4>
+                    <input type="text" id="birthday" name="birthday" value={this.state.birthday} onChange={this.handleChange}/>                  </div>
+                  <div className="d-flex item">
+                    <h4>手機 : </h4>
+                    <input type="text" id="mobile" name="mobile" value={this.state.mobile && this.state.mobile} onChange={this.handleChange}/>
+                  </div>
+                  <div className="d-flex item">
+                    <h4>地址 : </h4>
+                    <textarea
+                      name="address"
+                      id=""
+                      cols="30"
+                      rows="5"
+                      style={{ width: '300px', minHeight: '50px', resize: 'none' }}
+                      value={this.state.address} onChange={this.handleChange}
+                    ></textarea>
+                  </div>
                 </div>
-                <div className="d-flex item">
-                  <h4>姓名 : </h4>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={this.state.name}
-                    onChange={this.handleChange}
-                  />
+              <div className="list-r">
+                <div className="itemTitle">
+                  <h3>會員編號 :</h3>
+                  <h3>{this.state.number}</h3>
                 </div>
-                <div className="d-flex item">
-                  <h4>暱稱 : </h4>
-                  <input
-                    type="text"
-                    id="nickname"
-                    name="nickname"
-                    value={this.state.nickname}
-                    onChange={this.handleChange}
-                  />
+                <div className="itemTitle">
+                  <h3>會員等級 :</h3>
+                  <h3>{level[member.MR_personLevel]}</h3>
                 </div>
-                <div className="d-flex item">
-                  <h4>生日 : </h4>
-                  <input
-                    type="text"
-                    id="birthday"
-                    name="birthday"
-                    value={this.state.birthday}
-                    onChange={this.handleChange}
-                  />
-                </div>
-                <div className="d-flex item">
-                  <h4>手機 : </h4>
-                  <input
-                    type="text"
-                    id="mobile"
-                    name="mobile"
-                    value={this.state.mobile && this.state.mobile}
-                    onChange={this.handleChange}
-                  />
-                </div>
-                <div className="d-flex item">
-                  <h4>地址 : </h4>
-                  <textarea
-                    name="address"
-                    id=""
-                    cols="30"
-                    rows="5"
+                <div className="item">
+                  <figure
                     style={{
-                      width: '300px',
-                      minHeight: '50px',
-                      resize: 'none',
+                      backgroundImage: `url(${newPic})`,
                     }}
-                    value={this.state.address}
-                    onChange={this.handleChange}
-                  ></textarea>
+                  ></figure>
+                  <div className="chang_btn">
+                    <input
+                      className="btn btn-warning my-2 my-sm-0"
+                      type="file"
+                      name="file"
+                      onChange={this.onChangeHandler}
+                      style={{ width: '250px' }}
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className="d-flex item">
-                <h4>姓名 : </h4>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={this.state.name}
-                  onChange={this.handleChange}
-                />
               </div>
               <div className="d-flex item">
                 <h4>暱稱 : </h4>
@@ -343,6 +326,7 @@ class Edit extends React.Component {
               </div>
             </div>
           </div>
+
           <div className="d-flex button-group">
             <div>
               <button
