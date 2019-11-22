@@ -19,7 +19,7 @@ const BorderLinearProgress = withStyles({
 
 const useStyles = makeStyles(theme => ({
   root: {
-    margin: '0px auto -10px auto  ',
+    margin: '0px auto  ',
   },
   margin: {
     margin: theme.spacing(0.5),
@@ -39,15 +39,16 @@ const StyledRating = withStyles({
 
 const BookScore = props => {
   const [bs, setBs] = useState([])
-  const { bookInformation } = props
+  const { List } = props
   useEffect(() => {
     star()
-  })
+  }, [])
 
   //資料ajax
   const star = () => {
     axios.get('http://localhost:5555/reviews/book_ratings').then(res => {
       setBs(res.data.data)
+      console.log(res)
     }, [])
   }
 
@@ -123,10 +124,10 @@ const BookScore = props => {
   countRate(bs)
 
   return (
-    <div className="reviews_right">
-      {bookInformation.map(data => (
-        <section key={data.sid} className="reviews_sec">
-          <div className="d-flex book_star mb-2">
+    <div>
+      {List.map(data => (
+        <section key={data.sid} className="reviews_LineAndScore">
+          <div className="d-flex book_star">
             <div className={classes.root}>
               <div className="d-flex">
                 <span style={{ fontSize: '0.5rem' }}>5</span>
@@ -175,8 +176,8 @@ const BookScore = props => {
               </div>
             </div>
           </div>
-          <div className="reviews_col">
-            <span className="reviews_bol">{avg[data.sid]}</span>
+          <div className="reviews_col2">
+            <span style={{ fontSize: '2rem' }}>{avg[data.sid]}</span>
             <Box component="fieldset" mt={0} borderColor="transparent">
               <StyledRating
                 name="customized-color"
