@@ -1,37 +1,21 @@
 import React from 'react'
-import '../../pages/member/lukeStyle.scss'
-
+// import '../../pages/member/lukeStyle.scss'
+import BR_PathNow from '../../pages/reviewer_page/BR_PathNow'
+import BR_DateTime from '../../pages/reviewer_page/BR_DateTime'
+import {withRouter} from 'react-router-dom'
 
 class Navbar extends React.Component {
   render() {
     return (
       <>
-        <div className="navbarWrap">
-          <ol className="breadcrumb">
-            <li>
-              <a href="home">Home</a>
-            </li>
-            <li>
-              <a href="css">CSS</a>
-            </li>
-            <li>
-              <a href="css">breadcrumb</a>
-            </li>
-            <li>
-              <a href="css">React</a>
-            </li>
-            <li>
-              <a href="css">Node</a>
-            </li>
-            <li>
-              <a href="css">MySql</a>
-            </li>
-          </ol>
-        </div>
+          <nav className="brNavbar">
+          <BR_PathNow />
+          <BR_DateTime />
+          </nav>
       </>
-    )
+  )
   }
 }
 
 
-export default Navbar
+export default withRouter(Navbar)

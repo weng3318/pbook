@@ -8,6 +8,7 @@ import PasswordModify from '../../pages/member/PasswordModify'
 import BooksFavorite from '../../pages/member/BooksFavorite'
 import ViewMemberBooks from '../../pages/member/ViewMemberBooks'
 import ResetPWD from '../../pages/ResetPWD'
+import {withRouter} from 'react-router-dom'
 
 import '../../pages/member/lukeStyle.scss'
 
@@ -106,6 +107,27 @@ const Sidebar = (props) => {
                 </Accordion.Collapse>
               </div>
             </Accordion>
+            <Accordion defaultActiveKey="0">
+              <div className="sidebar_card">
+                <Accordion.Toggle
+                  className="sidebar_title"
+                  as={Button}
+                  variant="link"
+                  eventKey="0"
+                >
+                <Link to=''
+                style={{color: "#2D3A3A",textDecoration: "none",fontSize: "28px"}}
+                >
+                  活動
+                </Link>
+                </Accordion.Toggle>
+                <Accordion.Collapse eventKey="0" className="sidebar_item">
+                <Link to="">
+                  <a href="active">相關活動</a>
+                </Link>
+                </Accordion.Collapse>
+              </div>
+            </Accordion>
           </nav>
         </div>
 
@@ -114,7 +136,7 @@ const Sidebar = (props) => {
           <Route exact path="/member/edit" component={Edit} />
           <Route exact path="/member/AddMemberBook" component={AddMemberBook} />
           <Route exact path="/member/PasswordModify" component={PasswordModify} />
-          <Route exact path="/member/BooksFavorite" component={BooksFavorite} />
+          <Route path="/member/BooksFavorite" component={BooksFavorite} />
           <Route exact path="/member/ViewMemberBooks" component={ViewMemberBooks} />
           
         </Switch>
@@ -123,4 +145,4 @@ const Sidebar = (props) => {
   )
 }
 
-export default Sidebar
+export default withRouter(Sidebar)

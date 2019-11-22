@@ -1,7 +1,17 @@
 import React from 'react'
 import axios from 'axios'
 import swal from '@sweetalert/with-react'
-import { ButtonToolbar, Button, Modal, Card, Tabs, Tab } from 'react-bootstrap'
+import {
+  ButtonToolbar,
+  Button,
+  Modal,
+  Card,
+  Tabs,
+  Tab,
+  Nav,
+  Col,
+  Row,
+} from 'react-bootstrap'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
@@ -18,8 +28,11 @@ class Game extends React.Component {
     super(props)
     this.state = {
       status: 'start',
-      gameInviteMe: [],
       gameWait: [],
+      gameInviteMe: [],
+      gameFalse: [],
+      gameSuccess: [],
+      alreadyPlayGame: [],
       myBooks: [],
       pairedMemberBooks: [],
       startTime: '',
@@ -44,7 +57,10 @@ class Game extends React.Component {
         startTime: this.state.startTime,
       })
       .then(res => {
-        this.setState({ gameWait: res.data })
+        this.setState({
+          alreadyPlayGame: res.data.alreadyPlayGame,
+          gameWait: res.data.gameWait,
+        })
       })
       .catch(err => {
         console.log('handleStartGame ajax時錯誤', err)
@@ -59,7 +75,7 @@ class Game extends React.Component {
         // 這邊要記得改!要引導到上架書籍那
         window.location.href = '/'
       })
-    } else if (this.state.gameWait.length === 0) {
+    } else if (this.state.alreadyPlayGame.length === 0) {
       this.setState({ status: 'gameBookList' })
     } else {
       this.setState({ status: 'gameWaitList' })
@@ -70,6 +86,33 @@ class Game extends React.Component {
   handleBackGame = () => {
     this.btnaudio.cloneNode().play()
     window.history.back()
+  }
+
+  //遊戲首頁(查看配對狀態)
+  checkMyWaitList = () => {
+    this.btnaudio.cloneNode().play()
+    axios
+      .post(`http://localhost:5555/nana_use/gameWait`, {
+        memberId: JSON.parse(localStorage.getItem('user')).MR_number,
+        startTime: this.state.startTime,
+      })
+      .then(res => {
+        this.setState({
+          gameWait: res.data.gameWait,
+          status: 'gameWaitList',
+        })
+      })
+      .catch(err => {
+        console.log('checkMyWaitList ajax時錯誤', err)
+      })
+  }
+
+  // 遊戲內所有的回到首頁(都是回到遊戲首頁)
+  handleBackToGameIndex = () => {
+    this.btnaudio.cloneNode().play()
+    setTimeout(() => {
+      window.location = 'http://localhost:3000/game'
+    }, 300)
   }
 
   // 書籍列表光箱控制鈕
@@ -105,6 +148,7 @@ class Game extends React.Component {
 
   //書籍列表送出按鈕
   handleCheckedBook = () => {
+    this.btnaudio.cloneNode().play()
     if (this.state.chosenValue === 0) {
       // 沒選擇書籍
       swal({
@@ -140,12 +184,15 @@ class Game extends React.Component {
                 bookSid: this.state.chosenValue,
               })
               .then(res => {
-                if ((res.data = 'gameWaitInsert 新增成功')) {
+                if ((res.data.insertSuccess = 'gameWaitInsert 新增成功')) {
                   swal({
-                    title: '您已經成功發出配對邀請!請去察看配對狀態!',
-                    icon: 'warning',
-                  }).then(res => {
-                    this.setState({ status: 'gameWaitList' })
+                    title: '您已經成功發出配對邀請!請去查看配對狀態!',
+                    icon: 'success',
+                  }).then(results => {
+                    this.setState({
+                      gameWait: res.data.gameWait,
+                      status: 'gameWaitList',
+                    })
                   })
                 }
               })
@@ -164,10 +211,79 @@ class Game extends React.Component {
     })
   }
 
+  //配對狀態列表去聊天室按鈕
+  handleGoChat = () => {
+    this.btnaudio.cloneNode().play()
+    setTimeout(() => {
+      window.location = 'http://localhost:3000/chat'
+    }, 300)
+  }
+
+  // 配對狀態列表收回/拒絕按鈕
+  handleGameFalse = e => {
+    // console.log('測試一下', e.target.getAttribute("data-value"))
+    let bookSid = e.target.getAttribute('data-value')
+
+    axios
+      .post(`http://localhost:5555/nana_use/gameFalseUpdate`, {
+        memberId: JSON.parse(localStorage.getItem('user')).MR_number,
+        bookSid: bookSid,
+      })
+      .then(res => {
+        if ((res.data.gameFalseUpdate = 'gameFalseUpdate 修改成配對失敗成功')) {
+          swal({
+            title: '配對狀態已更改為配對失敗!請去查看配對失敗列表!',
+            icon: 'success',
+          }).then(results => {
+            this.setState({
+              gameWait: res.data.gameWait,
+              gameInviteMe: res.data.gameInviteMe,
+              gameFalse: res.data.gameFalse,
+            })
+          })
+        }
+      })
+      .catch(err => {
+        console.log('handleGameFalse ajax時錯誤', err)
+      })
+  }
+
+  //配對狀態列表同意配對按鈕
+  handleGameSuccess = e => {
+    // console.log('測試一下', e.target.getAttribute("data-value"))
+    let bookSid = e.target.getAttribute('data-value')
+
+    axios
+      .post(`http://localhost:5555/nana_use/gameSuccessUpdate`, {
+        memberId: JSON.parse(localStorage.getItem('user')).MR_number,
+        bookSid: bookSid,
+        memberName: JSON.parse(localStorage.getItem('user')).MR_name,
+      })
+      .then(res => {
+        if (
+          (res.data.gameSuccessUpdate = 'gameSuccessUpdate 修改成配對成功成功')
+        ) {
+          swal({
+            title: '配對狀態已更改為配對成功!請去查看配對成功列表!',
+            icon: 'success',
+          }).then(results => {
+            this.setState({
+              gameWait: res.data.gameWait,
+              gameInviteMe: res.data.gameInviteMe,
+              gameSuccess: res.data.gameSuccess,
+            })
+          })
+        }
+      })
+      .catch(err => {
+        console.log('handleGameFalse ajax時錯誤', err)
+      })
+  }
+
   componentDidMount() {
     let startTime = new Date().getTime()
     let chance = JSON.parse(localStorage.getItem('user')).MR_personLevel - 1
-    let myBooks
+    let myBooks, gameInviteMe, gameFalse
     axios
       .post(`http://localhost:5555/nana_use/myBooks`, {
         memberId: JSON.parse(localStorage.getItem('user')).MR_number,
@@ -264,9 +380,23 @@ class Game extends React.Component {
         memberId: JSON.parse(localStorage.getItem('user')).MR_number,
       })
       .then(res => {
-        if (res.data.length !== 0) {
-          this.setState({ gameInviteMe: res.data })
-        }
+        gameInviteMe = res.data
+        return axios.post(`http://localhost:5555/nana_use/gameFalse`, {
+          memberId: JSON.parse(localStorage.getItem('user')).MR_number,
+        })
+      })
+      .then(res => {
+        gameFalse = res.data
+        return axios.post(`http://localhost:5555/nana_use/gameSuccess`, {
+          memberId: JSON.parse(localStorage.getItem('user')).MR_number,
+        })
+      })
+      .then(res => {
+        this.setState({
+          gameInviteMe: gameInviteMe,
+          gameFalse: gameFalse,
+          gameSuccess: res.data,
+        })
       })
       .catch(error => {
         console.log('COMPONENTDIDMOUNT AJAX時有錯誤2', error)
@@ -274,6 +404,7 @@ class Game extends React.Component {
   }
 
   render() {
+    var space = ''.replace(/\s/g, '&nbsp;')
     const {
       myBooks,
       pairedMemberBooks,
@@ -282,6 +413,9 @@ class Game extends React.Component {
       modalData,
       gameWait,
       chosenValue,
+      gameInviteMe,
+      gameFalse,
+      gameSuccess,
     } = this.state
     console.log('render myBooks', myBooks)
     console.log('render pairedMemberBooks', pairedMemberBooks)
@@ -290,6 +424,9 @@ class Game extends React.Component {
     console.log('render chance', chance)
     console.log('render modalData', modalData)
     console.log('render chosenValue', chosenValue)
+    console.log('render gameInviteMe', gameInviteMe)
+    console.log('render gameFalse', gameFalse)
+    console.log('render gameSuccess', gameSuccess)
     var pcSettings = {
       dots: true,
       infinite: true,
@@ -349,8 +486,7 @@ class Game extends React.Component {
                   <img
                     src={require('./images/cfm-black.png')}
                     alt="電腦版查看配對狀態按鈕"
-                    // onClick={this.handleBackGame}
-                    // 還沒寫
+                    onClick={this.checkMyWaitList}
                   />
                 </div>
               </div>
@@ -371,6 +507,11 @@ class Game extends React.Component {
                     src={require('./images/back-black.png')}
                     alt="手機版退出按鈕"
                     onClick={this.handleBackGame}
+                  />
+                  <img
+                    src={require('./images/cfm-black.png')}
+                    alt="手機板查看配對狀態按鈕"
+                    onClick={this.checkMyWaitList}
                   />
                 </div>
               </div>
@@ -412,12 +553,12 @@ class Game extends React.Component {
                   alt="電腦版"
                 />
                 <div className="position-absolute PC-changeGameBookListTableWrap">
+                  <MyCountdown />
+                  <MyChance
+                    chance={this.state.chance}
+                    getNewData={this.getNewData}
+                  />
                   <div className="PC-changeGameBookListTable">
-                    <MyCountdown />
-                    <MyChance
-                      chance={this.state.chance}
-                      getNewData={this.getNewData}
-                    />
                     <table className="table table-bordered table-hover">
                       <thead className="thead-dark">
                         <tr>
@@ -515,13 +656,14 @@ class Game extends React.Component {
                   </div>
                   <div className="d-flex justify-content-end PC-changeGameBookListBtnWrap">
                     <img
-                      src={require('./images/submit-green.png')}
+                      src={require('./images/submit-yellow.png')}
                       alt="電腦版確認送出按鈕"
                       onClick={this.handleCheckedBook}
                     />
                     <img
-                      src={require('./images/back-red.png')}
+                      src={require('./images/back-black2.png')}
                       alt="電腦版回到首頁按鈕"
+                      onClick={this.handleBackToGameIndex}
                     />
                   </div>
                 </div>
@@ -595,13 +737,14 @@ class Game extends React.Component {
                 </Slider>
                 <div className="d-flex PHONE-changeGameBookListBtnWrap">
                   <img
-                    src={require('./images/submit-green.png')}
+                    src={require('./images/submit-yellow.png')}
                     alt="手機版確認送出按鈕"
                     onClick={this.handleCheckedBook}
                   />
                   <img
-                    src={require('./images/back-red.png')}
+                    src={require('./images/back-black2.png')}
                     alt="手機版回到首頁按鈕"
+                    onClick={this.handleBackToGameIndex}
                   />
                 </div>
               </div>
@@ -650,7 +793,7 @@ class Game extends React.Component {
                       id="uncontrolled-tab-example"
                       className="PC-nav-link"
                     >
-                      <Tab eventKey="link-1" title="我發出的邀請">
+                      <Tab eventKey="link-1" title="發出邀請">
                         <div className="PC-changeGameWaitTableWrap">
                           <table className="table table-bordered table-hover">
                             <thead className="thead-dark">
@@ -660,6 +803,7 @@ class Game extends React.Component {
                                 <th scope="col">欲換書籍</th>
                                 <th scope="col">配對狀態</th>
                                 <th scope="col">發出日期/時間</th>
+                                <th scope="col">選擇</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -672,13 +816,23 @@ class Game extends React.Component {
                                   <td>
                                     {moment(value.created_at * 1).format('lll')}
                                   </td>
+                                  <td>
+                                    <button
+                                      type="button"
+                                      className="btn btn-outline-danger btn-sm"
+                                      data-value={value.sid}
+                                      onClick={this.handleGameFalse}
+                                    >
+                                      收回邀請
+                                    </button>
+                                  </td>
                                 </tr>
                               ))}
                             </tbody>
                           </table>
                         </div>
                       </Tab>
-                      <Tab eventKey="link-2" title="向我發出的邀請">
+                      <Tab eventKey="link-2" title="接受邀請">
                         <div className="PC-changeGameWaitTableWrap">
                           <table className="table table-bordered table-hover">
                             <thead className="thead-dark">
@@ -689,21 +843,41 @@ class Game extends React.Component {
                                 <th scope="col">欲換書籍</th>
                                 <th scope="col">配對狀態</th>
                                 <th scope="col">發出日期/時間</th>
-                                <th scope="col">是否同意?</th>
+                                <th scope="col">選擇</th>
+                                <th scope="col">選擇</th>
                               </tr>
                             </thead>
                             <tbody>
                               {this.state.gameInviteMe.map((value, index) => (
                                 <tr key={index}>
                                   <td>{index + 1}</td>
-                                  <td>發出人</td>
+                                  <td>{value.MR_name}</td>
                                   <td>{value.bookStatus}</td>
                                   <td>{value.book_name}</td>
                                   <td>{value.matchStatus}</td>
                                   <td>
                                     {moment(value.created_at * 1).format('lll')}
                                   </td>
-                                  <td>同意</td>
+                                  <td>
+                                    <button
+                                      type="button"
+                                      className="btn btn-outline-dark btn-sm"
+                                      data-value={value.sid}
+                                      onClick={this.handleGameSuccess}
+                                    >
+                                      同意
+                                    </button>
+                                  </td>
+                                  <td>
+                                    <button
+                                      type="button"
+                                      className="btn btn-outline-danger btn-sm"
+                                      data-value={value.sid}
+                                      onClick={this.handleGameFalse}
+                                    >
+                                      拒絕
+                                    </button>
+                                  </td>
                                 </tr>
                               ))}
                             </tbody>
@@ -711,19 +885,89 @@ class Game extends React.Component {
                         </div>
                       </Tab>
                       <Tab eventKey="link-3" title="配對成功列表">
-                        <h1>測試3</h1>
+                        <div className="PC-changeGameWaitTableWrap">
+                          <table className="table table-bordered table-hover">
+                            <thead className="thead-dark">
+                              <tr>
+                                <th scope="col">編號</th>
+                                <th scope="col">發出人</th>
+                                <th scope="col">書籍狀態</th>
+                                <th scope="col">欲換書籍</th>
+                                <th scope="col">配對狀態</th>
+                                <th scope="col">發出日期/時間</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {this.state.gameSuccess.map((value, index) => (
+                                <tr key={index}>
+                                  <td>{index + 1}</td>
+                                  <td>
+                                    {value.MR_name ===
+                                    JSON.parse(localStorage.getItem('user'))
+                                      .MR_name
+                                      ? '我'
+                                      : value.MR_name}
+                                  </td>
+                                  <td>{value.bookStatus}</td>
+                                  <td>{value.book_name}</td>
+                                  <td>{value.matchStatus}</td>
+                                  <td>
+                                    {moment(value.created_at * 1).format('lll')}
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </Tab>
+                      <Tab eventKey="link-4" title="配對失敗列表">
+                        <div className="PC-changeGameWaitTableWrap">
+                          <table className="table table-bordered table-hover">
+                            <thead className="thead-dark">
+                              <tr>
+                                <th scope="col">編號</th>
+                                <th scope="col">發出人</th>
+                                <th scope="col">書籍狀態</th>
+                                <th scope="col">欲換書籍</th>
+                                <th scope="col">配對狀態</th>
+                                <th scope="col">發出日期/時間</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {this.state.gameFalse.map((value, index) => (
+                                <tr key={index}>
+                                  <td>{index + 1}</td>
+                                  <td>
+                                    {value.MR_name ===
+                                    JSON.parse(localStorage.getItem('user'))
+                                      .MR_name
+                                      ? '我'
+                                      : value.MR_name}
+                                  </td>
+                                  <td>{value.bookStatus}</td>
+                                  <td>{value.book_name}</td>
+                                  <td>{value.matchStatus}</td>
+                                  <td>
+                                    {moment(value.created_at * 1).format('lll')}
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
                       </Tab>
                     </Tabs>
                   </div>
                   <div className="d-flex justify-content-end PC-changeGameWaitBtnWrap">
                     <img
-                      src={require('./images/submit-green.png')}
-                      alt="電腦版確認送出按鈕"
-                      onClick={this.handleCheckedBook}
+                      src={require('./images/gochat-yellow.png')}
+                      alt="電腦版去聊天室按鈕"
+                      onClick={this.handleGoChat}
                     />
                     <img
-                      src={require('./images/back-red.png')}
+                      src={require('./images/back-black2.png')}
                       alt="電腦版回到首頁按鈕"
+                      onClick={this.handleBackToGameIndex}
                     />
                   </div>
                 </div>
@@ -731,78 +975,213 @@ class Game extends React.Component {
 
               <div className="position-relative PHONE-changeGameBookListWrap">
                 <img
-                  className="PHONE-changeGameBookListContext"
-                  src={require('./images/PHONE-changeGameBookListContext.png')}
+                  className="PHONE-changeGameWaitContext"
+                  src={require('./images/PHONE-changeGameWaitContext.png')}
                   alt="手機板"
                 />
 
-                <Slider {...settings}>
-                  {this.state.pairedMemberBooks.map((value, index) => (
-                    <div key={index}>
-                      <div className="text-center" style={{ margin: '10px 0' }}>
-                        <MyCountdown />
-                        <MyChance
-                          chance={this.state.chance}
-                          getNewData={this.getNewData}
-                        />
-                      </div>
-                      <div
-                        style={{
-                          width: '90vw',
-                          margin: '0 auto',
-                        }}
+                <div className="text-center" style={{ margin: '10px 0' }}>
+                  <MyCountdown />
+                </div>
+                <div
+                  style={{ width: '90%', margin: '0px auto' }}
+                  className="PHONE-nav-link"
+                >
+                  <Tab.Container
+                    id="left-tabs-example"
+                    defaultActiveKey="link-1"
+                  >
+                    <Row>
+                      <Col sm={3}>
+                        <Nav variant="pills" className="justify-content-center">
+                          <Nav.Item>
+                            <Nav.Link eventKey="link-1">
+                              <span style={{ color: 'transparent' }}>空</span>
+                              發出邀請
+                              <span style={{ color: 'transparent' }}>空</span>
+                            </Nav.Link>
+                          </Nav.Item>
+                          <Nav.Item>
+                            <Nav.Link eventKey="link-2">
+                              <span style={{ color: 'transparent' }}>空</span>
+                              接受邀請
+                              <span style={{ color: 'transparent' }}>空</span>
+                            </Nav.Link>
+                          </Nav.Item>
+                          <Nav.Item>
+                            <Nav.Link eventKey="link-3">配對成功列表</Nav.Link>
+                          </Nav.Item>
+                          <Nav.Item>
+                            <Nav.Link eventKey="link-4">配對失敗列表</Nav.Link>
+                          </Nav.Item>
+                        </Nav>
+                      </Col>
+                      <Col
+                        sm={9}
+                        style={{ height: '50vh', overflow: 'auto' }}
+                        className="mt-2"
                       >
-                        <Card.Header className="text-center">
-                          {value.mb_name}
-                        </Card.Header>
-                        <Card.Body className="text-left">
-                          <Card.Text>
-                            <img
-                              src={
-                                'http://localhost:5555/images/memberBooks/' +
-                                value.mb_pic.split(',')[0]
-                              }
-                              alt="手機板書籍照片"
-                              className="PHONE-changeGameBookListImg"
-                            ></img>
-                          </Card.Text>
-                          <Card.Text>
-                            ・選擇：
-                            <input
-                              type="radio"
-                              name="react-tips"
-                              value={value.mb_sid}
-                              onClick={this.handleRadioButtonClick}
-                            ></input>
-                          </Card.Text>
-                          <Card.Text>・書況：{value.mb_savingStatus}</Card.Text>
-                          <Card.Text>・分類：{value.mb_categories}</Card.Text>
-                          <Card.Text>・定價：{value.mb_fixedPrice}元</Card.Text>
-                          <div
-                            className="PHONE-changeGameBookListShow"
-                            onClick={() =>
-                              this.handleModalShow({
-                                bookName: value.mb_name,
-                                bookPic: value.mb_pic,
-                                bookRemarks: value.mb_remarks,
-                              })
-                            }
-                          >
-                            ・點我顯示詳請
-                          </div>
-                        </Card.Body>
-                      </div>
-                    </div>
-                  ))}
-                </Slider>
-                <div className="d-flex PHONE-changeGameBookListBtnWrap">
+                        <Tab.Content>
+                          <Tab.Pane eventKey="link-1">
+                            <ul className="PHONE-table">
+                              <li className="tbody">
+                                {this.state.gameWait.map((value, index) => (
+                                  <ol key={index} className="tr">
+                                    <li data-title="編號">{index + 1}</li>
+                                    <li data-title="書籍狀態">
+                                      {value.bookStatus}
+                                    </li>
+                                    <li data-title="欲換書籍">
+                                      {value.book_name}
+                                    </li>
+                                    <li data-title="配對狀態">
+                                      {value.matchStatus}
+                                    </li>
+                                    <li data-title="日期/時間">
+                                      {moment(value.created_at * 1).format(
+                                        'lll'
+                                      )}
+                                    </li>
+                                    <li data-title="選擇">
+                                      <button
+                                        className="PHONE-falseButtton"
+                                        data-value={value.sid}
+                                        onClick={this.handleGameFalse}
+                                      >
+                                        收回邀請
+                                      </button>
+                                    </li>
+                                  </ol>
+                                ))}
+                              </li>
+                            </ul>
+                          </Tab.Pane>
+                          <Tab.Pane eventKey="link-2">
+                            <ul className="PHONE-table">
+                              <li className="tbody">
+                                {this.state.gameInviteMe.map((value, index) => (
+                                  <ol key={index} className="tr">
+                                    <li data-title="編號">{index + 1}</li>
+                                    <li data-title="發出人">
+                                      {value.MR_name ===
+                                      JSON.parse(localStorage.getItem('user'))
+                                        .MR_name
+                                        ? '我'
+                                        : value.MR_name}
+                                    </li>
+                                    <li data-title="書籍狀態">
+                                      {value.bookStatus}
+                                    </li>
+                                    <li data-title="欲換書籍">
+                                      {value.book_name}
+                                    </li>
+                                    <li data-title="配對狀態">
+                                      {value.matchStatus}
+                                    </li>
+                                    <li data-title="日期/時間">
+                                      {moment(value.created_at * 1).format(
+                                        'lll'
+                                      )}
+                                    </li>
+                                    <li data-title="選擇">
+                                      <button
+                                        className="PHONE-falseButtton"
+                                        data-value={value.sid}
+                                        onClick={this.handleGameSuccess}
+                                      >
+                                        同意
+                                      </button>
+                                      <button
+                                        className="PHONE-falseButtton"
+                                        data-value={value.sid}
+                                        onClick={this.handleGameFalse}
+                                      >
+                                        拒絕
+                                      </button>
+                                    </li>
+                                  </ol>
+                                ))}
+                              </li>
+                            </ul>
+                          </Tab.Pane>
+                          <Tab.Pane eventKey="link-3">
+                            <ul className="PHONE-table">
+                              <li className="tbody">
+                                {this.state.gameSuccess.map((value, index) => (
+                                  <ol key={index} className="tr">
+                                    <li data-title="編號">{index + 1}</li>
+                                    <li data-title="發出人">
+                                      {value.MR_name ===
+                                      JSON.parse(localStorage.getItem('user'))
+                                        .MR_name
+                                        ? '我'
+                                        : value.MR_name}
+                                    </li>
+                                    <li data-title="書籍狀態">
+                                      {value.bookStatus}
+                                    </li>
+                                    <li data-title="欲換書籍">
+                                      {value.book_name}
+                                    </li>
+                                    <li data-title="配對狀態">
+                                      {value.matchStatus}
+                                    </li>
+                                    <li data-title="日期/時間">
+                                      {moment(value.created_at * 1).format(
+                                        'lll'
+                                      )}
+                                    </li>
+                                  </ol>
+                                ))}
+                              </li>
+                            </ul>
+                          </Tab.Pane>
+                          <Tab.Pane eventKey="link-4">
+                            <ul className="PHONE-table">
+                              <li className="tbody">
+                                {this.state.gameFalse.map((value, index) => (
+                                  <ol key={index} className="tr">
+                                    <li data-title="編號">{index + 1}</li>
+                                    <li data-title="發出人">
+                                      {value.MR_name ===
+                                      JSON.parse(localStorage.getItem('user'))
+                                        .MR_name
+                                        ? '我'
+                                        : value.MR_name}
+                                    </li>
+                                    <li data-title="書籍狀態">
+                                      {value.bookStatus}
+                                    </li>
+                                    <li data-title="欲換書籍">
+                                      {value.book_name}
+                                    </li>
+                                    <li data-title="配對狀態">
+                                      {value.matchStatus}
+                                    </li>
+                                    <li data-title="日期/時間">
+                                      {moment(value.created_at * 1).format(
+                                        'lll'
+                                      )}
+                                    </li>
+                                  </ol>
+                                ))}
+                              </li>
+                            </ul>
+                          </Tab.Pane>
+                        </Tab.Content>
+                      </Col>
+                    </Row>
+                  </Tab.Container>
+                </div>
+
+                <div className="d-flex PHONE-changeGameWaitBtnWrap">
                   <img
-                    src={require('./images/submit-green.png')}
-                    alt="手機版確認送出按鈕"
-                    onClick={this.handleCheckedBook}
+                    src={require('./images/gochat-yellow.png')}
+                    alt="手機版去聊天室按鈕"
+                    onClick={this.handleGoChat}
                   />
                   <img
-                    src={require('./images/back-red.png')}
+                    src={require('./images/back-black2.png')}
                     alt="手機版回到首頁按鈕"
                   />
                 </div>

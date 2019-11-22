@@ -46,10 +46,11 @@
 /* 熱門書評區域，整體區域 (區塊控制) */
 .HotBookBoxAll_Bookcase{
     display: flex;
-    top: 40px;
-    padding: 20px 6px 0 6px;
+    top: 10px;
+    padding: 50px 6px 0 6px;
     justify-content: space-around;
     text-align: center;
+    overflow: hidden;
 }
 /* 熱門書評，多本書 (文字) */
 .brHotBookText{
@@ -58,7 +59,7 @@
     font-size: 0.9rem;
     color: #ffffff;
     left: 50%;
-    bottom: 30%;
+    top: 63%;
     transform: translateX(-50%);
     
 }
@@ -122,19 +123,21 @@
 }
 /* 書評家簡介全區域 (縮放限制) */
 .brInfoBox_Bookcase{
-    min-width: 265px;
+    width: 100%;
     min-height: 310px;
 }
 /* 書評家簡介，(文字、限制行數) */
 .brInfoText_Bookcase{
+    line-height: 28px;
+    letter-spacing: .025rem;
     max-height: 200px;
-    font-size: 1rem;
+    font-size: 1.2rem;
     margin: 6px 20px 12px 20px;
     /* color: rgba(255,255,255,.7); */
     color: #2d3a3a;
     overflow : hidden;
     display: -webkit-box;
-    -webkit-line-clamp: 6;
+    -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
 }
 /* 書評家簡介內的書名、作者 (文字) */
@@ -153,7 +156,7 @@
     right: 0;
     bottom: 0;
 }
-/* 社群分享，三小圖示+收藏 (社群圖示) */
+/* 社群分享，分享圖示 (書櫃區的 社群圖示) */
 .brIconShare_Bookcase{
     width: 30px;
     margin: 0 6px 6px 6px;
@@ -169,8 +172,14 @@
 }
 @media (max-width: 786px) {
     /* 書評家列表，整體區域 (狀態改變) */
-    .ReviewerListAllBox_Bookcase {
-        display: inline-block;
+    .brInfoBox_Bookcase {
+       height: 400px;
+    }
+    /* 書評家簡介，(文字、限制行數) */
+    .brInfoText_Bookcase{
+        max-height: 280px;
+        margin: 6px 20px 0px 20px;
+        -webkit-line-clamp: 7;
     }
     /* 星評組件，RWD (狀態消失，換位todo..) */
     .brStarBox_Bookcase{

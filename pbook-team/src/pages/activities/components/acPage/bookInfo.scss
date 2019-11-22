@@ -1,10 +1,19 @@
 @import '../../color.scss';
 
 .book_box {
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
+  .book_pic {
+    position: relative;
+    &:after {
+      padding-top: 100%;
+      display: block;
+      content: '';
+    }
+    img {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
   }
   .book_data {
     h6 {
@@ -26,6 +35,15 @@
       }
     }
   }
+  .info {
+    .author {
+      display: -webkit-box;
+      overflow: hidden;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      white-space: normal;
+    }
+  }
   .intro {
     overflow: hidden;
     display: -webkit-box;
@@ -36,6 +54,9 @@
   }
   a {
     color: $color-gray;
+    .fixedPrice{
+      display: block;
+    }
     .price {
       color: $color-red;
     }
@@ -43,9 +64,8 @@
   .addCart {
     background-color: $color-green;
     border: 1px solid transparent;
-    border-radius: 10px;
-    width: 6vw;
-    height: 1.6vw;
+    border-radius: 8px;
+    padding: 3px;
     font-size: 1rem;
     &:focus {
       outline: none;

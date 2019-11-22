@@ -13,9 +13,12 @@
     text-align: center;
     background: #2d3a3a;
 }
+.BlogMouse{
+    cursor: pointer;
+}
 /* 書評部落格 (參照背景) */
 .reviewerBlog {
-    padding: 20px 200px 20px 200px;
+    padding: 30px 200px 50px 200px;
     /* background: #fff; */
     /* background: url(../reviewer_page//images/03_評品書.png) center center; */
     max-width: 1920px;
@@ -24,7 +27,7 @@
 }
 /* 書評部落格 (參照偽元素) */
 .reviewerBlog::after{
-    content: "";
+    /* content: ""; */
     display: block;
     background: rgba(0,0,0,.25);
     position: absolute;
