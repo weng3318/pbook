@@ -155,17 +155,10 @@ const List = () => {
 
   //輸入時更新資料
   const changeHandler = e => {
-    if (review.isEdit) {
-      setReview({
-        ...review,
-        [e.target.name]: e.target.value,
-      })
-    } else {
-      setReview({
-        ...review,
-        [e.target.name]: e.target.value,
-      })
-    }
+    setReview({
+      ...review,
+      [e.target.name]: e.target.value,
+    })
   }
 
   //新增資料
@@ -329,14 +322,14 @@ const List = () => {
           {/* {review.submitSuccess && <p>送出成功</p>}
           {review.error && <p>送出失敗</p>} */}
         </div>
-        <InsertReply
+        {/* <InsertReply
           user={user}
           login={login}
           review={review}
           submitHandler={submitHandler}
           changeHandler={changeHandler}
-        />
-        {/* <h3 className="reviews_push">發表評論</h3>
+        /> */}
+        <h3 className="reviews_push">發表評論</h3>
         <Review>
           <BookColumnMember>
             <Member>
@@ -380,7 +373,7 @@ const List = () => {
               </h6>
             </form>
           )}
-        </Review> */}
+        </Review>
         {memberReview.map(data => (
           <Review key={data.sid}>
             <BookColumnMember>
