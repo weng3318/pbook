@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 import Top from './Top'
 import StepOne from './StepOne'
+import StepTwo from './StepTwo'
+import StepThree from './StepThree'
 import './Cart.scss'
 
 const Buy = props => {
@@ -12,11 +14,15 @@ const Buy = props => {
   }
   if (current === 0) {
     Steps = StepOne
+  } else if (current === 1) {
+    Steps = StepTwo
+  } else if (current === 2) {
+    Steps = StepThree
   }
   return (
     <>
-      <Container className="px-0" fluid={true}>
-        <Container className="my-3 top">
+      <Container className="px-0 cart_wrap" fluid={true}>
+        <Container className="py-3 top">
           <Row>
             <Col md={12}>
               <Top current={current}></Top>
@@ -25,7 +31,7 @@ const Buy = props => {
         </Container>
         <Container>
           <Row>
-            <Steps></Steps>
+            <Steps changeSteps={changeSteps}></Steps>
           </Row>
         </Container>
       </Container>
