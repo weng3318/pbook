@@ -8,7 +8,7 @@ import DataPic from './DataPic'
 import { shopFetch, cgFetch } from './ShopActions'
 import './Shop.scss'
 
-const Shop = props => {
+const ShopSearch = props => {
   let [searchValue, setValue] = useState('')
   let mode = localStorage.getItem('mode')
     ? localStorage.getItem('mode')
@@ -16,10 +16,10 @@ const Shop = props => {
   useEffect(() => {
     props.dispatch(cgFetch())
     props.dispatch(
-      shopFetch(props.match.params.page, props.match.params.categories)
+      shopFetch(props.match.params.page, 'search', props.match.params.keyword)
     )
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.match.params.page, props.match.params.categories, searchValue])
+  }, [props.match.params.page, props.match.params.keyword])
   function Search() {
     searchValue = document.querySelector('.searchInput').value
     setValue(searchValue)
@@ -39,18 +39,15 @@ const Shop = props => {
   return (
     <>
       <Container className="px-0 book_wrapper" fluid={true}>
-        <Breadcrumb
-          categoriesPayload={categoriesPayload}
-          nowCategories={props.match.params.categories}
-          Search={Search}
-        ></Breadcrumb>
+        <Breadcrumb Search={Search} searchValue={searchValue}></Breadcrumb>
         <Container>
           <Row>
             <Categories categoriesPayload={categoriesPayload}></Categories>
             <Data
               shopPayload={shopPayload}
-              nowCategories={props.match.params.categories}
               nowPage={props.match.params.page}
+              keyword={props.match.params.keyword}
+              nowCategories={props.match.params.categories}
             ></Data>
           </Row>
         </Container>
@@ -63,4 +60,4 @@ const mapStateToProps = state => ({
   shop: state.shop,
   categories: state.categories,
 })
-export default connect(mapStateToProps)(Shop)
+export default connect(mapStateToProps)(ShopSearch)

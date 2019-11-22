@@ -14,7 +14,6 @@ const BookDetail = props => {
     props.bookInfoPayload &&
     props.bookInfoPayload.rows &&
     props.bookInfoPayload.rows[0]
-  console.log(data && data.fiveStars)
 
   return (
     <>
@@ -48,13 +47,14 @@ const BookDetail = props => {
             <span className="my-2 ml-2">
               優惠價：<span className="discount">88</span>折，NT$
               <span className="discount">
-                {parseInt((data && data.fixed_price) * 0.88)}
+                {String(parseInt((data && data.fixed_price) * 0.88))}
               </span>
             </span>
             {/* <span>現金回饋：5％(活動詳情)回饋金可全額折抵商品</span> */}
           </div>
           <span className="my-2 ml-2">
-            限量商品 庫存：<span className="stock">{data && data.stock}</span>
+            限量商品 庫存：
+            <span className="stock">{data && data.stock}</span>
           </span>
           <div className="d-flex icon mt-3">
             <div className="d-flex flex-column align-items-center mr-3">

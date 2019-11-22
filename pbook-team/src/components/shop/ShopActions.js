@@ -82,7 +82,7 @@ export const shopFetch = (
   }
 }
 //-------------------------
-//-------Shop-----------
+//-------BookInfo-----------
 export const BOOKINFO_RECEIVE = 'BOOKINFO_RECEIVE'
 export const BOOKINFO_REQUEST = 'BOOKINFO_REQUEST'
 function bookInfoReceive(sid, json) {
