@@ -2,7 +2,12 @@ import React, { useState, useEffect } from 'react'
 import styled from '@emotion/styled'
 import BookScoreForMember from '../BookScore/BookScoreForMember'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTimes, faPen, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
+import {
+    faTimes,
+    faPen,
+    faTrashAlt,
+    faCheck,
+  } from '@fortawesome/free-solid-svg-icons'
 
 function Reply(props) {
   //橫排
@@ -32,14 +37,7 @@ function Reply(props) {
     margin: 0 0 0 5px;
   `
 
-  const {
-    updateHandler,
-    changeHandler,
-    deleteHandler,
-    memberReview,
-    review,
-    setReview,
-  } = props
+  const { updateHandler, changeHandler,deleteHandler, memberReview, review ,setReview} = props
   return (
     <>
       {memberReview.map(data => (

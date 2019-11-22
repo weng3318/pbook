@@ -35,15 +35,11 @@ const flatCacheMiddleware = (req, res, next) => {
     }
 }
 
-router.get('/offline', async (req, res, next) => {
-    let offlineList = await AC.getOfflineList()
-    // offlineList.forEach(v=>{
-    //     v.intro = v.intro.replace(/[\\$'"]/g, "\\$&")
-    // })
-    res.json(offlineList)
+router.get('/offline', flatCacheMiddleware, async (req, res, next) => {
+    res.json(await AC.getOfflineList())
 })
 
-router.get('/discount', async (req, res, next) => {
+router.get('/discount', flatCacheMiddleware, async (req, res, next) => {
     res.json(await AC.getDiscountList())
 })
 
@@ -71,12 +67,9 @@ router.get('/recommend-books/:memberNum/:limit?', async (req, res, next) => {
     }
 })
 
-// 線下活動報名API
-router.get('/ac-sign/:memberNum', async (req, res, next) => {
-    res.json(await AC.getSignedActivities(req))
-})
+// 線下活動報名
 router.post('/ac-sign', async (req, res, next) => {
-    res.json(await AC.signUpActivity(req))
+    res.json(await AC.signUpActivity(req.body))
 })
 
 

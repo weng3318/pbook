@@ -8,12 +8,12 @@ export default class Home extends React.Component {
     super(props)
     this.state = {
       nextIcon: (
-        <div className="myCarouselButton myRight">
+        <div className="myCarouselButton right">
           <i className="fas fa-caret-right"></i>
         </div>
       ),
       prevIcon: (
-        <div className="myCarouselButton myLeft">
+        <div className="myCarouselButton left">
           <i className="fas fa-caret-left"></i>
         </div>
       ),

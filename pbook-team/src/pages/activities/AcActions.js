@@ -66,35 +66,6 @@ export function getDiscountBooks(acId) {
   }
 }
 
-// 取得書籍折價
-export const GET_DISCOUNT_AMOUNT_BASIC_NAME = 'DISCOUNT_AMOUNT'
-export function getDiscountAmount(memberLevel) {
-  return {
-    types: [
-      'DISCOUNT_AMOUNT_REQUEST',
-      'DISCOUNT_AMOUNT_SUCCESS',
-      'DISCOUNT_AMOUNT_FAILURE',
-    ],
-    // 檢查快取：
-    shouldCallAPI: state => !state.discountBooks[memberLevel],
-    // 執行抓取資料：
-    callAPI: () =>
-      fetch(
-        'http://localhost:5555/activities/book-discount-for-member-level/' +
-          memberLevel,
-        {
-          method: 'GET',
-          headers: new Headers({
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          }),
-        }
-      ),
-    // 要在開始/結束 action 注入的參數
-    payload: { memberLevel, rootName: memberLevel },
-  }
-}
-
 // get recommend books
 export const GET_RECOMMEND_BOOKS_BASIC_NAME = 'RECOMMEND_BOOKS'
 export function getRecommendBooks(memberNum, limit = 8) {

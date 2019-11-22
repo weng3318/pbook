@@ -90,7 +90,7 @@ function shop(state = [], action) {
   }
 }
 //---------------------
-//-------bookInfo-------
+//-------shop-------
 function bi(
   state = {
     isFetching: false,
@@ -132,7 +132,6 @@ function bookInfo(state = [], action) {
   }
 }
 //---------------------
-
 const ShopReducers = { bookInfo, categories, shop }
 
 export default ShopReducers

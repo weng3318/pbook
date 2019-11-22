@@ -226,33 +226,3 @@
 .transition {
   transition: 0.5s;
 }
-
-.guide-tooltip {
-  display: none;
-}
-
-.guide-content {
-  display: none;
-}
-
-.guide-icon-no {
-  display: none;
-}
-
-.guide-shadow{
-  background: #000;
-}
-
-.guide-shadow:after {
-  font-size: 5vw;
-  position: absolute;
-  content: '您還沒有可以聊天的好友喔!\A請去玩玩我們的二手書配對遊戲吧!\A請點擊右上角的「二手書配對」!';
-  white-space: pre-wrap;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  color: #ffff;
-  text-align: center;
-}

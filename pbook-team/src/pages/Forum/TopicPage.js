@@ -1,5 +1,5 @@
 import React from 'react'
-import Carousel from '../../components/indexComponents/carousel/Carousel'
+import Carousel from '../../components/carousel/Carousel'
 import './scss/TopicPage.scss'
 import CardS1 from '../../components/forum/CardS1/CardS1'
 import ButtonUI from '../../components/Material-UI/Button'

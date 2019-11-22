@@ -48,6 +48,7 @@ const BookScore = props => {
   const star = () => {
     axios.get('http://localhost:5555/reviews/book_ratings').then(res => {
       setBs(res.data.data)
+      console.log(res)
     }, [])
   }
 
@@ -123,9 +124,9 @@ const BookScore = props => {
   countRate(bs)
 
   return (
-    <div className="reviews_right">
+    <div className="right">
       {bookInformation.map(data => (
-        <section key={data.sid} className="reviews_sec">
+        <section key={data.sid} className="sec">
           <div className="d-flex book_star mb-2">
             <div className={classes.root}>
               <div className="d-flex">
@@ -175,8 +176,8 @@ const BookScore = props => {
               </div>
             </div>
           </div>
-          <div className="reviews_col">
-            <span className="reviews_bol">{avg[data.sid]}</span>
+          <div className="col">
+            <span className="bol">{avg[data.sid]}</span>
             <Box component="fieldset" mt={0} borderColor="transparent">
               <StyledRating
                 name="customized-color"

@@ -5,6 +5,7 @@ const router = express.Router();
 
 const db = mysql.createConnection({
     host: "192.168.27.186",
+    // host: "localhost",
     user: "root",
     password: "root",
     database: "pbook"
@@ -13,7 +14,7 @@ db.connect()
 bluebird.promisifyAll(db)
 // 每一頁數量
 const perPage = 10
-router.get('/brReviewerList/:page?/:keyword?', (req, res) => {
+router.get('/brReviewerList/:page?/:keyword?', (req,res)=>{
     // 頁數資料傳輸
     const output = {};
     output.params = req.params
@@ -21,9 +22,9 @@ router.get('/brReviewerList/:page?/:keyword?', (req, res) => {
     let page = parseInt(req.params.page) || 1
     let keyword = req.params.keyword || ''
     let where = 'WHERE 1'
-    if (keyword) {
+    if(keyword){
 
-        where += "AND `name` LIKE '%" + keyword + "%'"
+        where += "AND `name` LIKE '%"+ keyword +"%'"
         output.keyword = keyword
     }
 
@@ -31,25 +32,25 @@ router.get('/brReviewerList/:page?/:keyword?', (req, res) => {
 
     db.queryAsync(t_sql)
 
-        .then((results) => {
-            // 總筆數 取得第一筆"total"
-            output.totalRows = results[0][`total`]
-            // 總頁數 = 總筆數/每頁筆數
-            output.totalPage = Math.ceil(output.totalRows / perPage)
-            if (page < 1) page = 1
-            if (page > output.totalRows) page = output.totalRows
-            output.page = page
+            .then((results)=>{
+                // 總筆數 取得第一筆"total"
+                output.totalRows =  results[0][`total`]
+                // 總頁數 = 總筆數/每頁筆數
+                output.totalPage =  Math.ceil(output.totalRows/perPage)
+                if( page < 1 ) page = 1
+                if( page > output.totalRows ) page = output.totalRows
+                output.page = page
+    
+                return db.queryAsync('SELECT * FROM `br_reviewerlist` '+ where +' LIMIT '+(page-1)*perPage+','+(perPage))
 
-            return db.queryAsync('SELECT * FROM `br_reviewerlist` ' + where + ' LIMIT ' + (page - 1) * perPage + ',' + (perPage))
-
-                .then((results) => {
-                    output.rows = results
-                    res.json(output)
-                })
-                .catch((error) => {
-                    console.log('後端出錯了', error)
-                })
-        })
+            .then((results)=>{
+                output.rows = results
+                res.json(output)
+            })
+            .catch((error)=>{
+                console.log('後端出錯了',error)
+            })
+    })
 })
 
 module.exports = router;

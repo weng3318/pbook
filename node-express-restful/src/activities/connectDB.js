@@ -14,7 +14,7 @@ function sqlQuery(sql) {
     try {
         data = db.queryAsync(sql)
     } catch (err) {
-        console.log('in connecting db',err);
+        console.log(err);
     }
     return data
 }

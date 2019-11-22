@@ -11,12 +11,7 @@ const BookBuy = props => {
     props.bookInfoPayload &&
     props.bookInfoPayload.rows &&
     props.bookInfoPayload.rows[0]
-  function addCart(event) {
-    localStorage.setItem('buy', JSON.stringify(data))
-  }
-  function addFav(event) {
-    console.log(JSON.parse(localStorage.getItem('buy')).sid)
-  }
+
   return (
     <>
       <Col md={3} className="d-flex flex-column">
@@ -24,11 +19,11 @@ const BookBuy = props => {
           <FontAwesomeIcon icon={faShoppingCart} className="mr-2" />
           立即購買
         </button>
-        <button className="addCart my-2" onClick={() => addCart()}>
+        <button className="addCart my-2">
           <FontAwesomeIcon icon={faShoppingCart} className="mr-2" />
           加入購物車
         </button>
-        <button className="addFav my-2" onClick={() => addFav()}>
+        <button className="addFav my-2">
           <FontAwesomeIcon icon={faBookmark} className="mr-2" />
           加入收藏
         </button>

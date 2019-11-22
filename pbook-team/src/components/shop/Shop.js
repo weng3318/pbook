@@ -16,19 +16,23 @@ const Shop = props => {
   useEffect(() => {
     props.dispatch(cgFetch())
     props.dispatch(
-      shopFetch(props.match.params.page, props.match.params.categories)
+      shopFetch(
+        props.match.params.page,
+        props.match.params.categories,
+        searchValue ? searchValue : ''
+      )
     )
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.match.params.page, props.match.params.categories, searchValue])
   function Search() {
     searchValue = document.querySelector('.searchInput').value
     setValue(searchValue)
-    window.location.href = '/books/search/1/' + searchValue
     return false
   }
   let categoriesPayload = props.categories.payload
   let shopPayload = props.shop.payload
   let Data
+
   if (mode === 'list') {
     Data = DataList
     localStorage.setItem('mode', 'list')
@@ -42,6 +46,7 @@ const Shop = props => {
         <Breadcrumb
           categoriesPayload={categoriesPayload}
           nowCategories={props.match.params.categories}
+          nowPage={props.match.params.page}
           Search={Search}
         ></Breadcrumb>
         <Container>
@@ -51,6 +56,7 @@ const Shop = props => {
               shopPayload={shopPayload}
               nowCategories={props.match.params.categories}
               nowPage={props.match.params.page}
+              mode={props.match.params.mode}
             ></Data>
           </Row>
         </Container>

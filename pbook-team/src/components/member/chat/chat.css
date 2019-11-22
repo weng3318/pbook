@@ -167,53 +167,18 @@
   cursor: pointer;
 }
 
-.chatMessageSubmit:hover span {
+.chatMessageSubmit:hover span{
   border: #2d3a3a;
   background: #2d3a3a;
   color: #ffffff;
 }
 
-.chatMessageScroll {
+.chatMessageScroll{
   height: 60vh;
   overflow-y: scroll;
 }
 
+
 .show-inline-flex {
   display: inline-flex !important;
-}
-
-.messageDelete {
-  cursor: pointer;
-  margin-left: 10px;
-  color: #999;
-  font-size: small;
-  border: 1px solid #999;
-  padding: 3px;
-}
-
-.messageDelete:hover {
-  color: #ff525b;
-  border: 1px solid #ff525b;
-}
-
-.messageDelete span {
-  margin: 0 0 0 3px;
-}
-
-.messageEdit {
-  cursor: pointer;
-  margin-left: 10px;
-  color: #999;
-  font-size: small;
-  border: 1px solid #999;
-  padding: 3px;
-}
-
-.messageEdit:hover {
-  color: #2d3a3a;
-  border: 1px solid #2d3a3a;
-}
-
-.messageEdit span {
-  margin: 0 0 0 3px;
 }

@@ -20,9 +20,10 @@ function getLabelText(value) {
 }
 
 export default function CustomizedRatings(props) {
+
   return (
     <>
-      <Box component="fieldset" mr={3}>
+      <Box component="fieldset" mr={3}  >
         <Typography component="legend"></Typography>
         <StyledRating
           key={props.score_star}

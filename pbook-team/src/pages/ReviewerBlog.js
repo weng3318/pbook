@@ -9,7 +9,7 @@ export class ReviewerBlog extends React.Component {
     super(props)
     this.state = {
       csData: [],
-      bkData: [],
+      bkData:[],
     }
   }
   componentDidMount() {
@@ -20,33 +20,27 @@ export class ReviewerBlog extends React.Component {
         newcsData = res.data.rows
         return axios.get('http://localhost:5555/reviewer/brbooks')
       })
-      .then(res => {
-        this.setState({ csData: newcsData, bkData: res.data.rows })
+      .then(res=>{
+        this.setState({ csData:newcsData, bkData: res.data.rows })
       })
       .catch(function(error) {
-        console.log('前端沒有取得資料', error)
+        console.log('前端沒有取得資料',error)
       })
   }
   render(props) {
     // if (!this.state.csData.length) return <></>
-    if (this.state.csData.length === 0)
-      return (
-        <>
-          <h1>取得資料中...</h1>
-        </>
-      )
+    if (this.state.csData.length === 0) return <><h1>取得資料中...</h1></>
     let csData = this.state.csData
     let bkData = this.state.bkData
 
     let BlogData = null
       console.log('csData[0].name', csData[0].name)
-      
       for (let i = 0; i < csData.length; i++) {
         if (csData[i].sid == this.props.match.params.sid) {
           BlogData = csData[i]
         }
-    }
-    console.log('render csData 書評部落格資料', this.state.csData)
+      }
+    console.log('render csData 書評部落格資料',this.state.csData);
     return (
     <>
       {/* todo.. 比對兩張資料表的作者{author} */}
@@ -54,8 +48,7 @@ export class ReviewerBlog extends React.Component {
       <section className="reviewerBlog borderLine">
           <BR_BlogList
           name={BlogData.name}
-          blog={BlogData.blog}
-          tube={BlogData.tube}
+          info={BlogData.info}
           ></BR_BlogList>
       </section>
       {/* 效果圖 開發使用 */}

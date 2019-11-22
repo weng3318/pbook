@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 import ReviewerBlog from '../ReviewerBlog'
 
 class BR_BookcaseList extends React.Component {
-    render() {
+    render(props) {
         // console.log(this.props)
     (function(d, s, id) {
         var js, fjs = d.getElementsByTagName(s)[0];
@@ -31,11 +31,14 @@ class BR_BookcaseList extends React.Component {
                     <span className="bookInfo_Bookcase">作者：</span>{this.props.author}
                     <br/>
                     <br/>
-                    <h5 className="brInfoText_Bookcase" dangerouslySetInnerHTML={{__html:this.props.introduction? this.props.introduction:this.props.blog}}></h5>
+                    <h5 className="brInfoText_Bookcase" dangerouslySetInnerHTML={{__html:this.props.introduction? this.props.introduction:this.props.info}}></h5>
                 </div>
                 {/* <div className="brInfoText ">{this.props.intro}</div> */}
-            <div className="brIconBox_Bookcase">
-            
+                <div className="brIconBox_Bookcase">
+                    <img className="brIconShare_Bookcase" src={require('../reviewer_page/images/icon_youtube.png')}/>
+                    <img className="brIconShare_Bookcase" src={require('../reviewer_page/images/icon_facebook.png')}/>
+                    <img className="brIconShare_Bookcase" src={require('../reviewer_page/images/icon_twitter.png')}/>
+                    <img className="brIconShare_Bookcase" src={require('../reviewer_page/images/icon_shaer.png')}/>
 
               {/* <a href='javascript: void(window.open("http://www.facebook.com/share.php?u=".concat
               (encodeURIComponent("https://i.imgur.com/nLnK93i.png"))));'>分享品書雞</a> */}
@@ -50,26 +53,14 @@ class BR_BookcaseList extends React.Component {
             {/* 評分組件 */}
     {/* <div className="brStarBox_Bookcase borderLine"></div> */}
     </section>
-                <Switch>
-                    <Route exact 
-                    path="/reviewer/reviewerBooks/reviewerBlog/:sid?" 
-                    component={ReviewerBlog} />
-                </Switch>
-                    <a className="brIconShare_Bookcase" href={this.props.youtube} target="black">
-                            <img src={require('../reviewer_page/images/icon_youtube.png')}/>
-                    </a>
-                    <a className="brIconShare_Bookcase" href={this.props.facebook} target="black">
-                            <img src={require('../reviewer_page/images/icon_facebook.png')}/>
-                    </a>
-                    <a className="brIconShare_Bookcase" href={this.props.twitter} target="black">
-                            <img src={require('../reviewer_page/images/icon_twitter.png')}/>
-                    </a>
-                    <a className="brIconShare_Bookcase" href={this.props.facebook} target="black">
-                            <img src={require('../reviewer_page/images/icon_shaer.png')}/>
-                    </a>
-            </Router>
         {/* <h3>測試書本：{this.props.name}</h3> */}
         {/* <div style={{height:'30px'}}></div> */}
+            <Switch>
+                  <Route exact 
+                  path="/reviewer/reviewerBooks/reviewerBlog/:sid?" 
+                  component={ReviewerBlog} />
+            </Switch>
+            </Router>
         </>
         )
     }

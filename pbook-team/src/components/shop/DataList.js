@@ -5,21 +5,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGripHorizontal, faList } from '@fortawesome/free-solid-svg-icons'
 import BookInfoRight from './BookInfoRight'
 import BookInfoLeft from './BookInfoLeft'
-import Page1 from './Page1'
-import Page2 from './Page2'
+import Page from './Page'
 import './Shop.scss'
 
 const DataList = props => {
   function setMode() {
     localStorage.setItem('mode', 'pic')
-  }
-  let Page, modeLink
-  if (props.keyword) {
-    Page = Page2
-    modeLink = '/books/search/' + props.nowPage + '/' + props.keyword
-  } else if (!props.keyword) {
-    Page = Page1
-    modeLink = '/books/' + props.nowPage + '/' + props.nowCategories
   }
   return (
     <>
@@ -34,14 +25,14 @@ const DataList = props => {
         <div className="book_order mx-4 my-3 px-5 d-flex justify-content-between">
           <div>
             <span className="mr-2">顯示模式</span>
-            <Link to={modeLink}>
+            <Link to="/books/1/1">
               <FontAwesomeIcon icon={faList} className="active" />
             </Link>
-            <Link to={modeLink} onClick={() => setMode()}>
+            <Link to="/books/1/1" onClick={() => setMode()}>
               <FontAwesomeIcon icon={faGripHorizontal} />
             </Link>
           </div>
-          {/* <div>
+          <div>
             <span className="mr-2">排序依</span>
             <select>
               <option>書名(小->大)</option>
@@ -50,13 +41,17 @@ const DataList = props => {
               <option>書名(小->大)</option>
               <option>書名(小->大)</option>
             </select>
-          </div> */}
+          </div>
         </div>
         {props.shopPayload &&
           props.shopPayload.rows &&
           props.shopPayload.rows.map(data => (
             <div className="d-flex justify-content-between my-5" key={data.sid}>
-              <BookInfoLeft data={data}></BookInfoLeft>
+              <BookInfoLeft
+                data={data}
+                nowCategories={props.nowCategories}
+                nowPage={props.nowPage}
+              ></BookInfoLeft>
               {/*書籍資訊左半*/}
               <BookInfoRight data={data}></BookInfoRight>
               {/*書籍資訊右半*/}
@@ -66,7 +61,6 @@ const DataList = props => {
           shopPayload={props.shopPayload}
           nowCategories={props.nowCategories}
           nowPage={props.nowPage}
-          keyword={props.keyword}
         ></Page>
         {/*Pagination*/}
       </Col>

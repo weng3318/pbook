@@ -25,7 +25,7 @@ const Breadcrumb = props => {
           首頁 > 書籍商城 >{' '}
           <span className="active"> {name[props.nowCategories - 1]}</span>
         </div>
-        <form className="mr-5 search">
+        <div className="mr-5 search">
           <input
             className="searchInput py-1 pl-3"
             type="text"
@@ -39,7 +39,7 @@ const Breadcrumb = props => {
           >
             <FontAwesomeIcon icon={faSearch} />
           </button>
-        </form>
+        </div>
       </Col>
     </>
   )

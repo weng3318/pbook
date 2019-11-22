@@ -111,7 +111,8 @@ a:hover{
 .brInfoBox{
     min-width: 265px;
     max-width: 600px;
-    min-height: 377px;
+    height: 349px;
+    /* height: 100%; */
 }
 /* 書評家簡介，(文字、限制行數) */
 .brInfoText{
@@ -145,7 +146,7 @@ a:hover{
 .brIconFollow{
     max-width: 75%;;
 }
-/* 分享圖示 (書評家的 社群圖示) */
+/* 分享圖示 (按鈕) */
 .brIconShare{
     width: 23%;
     margin: 5px 4px;
@@ -169,11 +170,6 @@ a:hover{
     /* 書評家列表，整體區域 (狀態改變) */
     .ReviewerListAllBox {
         display: inline-block;
-    }
-    .brInfoText{
-        font-size: 1.2rem;
-        margin: 24px;
-        -webkit-line-clamp: 9;
     }
     /* 影片顯示，RWD (狀態改變) */
     .brYouTubeRWD{

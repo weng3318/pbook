@@ -33,11 +33,5 @@
     "babel-core": "^6.26.3",
     "babel-preset-env": "^1.7.0",
     "nodemon": "^1.18.4"
-  },
-  "nodemonConfig": {
-    "ignore": [
-      "sessions/",
-      "public/"
-    ]
   }
 }

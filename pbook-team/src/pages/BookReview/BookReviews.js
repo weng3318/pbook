@@ -1,14 +1,13 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import styled from '@emotion/styled'
-import BookScoreAndLine from './BookScore/BookScoreAndLine'
+// import BookHeart from './BookScore/BookScore'
 import BookStar from './BookScore/BookScoreForBR'
+import BookLineForBR from './BookLine/BookLineForBR'
 import BookScoreForMember from './BookScore/BookScoreForMember'
-import InsertReply from './components/InsertReply'
 import {
   faTimes,
   faPen,
@@ -35,7 +34,14 @@ const Book = styled.div`
 //橫排
 const BookRow = styled.div`
   display: flex;
+  margin: 0 1rem 0 0;
   flex-direction: row;
+`
+//橫排按鈕
+const BookRowButton = styled.div`
+  display: flex;
+  flex-direction: row-reverse;
+  margin: 1rem 0 0 700px;
 `
 
 //直排
@@ -44,14 +50,7 @@ const BookColumn = styled.div`
   flex-direction: column;
 `
 
-//直排右側分數
-const BookColumnScore = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-`
-
-//直排下方會員
+//直排
 const BookColumnMember = styled.div`
   display: flex;
   margin: 0 0 0 20px;
@@ -66,10 +65,35 @@ const BookLine = styled.div`
   outline: none;
 `
 
+//加入書櫃按鈕
+const BookCase = styled.button`
+  width: 100px;
+  height: 50px;
+  margin: 0 50px 0 0;
+  border-radius: 5px;
+  background-color: #cde2d0;
+  color: #2d3a3a;
+  border: 1px solid #ccc;
+`
 //書本資訊
 const BookInfo = styled.div`
   margin: 0 0 0 50px;
   width: 1000px;
+`
+
+//書本分數
+const BookScoreTitle = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 0px 0 0 0;
+  font-size: 15px;
+`
+//書本評分
+const BookScore = styled.div`
+  display: flex;
+  flex-direction: column;
+  font-size: 50px;
+  align-items: center;
 `
 //回復評論外框
 const Review = styled.section`
@@ -126,7 +150,7 @@ const List = () => {
       })
       setReview({ ...review, id: data.MR_number })
     }
-  }, [score, InsertReply])
+  }, [score])
 
   const bookList = async () => {
     await axios
@@ -252,11 +276,6 @@ const List = () => {
     })
   }
 
-  const login = () => {
-    let loginBtn = document.querySelector('.loginButton')
-    loginBtn.click()
-  }
-
   //更新資料狀態
   const EditReview = e => {
     let sid = e
@@ -319,24 +338,25 @@ const List = () => {
           </Book>
         ))}
         <div>
-          <BookColumnScore>
-            <button className="BookBuy">立即購買</button>
+          <BookLine>
+            <BookScore>{/* <BookHeart urlParams={urlParams} /> */}</BookScore>
             <BookRow>
-              <BookScoreAndLine List={List} />
+              <BookLineForBR List={List} />
             </BookRow>
-            <button className="BookCase">加入書櫃</button>
-          </BookColumnScore>
+            <BookScoreTitle>
+              <span>{'5'}</span>
+              <span>{'4'}</span>
+              <span>{'3'}</span>
+              <span>{'2'}</span>
+              <span>{'1'}</span>
+            </BookScoreTitle>
+            <BookCase>加入書櫃</BookCase>
+            <BookCase>立即購買</BookCase>
+          </BookLine>
           {/* {review.submitSuccess && <p>送出成功</p>}
           {review.error && <p>送出失敗</p>} */}
         </div>
-        <InsertReply
-          user={user}
-          login={login}
-          review={review}
-          submitHandler={submitHandler}
-          changeHandler={changeHandler}
-        />
-        {/* <h3 className="reviews_push">發表評論</h3>
+        <h3 className="reviews_push">發表評論</h3>
         <Review>
           <BookColumnMember>
             <Member>
@@ -366,21 +386,21 @@ const List = () => {
                   score_star={review.star}
                   setScore_star={changeHandler}
                 />
-                <button type="submit" className="reviews_submitBtn">
-                  送出評論
-                </button>
+                <BookRowButton>
+                  <button type="submit" className="reviews_submitBtn">
+                    送出評論
+                  </button>
+                </BookRowButton>
               </BookRow>
             </form>
           ) : (
             <form className="reviews_form">
               <h6 className="reviews_Login">
-                <a onClick={login} href="#">
-                  請登入會員填寫評論
-                </a>
+                <a href="#">請登入會員填寫評論</a>
               </h6>
             </form>
           )}
-        </Review> */}
+        </Review>
         {memberReview.map(data => (
           <Review key={data.sid}>
             <BookColumnMember>

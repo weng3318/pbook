@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Col } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -7,14 +7,11 @@ import './Cart.scss'
 
 const ShopDetail = props => {
   //   let [num, setQuantity] = useState(null)
-  function getAmount() {
-    console.log(document.querySelector('.bookAmount').value)
-  }
   return (
     <>
       <Col md={7}>
         <div className="shopDetail my-5">
-          <div className="m-4 d-flex justify-content-between align-items-center eachDetail">
+          <div className="m-3 d-flex eachDetail">
             <div className="picture">
               <Link to={'/books/information/123'} target="_blank">
                 <img
@@ -25,26 +22,28 @@ const ShopDetail = props => {
                 />
               </Link>
             </div>
-            <div className="bookName">
-              <Link to={'/books/information/123'} target="_blank">
-                <span>一見峮心 峮峮個人寫真書</span>
-              </Link>
+            <Link to={'/books/information/123'} target="_blank">
+              <span className="bookName">一見峮心 峮峮個人寫真書</span>
+            </Link>
+            <div>
+              <select>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+              </select>
             </div>
             <div>
-              <input
-                type="number"
-                className="bookAmount"
-                onChange={() => getAmount()}
-                min="1"
-                max="99"
-                defaultValue="1"
-              />
+              <span>NT$ 520</span>
             </div>
             <div>
-              <span className="bookPrice">NT$ 520</span>
-            </div>
-            <div>
-              <button type="button" className="delete">
+              <button type="button">
                 <FontAwesomeIcon icon={faTimes} />
               </button>
             </div>

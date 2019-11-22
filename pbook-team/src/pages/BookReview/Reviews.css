@@ -3,24 +3,23 @@
   outline: none;
 }
 /* 右側愛心區塊 */
-.reviews_col {
+.colLove {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin: -15px 0 0px 0;
-  transform: translate(5px, 20px);
 }
 /* 分數文字 */
-.reviews_bol {
+.bol {
   font-size: 1.5rem;
 }
-.reviews_sec {
+.sec {
   margin: 135px auto;
   display: flex;
 }
-.reviews_right {
+.right {
   margin: 15px auto;
-  transform: translate(0, 40px);
+  transform: translate(0, -20px);
 }
 
 .reviews_btn {
@@ -101,7 +100,6 @@
   color: black;
   border: 1px solid #dee2e6;
 }
-
 .reviews_img {
   max-height: 100%;
   max-width: 100%;
@@ -119,70 +117,30 @@
   color: #ffc408;
 }
 
-/* ----------------------------------------------------------------------- */
 /*  /list  進入單本書籍後 書評頁面 */
 .reviews_line {
   display: flex;
   flex-direction: row-reverse;
 }
-/* 書評發送鈕 */
+
 .reviews_submitBtn {
-  width: 110px;
-  height: 30px;
-  margin: 0 0 15px 650px;
-  border-radius: 8px;
-  background-color: #2d3a3a;
-  color: #ffc408;
-  outline: none;
-  border: none;
-}
-/* 分數條及愛心平行 */
-.reviews_LineAndScore {
-  display: flex;
-  align-items: center;
-}
-/* 分數條及愛心調整 */
-.reviews_col2 {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: -15px 0 0px 0;
-  transform: translate(5px, 5px);
+  width: 100px;
+  height: 50px;
+  border-radius: 5px;
+  background: #cde2d0;
+  margin: 0 0 5rem 0;
 }
 
-/* 購買按鈕 */
-.BookBuy {
-  width: 110px;
-  height: 30px;
-  margin: 15px 0;
-  border-radius: 8px;
-  background-color: #cde2d0;
-  color: #2d3a3a;
-  border: 1px solid #ccc;
-  transform: translate(-160px, 0);
-  outline: none;
-}
-
-/* 書櫃按鈕 */
-.BookCase {
-  width: 110px;
-  height: 30px;
-  margin: 15px 0;
-  border-radius: 8px;
-  background-color: #2d3a3a;
-  color: #ffc408;
-  transform: translate(-160px, 0);
-  outline: none;
-  border: none;
-}
-
-/* 書評輸入欄 */
 .reviews_textarea {
   width: 1000px;
   min-height: 120px;
   border: 1.5px solid #ccc;
   border-radius: 1rem;
   padding: 0.7rem;
+}
+/* 發表評論 */
+.reviews_score {
+  margin: 20px;
 }
 
 /* 表單 */
@@ -231,7 +189,6 @@
 .reviews_member_text {
   margin: 0 auto 0 70px;
 }
-/* 會員右方刪除修改按鈕 */
 .reviews_member_icon {
   display: flex;
   justify-content: center;

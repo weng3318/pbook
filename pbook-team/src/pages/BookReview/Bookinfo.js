@@ -82,6 +82,7 @@ function Bookinfo() {
   //書本圖片
   const BookImage = styled.div`
     margin: 36px auto;
+    transform: translate(0, -13px);
   `
   //書本資訊
   const BookInfo = styled.div`
@@ -94,6 +95,7 @@ function Bookinfo() {
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
+    transform: translate(0, -30px);
   `
   //書本星數
   const BookScoreSet = styled.div`

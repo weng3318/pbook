@@ -13,9 +13,6 @@
     text-align: center;
     background: #2d3a3a;
 }
-.BlogMouse{
-    cursor: pointer;
-}
 /* 書評部落格 (參照背景) */
 .reviewerBlog {
     padding: 30px 200px 50px 200px;
@@ -27,7 +24,7 @@
 }
 /* 書評部落格 (參照偽元素) */
 .reviewerBlog::after{
-    /* content: ""; */
+    content: "";
     display: block;
     background: rgba(0,0,0,.25);
     position: absolute;

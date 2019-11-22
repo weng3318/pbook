@@ -29,15 +29,13 @@ export class Reviewer extends React.Component {
         })
     }
     render() {
-     if (this.state.brData.length === 0) return <h1>取得資料中...</h1>
-      console.log('所有的書評家',this.state.brData)
-
+      console.log('檢視brData資料'+this.state.brData)
         return (
           <>
             <BR_Navbar />
         <h1>書評家</h1>
           {/* {Data */}
-      <div className="bg_pic">
+<div className="bg_pic">
           {/* {this.state.brData
             .filter(({ name }) => '達克尼斯' == name)
             .map(({ sid, title, img, name, job, intro, bookcase, youtube, facebook, twitter, tube,}) => (
@@ -79,7 +77,7 @@ export class Reviewer extends React.Component {
             ></BR_ReviewerList>
           )
         )}
-    </div>
+</div>
       </>
     )
   }
