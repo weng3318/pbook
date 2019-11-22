@@ -107,6 +107,27 @@ const Sidebar = (props) => {
                 </Accordion.Collapse>
               </div>
             </Accordion>
+            <Accordion defaultActiveKey="0">
+              <div className="sidebar_card">
+                <Accordion.Toggle
+                  className="sidebar_title"
+                  as={Button}
+                  variant="link"
+                  eventKey="0"
+                >
+                <Link to=''
+                style={{color: "#2D3A3A",textDecoration: "none",fontSize: "28px"}}
+                >
+                  活動
+                </Link>
+                </Accordion.Toggle>
+                <Accordion.Collapse eventKey="0" className="sidebar_item">
+                <Link to="">
+                  <a href="active">相關活動</a>
+                </Link>
+                </Accordion.Collapse>
+              </div>
+            </Accordion>
           </nav>
         </div>
 

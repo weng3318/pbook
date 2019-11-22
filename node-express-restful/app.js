@@ -77,9 +77,11 @@ app.get("/", function(req, res) {
 
 //登出
 app.get("/logout", (req, res) => {
+  // console.log("logout success1", req.session);
   //清除session的memberData
   delete req.session.memberData;
-  // console.log("logout success", req.session);
+  // delete req.session.cookie;
+  // console.log("logout success2", req.session);
   return res.redirect("/");
 });
 

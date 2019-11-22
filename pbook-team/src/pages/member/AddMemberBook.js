@@ -24,7 +24,7 @@ class AddMemberBook extends React.Component {
     }
     this.handleChange = this.handleChange.bind(this)
     this.addBooks = this.addBooks.bind(this)
-    this.onDrop = this.onDrop.bind(this)
+    // this.onDrop = this.onDrop.bind(this)
   }
 
   //分類按鈕點擊後印出文字

@@ -47,26 +47,27 @@ class BooksFavorite extends React.Component {
       <>
         <div className="booksContent">
           <div className="title">收藏書籍</div>
+            <div className="wrap flex-wrap">
+              {(data && data).map(data => (
+                <Link
+                  to={'/books/information/1/' + data.categories + '/' + data.name}
+                >
+                  <div className="list">
+                    <img className="listImg" src={this.state.path + data.pic} />
+                    <div className="booksTitle">{data.name}</div>
+                    {/* <div className="booksInfo"> */}
+                    {/* 預留小圖示 */}
+                    {/* <img class="avatar" src="../images/gift.png" alt=""/> */}
+                    {/* <div className="introduction">
+                                      {data.introduction}
+                                      </div> */}
+                    {/* </div> */}
+                  </div>
+                </Link>
+              ))}
+            </div>
 
-          <div className="wrap flex-wrap">
-            {(data && data).map(data => (
-              <Link
-                to={'/books/information/1/' + data.categories + '/' + data.name}
-              >
-                <div className="list">
-                  <img className="listImg" src={this.state.path + data.pic} />
-                  <div className="booksTitle">{data.name}</div>
-                  {/* <div className="booksInfo"> */}
-                  {/* 預留小圖示 */}
-                  {/* <img class="avatar" src="../images/gift.png" alt=""/> */}
-                  {/* <div className="introduction">
-                                    {data.introduction}
-                                    </div> */}
-                  {/* </div> */}
-                </div>
-              </Link>
-            ))}
-          </div>
+            
         </div>
       </>
     )
