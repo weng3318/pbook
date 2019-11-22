@@ -1,7 +1,7 @@
 import React from 'react'
 import './lukeStyle.scss'
 import swal from '@sweetalert/with-react'
-import {withRouter} from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 
 class Edit extends React.Component {
   constructor() {
@@ -185,44 +185,22 @@ class Edit extends React.Component {
       '書評家',
     ]
 
-      return (
-        <>
-          <div className="editWrap">
-            <div className=" wrap">
-              <div className="MB_title">會員資料修改</div>
-              <div className="d-flex">
-                <div className="list">
-                  <div className="d-flex item">
-                    <h4>帳號 : </h4>
-                    <input type="text" id="email" name="email" value={this.state.email} onChange={this.handleChange}/>
-                  </div>
-                  <div className="d-flex item">
-                    <h4>姓名 : </h4>
-                    <input type="text" id="name" name="name" value={this.state.name} onChange={this.handleChange}/>
-                  </div>
-                  <div className="d-flex item">
-                    <h4>暱稱 : </h4>
-                    <input type="text" id="nickname" name="nickname" value={this.state.nickname} onChange={this.handleChange}/>
-                  </div>
-                  <div className="d-flex item">
-                    <h4>生日 : </h4>
-                    <input type="text" id="birthday" name="birthday" value={this.state.birthday} onChange={this.handleChange}/>
-                  </div>
-                  <div className="d-flex item">
-                    <h4>手機 : </h4>
-                    <input type="text" id="mobile" name="mobile" value={this.state.mobile && this.state.mobile} onChange={this.handleChange}/>
-                  </div>
-                  <div className="d-flex item">
-                    <h4>地址 : </h4>
-                    <textarea
-                      name="address"
-                      id=""
-                      cols="30"
-                      rows="5"
-                      style={{ width: '300px', minHeight: '50px', resize: 'none' }}
-                      value={this.state.address} onChange={this.handleChange}
-                    ></textarea>
-                  </div>
+    return (
+      <>
+        <div className="editWrap">
+          <div className=" wrap">
+            <div className="MB_title">會員資料修改</div>
+            <div className="d-flex">
+              <div className="list">
+                <div className="d-flex item">
+                  <h4>帳號 : </h4>
+                  <input
+                    type="text"
+                    id="email"
+                    name="email"
+                    value={this.state.email}
+                    onChange={this.handleChange}
+                  />
                 </div>
                 <div className="d-flex item">
                   <h4>姓名 : </h4>
@@ -260,7 +238,7 @@ class Edit extends React.Component {
                     type="text"
                     id="mobile"
                     name="mobile"
-                    value={this.state.mobile}
+                    value={this.state.mobile && this.state.mobile}
                     onChange={this.handleChange}
                   />
                 </div>
@@ -281,58 +259,114 @@ class Edit extends React.Component {
                   ></textarea>
                 </div>
               </div>
-              <div className="list-r">
-                <div className="itemTitle">
-                  <h3>會員編號 :</h3>
-                  <h3>{this.state.number}</h3>
-                </div>
-                <div className="itemTitle">
-                  <h3>會員等級 :</h3>
-                  <h3>{level[member.MR_personLevel]}</h3>
-                </div>
-                <div className="item">
-                  <figure
-                    style={{
-                      backgroundImage: `url(${newPic})`,
-                    }}
-                  ></figure>
-                  <div className="chang_btn">
-                    <input
-                      className="btn btn-warning my-2 my-sm-0"
-                      type="file"
-                      name="file"
-                      onChange={this.onChangeHandler}
-                      style={{ width: '250px' }}
-                    />
-                  </div>
+              <div className="d-flex item">
+                <h4>姓名 : </h4>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={this.state.name}
+                  onChange={this.handleChange}
+                />
+              </div>
+              <div className="d-flex item">
+                <h4>暱稱 : </h4>
+                <input
+                  type="text"
+                  id="nickname"
+                  name="nickname"
+                  value={this.state.nickname}
+                  onChange={this.handleChange}
+                />
+              </div>
+              <div className="d-flex item">
+                <h4>生日 : </h4>
+                <input
+                  type="text"
+                  id="birthday"
+                  name="birthday"
+                  value={this.state.birthday}
+                  onChange={this.handleChange}
+                />
+              </div>
+              <div className="d-flex item">
+                <h4>手機 : </h4>
+                <input
+                  type="text"
+                  id="mobile"
+                  name="mobile"
+                  value={this.state.mobile}
+                  onChange={this.handleChange}
+                />
+              </div>
+              <div className="d-flex item">
+                <h4>地址 : </h4>
+                <textarea
+                  name="address"
+                  id=""
+                  cols="30"
+                  rows="5"
+                  style={{
+                    width: '300px',
+                    minHeight: '50px',
+                    resize: 'none',
+                  }}
+                  value={this.state.address}
+                  onChange={this.handleChange}
+                ></textarea>
+              </div>
+            </div>
+            <div className="list-r">
+              <div className="itemTitle">
+                <h3>會員編號 :</h3>
+                <h3>{this.state.number}</h3>
+              </div>
+              <div className="itemTitle">
+                <h3>會員等級 :</h3>
+                <h3>{level[member.MR_personLevel]}</h3>
+              </div>
+              <div className="item">
+                <figure
+                  style={{
+                    backgroundImage: `url(${newPic})`,
+                  }}
+                ></figure>
+                <div className="chang_btn">
+                  <input
+                    className="btn btn-warning my-2 my-sm-0"
+                    type="file"
+                    name="file"
+                    onChange={this.onChangeHandler}
+                    style={{ width: '250px' }}
+                  />
                 </div>
               </div>
             </div>
-            <div className="d-flex button-group">
-              <div>
-                <button
-                  style={{ width: '130px' }}
-                  type="submit"
-                  className="btn btn-warning"
-                  id="submit_btn"
-                  onClick={() => {
-                    window.location.href = '/'
-                  }}
-                >
-                  &nbsp;回&nbsp;首&nbsp;頁&nbsp;
-                </button>
-              </div>
-              <div>
-                <button
-                  style={{ width: '130px' }}
-                  type="submit"
-                  className="btn btn-warning"
-                  id="submit_btn"
-                  onClick={this.handleEdit}
-                >
-                  &nbsp;確&nbsp;認&nbsp;修&nbsp;改&nbsp;
-                </button>
-              </div>
+          </div>
+          <div className="d-flex button-group">
+            <div>
+              <button
+                style={{ width: '130px' }}
+                type="submit"
+                className="btn btn-warning"
+                id="submit_btn"
+                onClick={() => {
+                  window.location.href = '/'
+                }}
+              >
+                &nbsp;回&nbsp;首&nbsp;頁&nbsp;
+              </button>
+            </div>
+            <div>
+              <button
+                style={{ width: '130px' }}
+                type="submit"
+                className="btn btn-warning"
+                id="submit_btn"
+                onClick={this.handleEdit}
+              >
+                &nbsp;確&nbsp;認&nbsp;修&nbsp;改&nbsp;
+              </button>
             </div>
           </div>
         </div>
