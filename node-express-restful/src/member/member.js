@@ -375,7 +375,7 @@ router.post('/imgFiles', upload.array('avatar', 5 ),(req, res, next) =>{
                         }
                             
             }else{
-                    console.log('222');
+                    // console.log('222');
                     res.json({
                         pictures: images
                     })
