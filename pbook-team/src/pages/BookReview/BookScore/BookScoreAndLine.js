@@ -48,7 +48,6 @@ const BookScore = props => {
   const star = () => {
     axios.get('http://localhost:5555/reviews/book_ratings').then(res => {
       setBs(res.data.data)
-      console.log(res)
     }, [])
   }
 

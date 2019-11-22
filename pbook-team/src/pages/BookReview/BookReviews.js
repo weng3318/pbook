@@ -104,6 +104,7 @@ const List = () => {
   })
   const [review, setReview] = useState({
     id: '',
+    isbn: '',
     sid: '',
     editReview: '',
     reviewText: '',
@@ -132,8 +133,9 @@ const List = () => {
     await axios
       .get(`http://localhost:5555/reviews/book_reviews/${urlParams}`)
       .then(res => {
-        let s = res.data.data[0].sid
         setList(res.data.data)
+        setReview({ ...review, isbn: res.data.data[0].isbn })
+        console.log(res.data)
       })
       .catch(error => {
         console.log(error)
@@ -245,38 +247,26 @@ const List = () => {
     })
   }
 
+  // 跳至登入畫面
   const login = () => {
     let loginBtn = document.querySelector('.loginButton')
     loginBtn.click()
   }
 
-  //更新資料狀態
-  const EditReview = e => {
-    let sid = e
-    return (
-      <>
-        <FontAwesomeIcon className="reviews_member_icon" icon={faCheck} />
-        <FontAwesomeIcon
-          onClick={() => {
-            setReview({ ...review, isEdit: false, sid: sid })
-          }}
-          className="reviews_member_icon"
-          icon={faTimes}
-        />
-      </>
-    )
-  }
-  //未更新資料狀態
-  const NoEditReview = () => {
-    return (
-      <FontAwesomeIcon
-        onClick={() => {
-          setReview({ ...review, isEdit: true })
-        }}
-        className="reviews_member_icon"
-        icon={faPen}
-      />
-    )
+  //加入書櫃
+  const addCase = e => {
+    e.preventDefault()
+    let api = `http://localhost:5555/member/addBookcase`
+    if (user.isLogin) {
+      axios.post(api, {
+        number: review.book,
+        isbn: review.isbn,
+      })
+    } else {
+      swal('請登入會員').then(value => {
+        login()
+      })
+    }
   }
 
   return (
@@ -317,7 +307,11 @@ const List = () => {
             <BookRow>
               <BookScoreAndLine List={List} />
             </BookRow>
-            <button className="BookCase">加入書櫃</button>
+            <form onSubmit={addCase}>
+              <button type="submit" onClick={addCase} className="BookCase">
+                加入書櫃
+              </button>
+            </form>
           </BookColumnScore>
           {/* {review.submitSuccess && <p>送出成功</p>}
           {review.error && <p>送出失敗</p>} */}
