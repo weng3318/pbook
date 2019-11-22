@@ -63,6 +63,13 @@ class Header extends React.Component {
     event.stopPropagation()
   }
 
+  handleGoToGame = event => {
+    event.stopPropagation()
+    this.setState({
+      visible: false,
+    })
+  }
+
   handleChatGuide = event => {
     event.stopPropagation()
     axios
@@ -274,7 +281,7 @@ class Header extends React.Component {
                   <Link
                     to="/game"
                     className="loginText"
-                    onClick={this.handleStopPropagation}
+                    onClick={this.handleGoToGame}
                     data-step="1"
                     data-tip="第一步驟"
                   >
@@ -429,8 +436,7 @@ class Header extends React.Component {
                         <Link
                           to="/game"
                           className="myHeaderA"
-                          data-step="1"
-                          data-tip="第一步驟"
+                          onClick={this.handleGoToGame}
                         >
                           二手書配對
                         </Link>
@@ -518,7 +524,6 @@ class Header extends React.Component {
               <Route exact path="/member" component={Member} />
               <Route exact path="/game" component={Game} />
               <Route exact path="/chat" component={Chat} />
-              <Route exact path="/cart" component={Cart} />
               <Route exact path="/cart" component={Cart} />
               <Route path="/ResetPWD/:id" component={ResetPWD} />
               <Route exact component={NoPage} />
