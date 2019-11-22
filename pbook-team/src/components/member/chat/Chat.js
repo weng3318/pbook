@@ -5,7 +5,9 @@ import './chat.css'
 import axios from 'axios'
 import moment from 'moment'
 import io from 'socket.io-client'
-import ChatRule from './ChatRule'
+
+// import ChatRule from './ChatRule'
+// import Guide from 'react-guide'
 
 var socket
 
@@ -156,9 +158,16 @@ class Chat extends React.Component {
         memberId: JSON.parse(localStorage.getItem('user')).MR_number,
       })
       .then(res => {
-        this.setState({
-          oldDataList: res.data,
-        })
+        if (res.data.length === 0) {
+          this.setState({
+            visible: true,
+            oldDataList: res.data,
+          })
+        } else {
+          this.setState({
+            oldDataList: res.data,
+          })
+        }
       })
       .catch(error => {
         console.log('componentDidMount拿資料時有錯誤', error)
@@ -177,7 +186,6 @@ class Chat extends React.Component {
     return (
       <>
         <div className="chatWrap">
-          <ChatRule oldDataList={this.state.oldDataList} />
           <Tab.Container id="list-group-tabs-example" defaultActiveKey="#link1">
             <Row>
               <Col sm={4}>

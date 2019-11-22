@@ -30,6 +30,7 @@
     "react-dom": "^16.10.2",
     "react-facebook": "^8.1.4",
     "react-facebook-login": "^4.1.1",
+    "react-guide": "^1.2.9",
     "react-icons": "^3.8.0",
     "react-images-upload": "^1.2.7",
     "react-motion": "^0.5.2",
