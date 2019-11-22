@@ -8,7 +8,7 @@ const _ = require("lodash"); //loadsh,處理數據的各種方法
 const mysql = require("mysql");
 // 設定資料庫連線
 const db = mysql.createConnection({
-    host: "localhost",
+    host: '192.168.27.186',
     user: "root",
     password: "root",
     database: "pbook"
@@ -27,8 +27,8 @@ chatMessage
                 `SELECT * FROM mb_chat WHERE myFrom = "${req.session.memberData.memberId}" OR myTo = "${req.session.memberData.memberId}" ORDER BY created_at DESC`
             )
                 .then(results => {
-                    console.log('message final',results);
-                    
+                    console.log('message final', results);
+
                     res.json(results);
                 })
                 .catch(error => {

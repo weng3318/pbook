@@ -35,11 +35,15 @@ const flatCacheMiddleware = (req, res, next) => {
     }
 }
 
-router.get('/offline', flatCacheMiddleware, async (req, res, next) => {
-    res.json(await AC.getOfflineList())
+router.get('/offline', async (req, res, next) => {
+    let offlineList = await AC.getOfflineList()
+    // offlineList.forEach(v=>{
+    //     v.intro = v.intro.replace(/[\\$'"]/g, "\\$&")
+    // })
+    res.json(offlineList)
 })
 
-router.get('/discount', flatCacheMiddleware, async (req, res, next) => {
+router.get('/discount', async (req, res, next) => {
     res.json(await AC.getDiscountList())
 })
 
