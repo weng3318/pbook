@@ -5,10 +5,10 @@ const mysql = require("mysql");
 const bluebird = require("bluebird");
 const router = express.Router();
 const db = mysql.createConnection({
-  // host: "192.168.27.186",
-  host: "192.168.27.186",
-  user: "shan",
-  password: "opcp2428",
+  // host: '192.168.27.186',
+  host: '192.168.27.186',
+  user: "root",
+  password: "root",
   database: "pbook"
 });
 db.connect();
@@ -30,15 +30,29 @@ router.get("/book_reviews/:sid?", (req, res) => {
   });
 });
 
+router.get("/book_ratings", (req, res) => {
+  const sql = `SELECT star,book FROM vb_ratings WHERE 1`;
+  db.query(sql, (error, results) => {
+    if (error) {
+      return res.send(error);
+    } else {
+      return res.json({
+        data: results
+      });
+    }
+  });
+});
+
 router.post("/book_reviews/:sid?/data", (req, res) => {
   let book = [];
   const newbook = {
     id: req.body.id,
     book: req.body.book,
-    reviewText: req.body.reviewText
+    reviewText: req.body.reviewText,
+    star: req.body.star
   };
   book.push(newbook);
-  const sql = `INSERT INTO vb_ratings (member, book, star, message, create_time) VALUES ('${book[0].id}', '${book[0].book}', '3', '${book[0].reviewText}', NOW())`;
+  const sql = `INSERT INTO vb_ratings (member, book, star, message, create_time) VALUES ('${book[0].id}', '${book[0].book}', '${book[0].star}', '${book[0].reviewText}', NOW())`;
   db.query(sql, (error, results) => {
     if (error) {
       return res.send(error);
@@ -51,7 +65,7 @@ router.post("/book_reviews/:sid?/data", (req, res) => {
 
 router.get("/memberReview/:book?", (req, res) => {
   let book = req.params.book;
-  const sql = `SELECT mr_information.MR_number , vb_ratings.sid , vb_ratings.member , vb_ratings.message,vb_ratings.star,vb_ratings.book,mr_information.MR_nickname,book,mr_information.MR_pic,vb_ratings.create_time FROM mr_information,vb_ratings WHERE mr_information.MR_number=vb_ratings.member AND vb_ratings.book = ${book} ORDER BY vb_ratings.create_time DESC`;
+  const sql = `SELECT vb_ratings.sid , vb_ratings.member , mr_level.MR_levelName,vb_ratings.message,vb_ratings.star,vb_ratings.book,mr_information.MR_nickname,book,mr_information.MR_pic,vb_ratings.create_time FROM mr_information,vb_ratings,mr_level WHERE mr_information.MR_number=vb_ratings.member AND mr_information.MR_personLevel=mr_level.MR_personLevel AND vb_ratings.book = ${book} ORDER BY vb_ratings.create_time ASC`;
   db.query(sql, (error, results) => {
     if (error) {
       return res.send(error);
@@ -61,6 +75,37 @@ router.get("/memberReview/:book?", (req, res) => {
       });
     }
   });
+});
+
+router.delete("/deleteReview/:sid?", (req, res) => {
+  let sid = req.params.sid;
+  console.log(sid);
+  const sql = `DELETE FROM vb_ratings WHERE vb_ratings.sid = ${sid}`;
+  db.query(sql, (error, results) => {
+    if (error) {
+      return res.send(error);
+    } else {
+      return res.send("刪除成功");
+    }
+  });
+});
+
+router.put("/editReview/data", (req, res) => {
+  let data = [];
+  const reviews = {
+    sid: req.body.sid,
+    editReview: req.body.editReview
+  };
+  data.push(reviews);
+  const sql = `UPDATE vb_ratings SET message = '${data[0].editReview}', update_time = NOW() WHERE vb_ratings.sid = ${data[0].sid}`;
+  db.query(sql, (error, results) => {
+    if (error) {
+      return res.send(error);
+    } else {
+      return res.send("更新成功");
+    }
+  });
+  console.log(data);
 });
 
 module.exports = router;

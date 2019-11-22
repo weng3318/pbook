@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Container, Row, Col } from 'react-bootstrap'
-import { shopFetch, cgFetch } from '../ShopActions'
+import { bookInfoFetch } from '../ShopActions'
 import Breadcrumb from './Breadcrumb'
 import BookDetail from './BookDetail'
 import BookPic from './BookPic'
@@ -12,41 +12,27 @@ import './BookCommodity.scss'
 
 const BookCommodity = props => {
   useEffect(() => {
-    props.dispatch(cgFetch())
-    props.dispatch(
-      shopFetch(
-        props.match.params.page,
-        props.match.params.categories,
-        props.match.params.name
-      )
-    )
+    props.dispatch(bookInfoFetch(props.match.params.sid))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-  let shopPayload = props.shop.payload
-  let categoriesPayload = props.categories.payload
+
+  let bookInfoPayload = props.bookInfo.payload
+
   return (
     <>
       <Container className="px-0 detail_wrapper" fluid={true}>
-        <Breadcrumb
-          categoriesPayload={categoriesPayload}
-          nowCategories={props.match.params.categories}
-          shopPayload={shopPayload}
-        ></Breadcrumb>
+        <Breadcrumb bookInfoPayload={bookInfoPayload}></Breadcrumb>
         <Container className="mt-5">
           <Row>
-            <BookPic shopPayload={shopPayload}></BookPic>
-            <BookDetail shopPayload={shopPayload}></BookDetail>
-            <BookBuy shopPayload={shopPayload}></BookBuy>
+            <BookPic bookInfoPayload={bookInfoPayload}></BookPic>
+            <BookDetail bookInfoPayload={bookInfoPayload}></BookDetail>
+            <BookBuy bookInfoPayload={bookInfoPayload}></BookBuy>
           </Row>
         </Container>
         <Container>
           <Row>
             <Col md={12}>
-              <BookProduct
-                categoriesPayload={categoriesPayload}
-                nowCategories={props.match.params.categories}
-                shopPayload={shopPayload}
-              ></BookProduct>
+              <BookProduct bookInfoPayload={bookInfoPayload}></BookProduct>
               <BookComment></BookComment>
             </Col>
           </Row>
@@ -57,7 +43,6 @@ const BookCommodity = props => {
 }
 
 const mapStateToProps = state => ({
-  shop: state.shop,
-  categories: state.categories,
+  bookInfo: state.bookInfo,
 })
 export default connect(mapStateToProps)(BookCommodity)

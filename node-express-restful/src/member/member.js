@@ -133,15 +133,31 @@ router.post('/queryEmail', (req, res, next)=>{
 //         res.json(rows)
 //     })
 // })
-router.post('/queryBookcase/:page?/:keyword?', (req,res)=>{
+router.post('/queryBookcase/:page?', (req,res)=>{
     let number = req.body.number
     let output = {}
     let perPage = 15 //每頁幾筆
+    output.params = req.params  //可以在網址看params
+    output.perPage = perPage;
+    let page = parseInt(req.param.page) || 1
 
-    
-    db.query(Member.queryBooks(number), (err, rows)=>{
-        res.json(rows)
-    })
+    let sql = `SELECT COUNT(1) total FROM vb_books b LEFT JOIN br_bookcase bc ON b.isbn = bc.isbn WHERE bc.number='${number}'`
+    db.queryAsync(sql)
+        .then(result=>{
+            output.totalRows = result[0]["total"] //總筆數
+            output.totalPage = Math.ceil(output.totalRows / perPage) //總頁數
+            if(output.totalPage == 0 ) return
+            if(page < 1) page = 1
+            if(page > output.totalPage) page = output.totalPage
+            output.page = page
+            page = (page - 1) * perPage 
+            return db.queryAsync(`SELECT b.* FROM vb_books b LEFT JOIN 
+                br_bookcase bc ON b.isbn = bc.isbn WHERE bc.number='${number}' LIMIT ${page}, ${perPage}`)
+        })
+        .then( result =>{
+            output.rows = result
+            res.json(output)
+        } )
 })
 
 //書籍加入個人書櫃
@@ -359,7 +375,7 @@ router.post('/imgFiles', upload.array('avatar', 5 ),(req, res, next) =>{
                         }
                             
             }else{
-                    console.log('222');
+                    // console.log('222');
                     res.json({
                         pictures: images
                     })

@@ -8,8 +8,9 @@ import './BookCommodity.scss'
 
 const BookBuy = props => {
   let data =
-    props.shopPayload && props.shopPayload.rows && props.shopPayload.rows[0]
-  console.log(data)
+    props.bookInfoPayload &&
+    props.bookInfoPayload.rows &&
+    props.bookInfoPayload.rows[0]
 
   return (
     <>

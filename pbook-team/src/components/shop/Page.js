@@ -9,9 +9,10 @@ const Page = props => {
   for (let page = 1; page <= pt; page++) {
     page_items.push(
       <LinkContainer
-        to={'/books/' + props.mode + '/' + page + '/' + props.nowCategories}
+        to={'/books/' + page + '/' + props.nowCategories}
+        key={page}
       >
-        <Pagination.Item key={page}>{page} </Pagination.Item>
+        <Pagination.Item>{page} </Pagination.Item>
       </LinkContainer>
     )
   }
@@ -24,26 +25,27 @@ const Page = props => {
     <>
       <div className="pageWrap pt-5">
         <Pagination className="d-flex justify-content-center">
-          <LinkContainer
-            to={'/books/' + props.mode + '/1/' + props.nowCategories}
-          >
-            <Pagination.First className="none" key={-1} />
+          <LinkContainer to={'/books/1/' + props.nowCategories} key={-1}>
+            <Pagination.First className="none" />
           </LinkContainer>
           <LinkContainer
-            to={'/books/' + props.mode + '/' + fp + '/' + props.nowCategories}
+            to={'/books/' + fp + '/' + props.nowCategories}
+            key={0}
           >
-            <Pagination.Prev className="none" key={0} />
+            <Pagination.Prev className="none" />
           </LinkContainer>
           {page_items}
           <LinkContainer
-            to={'/books/' + props.mode + '/' + np + '/' + props.nowCategories}
+            to={'/books/' + np + '/' + props.nowCategories}
+            key={10000}
           >
-            <Pagination.Next className="none" key={10000} />
+            <Pagination.Next className="none" />
           </LinkContainer>
           <LinkContainer
-            to={'/books/' + props.mode + '/' + pt + '/' + props.nowCategories}
+            to={'/books/' + pt + '/' + props.nowCategories}
+            key={10001}
           >
-            <Pagination.Last className="none" key={10001} />
+            <Pagination.Last className="none" />
           </LinkContainer>
         </Pagination>
       </div>

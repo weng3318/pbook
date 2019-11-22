@@ -11,8 +11,14 @@
     overflow: auto;
     height: 120px;
     resize: none;
-    
   }
+  img {
+    padding: 0 16px;
+    max-width: 800px;
+    max-height: 600px;
+    object-fit: contain;
+  }
+
   .faketext {
     padding: 8px 24px;
     display: block;
@@ -34,6 +40,16 @@
       font-weight: bold;
     }
   }
+  #side-panel {
+    position: relative;
+    top: 0;
+    &.fixed {
+      @extend %card-module;
+      min-width: 200px;
+      position: fixed;
+    }
+  }
+
   .container.end {
     position: relative;
     margin-top: 16px;
@@ -48,31 +64,67 @@
     .container-m {
       max-width: 900px;
       @extend %card-module;
-      height: 500px;
+      min-height: 1000px;
       .title-line {
         background: $grass-yellow;
+        margin-bottom: 8px;
         height: 5px;
         width: 100%;
       }
     }
   }
-
+  .selectControl {
+    &.show {
+      border: 2px solid $Darjeeling;
+      border-radius: 5px;
+    }
+  }
   .title-control {
+    width: 100%;
     display: flex;
     padding: 0 16px;
   }
   .post-title {
+    display: flex;
+    box-sizing: border-box;
     @extend %title-module;
     padding: 8px 16px;
+    #subcate-help {
+      padding-left: 16px;
+      line-height: 33px;
+      color: $Darjeeling;
+      display: none;
+      &.show {
+        display: block;
+      }
+    }
+    #title-help {
+      padding-left: 8px;
+      line-height: 33px;
+      color: $Darjeeling;
+      display: none;
+      &.show {
+        display: block;
+      }
+    }
   }
+
   .title-title {
     display: flex;
+    flex-grow: 1;
     align-items: center;
     margin-bottom: -4px;
   }
-
-  .title {
-    display: flex;
+  .select {
+    flex-grow: 0;
+  }
+  #title {
+    max-width: 700px;
+    width: 100%;
     color: $grey-grey;
+    &.show {
+      border: 2px solid $Darjeeling;
+      border-radius: 5px;
+    }
   }
 }

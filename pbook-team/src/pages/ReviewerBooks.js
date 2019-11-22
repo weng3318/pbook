@@ -32,9 +32,13 @@ class ReviewerBooks extends React.Component {
         newcsData = res.data.rows
         return axios.get('http://localhost:5555/reviewer/brbooks')
       })
-      .then(res=>{
+      .then(res => {
         newbkData = res.data.rows
-        this.setState({ brData: newbrData, csData: newcsData, bkData:newbkData})
+        this.setState({
+          brData: newbrData,
+          csData: newcsData,
+          bkData: newbkData,
+        })
         // console.log('前端取得資料' , res.data.rows)
       })
       .catch(function(error) {
@@ -118,15 +122,15 @@ class ReviewerBooks extends React.Component {
                     ></BR_BookcaseHot_books>
                   )}
               </div>
-          </div>
-      </div>
-                <Switch>
-                      <Route exact
-                      path="/reviewer/reviewerBooks/reviewerBlog/:sid?" 
-                      component={ReviewerBlog} />
-                </Switch>
-
-      </Router>
+            </div>
+            <Switch>
+              <Route
+                exact
+                path="/reviewer/reviewerBooks/reviewerBlog/:sid?"
+                component={ReviewerBlog}
+              />
+            </Switch>
+          </Router>
           {/* 針對書評家 - 書櫃列表 */}
             {this.state.csData.filter(({number,index})=>  number == reviewerData.number)
             .map(({name, pic, author, sid, introduction, blog, tube,})=>(
@@ -142,7 +146,7 @@ class ReviewerBooks extends React.Component {
 
 
           {/* try */}
-           {/* {this.state.bkData.filter(({isbn}) => isbn ===
+          {/* {this.state.bkData.filter(({isbn}) => isbn ===
            this.state.csData.filter(({number}) => number === reviewerData.number).map(({isbn})=> isbn))
            .map(({sid, name, pic, author, introduction })=>((
             <BR_BookcaseList
@@ -151,7 +155,6 @@ class ReviewerBooks extends React.Component {
             sid={sid}
             ></BR_BookcaseList>
           )))} */}
-
         </section>
       </>
     )

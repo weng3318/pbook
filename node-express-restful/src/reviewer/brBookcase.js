@@ -21,9 +21,9 @@ router.get('/brBookcase/:page?/:keyword?', (req,res)=>{
     let page = parseInt(req.params.page) || 1
     let keyword = req.params.keyword || ''
     let where = 'WHERE 1'
-    if(keyword){
+    if (keyword) {
 
-        where += "AND `name` LIKE '%"+ keyword +"%'"
+        where += "AND `name` LIKE '%" + keyword + "%'"
         output.keyword = keyword
 
     }
@@ -33,25 +33,25 @@ router.get('/brBookcase/:page?/:keyword?', (req,res)=>{
 
     db.queryAsync(w_sql)
 
-            .then((results)=>{
-                // 總筆數 取得第一筆"total"
-                output.totalRows =  results[0][`total`]
-                // 總頁數 = 總筆數/每頁筆數
-                output.totalPage =  Math.ceil(output.totalRows/perPage)
-                if( page < 1 ) page = 1
-                if( page > output.totalRows ) page = output.totalRows
-                output.page = page
-    
-                return db.queryAsync('SELECT `br_bookcase`.* ,`br_reviewerlist`.`tube`,`vb_books`.`name`,`vb_books`.`author`,`vb_books`.`pic`,`vb_books`.`introduction`,`vb_books`.`detailData` FROM `br_bookcase`LEFT JOIN `vb_books` ON `vb_books`.`isbn`=`br_bookcase`.`isbn` LEFT JOIN `br_reviewerlist` ON `br_reviewerlist`.`number`=`br_bookcase`.`number`' + where +' LIMIT '+(page-1)*perPage+','+(perPage))
+        .then((results) => {
+            // 總筆數 取得第一筆"total"
+            output.totalRows = results[0][`total`]
+            // 總頁數 = 總筆數/每頁筆數
+            output.totalPage = Math.ceil(output.totalRows / perPage)
+            if (page < 1) page = 1
+            if (page > output.totalRows) page = output.totalRows
+            output.page = page
 
-            .then((results)=>{
-                output.rows = results
-                res.json(output)
-            })
-            .catch((error)=>{
-                console.log('後端出錯了',error)
-            })
-    })
+            return db.queryAsync('SELECT `br_bookcase`.* ,`vb_books`.`author`,`vb_books`.`pic`,`vb_books`.`introduction`,`vb_books`.`detailData`,`vb_books`.`name` FROM `br_bookcase`LEFT JOIN `vb_books` ON `vb_books`.`isbn`=`br_bookcase`.`isbn`' + where + ' LIMIT ' + (page - 1) * perPage + ',' + (perPage))
+
+                .then((results) => {
+                    output.rows = results
+                    res.json(output)
+                })
+                .catch((error) => {
+                    console.log('後端出錯了', error)
+                })
+        })
 })
 // 31
 // router.get("/book_case", (req, res) => {
@@ -66,6 +66,6 @@ router.get('/brBookcase/:page?/:keyword?', (req,res)=>{
 //               })
 //           }
 //       })
-  
+
 //   });
 module.exports = router;

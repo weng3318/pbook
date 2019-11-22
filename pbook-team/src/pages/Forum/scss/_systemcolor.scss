@@ -2,6 +2,7 @@ $black-tea: #2d3a3a;
 $season-green: #cde2d0;
 $grass-yellow: #ffc408;
 $grey-grey: #979d9d;
+$grey-grey50: #979d9d80;
 $Darjeeling: #ff525b;
 $deepsea: #58b2dc;
 
@@ -15,4 +16,45 @@ $deepsea: #58b2dc;
   font-size: 1.4rem;
   font-weight: bold;
   //@extend %title-module;
+}
+
+%card-title-font {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: $black-tea;
+  //@extend %card-title-font;
+}
+
+%card-subtitle-font {
+  font-size: 1rem;
+  color: $grey-grey;
+  //@extend %card-subtitle-font;
+}
+
+.displayBlock {
+  display: block;
+}
+.displayNone {
+  display: none;
+}
+.displayInlineBlock {
+  display: inline-block;
+}
+.position-r {
+  position: relative;
+}
+.position-a {
+  position: absolute;
+}
+.dis-flex {
+  display: flex;
+}
+.dis-flex-flex-between{
+  justify-content: space-between;
+}
+.container {
+  max-width: 1200px;
+}
+.container-m {
+  max-width: 900px;
 }

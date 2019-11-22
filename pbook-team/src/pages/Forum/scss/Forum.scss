@@ -5,25 +5,6 @@ html {
 }
 .forumPage {
   color: $black-tea;
-  .displayBlock {
-    display: block;
-  }
-  .displayNone {
-    display: none;
-  }
-  .displayInlineBlock {
-    display: inline-block;
-  }
-  .position-r {
-    position: relative;
-  }
-  .position-a {
-    position: absolute;
-  }
-  .dis-flex {
-    display: flex;
-  }
-
   .container {
     max-width: 1200px;
   }
@@ -82,7 +63,7 @@ html {
   }
   .articleList-title {
     font-size: 1.4rem;
-    margin: 12px 0 0 12px;
+    margin: 12px 0 24px 12px;
     padding: 12px 0 4px 0;
 
     &:before {
@@ -92,7 +73,7 @@ html {
       margin-right: 10px;
     }
   }
-  .HotTopic-wrapper {
+  .HotArticle-wrapper {
     width: 370px;
     right: 24px;
     top: 0;

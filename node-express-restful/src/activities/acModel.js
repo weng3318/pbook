@@ -1,10 +1,20 @@
-import {db, sqlQuery} from './connectDB'
+import { db, sqlQuery } from './connectDB'
 
 class AC {
 
     constructor(type = 'discount', id = 0) {
         this.acType = type
         this.acId = id
+    }
+
+    static async memberSidMapArray() {
+        let sql = 'SELECT `MR_number`, `sid` FROM `mr_information` WHERE 1'
+        let memberSidMapArray = {}
+        let memberArray = await sqlQuery(sql)
+        memberArray.forEach(v => {
+            memberSidMapArray[v.MR_number] = v.sid
+        })
+        return memberSidMapArray
     }
 
     static async getOfflineList() {
@@ -137,6 +147,60 @@ class AC {
             allBooks[i].type = type
         }
         return allBooks
+    }
+
+    // 線下活動報名
+    static async signUpActivity(req) {
+        let inputData = req.body
+        let sql = ''
+        let result = {
+            type: 1,
+            description: '報名成功'
+        }
+        inputData.memberId = (await AC.memberSidMapArray())[inputData.memberNum] || req.sessionID
+
+        // 檢查是否已報名
+        if (inputData.memberNum !== 'not login' && inputData.memberId) {
+            let sql = 'SELECT COUNT(1) FROM `ac_sign` WHERE `acId`=' + inputData.acId + ' AND `memberId`="' + inputData.memberId + '"'
+            let isSign = (await sqlQuery(sql))[0]['COUNT(1)']
+            if (isSign) {
+                result.type = 0
+                result.description = '已經報名過了'
+                return result
+            }
+        }
+
+        // 檢查名額
+        sql = 'SELECT `quota`, `registered` FROM `ac_pbook2` WHERE `sid`=' + inputData.acId
+        let { quota, registered } = (await sqlQuery(sql))[0]
+        if ((quota - registered) <= 0) {
+            result.type = 0
+            result.description = '名額已滿'
+            return result
+        }
+
+        // 寫入報名資料
+        let currentTime = (new Date()).toLocaleString()
+        sql = 'INSERT INTO `ac_sign`(`acId`, `memberId`, `name`, `phone`, `email`, `sign_up_time`)'
+        sql += `VALUES (${inputData.acId},"${inputData.memberId}","${inputData.name}","${inputData.phone}","${inputData.email}","`
+        sql += currentTime.substr(0, currentTime.length - 3) + '")'
+        await sqlQuery(sql)
+
+        // 名額減一
+        sql = 'UPDATE `ac_pbook2` SET `registered`=' + (registered + 1) + ' WHERE `sid`=' + inputData.acId
+        await sqlQuery(sql)
+
+        return result
+    }
+
+    // 獲得線下活動報名資料
+    static async getSignedActivities(req) {
+        let memberNum = req.params.memberNum
+        let memberId = (await AC.memberSidMapArray())[memberNum]
+        if (!memberId) memberId = req.sessionID
+        let sql = 'SELECT * FROM `ac_sign` WHERE `memberId`="' + memberId + '"'
+        let signedAc = await sqlQuery(sql)
+        return signedAc
     }
 
 }
