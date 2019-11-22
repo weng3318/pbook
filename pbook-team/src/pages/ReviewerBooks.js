@@ -107,7 +107,8 @@ class ReviewerBooks extends React.Component {
               <h5 className="h5_hotText">熱門書評</h5>
               <div className="HotBookBoxAll_Bookcase">
                   {this.state.csData.filter(({number}) => reviewerData.number == number )
-                  .map(({pic, sid, name, introduction})=>
+                  .filter((key , index) => index < 4 )
+                  .map(({pic, sid, name})=>
                     <BR_BookcaseHot_books
                     key={sid}
                     to={"/reviewer/reviewerBooks/reviewerBlog/" + sid}
@@ -127,15 +128,16 @@ class ReviewerBooks extends React.Component {
 
       </Router>
           {/* 針對書評家 - 書櫃列表 */}
-            {this.state.csData.filter(({number})=>  number == reviewerData.number)
-            .map(({name, pic, author, sid, introduction, info,})=>(
+            {this.state.csData.filter(({number,index})=>  number == reviewerData.number)
+            .map(({name, pic, author, sid, introduction, blog, tube,})=>(
             <BR_BookcaseList
             sid={sid}
             pic={pic}
             name={name}
             author={author}
-            info={info}
+            blog={blog}
             introduction={introduction}
+            tube={tube}
             ></BR_BookcaseList>))}
 
 

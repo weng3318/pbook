@@ -18,9 +18,11 @@ class BR_ReviewerList extends React.Component {
     <div className="d-flex">
           <div className="brAvatarAllBox borderLine">
               <h5 className="h5_br">{this.props.title}</h5>
+            <Link to={"/reviewer/reviewerBooks/"+this.props.sid}>
               <div className="brAvatarBox">
               <img className="brAvatarImg" src={require(`./images/${this.props.img}`)}/>
               </div>
+            </Link>
               <h5 className="h5_br">{this.props.name}</h5>
 
               <div className="brIconBox">
@@ -54,13 +56,10 @@ class BR_ReviewerList extends React.Component {
           </div>
 
           <div className="brInfoBox borderLine"><h5 className="h5_br">書評家簡介</h5>
-              <div className="brInfoText ">{this.props.intro}</div>
-                <div className="fbBox">
-                  <div className="fb-share-button" 
-                    data-href={this.props.tube}
-                    data-layout="button_count">
-                  </div>
-                </div>
+                <div className="brInfoText ">{this.props.intro}</div>
+                    <div className="fbBox">
+                        <div className="fb-share-button"data-href={this.props.tube} data-layout="button_count"></div>
+                    </div>
           </div>
     </div>
         <iframe className="brYouTubeRWD borderLine" width="50%" height="auto" src={this.props.tube} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>

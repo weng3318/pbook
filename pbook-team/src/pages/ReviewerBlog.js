@@ -35,6 +35,7 @@ export class ReviewerBlog extends React.Component {
 
     let BlogData = null
       console.log('csData[0].name', csData[0].name)
+      
       for (let i = 0; i < csData.length; i++) {
         if (csData[i].sid == this.props.match.params.sid) {
           BlogData = csData[i]
@@ -48,7 +49,8 @@ export class ReviewerBlog extends React.Component {
       <section className="reviewerBlog borderLine">
           <BR_BlogList
           name={BlogData.name}
-          info={BlogData.info}
+          blog={BlogData.blog}
+          tube={BlogData.tube}
           ></BR_BlogList>
       </section>
       {/* 效果圖 開發使用 */}
