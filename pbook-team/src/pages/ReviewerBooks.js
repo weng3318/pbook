@@ -123,6 +123,7 @@ class ReviewerBooks extends React.Component {
                   )}
               </div>
             </div>
+          </div>
             <Switch>
               <Route
                 exact
@@ -156,6 +157,7 @@ class ReviewerBooks extends React.Component {
             ></BR_BookcaseList>
           )))} */}
         </section>
+     
       </>
     )
   }
