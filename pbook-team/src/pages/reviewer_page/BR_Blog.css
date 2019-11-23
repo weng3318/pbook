@@ -1,3 +1,7 @@
+.br_CKEditor{
+    background: #ccc;
+    min-height: 600px;
+}
 /* 部落格 編輯書評，按鈕 */
 .Blog_Edit{
     width: 50px;
@@ -47,18 +51,20 @@
 /* 編輯模式，顯示文字 */
 .text_Blog_Edit{
     width: 80px;
-    color: transparent;
-    display: none;
+    color: #cde2d0;
     position: absolute;;
     font-size: 1.2rem;
     left: 50px;
     top: 50%;
     transform: translateY(-50%);
+    opacity: 0;
+    transition: 0.5s;
 }
 /* 編輯模式，文字 (動畫控制) */
 .Animate_Edit_Box:hover .text_Blog_Edit{
-    color: #cde2d0;
     display: block;
+    color: #ffc408;
+    opacity: 1;
 }
 /* 邊框顏色，參照用 */
 .BlogLine {
@@ -86,6 +92,7 @@
     max-width: 1920px;
     margin: 0 auto;
     background-size: cover;
+    overflow: hidden;
 }
 /* 書評部落格 (參照偽元素) */
 .reviewerBlog::after{

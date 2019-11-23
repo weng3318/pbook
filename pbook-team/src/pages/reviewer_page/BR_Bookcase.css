@@ -129,6 +129,7 @@
     width: 100%;
     min-height: 310px;
     padding: 0 30px 0 30px;
+    overflow: hidden;
 }
 /* 書櫃簡介，(書籍內容區塊) */
 .brInfoTextBox_Bookcase{

@@ -14,12 +14,12 @@ class BR_BlogList extends React.Component {
   render() {
     return (
       <>
-      <Link className="Animate_Edit_Box" to={"/reviewer/reviewerBooks/reviewerBlog/reviewerBlogEdit/"+this.props.sid}>
+      {/* <Link className="Animate_Edit_Box" to={"/reviewer/reviewerBooks/reviewerBlog/reviewerBlogEdit/:sid?"}>
                     <div className="Animate_Edit_btn">
                         <img className="icon_Blog_Edit" src={require('../reviewer_page/images/icon_Blog_Edit.png')}/>
-                        <h5 className="text_Blog_Edit">關閉</h5>
+                        <h5 className="text_Blog_Edit">關閉書評</h5>
                     </div>
-      </Link>
+      </Link> */}
           <h5 className="h5_br">{this.props.name}</h5>
           <br/>
         <section className="ReviewerListAllBox reviewerList">

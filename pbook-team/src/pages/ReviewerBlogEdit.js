@@ -6,7 +6,7 @@ import axios from 'axios'
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
-export class ReviewerBlog extends React.Component {
+export class ReviewerBlogEdit extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -41,7 +41,7 @@ export class ReviewerBlog extends React.Component {
     let BlogData = null
       
       for (let i = 0; i < csData.length; i++) {
-        if (csData[i].sid == this.props.match.params.sid) {
+        if (csData[i].sid == this.props.sid) {
           BlogData = csData[i]
         }
     }
@@ -50,7 +50,8 @@ export class ReviewerBlog extends React.Component {
     <>
       {/* todo.. 比對兩張資料表的作者{author} */}
       <h3 className="h3_br">部落格 - 編輯模式</h3>
-      {/* <CKEditor
+      <section className="br_CKEditor">
+      <CKEditor
                     editor={ ClassicEditor }
                     data={this.state.detail}
                     onInit={ editor => {
@@ -71,10 +72,11 @@ export class ReviewerBlog extends React.Component {
                     onFocus={ editor => {
                         console.log( 'Focus.', editor );
                     } }
-                /> */}
+                />
+      </section>
     </>
     )
   }
 }
 
-export default withRouter(ReviewerBlog)
+export default withRouter(ReviewerBlogEdit)

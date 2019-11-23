@@ -39,7 +39,7 @@ export class ReviewerBlog extends React.Component {
 
     let BlogData = null
       for (let i = 0; i < csData.length; i++) {
-        if (csData[i].sid == this.props.match.params.sid) {
+        if (csData[i].sid == this.props.sid) {
           BlogData = csData[i]
         }
     }
@@ -49,9 +49,9 @@ export class ReviewerBlog extends React.Component {
       {/* todo.. 比對兩張資料表的作者{author} */}
       <h3 className="h3_br">Blogger
       {/* 放BR_BlogList裡面才吃的到id */}
-      {/* <Link className="Blog_Edit" to={"/reviewer/reviewerBooks/reviewerBlog/reviewerBlogEdit/"+this.props.sid}>
-          <img className="" src={require('./reviewer_page/images/Blog_Edit.png')}/>
-      </Link> */}
+      <Link className="Blog_Edit" to={"/reviewer/reviewerBooks/reviewerBlog/reviewerBlogEdit/1"}>
+          <img className="" src={require('./reviewer_page/images/P_logo_Big.png')}/>
+      </Link>
       </h3>
       <section className="reviewerBlog borderLine">
       {/* 部落格內文 */}
