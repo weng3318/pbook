@@ -1,18 +1,30 @@
 import React from 'react'
 import { Pagination } from 'react-bootstrap'
 import {LinkContainer } from 'react-router-bootstrap'
+import '../../pages/member/lukeStyle.scss'
+import { log } from 'util'
 
 
 const MyPagination = props => {
     let page_items = []
     let pt = props.totalPage
+    console.log("MyPagination", props);
     for(let page = 1; page <= pt ; page++) {
         page_items.push(
             <LinkContainer
-                to= {'/member/queryBookcase/' + page}
+                to= {'/member/BooksFavorite/' + page}
                 key={page}
+                onChange = { ()=>{
+                        console.log(11112)
+                    }}
             >
-                <Pagination.Item>{page}</Pagination.Item>
+                <Pagination.Item
+                    onChange = { ()=>{
+                        console.log(11112)
+                    }}
+                >
+                {page}
+                </Pagination.Item>
             </LinkContainer>
         )
     }
@@ -28,24 +40,24 @@ const MyPagination = props => {
         <>
             <div className="pageWrap pt-5">
                 <Pagination className="d-flex justify-content-center">
-                <LinkContainer to={'/member/queryBookcase/' + props} key={-1}>
+                <LinkContainer to={'/member/BooksFavorite/1'} key={-1}>
                     <Pagination.First className="none" />
                 </LinkContainer>
                 <LinkContainer
-                    to={'/member/queryBookcase/' + fp }
+                    to={'/member/BooksFavorite/' + fp }
                     key={0}
                 >
                     <Pagination.Prev className="none" />
                 </LinkContainer>
                 {page_items}
                 <LinkContainer
-                    to={'/member/queryBookcase/' + np + '/' + props}
+                    to={'/member/BooksFavorite/' + np}
                     key={10000}
                 >
                     <Pagination.Next className="none" />
                 </LinkContainer>
                 <LinkContainer
-                    to={'/member/queryBookcase/' + pt + '/' + props}
+                    to={'/member/BooksFavorite/' + pt}
                     key={10001}
                 >
                     <Pagination.Last className="none" />

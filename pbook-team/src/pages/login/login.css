@@ -70,6 +70,19 @@
     min-width: 200px;
     text-align: center;
   }
+  .login_name{
+    background-color: #eee;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 15px;
+    margin: 10px 5px;
+    width: 220px;
+    min-width: 200px;
+    text-align: center;
+  }
+
+
+
   .tip{
     height: 20px;
     color: #979D9D;

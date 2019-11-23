@@ -53,6 +53,36 @@ $content: 24px;
   }
 }
 
+//分頁按鈕
+.pageWrap {
+      width: 100%;
+      .pagination {
+        .page-item {
+          &.active {
+            .page-link {
+              background-color: $main_color;
+              border-color: $main_color;
+              color: #ffffff;
+            }
+          }
+          .page-link {
+            color: $black;
+            &:focus {
+              z-index: 2;
+              box-shadow: 0 0 0 0.2rem $main_color;
+            }
+          }
+        }
+        .none {
+          .page-link {
+            background-color: #ffffff !important;
+            border-color: #ffffff !important;
+            color: $black !important;
+          }
+        }
+      }
+    }
+
 //收藏書籍
 .booksContent {
   position: absolute;

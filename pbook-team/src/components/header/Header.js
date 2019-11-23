@@ -32,6 +32,7 @@ class Header extends React.Component {
     super()
     this.state = {
       loginImg: '',
+      nickname: '',
       member: {},
       login: false,
       visible: false,
@@ -179,9 +180,12 @@ class Header extends React.Component {
       .then(data => {
         // console.log("test", data);
         let newPic = 'http://localhost:5555/images/member/' + data[0].MR_pic
-        console.log(newPic)
+        let nickname = data[0].MR_nickname
 
-        this.setState({ loginImg: newPic, member: data[0] })
+        this.setState({ loginImg: newPic,
+                        nickname,
+                        member: data[0] 
+                      })
       })
   }
 
@@ -256,7 +260,7 @@ class Header extends React.Component {
                   onClick={this.handleLoginButton}
                 >
                   <span className="titleZh-white">
-                    {JSON.parse(localStorage.getItem('user')).MR_name}
+                    {this.state.nickname}
                   </span>
                   <span className="titleEn">
                     {

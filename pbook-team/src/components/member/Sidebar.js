@@ -33,12 +33,12 @@ const Sidebar = (props) => {
                 </Accordion.Toggle>
                 <Accordion.Collapse eventKey="0" className="sidebar_item">
                   <Link to="/member/edit">
-                    <a href="css">編輯資料</a>
+                    <div style={{cursor: 'pointer'}}>編輯資料</div>
                   </Link>
                 </Accordion.Collapse>
                 <Accordion.Collapse eventKey="0" className="sidebar_item">
                   <Link to="/member/PasswordModify">
-                  <a href="css">修改密碼</a>
+                  <div style={{cursor: 'pointer'}}>修改密碼</div>
                   </Link>
                 </Accordion.Collapse>
               </div>
@@ -55,10 +55,10 @@ const Sidebar = (props) => {
                   訂單管理
                 </Accordion.Toggle>
                 <Accordion.Collapse eventKey="0" className="sidebar_item">
-                  <a href="css">訂單查詢</a>
+                  <div style={{cursor: 'pointer'}}>訂單查詢</div>
                 </Accordion.Collapse>
                 <Accordion.Collapse eventKey="0" className="sidebar_item">
-                  <a href="css">訂單修改</a>
+                  <div style={{cursor: 'pointer'}}>訂單修改</div>
                 </Accordion.Collapse>
               </div>
             </Accordion>
@@ -75,11 +75,11 @@ const Sidebar = (props) => {
                 </Accordion.Toggle>
                 <Accordion.Collapse eventKey="0" className="sidebar_item">
                   <Link to='/member/BooksFavorite'>
-                    <a href="css">收藏書籍</a>
+                    <div style={{cursor: 'pointer'}}>收藏書籍</div>
                   </Link>
                 </Accordion.Collapse>
                 <Accordion.Collapse eventKey="0" className="sidebar_item">
-                  <a href="css">收藏書評家</a>
+                <div style={{cursor: 'pointer'}}>收藏書評家</div>
                 </Accordion.Collapse>
               </div>
             </Accordion>
@@ -99,7 +99,7 @@ const Sidebar = (props) => {
                 </Accordion.Toggle>
                 <Accordion.Collapse eventKey="0" className="sidebar_item">
                 <Link to="/member/AddMemberBook">
-                  <a href="css">配對書籍</a>
+                <div style={{cursor: 'pointer'}}>配對書籍</div>
                 </Link>
                 </Accordion.Collapse>
               </div>
@@ -120,7 +120,7 @@ const Sidebar = (props) => {
                 </Accordion.Toggle>
                 <Accordion.Collapse eventKey="0" className="sidebar_item">
                 <Link to="">
-                  <a href="active">相關活動</a>
+                <div style={{cursor: 'pointer'}}>相關活動</div>
                 </Link>
                 </Accordion.Collapse>
               </div>
@@ -133,7 +133,7 @@ const Sidebar = (props) => {
           <Route exact path="/member/edit" component={Edit} />
           <Route exact path="/member/AddMemberBook" component={AddMemberBook} />
           <Route exact path="/member/PasswordModify" component={PasswordModify} />
-          <Route path="/member/BooksFavorite" component={BooksFavorite} />
+          <Route path="/member/BooksFavorite/:page?" component={BooksFavorite} />
           <Route path="/member/ViewMemberBooks" component={ViewMemberBooks} />
           
         </Switch>

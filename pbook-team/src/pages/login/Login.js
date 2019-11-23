@@ -20,6 +20,7 @@ class Login extends React.Component {
     super(props)
     this.state = {
       name: '',
+      nickname: '',
       email: '',
       password: '',
       password2: '',
@@ -32,7 +33,7 @@ class Login extends React.Component {
       captcha2: '',
       forgetPwd: false,
       err_email: '信箱: 合理的EMAIL格式',
-      err_username: '使用者名稱: 至少3個字元',
+      err_username: '使用者姓名: 至少3個字元',
       err_password: '至少有一個數字、一個小寫英文字母、密碼長度在 4~8 之間',
       err_captcha: '請輸入圖上的字',
       picture: '請選擇個人頭像',
@@ -188,7 +189,7 @@ class Login extends React.Component {
 
   //照片上傳
   onChangeHandler(e) {
-    console.log(e.target.files[0])
+    // console.log(e.target.files[0])
     this.setState({
       selectedFile: e.target.files[0],
     })
@@ -270,6 +271,7 @@ class Login extends React.Component {
     let password = this.state.password
     let password2 = this.state.password2
     let name = this.state.name
+    let nickname = this.state.nickname
     let captcha1 = this.state.captcha1
     let captcha2 = this.state.captcha2
 
@@ -290,7 +292,7 @@ class Login extends React.Component {
       let err_username = document.querySelector('#err_username')
       name.classList.add('err_border')
       err_username.classList.add('err_text')
-      this.setState({ err_username: '使用者名稱字太少' })
+      this.setState({ err_username: '使用者姓名字太少' })
       //  return
     }
     //  console.log(2, isPass);
@@ -350,6 +352,7 @@ class Login extends React.Component {
             },
             body: JSON.stringify({
               name: this.state.name,
+              nickname: this.state.nickname,
               email: this.state.email,
               password: this.state.password,
               filename: imgFile,
@@ -428,15 +431,27 @@ class Login extends React.Component {
                 <small className="tip" id="err_email">
                   {this.state.err_email}
                 </small>
+                <div className="d-flex">
                 <input
-                  className="login_input"
+                  className="login_name"
                   type="text"
-                  placeholder="使用者名稱"
+                  placeholder="使用者姓名"
                   name="name"
                   id="name"
                   value={this.state.name}
                   onChange={this.handleChange}
                 />
+                <input
+                  className="login_name"
+                  type="text"
+                  placeholder="使用者暱稱"
+                  name="nickname"
+                  id="nickname"
+                  value={this.state.nickname}
+                  onChange={this.handleChange}
+                />
+                </div>
+
                 <small className="tip" id="err_username">
                   {this.state.err_username}
                 </small>
@@ -557,7 +572,7 @@ class Login extends React.Component {
                     <img
                       src={require('./icon_MR_m.svg')}
                       alt=""
-                      style={{ width: '60px' }}
+                      style={{ width: '60px'}}
                       onClick={() => {
                         window.location.href = '/'
                       }}
@@ -589,7 +604,7 @@ class Login extends React.Component {
                 <img
                   src={require('./品書logo.png')}
                   alt=""
-                  style={{ width: '120px', marginTop: '170px' }}
+                  style={{ maxWidth: '120px', marginTop: '170px', cursor: 'pointer' }}
                   onClick={() => {
                     window.location.href = '/'
                   }}
@@ -606,7 +621,8 @@ class Login extends React.Component {
                 <img
                   src={require('./品書logo.png')}
                   alt=""
-                  style={{ width: '120px', marginTop: '200px' }}
+                  style={{ width: '120px', marginTop: '200px', cursor: 'pointer' }}
+                  
                   onClick={() => {
                     window.location.href = '/'
                   }}

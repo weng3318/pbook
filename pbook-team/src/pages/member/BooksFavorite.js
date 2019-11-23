@@ -2,17 +2,19 @@ import React from 'react'
 import './lukeStyle.scss'
 import { Link } from 'react-router-dom'
 import MyPagination from '../../components/member/MyPagination'
+import { log } from 'util'
 
 class BooksFavorite extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      path: 'http://localhost/books/src/venderBooks_Management/vb_images/',
+      path: 'http://localhost:5555/images/books/',
       booksData: [],
       data:[],
       nowPage: '',
       totalPage: '',
-      totalRows: ''
+      totalRows: '',
+      page:''
     }
   }
 
@@ -20,10 +22,18 @@ class BooksFavorite extends React.Component {
     this.queryBooks()
   }
 
+  changePage = ( page )=>{
+    console.log(page);
+    
+    // this.setState({page})
+  }
+
+
   queryBooks = () => {
     let number = JSON.parse(localStorage.getItem('user')).MR_number
-
-    fetch('http://localhost:5555/member/queryBookcase/:page?', {
+    let page = this.props.match.params.page
+    
+    fetch('http://localhost:5555/member/queryBookcase/' + page, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -36,26 +46,27 @@ class BooksFavorite extends React.Component {
         return res.json()
       })
       .then(data => {
-        console.log("data11", data);
+        // console.log("data11", data);
         if (data.totalRows == 0){
           return 
         }
         this.setState({ 
           data,
           booksData: data.rows ,
-          // nowPage: data.page,
-          // totalPage: data.totalPage,
-          // totalRows: data.totalRows
+          nowPage: data.page,
+          totalPage: data.totalPage,
+          totalRows: data.totalRows
         })
       })
   }
-
+  // componentDidUpdate(page)
   render() {
     let data = this.state.booksData
     //因為第一次渲染是空的會報錯
     // console.log("data ",data && data)
-    // console.log(data.length)
-    // console.log("props", this.props);
+    console.log("props", this.props);
+    let totalPage = this.state.totalPage
+    let totalRows = this.state.totalRows
 
     return (
       <>
@@ -82,7 +93,12 @@ class BooksFavorite extends React.Component {
                 </Link>
               ))}
             </div>
-            {/* <MyPagination nowPage={props.nowPage}/> */}
+            <MyPagination 
+              nowPage = {this.props.match.params.page}
+              totalPage = {totalPage}
+              totalRows = {totalRows}
+              
+              />
         </div>
       </>
     )
