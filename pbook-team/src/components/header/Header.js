@@ -18,7 +18,6 @@ import Chat from '../../components/member/chat/Chat'
 import Guide from 'react-guide'
 import axios from 'axios'
 import ReviewerBooks from '../../pages/ReviewerBooks'
-import ReviewerBlog from '../../pages/ReviewerBlog'
 import BookReviews from '../../pages/BookReview/BookReviews'
 import ResetPWD from '../../pages/ResetPWD'
 import { browserHistory } from 'react-router'
@@ -496,13 +495,8 @@ class Header extends React.Component {
               <Route exact path="/reviewer" component={Reviewer} />
               <Route
                 exact
-                path="/Reviewer/ReviewerBooks/:sid?"
+                path="/reviewer/reviewerBooks/:sid?"
                 component={ReviewerBooks}
-              />
-              <Route
-                exact
-                path="/reviewer/reviewerBooks/reviewerBlog/:sid?"
-                component={ReviewerBlog}
               />
 
               <Route path="/books" component={Books} />

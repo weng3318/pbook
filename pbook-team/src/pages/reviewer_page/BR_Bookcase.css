@@ -85,7 +85,10 @@
 }
 /* 頭書，單本書區域 (圖片區) */
 .brAvatarAllBox_Bookcase{
-    width: 150px;
+    border-right:3px solid #2d3a3a;
+    border-bottom:3px solid #2d3a3a;
+    max-width: 160px;
+    min-width: 80px;
     padding: 0 10px;
 }
 /* 頭書，單本書 (圖片) */
@@ -121,38 +124,57 @@
     bottom:0;
     width:100%;
 }
-/* 書評家簡介全區域 (縮放限制) */
+/* 書櫃 #全區域# (縮放限制) */
 .brInfoBox_Bookcase{
     width: 100%;
     min-height: 310px;
+    padding: 0 30px 0 30px;
 }
-/* 書評家簡介，(文字、限制行數) */
+/* 書櫃簡介，(書籍內容區塊) */
+.brInfoTextBox_Bookcase{
+    top: -10px;
+}
+/* 書櫃簡介，(顯示內文、限制行數) */
 .brInfoText_Bookcase{
-    line-height: 28px;
-    letter-spacing: .025rem;
-    max-height: 200px;
-    font-size: 1.2rem;
-    margin: 6px 20px 12px 20px;
-    /* color: rgba(255,255,255,.7); */
+    margin: 5px 0 ;
     color: #2d3a3a;
+    line-height: 28px;
+    font-size: 1.2rem;
     overflow : hidden;
     display: -webkit-box;
-    -webkit-line-clamp: 4;
+    -webkit-line-clamp: 5;
     -webkit-box-orient: vertical;
 }
-/* 書評家簡介內的書名、作者 (文字) */
-.bookInfo_Bookcase{
+/* 書籍內容，書名 (區塊) */
+.bookNameBox_Bookcase{
+    min-width: 300px;
+    display: flex;
+    line-height: 40px;
+    height: 40px;
+}
+/* 書籍內容，書名： (固定文字) */
+.bookName_Bookcase{
+    min-width: 63px;
+    font-weight: 500;
+    font-size: 1.3rem;
+}
+/* 書籍內容，書名：變數 (顯示文字) */
+.bookNameText_Bookcase{
+    min-width: 300px;
     font-weight: 600;
-    font-size: 1.2rem;
-    margin: 6px 0 0 6px;
+    font-size: 1.5rem;
+}
+/* 書籍內容，作者+變數 (文字) */
+.beAuthorText{
+    font-size: 1rem;
+    font-weight: 800;
 }
 /* 社群分享，共用區域 (社群圖示區塊) */
 .brIconBox_Bookcase{
-    position: absolute;
     border-top: 2px solid #2d3a3a;
-    /* margin: 5px; */
-    padding: 5px 0 0 0;
-    left: 0px;
+    position: absolute;
+    padding: 8px;
+    left: 0;
     right: 0;
     bottom: 0;
 }
@@ -171,15 +193,27 @@
     display: flex;
 }
 @media (max-width: 786px) {
-    /* 書評家列表，整體區域 (狀態改變) */
+    .ReviewerListAllBox_Bookcase{
+        display: block;
+    }
+    /* 頭書，單本書區域 (圖片區) */
+    .brAvatarAllBox_Bookcase{
+        margin: 10px;
+        border-right:3px solid transparent;
+        border-bottom:3px solid transparent;
+        height: 140px;
+    }
+    /* 書櫃全區域，高度改變使字數呈現 (RWD) */
     .brInfoBox_Bookcase {
        height: 400px;
     }
-    /* 書評家簡介，(文字、限制行數) */
+    /* 書櫃簡介，(文字、限制行數) */
     .brInfoText_Bookcase{
-        max-height: 280px;
-        margin: 6px 20px 0px 20px;
-        -webkit-line-clamp: 7;
+        -webkit-line-clamp: 8;
+    }
+    /* 書名變小 */
+    .bookNameText_Bookcase{
+        font-size: 1rem;
     }
     /* 星評組件，RWD (狀態消失，換位todo..) */
     .brStarBox_Bookcase{

@@ -72,10 +72,10 @@ class ReviewerBooks extends React.Component {
     for (let i = 0; i < csData.length; i++) {
       if (csData[i].number == reviewerData.number) {
         bookcaseData = csData[i].isbn
-        console.log('來自書評家',reviewerData.reviewerName,'的書籍isbn：',bookcaseData)
+        console.log('來自書評家',reviewerData.name,'的書籍isbn：',bookcaseData)
       }
     }
-    console.log('從',reviewerData.reviewerName,'書櫃，取isbn「',bookcaseData,'」進行配對。')
+    console.log('從',reviewerData.name,'書櫃，取isbn「',bookcaseData,'」進行配對。')
     
     // 進行配對，取得書籍完整資料
     let bookData = null
@@ -84,9 +84,8 @@ class ReviewerBooks extends React.Component {
         bookData = bkData[i]
       }
     }
-    console.log('第一本書籍：完整資料',bookData)
-    // 判斷熱門書籍需要的數量
-    
+    console.log('第一本書籍：',bookData)
+   
     return (
       <>
         <BR_Navbar />
@@ -103,7 +102,6 @@ class ReviewerBooks extends React.Component {
             intro={reviewerData.intro}
             tube={reviewerData.tube}
           ></BR_ReviewerList>
-
       <Router>
           {/* 熱門書評列表 */}
       <div className="HotBookBoxAll_Light">
@@ -115,13 +113,14 @@ class ReviewerBooks extends React.Component {
                   .map(({pic, sid, name})=>
                     <BR_BookcaseHot_books
                     key={sid}
-                    to={"/reviewer/reviewerBooks/reviewerBlog/" + sid}
+                    // to={"/reviewer/reviewerBooks/reviewerBlog/" + sid}
                     sid={sid}
                     pic={pic}
                     name={name}
                     ></BR_BookcaseHot_books>
                   )}
               </div>
+            </div>
             </div>
             <Switch>
               <Route

@@ -6,13 +6,20 @@ import { withRouter } from 'react-router-dom'
 class BR_BlogList extends React.Component {
 
   handleURL=()=>{
-    let url = `${this.props.tube}`
+    // let url = `${this.props.tube}`
+    let url = 'https://i.imgur.com/nLnK93i.png'
     void window.open("http://www.facebook.com/share.php?u=".concat(encodeURIComponent(url)))
   }
 
   render() {
     return (
       <>
+      <Link className="Animate_Edit_Box" to={"/reviewer/reviewerBooks/reviewerBlog/reviewerBlogEdit/"+this.props.sid}>
+                    <div className="Animate_Edit_btn">
+                        <img className="icon_Blog_Edit" src={require('../reviewer_page/images/icon_Blog_Edit.png')}/>
+                        <h5 className="text_Blog_Edit">關閉</h5>
+                    </div>
+      </Link>
           <h5 className="h5_br">{this.props.name}</h5>
           <br/>
         <section className="ReviewerListAllBox reviewerList">

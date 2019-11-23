@@ -3,13 +3,14 @@ import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 import { withRouter } from 'react-router-dom'
 import BR_BlogList from './reviewer_page/BR_BlogList'
 import axios from 'axios'
+import CKEditor from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 export class ReviewerBlog extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       csData: [],
-      bkData: [],
     }
   }
   componentDidMount() {
@@ -38,42 +39,39 @@ export class ReviewerBlog extends React.Component {
     let csData = this.state.csData
 
     let BlogData = null
+      
       for (let i = 0; i < csData.length; i++) {
         if (csData[i].sid == this.props.match.params.sid) {
           BlogData = csData[i]
         }
     }
-    console.log('點選書籍，獲取sid', BlogData.sid)
+    console.log('render csData 書評部落格資料', this.state.csData)
     return (
     <>
       {/* todo.. 比對兩張資料表的作者{author} */}
-      <h3 className="h3_br">Blogger
-      {/* 放BR_BlogList裡面才吃的到id */}
-      {/* <Link className="Blog_Edit" to={"/reviewer/reviewerBooks/reviewerBlog/reviewerBlogEdit/"+this.props.sid}>
-          <img className="" src={require('./reviewer_page/images/Blog_Edit.png')}/>
-      </Link> */}
-      </h3>
-      <section className="reviewerBlog borderLine">
-      {/* 部落格內文 */}
-          <BR_BlogList
-          key={BlogData.sid}
-          sid={BlogData.sid}
-          name={BlogData.name}
-          blog={BlogData.blog}
-          tube={BlogData.tube}
-          ></BR_BlogList>
-      </section>
-      {/* 效果圖 開發參照 */}
-      {/* <img className="BlogBG" src={require('../pages/reviewer_page/images/03_評品書.png')}/> */}
-
-      {/* 路由模式，關閉 */}
-      {/* <Router>
-          <Switch>
-            <Route exact 
-                    path="/reviewer/reviewerBooks/reviewerBlog/ReviewerBlogEdit/:sid?" 
-                    component={ReviewerBlogEdit} />
-          </Switch>
-      </Router> */}
+      <h3 className="h3_br">部落格 - 編輯模式</h3>
+      {/* <CKEditor
+                    editor={ ClassicEditor }
+                    data={this.state.detail}
+                    onInit={ editor => {
+                        // You can store the "editor" and use when it is needed.
+                        console.log( 'Editor is ready to use!', editor );
+                    } }
+                    onChange={ ( event, editor ) => {
+                      const data = editor.getData();
+                        this.setState({
+                          detail:data
+                        });
+                        
+                        console.log( { event, editor, data } );
+                    } }
+                    onBlur={ editor => {
+                        console.log( 'Blur.', editor );
+                    } }
+                    onFocus={ editor => {
+                        console.log( 'Focus.', editor );
+                    } }
+                /> */}
     </>
     )
   }
