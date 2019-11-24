@@ -9,8 +9,8 @@ const app = express();
 const db = mysql.createConnection({
   // host: "localhost",
   host: "localhost",
-  user: "root",
-  password: "root",
+  user: "opcp",
+  password: "opcp2428",
   database: "pbook"
 });
 db.connect();
@@ -29,7 +29,6 @@ router.post("/categoryBar", (req, res) => {
     }
   });
 });
-//SELECT COUNT(1) FROM `vb_books` WHERE categories ${c}
 //書本內容
 router.get(`/?`, (req, res) => {
   let c, a, page;
@@ -68,7 +67,24 @@ router.get(`/?`, (req, res) => {
       res.send(error);
     });
 });
-
+//搜尋內容
+router.get("/search_book/?", (req, res) => {
+  let search;
+  const urlpart = url.parse(req.url, true);
+  search = decodeURI(urlpart.search.replace("?", ""));
+  console.log(search);
+  const sql = `SELECT sid,name,author FROM vb_books WHERE name LIKE '%${search}%' OR author LIKE '%${search}%'`;
+    db.query(sql, (error, results) => {
+      if (error) {
+        return res.send(error);
+      } else {
+        return res.json({
+          data: results
+        });
+      }
+    });
+  
+});
 
 //書本各分類數量
 
