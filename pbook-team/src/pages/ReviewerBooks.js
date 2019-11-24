@@ -7,6 +7,8 @@ import BR_BookcaseList from './reviewer_page/BR_BookcaseList'
 import BR_BookcaseHot_books from './reviewer_page/BR_BookcaseHot_books'
 import BR_Navbar from './reviewer_page/BR_Navbar'
 import ReviewerBlog from './ReviewerBlog'
+import ReviewerBlogEdit from './ReviewerBlogEdit'
+
 import axios from 'axios'
 
 class ReviewerBooks extends React.Component {
@@ -15,8 +17,10 @@ class ReviewerBooks extends React.Component {
     this.state = {
       brData: [],
       csData: [],
-      opened:null,
+      opened: null,
+      openedSid: null,
     }
+    this.handleOpened.bind(this)
   }
   componentDidMount() {
     let newbrData
@@ -37,29 +41,33 @@ class ReviewerBooks extends React.Component {
       })
 
       .catch(function(error) {
-        console.log(
-          '前端沒有取得資料',error)
-        })
-      }
-      handleOpened = (opened) => this.setState({ opened });
-    render(props) {
-      const { opened } = this.state;
-      const { sid } = this.props;
+        console.log('前端沒有取得資料', error)
+      })
+  }
+  handleOpened = (opened, openedSid) => this.setState({ opened, openedSid })
+  render(props) {
+    const { opened, openedSid, openedName } = this.state
+    const { sid } = this.props
 
     // console.log('render brData 書評家',this.state.brData);
     // console.log('render csData 看看書櫃',this.state.csData);
-    
-    // if (!this.state.brData.length) return <></>
-    if (this.state.brData.length === 0) return <><h1>取得資料中...</h1></>
-    
-    let brData = this.state.brData  //書評家
-    let csData = this.state.csData  //看看書櫃
 
-    let reviewerData = null
+    // if (!this.state.brData.length) return <></>
+    if (this.state.brData.length === 0)
+      return (
+        <>
+          <h1>取得資料中...</h1>
+        </>
+      )
+
+    let brData = this.state.brData //書評家
+    let csData = this.state.csData //看看書櫃
+
+    let reviewerData = null;
     for (let i = 0; i < brData.length; i++) {
       if (brData[i].sid == this.props.match.params.sid) {
         reviewerData = brData[i]
-        console.log('書評家編號',reviewerData.number,'為對象。')
+        console.log('書評家編號', reviewerData.number, '為對象。')
       }
     }
 
@@ -68,11 +76,22 @@ class ReviewerBooks extends React.Component {
     for (let i = 0; i < csData.length; i++) {
       if (csData[i].number == reviewerData.number) {
         bookcaseData = csData[i].isbn
-        console.log('來自書評家',reviewerData.name,'的書籍isbn：',bookcaseData)
+        console.log(
+          '來自書評家',
+          reviewerData.name,
+          '的書籍isbn：',
+          bookcaseData
+        )
       }
     }
-    console.log('從',reviewerData.name,'書櫃，取isbn「',bookcaseData,'」進行配對。')
-   
+    console.log(
+      '從',
+      reviewerData.name,
+      '書櫃，取isbn「',
+      bookcaseData,
+      '」進行配對。'
+    )
+
     return (
       <>
         <BR_Navbar />
@@ -90,35 +109,38 @@ class ReviewerBooks extends React.Component {
             tube={reviewerData.tube}
           ></BR_ReviewerList>
 
-      {/* <Router> */}
+          {/* <Router> */}
           {/* 熱門書評列表 */}
-      <div className="HotBookBoxAll_Light">
-          <div className="blackBG">
+          <div className="HotBookBoxAll_Light">
+            <div className="blackBG">
               <h5 className="h5_hotText">熱門書評</h5>
               <div className="HotBookBoxAll_Bookcase">
-                  {this.state.csData.filter(({number}) => reviewerData.number == number )
-                  .filter((key , index) => index < 4 )
-                  .map(({pic, sid, name})=>
+                {this.state.csData
+                  .filter(({ number }) => reviewerData.number === number)
+                  .filter((key, index) => index < 4)
+                  .map(({ pic, sid, name }) => (
                     <BR_BookcaseHot_books
-                    onClicked={this.handleOpened.bind(this)}
-                    key={sid}
-                    // to={"/reviewer/reviewerBooks/reviewerBlog/" + sid}
-                    sid={sid}
-                    pic={pic}
-                    name={name}
+                      onHandleOpen={this.handleOpened}
+                      key={sid}
+                      // to={"/reviewer/reviewerBooks/reviewerBlog/" + sid}
+                      sid={sid}
+                      pic={pic}
+                      name={name}
+                      opened={opened}
                     ></BR_BookcaseHot_books>
-                  )}
+                  ))}
               </div>
             </div>
-            </div>
+          </div>
 
-            {opened === 'blog' && <ReviewerBlog sid={sid}/>}
-            {/* {opened === 'blog' && this.state.csData.filter(({number}) => reviewerData.number == number )
+          {opened === 'blog' && <ReviewerBlog sid={openedSid} />}
+        
+          {/* {opened === 'blog' && this.state.csData.filter(({number}) => reviewerData.number === number )
                   .filter((key , index) => index < 4 )
                   .map(({sid,})=>
                     <ReviewerBlog sid={sid}/>
                   ) } */}
-            {/* <Switch>
+          {/* <Switch>
               <Route
                 exact
                 path="/reviewer/reviewerBooks/reviewerBlog/:sid?"
@@ -126,20 +148,22 @@ class ReviewerBooks extends React.Component {
               />
             </Switch>
           </Router> */}
-          
+
           {/* 針對書評家 - 書櫃列表 */}
           {/* setState */}
-            {this.state.csData.filter(({number})=>  number == reviewerData.number)
-            .map(({name, pic, author, sid, introduction, blog, tube,})=>(
-            <BR_BookcaseList
-            sid={sid}
-            pic={pic}
-            name={name}
-            author={author}
-            blog={blog}
-            introduction={introduction}
-            tube={tube}
-            ></BR_BookcaseList>))}
+          {this.state.csData
+            .filter(({ number }) => number === reviewerData.number)
+            .map(({ name, pic, author, sid, introduction, blog, tube }) => (
+              <BR_BookcaseList
+                sid={sid}
+                pic={pic}
+                name={name}
+                author={author}
+                blog={blog}
+                introduction={introduction}
+                tube={tube}
+              ></BR_BookcaseList>
+            ))}
 
           {/* try */}
           {/* {this.state.brData.filter(({name}) => name ===

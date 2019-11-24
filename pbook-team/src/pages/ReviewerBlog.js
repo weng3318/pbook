@@ -36,7 +36,7 @@ export class ReviewerBlog extends React.Component {
       )
     let csData = this.state.csData
     
-// 通用接法
+// 參數接法
     // let BlogData = null
     //   for (let i = 0; i < csData.length; i++) {
     //     if (csData[i].sid == this.props.match.params.sid) {
@@ -50,19 +50,11 @@ export class ReviewerBlog extends React.Component {
           BlogData = csData[i]
         }
     }
-
     console.log('點選書籍，獲取sid', BlogData.sid)
+    
     return (
     <>
-      <h3 className="h3_br">Blogger
-      {/* 放BR_BlogList裡面才吃的到id */}
-          
-      {/* <div className="Animate_Edit_Box">
-          <Link className="Animate_Edit_btn" to={"/reviewer/reviewerBooks/reviewerBlog/reviewerBlogEdit/"+this.props.sid}>
-              <img className="" src={require('./reviewer_page/images/P_logo_Big.png')}/>
-          </Link>
-      </div> */}
-      </h3>
+      <h3 className="h3_br">Blogger</h3>
       <section className="reviewerBlog borderLine">
       {/* 部落格內文 */}
           <BR_BlogList
