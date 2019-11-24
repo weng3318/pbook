@@ -2,7 +2,6 @@ import React from 'react'
 import './lukeStyle.scss'
 import { Link } from 'react-router-dom'
 import MyPagination from '../../components/member/MyPagination'
-import { log } from 'util'
 
 class BooksFavorite extends React.Component {
   constructor(props) {
@@ -14,7 +13,7 @@ class BooksFavorite extends React.Component {
       nowPage: '',
       totalPage: '',
       totalRows: '',
-      page:''
+      page: 1
     }
   }
 
@@ -24,16 +23,16 @@ class BooksFavorite extends React.Component {
 
   changePage = ( page )=>{
     console.log(page);
-    
-    // this.setState({page})
+    this.setState({page})
   }
 
 
   queryBooks = () => {
+    // this.changePage()
     let number = JSON.parse(localStorage.getItem('user')).MR_number
-    let page = this.props.match.params.page
     
-    fetch('http://localhost:5555/member/queryBookcase/' + page, {
+    
+    fetch('http://localhost:5555/member/queryBookcase/' + this.state.page, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -61,10 +60,13 @@ class BooksFavorite extends React.Component {
   }
   // componentDidUpdate(page)
   render() {
+    console.log("newPage", this.state.page);
+    console.log(this.props.match.params.page);
+    
     let data = this.state.booksData
     //因為第一次渲染是空的會報錯
     // console.log("data ",data && data)
-    console.log("props", this.props);
+    // console.log("props", this.props);
     let totalPage = this.state.totalPage
     let totalRows = this.state.totalRows
 
@@ -93,11 +95,12 @@ class BooksFavorite extends React.Component {
                 </Link>
               ))}
             </div>
+            
             <MyPagination 
-              nowPage = {this.props.match.params.page}
+              nowPage = {this.state.page}
               totalPage = {totalPage}
               totalRows = {totalRows}
-              
+              changePage = {(page) => { this.changePage(page)}}
               />
         </div>
       </>

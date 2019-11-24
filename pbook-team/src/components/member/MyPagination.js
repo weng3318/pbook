@@ -2,25 +2,21 @@ import React from 'react'
 import { Pagination } from 'react-bootstrap'
 import {LinkContainer } from 'react-router-bootstrap'
 import '../../pages/member/lukeStyle.scss'
-import { log } from 'util'
 
 
 const MyPagination = props => {
     let page_items = []
     let pt = props.totalPage
-    console.log("MyPagination", props);
+    // console.log("MyPagination", props);
     for(let page = 1; page <= pt ; page++) {
         page_items.push(
             <LinkContainer
                 to= {'/member/BooksFavorite/' + page}
                 key={page}
-                onChange = { ()=>{
-                        console.log(11112)
-                    }}
             >
                 <Pagination.Item
-                    onChange = { ()=>{
-                        console.log(11112)
+                    onClick = { ()=>{
+                        props.changePage(page)
                     }}
                 >
                 {page}

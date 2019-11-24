@@ -7,7 +7,8 @@ import AddMemberBook from '../../pages/member/AddMemberBook'
 import PasswordModify from '../../pages/member/PasswordModify'
 import BooksFavorite from '../../pages/member/BooksFavorite'
 import ViewMemberBooks from '../../pages/member/ViewMemberBooks'
-import ResetPWD from '../../pages/ResetPWD'
+import FavoriteReviwer from '../../pages/member/FavoriteReviwer'
+// import ResetPWD from '../../pages/ResetPWD'
 import {withRouter} from 'react-router-dom'
 
 import '../../pages/member/lukeStyle.scss'
@@ -79,7 +80,9 @@ const Sidebar = (props) => {
                   </Link>
                 </Accordion.Collapse>
                 <Accordion.Collapse eventKey="0" className="sidebar_item">
-                <div style={{cursor: 'pointer'}}>收藏書評家</div>
+                <Link to='/member/FavoriteReviwer'>
+                  <div style={{cursor: 'pointer'}}>收藏書評家</div>
+                </Link>
                 </Accordion.Collapse>
               </div>
             </Accordion>
@@ -135,6 +138,7 @@ const Sidebar = (props) => {
           <Route exact path="/member/PasswordModify" component={PasswordModify} />
           <Route path="/member/BooksFavorite/:page?" component={BooksFavorite} />
           <Route path="/member/ViewMemberBooks" component={ViewMemberBooks} />
+          <Route path="/member/FavoriteReviwer" component={FavoriteReviwer} />
           
         </Switch>
      
