@@ -13,13 +13,21 @@ class Chat extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      squareData: [],
       oldDataList: [],
       oldDataMessage: [],
       mySearch: '',
+      people: 0,
     }
     if (localStorage.getItem('user') !== null) {
       if (this.props.location.pathname === '/chat') {
-        socket = io.connect('ws://localhost:5000/')
+        socket = io.connect('ws://localhost:5000/', {
+          query: {
+            MR_number: JSON.parse(localStorage.getItem('user')).MR_number,
+            MR_name: JSON.parse(localStorage.getItem('user')).MR_name,
+            MR_pic: JSON.parse(localStorage.getItem('user')).MR_pic,
+          },
+        })
       }
     }
     socket.on('SeverToClientMsg', this.onMsg)
@@ -49,34 +57,42 @@ class Chat extends React.Component {
   }
 
   onMsg = fullData => {
-    console.log('客戶端接收服務端發的消息onMsg fullData', fullData)
-    console.log('我是誰?', JSON.parse(localStorage.getItem('user')).MR_number)
-    console.log('客戶端接收服務端發的消息onMsg fullData.data?', fullData.data)
+    if (fullData.square === false) {
+      console.log('私人聊天')
+      console.log('客戶端接收服務端發的消息onMsg fullData', fullData)
+      console.log('我是誰?', JSON.parse(localStorage.getItem('user')).MR_number)
+      console.log('客戶端接收服務端發的消息onMsg fullData.data?', fullData.data)
 
-    if (
-      fullData.data.myFrom ===
-      JSON.parse(localStorage.getItem('user')).MR_number
-    ) {
-      this.setState({
-        oldDataList: fullData.oldDataList,
-        oldDataMessage: fullData.oldDataMessage,
-      })
-    } else if (
-      fullData.data.myTo === JSON.parse(localStorage.getItem('user')).MR_number
-    ) {
-      axios
-        .post(`http://localhost:5555/nana_use/chatList2`, {
-          memberId: JSON.parse(localStorage.getItem('user')).MR_number,
+      if (
+        fullData.data.myFrom ===
+        JSON.parse(localStorage.getItem('user')).MR_number
+      ) {
+        this.setState({
+          oldDataList: fullData.oldDataList,
+          oldDataMessage: fullData.oldDataMessage,
         })
-        .then(res => {
-          this.setState({
-            oldDataList: res.data,
-            oldDataMessage: fullData.oldDataMessage,
+      } else if (
+        fullData.data.myTo ===
+        JSON.parse(localStorage.getItem('user')).MR_number
+      ) {
+        axios
+          .post(`http://localhost:5555/nana_use/chatList2`, {
+            memberId: JSON.parse(localStorage.getItem('user')).MR_number,
           })
-        })
-        .catch(error => {
-          console.log('componentDidMount拿資料時有錯誤', error)
-        })
+          .then(res => {
+            this.setState({
+              oldDataList: res.data,
+              oldDataMessage: fullData.oldDataMessage,
+            })
+          })
+          .catch(error => {
+            console.log('componentDidMount拿資料時有錯誤', error)
+          })
+      }
+    } else {
+      console.log('廣場聊天')
+      console.log('客戶端接收服務端發的消息onMsg fullData', fullData)
+      console.log('我是誰?', JSON.parse(localStorage.getItem('user')).MR_number)
     }
   }
 
@@ -137,8 +153,15 @@ class Chat extends React.Component {
 
     // 取得對話文字
     var textInput = this.textInput.value
+    // 判斷是否是在大廳發出的訊息
+    var square = false
+    if (window.location.href === 'http://localhost:3000/chat') {
+      square = true
+    }
+    console.log('square', square)
 
     socket.emit(`clientToSeverMsg`, {
+      square: square,
       chat_id: chat_id,
       myFrom: myFrom,
       myTo: 'MR' + myTo[0],
@@ -174,8 +197,14 @@ class Chat extends React.Component {
 
       // 取得對話文字
       var textInput = this.textInput.value
+      var square = false
+      if (window.location.href === 'http://localhost:3000/chat') {
+        square = true
+      }
+      console.log('square', square)
 
       socket.emit('clientToSeverMsg', {
+        square: square,
         chat_id: chat_id,
         myFrom: myFrom,
         myTo: 'MR' + myTo[0],
@@ -252,6 +281,10 @@ class Chat extends React.Component {
       .catch(error => {
         console.log('componentDidMount拿資料時有錯誤', error)
       })
+    socket.on(`SeverToClientPeople`, data => {
+      this.setState({ people: data })
+      console.log('人數', data)
+    })
   }
 
   componentWillUnmount() {
@@ -293,7 +326,7 @@ class Chat extends React.Component {
                     <span className="d-flex justify-content-center">
                       <button
                         type="button"
-                        class="btn btn-outline-secondary"
+                        className="btn btn-outline-secondary"
                         onClick={this.goBackToSquare}
                       >
                         回到品書聊天廣場
@@ -366,26 +399,38 @@ class Chat extends React.Component {
                   <div className="myDefault" ref={div => (this.myDiv = div)}>
                     <div className="p-2">
                       <i className="far fa-comments mx-2"></i>
-                      歡迎來到品書聊天廣場！目前有0位會員正在線上。
+                      歡迎來到品書聊天廣場！目前有{this.state.people}
+                      位會員正在線上。
                     </div>
                     <div className="chatMessageScroll">
-                      <div className="myContainer">
-                        <img
-                          src="http://localhost:5555/images/member/kura.jpg"
-                          alt="Avatar"
-                        />
-                        <p>這裡是其他人發出的</p>
-                        <span className="time-right">其他人發出的時間</span>
-                      </div>
-                      <div className="myContainer darker">
-                        <img
-                          src="http://localhost:5555/images/member/yoko.jpg"
-                          alt="Avatar"
-                          className="right"
-                        />
-                        <p>這裡是我發出的</p>
-                        <span className="time-left">我發出的時間</span>
-                      </div>
+                      {this.state.squareData.map((value, index) => {
+                        return (
+                          <div key={index}>
+                            {value.myFrom !== myId ? (
+                              <div className="myContainer">
+                                <img
+                                  src="http://localhost:5555/images/member/kura.jpg"
+                                  alt="Avatar"
+                                />
+                                <p>這裡是其他人發出的</p>
+                                <span className="time-right">
+                                  其他人發出的時間
+                                </span>
+                              </div>
+                            ) : (
+                              <div className="myContainer darker">
+                                <img
+                                  src="http://localhost:5555/images/member/yoko.jpg"
+                                  alt="Avatar"
+                                  className="right"
+                                />
+                                <p>這裡是我發出的</p>
+                                <span className="time-left">我發出的時間</span>
+                              </div>
+                            )}
+                          </div>
+                        )
+                      })}
                     </div>
                     {/* <img
                       alt="背景圖"
