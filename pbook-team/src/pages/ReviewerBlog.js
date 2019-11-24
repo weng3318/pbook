@@ -1,5 +1,4 @@
 import React from 'react'
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 import { withRouter } from 'react-router-dom'
 import BR_BlogList from './reviewer_page/BR_BlogList'
 import axios from 'axios'
@@ -36,22 +35,33 @@ export class ReviewerBlog extends React.Component {
         </>
       )
     let csData = this.state.csData
-
+    
+// 通用接法
+    // let BlogData = null
+    //   for (let i = 0; i < csData.length; i++) {
+    //     if (csData[i].sid == this.props.match.params.sid) {
+    //       BlogData = csData[i]
+    //     }
+    // }
+// State接法
     let BlogData = null
       for (let i = 0; i < csData.length; i++) {
         if (csData[i].sid == this.props.sid) {
           BlogData = csData[i]
         }
     }
+
     console.log('點選書籍，獲取sid', BlogData.sid)
     return (
     <>
-      {/* todo.. 比對兩張資料表的作者{author} */}
       <h3 className="h3_br">Blogger
       {/* 放BR_BlogList裡面才吃的到id */}
-      <Link className="Blog_Edit" to={"/reviewer/reviewerBooks/reviewerBlog/reviewerBlogEdit/1"}>
-          <img className="" src={require('./reviewer_page/images/P_logo_Big.png')}/>
-      </Link>
+          
+      {/* <div className="Animate_Edit_Box">
+          <Link className="Animate_Edit_btn" to={"/reviewer/reviewerBooks/reviewerBlog/reviewerBlogEdit/"+this.props.sid}>
+              <img className="" src={require('./reviewer_page/images/P_logo_Big.png')}/>
+          </Link>
+      </div> */}
       </h3>
       <section className="reviewerBlog borderLine">
       {/* 部落格內文 */}
@@ -65,15 +75,6 @@ export class ReviewerBlog extends React.Component {
       </section>
       {/* 效果圖 開發參照 */}
       {/* <img className="BlogBG" src={require('../pages/reviewer_page/images/03_評品書.png')}/> */}
-
-      {/* 路由模式，關閉 */}
-      {/* <Router>
-          <Switch>
-            <Route exact 
-                    path="/reviewer/reviewerBooks/reviewerBlog/ReviewerBlogEdit/:sid?" 
-                    component={ReviewerBlogEdit} />
-          </Switch>
-      </Router> */}
     </>
     )
   }

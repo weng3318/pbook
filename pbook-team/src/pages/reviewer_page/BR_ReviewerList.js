@@ -1,6 +1,5 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
-import { string } from 'prop-types';
 
 class BR_ReviewerList extends React.Component {
   render(props) {

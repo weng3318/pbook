@@ -1,6 +1,20 @@
 .br_CKEditor{
     background: #ccc;
     min-height: 600px;
+    border-bottom: 2px solid #2d3a3a;
+}
+/* 編輯模式，文字 */
+.h3_Red{
+    text-align: center;
+    font-weight: 800;
+    color: #ff525b;
+    margin: 10px 0 5px 0;
+}
+.h3_gray{
+    text-align: center;
+    font-weight: 800;
+    color: #979d9d;
+    margin: 10px 0 5px 0;
 }
 /* 部落格 編輯書評，按鈕 */
 .Blog_Edit{
@@ -52,7 +66,7 @@
 .text_Blog_Edit{
     width: 80px;
     color: #cde2d0;
-    position: absolute;;
+    position: absolute;
     font-size: 1.2rem;
     left: 50px;
     top: 50%;

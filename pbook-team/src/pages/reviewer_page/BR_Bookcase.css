@@ -13,7 +13,7 @@
 }
 /* 邊框顏色，上下底線 */
 .borderLineUpDown {
-    border-top:3px solid #2d3a3a;
+    /* border-top:3px solid #2d3a3a; */
     border-bottom:3px solid #2d3a3a;
 }
 /* 邊框顏色，右下底線 */
@@ -169,6 +169,7 @@
 .beAuthorText{
     font-size: 1rem;
     font-weight: 800;
+    color: rgba(0,0,0,.5);
 }
 /* 社群分享，共用區域 (社群圖示區塊) */
 .brIconBox_Bookcase{

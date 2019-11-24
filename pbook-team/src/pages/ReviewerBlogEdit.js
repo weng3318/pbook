@@ -1,7 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 import { withRouter } from 'react-router-dom'
-import BR_BlogList from './reviewer_page/BR_BlogList'
 import axios from 'axios'
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -48,8 +47,8 @@ export class ReviewerBlogEdit extends React.Component {
     console.log('render csData 書評部落格資料', this.state.csData)
     return (
     <>
-      {/* todo.. 比對兩張資料表的作者{author} */}
-      <h3 className="h3_br">部落格 - 編輯模式</h3>
+      <h3 className="h3_br">書評家{this.props.number} - 編輯模式</h3>
+      <h5 className="h5_br">你正在編輯 <h3 className="h3_Red">{this.props.name}</h3></h5>
       <section className="br_CKEditor">
       <CKEditor
                     editor={ ClassicEditor }
