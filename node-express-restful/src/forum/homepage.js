@@ -6,7 +6,7 @@ const upload = multer({ dest: "tmp_uploads/" }); //圖片上傳
 const fs = require("fs"); //檔案處理
 const moment = require("moment-timezone");
 const db = mysql.createConnection({
-  host: "localhost",
+  host: "192.168.27.186",
   user: "root",
   password: "root",
   database: "pbook"
@@ -106,15 +106,56 @@ router
       });
   });
 
-//喜歡文章 like 11/22 todo 更新like數量
+//喜歡文章 like 
 router
-  .route("/article/like/:prevLike")
+  .route("/article/like/:articleId/:prevLike")
   .all((req, res, next) => {
     next();
   })
   .get((req, res) => {
-   
+    let articleId = req.params.articleId;
+    let prevLike = req.params.prevLike;
+
+    let sql = `UPDATE fm_article SET fm_like=${+prevLike + 1} WHERE fm_articleId='${articleId}'`
+    db.queryAsync(sql).then(results => {
+      res.json(results);
     });
+  });
+
+//新增留言 response new
+router
+  .route("/article/newResponse/:articleId/:memberId")
+  .all((req, res, next) => {
+    next();
+  })
+  .post(upload.array(), (req, res) => {
+    let fm_articleId = req.params.articleId;
+    let fm_responseId = req.params.memberId;
+    let fm_responseContent = req.body.contentValue
+    console.log(123, req.body)
+    let sql = `INSERT INTO fm_articleresponse(sid, fm_articleId, fm_responseId, fm_responseContent, fm_resLike, responseTime) VALUES (NULL,?,?,?,0,NOW())`
+    db.query(sql, [fm_articleId, fm_responseId, fm_responseContent], (error, results, fields) => {
+      if (error) throw (error)
+      res.json(results)
+    })
+  });
+
+
+//喜歡留言 response like 
+router
+  .route("/article/responseLike/:sid/:prevLike")
+  .all((req, res, next) => {
+    next();
+  })
+  .get((req, res) => {
+    let prevLike = req.params.prevLike;
+    let sid = req.params.sid;
+
+    let sql = `UPDATE fm_articleresponse SET fm_resLike = ${+prevLike + 1} WHERE sid = '${sid}'`
+    db.query(sql, (error, results, fields) => {
+      if (error) throw (error)
+      res.json(results)
+    })
   });
 
 //讀取留言 message

@@ -4,8 +4,8 @@ const bluebird = require('bluebird');
 const router = express.Router();
 
 const db = mysql.createConnection({
-    host: "192.168.27.186",
-    // host: "localhost",
+    host:"localhost",
+    // host: "192.168.27.186",
     user: "root",
     password: "root",
     database: "pbook"
@@ -16,7 +16,7 @@ bluebird.promisifyAll(db)
 const perPage = 10
 router.get('/brReviewerList/:page?/:keyword?', (req,res)=>{
     // 頁數資料傳輸
-    const output = {};
+    const output = {}; 
     output.params = req.params
     output.perPage = perPage
     let page = parseInt(req.params.page) || 1

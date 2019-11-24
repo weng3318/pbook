@@ -5,7 +5,7 @@ import cors from "cors";
 const app = express();
 const mysql = require("mysql");
 const db = mysql.createConnection({
-  host: "192.168.27.186",
+  host:"localhost",
   user: "root",
   password: "root",
   database: "pbook"
@@ -62,7 +62,7 @@ app.use("/nana_use", require("./src/nana_use/game"));
 app.use("/books", require('./src/books/bookApi'));
 
 app.use('/activities', require('./src/activities/acApi'))
-app.use('/reviews', require('./src/book_review/reviews'))
+app.use('/reviews', require('./src/book_review/reviews')) 
 
 //下面三行有衝突我先註解掉
 app.use('/reviews', require('./src/book_review/books'))

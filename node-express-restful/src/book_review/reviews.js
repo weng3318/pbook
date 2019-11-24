@@ -7,8 +7,8 @@ const bluebird = require("bluebird");
 const router = express.Router();
 const app = express();
 const db = mysql.createConnection({
-  // host: "localhost",
-  host: "localhost",
+  // host: "192.168.27.186",
+  host: "192.168.27.186",
   user: "root",
   password: "root",
   database: "pbook"

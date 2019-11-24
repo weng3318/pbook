@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, createRef } from 'react'
 import { BrowserRouter as Link, useParams } from 'react-router-dom'
 import { connect } from 'react-redux'
 import './scss/ArticleContent.scss'
@@ -22,11 +22,14 @@ import { green, purple } from '@material-ui/core/colors'
 //component
 import Message from '../../components/forum/Messgae/Message'
 import avatar from './2.jpg'
-import TextareaAutosize from 'react-textarea-autosize'
 import { FacebookProvider, Share, ShareButton } from 'react-facebook'
+
+
+
 
 const ArticleContent = props => {
   const classes = useStyles()
+  
 
   let { articleId } = useParams()
 
@@ -35,12 +38,13 @@ const ArticleContent = props => {
   const [contentUpdated, setContentUpdated] = useState(false) //讀取內容json
   const [addElement, setAddElement] = useState(0) //render element
   const [textareaValue, setTextareaValue] = useState('')
-  const [shouldRender, setShouldRender] = useState(0)
+  const [like, setLike] = useState(0)
 
   useEffect(() => {
     if (localStorage.user !== undefined) {
       let user = JSON.parse(localStorage.user)
-      setLogin(true)
+      console.log(user.MR_number)
+      setLogin(user)
     }
     fetch('http://localhost:5555/forum/article/content/' + articleId, {
       method: 'GET',
@@ -52,6 +56,7 @@ const ArticleContent = props => {
       })
       .then(result => {
         setData(result)
+        setLike(result.article.fm_like)
       })
   }, [])
 
@@ -64,8 +69,8 @@ const ArticleContent = props => {
   const handleContentUpdated = () => {
     fetch(
       'http://localhost:5555/forum/content/' +
-        data.article.fm_articleId +
-        '.json'
+      data.article.fm_articleId +
+      '.json'
     )
       .then(res => {
         if (!res.ok) throw new Error(res.statusText)
@@ -107,20 +112,23 @@ const ArticleContent = props => {
         setAddElement([...body])
       })
   }
-  const handleFollow = () => {}
+  const handleFollow = () => { }
   const handleClickArticleLike = () => {
-    fetch(`http://localhost:5555/forum//article/like/${data.article.fm_like}`)
+    fetch(`http://localhost:5555/forum/article/like/${articleId}/${like}`)
       .then(res => {
         return res.json()
       })
       .then(result => {
-        setShouldRender(shouldRender + 1)
+        setLike(like + 1)
       })
   }
-  const wantToResponse = () => {
-    document.documentElement.scrollTop = 0
-    props.dispatch(letMeLogin())
+  const youNeedToLogin = () => {
+    if (!login) {
+      document.documentElement.scrollTop = 0
+      props.dispatch(letMeLogin())
+    }
   }
+ 
   const handleReadMore = () => {
     props.dispatch(readMoreResponse(5))
     console.log(props.showResponse)
@@ -170,11 +178,11 @@ const ArticleContent = props => {
           <hr></hr>
           <section>{addElement}</section>
           <div className="social-area">
-            <div className="dis-flex thumb">
+            <div className="dis-flex thumb" onClick={handleClickArticleLike}>
               <div className="thumb-frame">
                 <ThumbUpIcon style={{ fontSize: 50 }} />
               </div>
-              <span>{data.article.fm_like}</span>
+              <span>{like}</span>
             </div>
             <div className="social-icons">
               <FacebookProvider appId="2545805135652577">
@@ -211,36 +219,8 @@ const ArticleContent = props => {
             </div>
           </div>
           <hr></hr>
-          <div className="massage-frame dis-flex">
-            <div className="avatar-md">
-              <img
-                alt=""
-                src={
-                  login
-                    ? 'http://localhost:5555/images/member/' +
-                      data.member.MR_pic
-                    : avatar
-                }
-              ></img>
-            </div>
-
-            <TextareaAutosize
-              placeholder="寫個留言吧......"
-              onClick={login ? '' : wantToResponse}
-            />
-            {login ? (
-              <BootstrapButton
-                variant="contained"
-                color="primary"
-                className={classes.margin}
-              >
-                <span>回覆文章</span>
-              </BootstrapButton>
-            ) : (
-              ''
-            )}
-          </div>
-          <Message articleId={articleId}></Message>
+          
+          <Message articleId={articleId} member={data.member} ></Message>
           <div className="button" onClick={handleReadMore}>
             <Button
               variant="outlined"
@@ -254,14 +234,14 @@ const ArticleContent = props => {
             <div className="need-login">
               <span>
                 請先登入會員，才可回應。
-                <button className="login-button" onClick={wantToResponse}>
+                <button className="login-button" onClick={youNeedToLogin}>
                   登入
                 </button>
               </span>
             </div>
           ) : (
-            ''
-          )}
+              ''
+            )}
         </div>
       </div>
     )
@@ -301,26 +281,4 @@ const useStyles = makeStyles(theme => ({
     },
   },
 }))
-const BootstrapButton = withStyles({
-  root: {
-    fontSize: '1rem',
-    width: '130px',
-    padding: '8px 24px',
-    // border: '1px solid',
-    backgroundColor: '#2d3a3a',
-    // fontFamily: [
-    //   '-apple-system',
-    //   'Roboto',
-    //   '"Helvetica Neue"',
-    //   'Arial',
-    // ].join(','),
-    '&:hover': {
-      backgroundColor: '#2d3a3a',
-      color: '#ffc408',
-      boxShadow: 'none',
-    },
-    // '&:focus': {
-    //   boxShadow: '0 0 0 0.2rem rgba(0,123,255,.5)',
-    // },
-  },
-})(Button)
+
