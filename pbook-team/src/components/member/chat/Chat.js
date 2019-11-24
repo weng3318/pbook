@@ -1,5 +1,5 @@
 import React from 'react'
-import { ListGroup, Tab, Row, Col, Tabs } from 'react-bootstrap'
+import { ListGroup, Tab, Row, Col } from 'react-bootstrap'
 import './chat.css'
 
 import axios from 'axios'
@@ -93,6 +93,8 @@ class Chat extends React.Component {
       console.log('廣場聊天')
       console.log('客戶端接收服務端發的消息onMsg fullData', fullData)
       console.log('我是誰?', JSON.parse(localStorage.getItem('user')).MR_number)
+
+      this.setState({ squareData: fullData })
     }
   }
 
@@ -197,6 +199,7 @@ class Chat extends React.Component {
 
       // 取得對話文字
       var textInput = this.textInput.value
+      // 判斷是否是在大廳發出的訊息
       var square = false
       if (window.location.href === 'http://localhost:3000/chat') {
         square = true
@@ -285,6 +288,9 @@ class Chat extends React.Component {
       this.setState({ people: data })
       console.log('人數', data)
     })
+    if (window.location.href !== 'http://localhost:3000/chat') {
+      window.location.href = 'http://localhost:3000/chat'
+    }
   }
 
   componentWillUnmount() {
