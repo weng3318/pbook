@@ -9,8 +9,10 @@ export class ReviewerBlog extends React.Component {
     this.state = {
       csData: [],
       bkData: [],
+      opened: null,
     }
   }
+  
   componentDidMount() {
     let newcsData
     axios
@@ -26,12 +28,17 @@ export class ReviewerBlog extends React.Component {
         console.log('前端沒有取得資料', error)
       })
   }
-  render(props) {
+
+      handleOpened = (opened) => {
+        this.setState({ opened:opened })
+    }
+  render() {
+    
     // if (!this.state.csData.length) return <></>
     if (this.state.csData.length === 0)
       return (
         <>
-          <h1>取得資料中...</h1>
+          <h1 className="br_h1">取得資料中...</h1>
         </>
       )
     let csData = this.state.csData
@@ -55,9 +62,12 @@ export class ReviewerBlog extends React.Component {
     return (
     <>
       <h3 className="h3_br">Blogger</h3>
-      <section className="reviewerBlog borderLine">
+      <section className="reviewerBlog ">
       {/* 部落格內文 */}
           <BR_BlogList
+          onHandleOpen={this.props.onHandleOpen} //進去勒索
+          opened={this.props.opened}
+          // onHandleOpen={this.handleOpened} //進去勒索
           key={BlogData.sid}
           sid={BlogData.sid}
           name={BlogData.name}

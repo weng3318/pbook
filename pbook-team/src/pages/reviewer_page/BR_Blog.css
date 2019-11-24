@@ -3,7 +3,7 @@
     min-height: 600px;
     border-bottom: 2px solid #2d3a3a;
 }
-/* 編輯模式，文字 */
+/* 編輯模式，標題文字 */
 .h3_Red{
     text-align: center;
     font-weight: 800;
@@ -39,7 +39,7 @@
     border: 2px 0 2px 2px solid transparent;
     height: 50px;
     border-radius: 25px 0 0 25px;
-    transition: 0.5s;
+    transition: 0.3s;
 }
 /* 編輯按鈕，反饋動畫 (長出) */
 .Animate_Edit_Box:hover{
@@ -63,7 +63,7 @@
     transform: translateY(-50%);
 }
 /* 編輯模式，顯示文字 */
-.text_Blog_Edit{
+.text_Blog_Edit,.text_Blog_Close{
     width: 80px;
     color: #cde2d0;
     position: absolute;
@@ -77,7 +77,12 @@
 /* 編輯模式，文字 (動畫控制) */
 .Animate_Edit_Box:hover .text_Blog_Edit{
     display: block;
-    color: #ffc408;
+    color: #cde2d0;
+    opacity: 1;
+}
+.Animate_Edit_Box:hover .text_Blog_Close{
+    display: block;
+    color: #ff525b;
     opacity: 1;
 }
 /* 邊框顏色，參照用 */
@@ -100,6 +105,7 @@
 }
 /* 書評部落格 (參照背景) */
 .reviewerBlog {
+    border-bottom: 2px solid #2d3a3a;
     padding: 30px 200px 50px 200px;
     /* background: #fff; */
     /* background: url(../reviewer_page//images/03_評品書.png) center center; */
@@ -110,7 +116,7 @@
 }
 /* 書評部落格 (參照偽元素) */
 .reviewerBlog::after{
-    /* content: ""; */
+    content: "";
     display: block;
     background: rgba(0,0,0,.25);
     position: absolute;
@@ -118,6 +124,7 @@
     right:0;
     top:0;
     bottom:0;
+    z-index: -1;
 }
 .BlogBG{
     width: 160%;

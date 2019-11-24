@@ -9,11 +9,14 @@ class BR_BookcaseList extends React.Component {
         this.state = {
          opened: null,
         }
+        // this.handleOpened.bind(this)
      }
+    //  裝填，改變
+     handleOpened = (opened) => {
+         this.setState({ opened })
+    }
  
-     handleOpened = (opened) => this.setState({ opened });
- 
-     render(props) {
+     render() {
         const { opened } = this.state;
         const { sid } = this.props;
         const { name } = this.props;
@@ -52,7 +55,7 @@ class BR_BookcaseList extends React.Component {
             {/* 編輯模式按鈕 */}
                 {/* <Link className="Animate_Edit_Box" to={"/reviewer/reviewerBooks/reviewerBlog/reviewerBlogEdit/"+this.props.sid}> */}
                     <div className="Animate_Edit_Box">
-                        <div className="Animate_Edit_btn" onClick={() => this.handleOpened(this.state.opened === 'edit' ? null : 'edit')}>
+                        <div className="Animate_Edit_btn" onClick={() => this.handleOpened(opened === 'edit' ? null : 'edit')}>
                             <img className="icon_Blog_Edit" src={require('../reviewer_page/images/icon_Blog_Edit.png')}/>
                             <h5 className="text_Blog_Edit">編輯模式</h5>
                         </div>
@@ -77,8 +80,8 @@ class BR_BookcaseList extends React.Component {
             {/* 評分組件區塊 */}
     {/* <div className="brStarBox_Bookcase borderLine"></div> */}
     </section>
-            {/* 切換 部落格文章 與 編輯模式 */}
-    {opened === 'blog' && <ReviewerBlog sid={sid}/>}
+            {/* 切換 部落格文章 與 編輯模式 */}                 {/* onHandleOpen 爺爺想見孫女 brBlog brBlogList*/}
+    {opened === 'blog' && <ReviewerBlog sid={sid} opened={opened} onHandleOpen={this.handleOpened}/>}
     {opened === 'edit' && <ReviewerBlogEdit sid={sid} name={name} number={number}/>}
                     {/* <Switch>
                         <Route exact 

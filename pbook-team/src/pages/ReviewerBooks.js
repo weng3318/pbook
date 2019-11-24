@@ -39,15 +39,17 @@ class ReviewerBooks extends React.Component {
           csData: newcsData,
         })
       })
-
       .catch(function(error) {
         console.log('前端沒有取得資料', error)
       })
   }
-  handleOpened = (opened, openedSid) => this.setState({ opened, openedSid })
-  render(props) {
-    const { opened, openedSid, openedName } = this.state
-    const { sid } = this.props
+    // 裝填
+  handleOpened = (opened, openedSid) => {
+    this.setState({ opened, openedSid })
+  }
+  render() {
+    // 進去撈 sid#state
+    const { opened, openedSid } = this.state
 
     // console.log('render brData 書評家',this.state.brData);
     // console.log('render csData 看看書櫃',this.state.csData);
@@ -56,7 +58,7 @@ class ReviewerBooks extends React.Component {
     if (this.state.brData.length === 0)
       return (
         <>
-          <h1>取得資料中...</h1>
+          <h1 className="br_h1">取得資料中...</h1>
         </>
       )
 
@@ -71,26 +73,14 @@ class ReviewerBooks extends React.Component {
       }
     }
 
-    // 拿到指定會員的書櫃資料，進行配對
+    // 指定會員的書櫃資料，撈出來進行處理
     let bookcaseData = null
     for (let i = 0; i < csData.length; i++) {
       if (csData[i].number == reviewerData.number) {
         bookcaseData = csData[i].isbn
-        console.log(
-          '來自書評家',
-          reviewerData.name,
-          '的書籍isbn：',
-          bookcaseData
-        )
+        console.log('來自書評家',reviewerData.name,'的書籍isbn：',bookcaseData)
       }
     }
-    console.log(
-      '從',
-      reviewerData.name,
-      '書櫃，取isbn「',
-      bookcaseData,
-      '」進行配對。'
-    )
 
     return (
       <>
@@ -120,26 +110,20 @@ class ReviewerBooks extends React.Component {
                   .filter((key, index) => index < 4)
                   .map(({ pic, sid, name }) => (
                     <BR_BookcaseHot_books
-                      onHandleOpen={this.handleOpened}
+                      onHandleOpen={this.handleOpened} //進去勒索
+                      opened={opened}
                       key={sid}
-                      // to={"/reviewer/reviewerBooks/reviewerBlog/" + sid}
                       sid={sid}
                       pic={pic}
                       name={name}
-                      opened={opened}
                     ></BR_BookcaseHot_books>
                   ))}
               </div>
             </div>
           </div>
 
-          {opened === 'blog' && <ReviewerBlog sid={openedSid} />}
+          {opened === 'blog' && <ReviewerBlog sid={openedSid} opened={opened} onHandleOpen={this.handleOpened}/>}
         
-          {/* {opened === 'blog' && this.state.csData.filter(({number}) => reviewerData.number === number )
-                  .filter((key , index) => index < 4 )
-                  .map(({sid,})=>
-                    <ReviewerBlog sid={sid}/>
-                  ) } */}
           {/* <Switch>
               <Route
                 exact
@@ -150,7 +134,6 @@ class ReviewerBooks extends React.Component {
           </Router> */}
 
           {/* 針對書評家 - 書櫃列表 */}
-          {/* setState */}
           {this.state.csData
             .filter(({ number }) => number === reviewerData.number)
             .map(({ name, pic, author, sid, introduction, blog, tube }) => (

@@ -15,6 +15,12 @@
 a:hover{
     text-decoration: none;
 }
+/* 取得資料中... (文字) */
+.br_h1{
+    font-weight: bolder;
+    margin: 1rem;
+    color: #2d3a3a;
+}
 /* 標題，主要文字 */
 .h5_br{
     text-align: center;
