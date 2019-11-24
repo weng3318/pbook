@@ -23,6 +23,7 @@ class Chat extends React.Component {
       }
     }
     socket.on('SeverToClientMsg', this.onMsg)
+    socket.on('SeverToClientDelete', this.onMsgDelete)
   }
 
   handleSearch = () => {
@@ -33,7 +34,7 @@ class Chat extends React.Component {
 
   handleMessage = async () => {
     this.myDiv.classList.add('hide')
-    this.messageSearch.classList.add('show-inline-flex')
+    // this.messageSearch.classList.add('show-inline-flex')
     console.log('點擊左邊那欄第一次拿chatMessage')
     await axios
       .post(`http://localhost:5555/nana_use/chatMessage2`, {
@@ -48,8 +49,9 @@ class Chat extends React.Component {
   }
 
   onMsg = fullData => {
-    console.log('客戶端接收服務端發的消息', fullData)
+    console.log('客戶端接收服務端發的消息onMsg fullData', fullData)
     console.log('我是誰?', JSON.parse(localStorage.getItem('user')).MR_number)
+    console.log('客戶端接收服務端發的消息onMsg fullData.data?', fullData.data)
 
     if (
       fullData.data.myFrom ===
@@ -57,7 +59,7 @@ class Chat extends React.Component {
     ) {
       this.setState({
         oldDataList: fullData.oldDataList,
-        oldDataMessage: [fullData.data, ...this.state.oldDataMessage],
+        oldDataMessage: fullData.oldDataMessage,
       })
     } else if (
       fullData.data.myTo === JSON.parse(localStorage.getItem('user')).MR_number
@@ -69,7 +71,42 @@ class Chat extends React.Component {
         .then(res => {
           this.setState({
             oldDataList: res.data,
-            oldDataMessage: [fullData.data, ...this.state.oldDataMessage],
+            oldDataMessage: fullData.oldDataMessage,
+          })
+        })
+        .catch(error => {
+          console.log('componentDidMount拿資料時有錯誤', error)
+        })
+    }
+  }
+
+  onMsgDelete = fullData => {
+    console.log('客戶端接收服務端發的消息onMsgDelete fullData', fullData)
+    console.log('我是誰?', JSON.parse(localStorage.getItem('user')).MR_number)
+    console.log(
+      '客戶端接收服務端發的消息onMsgDelete fullData.data?',
+      fullData.data
+    )
+
+    if (
+      fullData.data.myFrom ===
+      JSON.parse(localStorage.getItem('user')).MR_number
+    ) {
+      this.setState({
+        oldDataList: fullData.oldDataList,
+        oldDataMessage: fullData.oldDataMessage,
+      })
+    } else if (
+      fullData.data.myTo === JSON.parse(localStorage.getItem('user')).MR_number
+    ) {
+      axios
+        .post(`http://localhost:5555/nana_use/chatList2`, {
+          memberId: JSON.parse(localStorage.getItem('user')).MR_number,
+        })
+        .then(res => {
+          this.setState({
+            oldDataList: res.data,
+            oldDataMessage: fullData.oldDataMessage,
           })
         })
         .catch(error => {
@@ -108,6 +145,7 @@ class Chat extends React.Component {
       content: textInput,
       myRead: 0,
       created_at: new Date(),
+      myDelete: 0,
     })
 
     this.textInput.value = ''
@@ -144,6 +182,7 @@ class Chat extends React.Component {
         content: textInput,
         myRead: 0,
         created_at: new Date(),
+        myDelete: 0,
       })
 
       this.textInput.value = ''
@@ -152,6 +191,27 @@ class Chat extends React.Component {
 
   handleMessageDelete = e => {
     let MessageSid = e.target.getAttribute('data-value')
+    console.log('handleMessageDelete MessageSid1', MessageSid)
+
+    // 利用網址列取得chat_id
+    var chat_id_index = window.location.href.indexOf('#') // console.log(chat_id_index,"26")
+    var chat_id = window.location.href.slice(chat_id_index + 1)
+    // 利用localStorage取得發文者(myFrom)
+    var myFrom = JSON.parse(localStorage.getItem('user')).MR_number
+    // 利用網址取得myTo
+    var chat_id_array = chat_id.split('MR')
+    var myFrom_array = myFrom.split('MR')
+
+    var myTo = []
+    for (var i = 1; i < chat_id_array.length; i++) {
+      for (var k = 1; k < myFrom_array.length; k++) {
+        if (chat_id_array[i] !== myFrom_array[k]) {
+          myTo.push(chat_id_array[i])
+        }
+      }
+    }
+    console.log(myTo[0])
+
     swal({
       title: '您確定要收回嗎?',
       text: '一旦收回,將會沒辦法復原喔!',
@@ -164,9 +224,19 @@ class Chat extends React.Component {
         swal('您的訊息已經被收回!', {
           icon: 'success',
         })
+        socket.emit(`clientToSeverDelete`, {
+          MessageSid: MessageSid,
+          memberId: JSON.parse(localStorage.getItem('user')).MR_number,
+          chat_id: chat_id,
+          myFrom: myFrom,
+          myTo: 'MR' + myTo[0],
+        })
       }
     })
-    console.log(MessageSid)
+  }
+
+  goBackToSquare = () => {
+    window.location.href = 'http://localhost:3000/chat'
   }
 
   componentDidMount() {
@@ -175,16 +245,9 @@ class Chat extends React.Component {
         memberId: JSON.parse(localStorage.getItem('user')).MR_number,
       })
       .then(res => {
-        if (res.data.length === 0) {
-          this.setState({
-            visible: true,
-            oldDataList: res.data,
-          })
-        } else {
-          this.setState({
-            oldDataList: res.data,
-          })
-        }
+        this.setState({
+          oldDataList: res.data,
+        })
       })
       .catch(error => {
         console.log('componentDidMount拿資料時有錯誤', error)
@@ -197,6 +260,7 @@ class Chat extends React.Component {
   }
 
   render() {
+    console.log('render', this.state.oldDataList)
     let myId = JSON.parse(localStorage.getItem('user')).MR_number
     let myPic = JSON.parse(localStorage.getItem('user')).MR_pic
     var count = 0
@@ -224,6 +288,17 @@ class Chat extends React.Component {
                         <i className="fas fa-search" aria-hidden="true"></i>
                       </span>
                     </form>
+                  </ListGroup.Item>
+                  <ListGroup.Item>
+                    <span className="d-flex justify-content-center">
+                      <button
+                        type="button"
+                        class="btn btn-outline-secondary"
+                        onClick={this.goBackToSquare}
+                      >
+                        回到品書聊天廣場
+                      </button>
+                    </span>
                   </ListGroup.Item>
 
                   {this.state.oldDataList
@@ -253,10 +328,18 @@ class Chat extends React.Component {
                               ></img>
                             </div>
                             <div className="d-flex flex-column align-self-center chatTextWrap">
-                              <span className="chatText">
-                                {'和[' + value.MR_name + ']的聊天室'}
-                              </span>
-                              <span className="chatText">{value.content}</span>
+                              <span className="chatText">{value.MR_name}</span>
+                              {value.myDelete === 0 ? (
+                                <span className="chatText">
+                                  {value.content}
+                                </span>
+                              ) : (
+                                <span className="chatText">
+                                  {value.myFrom === myId
+                                    ? '您已收回訊息'
+                                    : value.MR_name + '已收回訊息'}
+                                </span>
+                              )}
                             </div>
                             {value.total === 0 ? (
                               <div className="d-flex flex-column align-content-center position-absolute newest hide">
@@ -281,15 +364,41 @@ class Chat extends React.Component {
               <Col sm={8}>
                 <Tab.Content>
                   <div className="myDefault" ref={div => (this.myDiv = div)}>
-                    <img
+                    <div className="p-2">
+                      <i className="far fa-comments mx-2"></i>
+                      歡迎來到品書聊天廣場！目前有0位會員正在線上。
+                    </div>
+                    <div className="chatMessageScroll">
+                      <div className="myContainer">
+                        <img
+                          src="http://localhost:5555/images/member/kura.jpg"
+                          alt="Avatar"
+                        />
+                        <p>這裡是其他人發出的</p>
+                        <span className="time-right">其他人發出的時間</span>
+                      </div>
+                      <div className="myContainer darker">
+                        <img
+                          src="http://localhost:5555/images/member/yoko.jpg"
+                          alt="Avatar"
+                          className="right"
+                        />
+                        <p>這裡是我發出的</p>
+                        <span className="time-left">我發出的時間</span>
+                      </div>
+                    </div>
+                    {/* <img
                       alt="背景圖"
                       src={require('./images/admin_bg.png')}
-                    ></img>
+                    ></img> */}
                   </div>
-
                   {this.state.oldDataList.map((value, index) => {
                     return (
                       <Tab.Pane key={index} eventKey={'#' + value.chat_id}>
+                        <div className="p-2">
+                          <i className="far fa-comment-dots mx-2"></i>
+                          {'您正在和[' + value.MR_name + ']聊天'}
+                        </div>
                         <div className="chatMessageScroll">
                           {/* eslint-disable-next-line array-callback-return */}
                           {this.state.oldDataMessage.map((value2, index2) => {
@@ -297,7 +406,10 @@ class Chat extends React.Component {
                               return (
                                 <div key={index2}>
                                   {(() => {
-                                    if (value2.myFrom !== myId) {
+                                    if (
+                                      value2.myFrom !== myId &&
+                                      value2.myDelete === 0
+                                    ) {
                                       return (
                                         <div className="myContainer">
                                           <img
@@ -315,7 +427,10 @@ class Chat extends React.Component {
                                           </span>
                                         </div>
                                       )
-                                    } else {
+                                    } else if (
+                                      value2.myFrom === myId &&
+                                      value2.myDelete === 0
+                                    ) {
                                       return (
                                         <div className="myContainer darker">
                                           <img
@@ -337,12 +452,27 @@ class Chat extends React.Component {
                                             data-value={value2.sid}
                                             onClick={this.handleMessageDelete}
                                           >
-                                            <span>收回</span>
-                                          </i>
-                                          <i className="fas fa-edit messageEdit">
-                                            <span>修改</span>
+                                            收回
                                           </i>
                                         </div>
+                                      )
+                                    } else if (
+                                      value2.myFrom !== myId &&
+                                      value2.myDelete === 1
+                                    ) {
+                                      return (
+                                        <span className="chatDeleteMessage">
+                                          {value.MR_name + '已收回訊息'}
+                                        </span>
+                                      )
+                                    } else if (
+                                      value2.myFrom === myId &&
+                                      value2.myDelete === 1
+                                    ) {
+                                      return (
+                                        <span className="chatDeleteMessage">
+                                          您已收回訊息
+                                        </span>
                                       )
                                     }
                                   })()}
@@ -355,7 +485,7 @@ class Chat extends React.Component {
                     )
                   })}
                   <div
-                    className="input-group md-form form-sm form-2 my-3 hide"
+                    className="input-group md-form form-sm form-2 my-3"
                     ref={messageSearch => (this.messageSearch = messageSearch)}
                   >
                     <input
