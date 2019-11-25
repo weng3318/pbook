@@ -1,7 +1,11 @@
+/* CKEditor編輯器控制 */
 .br_CKEditor{
     background: #ccc;
     min-height: 600px;
     border-bottom: 2px solid #2d3a3a;
+}
+.ck.ck-content table{
+	margin:0 auto;
 }
 /* 編輯模式，標題文字 */
 .h3_Red{
