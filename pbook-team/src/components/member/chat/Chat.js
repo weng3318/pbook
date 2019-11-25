@@ -338,6 +338,27 @@ class Chat extends React.Component {
     })
   }
 
+  handleUpload = e => {
+    const formData = new FormData()
+
+    for (var i = 0; i < e.target.files.length; i++) {
+      formData.append('avatar', e.target.files[i])
+    }
+
+    console.log('formData', formData)
+
+    fetch('http://localhost:5555/nana_use/imgFiles', {
+      method: 'POST',
+      body: formData,
+    })
+      .then(res => {
+        console.log('上傳檔案成功測試結果', res)
+      })
+      .catch(err => {
+        console.log('上傳檔案錯誤', err)
+      })
+  }
+
   componentDidMount() {
     axios
       .post(`http://localhost:5555/nana_use/chatList2`, {
@@ -666,6 +687,29 @@ class Chat extends React.Component {
                       onKeyPress={this.handleSubmit2}
                     />
                     <div className="input-group-append">
+                      <span
+                        className="input-group-text lime lighten-2 chatMessageSubmit position-relative"
+                        id="basic-text1"
+                        style={{ width: '41.5px' }}
+                      >
+                        <i className="fas fa-upload position-absolute"></i>
+                        <input
+                          type="file"
+                          name="file"
+                          id="fileUpload"
+                          multiple="multiple"
+                          className="position-absolute"
+                          style={{
+                            opacity: 0,
+                            width: '41.5px',
+                            top: 0,
+                            left: 0,
+                            fontSize: '20px',
+                          }}
+                          onChange={this.handleUpload}
+                        ></input>
+                      </span>
+
                       <OverlayTrigger
                         trigger="click"
                         placement="top"

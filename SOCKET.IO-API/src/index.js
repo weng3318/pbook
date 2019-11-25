@@ -2,6 +2,10 @@ var app = require("express")();
 var http = require("http").createServer(app);
 var io = require("socket.io")(http);
 
+const multer = require('multer');
+const upload = multer({ dest: 'tmp_uploads/' }); //設定上傳暫存目錄
+const fs = require('fs'); //處理檔案的核心套件(內建?)
+
 const bluebird = require("bluebird"); //青鳥
 const mysql = require("mysql");
 // 設定資料庫連線
@@ -14,12 +18,12 @@ const db = mysql.createConnection({
 db.connect(); //資料庫連線
 bluebird.promisifyAll(db);
 
-app.get("/", function(req, res) {
+app.get("/", function (req, res) {
   res.send("socket首頁");
 });
 
 var users = [];
-io.sockets.on("connection", function(socket) {
+io.sockets.on("connection", function (socket) {
   users.push({
     socketId: socket.id,
     MR_number: socket.handshake.query.MR_number,
@@ -31,7 +35,7 @@ io.sockets.on("connection", function(socket) {
   console.log("open---現在進入會員的socketId", socket.id);
   console.log("open---現在所有會員的詳細資料", users);
 
-  socket.on("clientToSeverMsg", async function(data) {
+  socket.on("clientToSeverMsg", async function (data) {
     console.log("服務器端收到客戶端資料", data);
     if (data.square === false) {
       console.log("私人聊天");
@@ -40,19 +44,19 @@ io.sockets.on("connection", function(socket) {
         `UPDATE mb_chat SET myRead = 1 WHERE chat_id = "${data.chat_id}" AND myTo = "${data.myFrom}"`
       );
 
-      console.log('測試私人聊天2',`INSERT INTO mb_chat(chat_id, myFrom, myTo, content, myRead, created_at, myDelete) VALUES ("${data.chat_id}","${data.myFrom}","${data.myTo}","${data.content}","${data.myRead}","${data.created_at}", "${data.myDelete}")`);
+      console.log('測試私人聊天2', `INSERT INTO mb_chat(chat_id, myFrom, myTo, content, myRead, created_at, myDelete) VALUES ("${data.chat_id}","${data.myFrom}","${data.myTo}","${data.content}","${data.myRead}","${data.created_at}", "${data.myDelete}")`);
 
       await db.queryAsync(
         `INSERT INTO mb_chat(chat_id, myFrom, myTo, content, myRead, created_at, myDelete) VALUES ("${data.chat_id}","${data.myFrom}","${data.myTo}",'${data.content}',"${data.myRead}","${data.created_at}", "${data.myDelete}")`
       );
-      
+
 
       const results = await db.queryAsync(
         `SELECT mb_chat.*,MR_number,MR_name,MR_pic FROM mb_chat LEFT JOIN mr_information ON MR_number = myTo OR MR_number = myFrom WHERE myFrom = "${data.myFrom}" OR myTo = "${data.myFrom}" ORDER BY created_at ASC`
       );
       // 一開始拿的資料,MR_number有塞我的跟對方的,為了讓MR_number是塞對方的資料,所以要先篩選一次
       var Without_MY_MR_number = [];
-      results.forEach(function(value, index) {
+      results.forEach(function (value, index) {
         if (value.MR_number !== data.myFrom) {
           Without_MY_MR_number.push(value);
         }
@@ -79,7 +83,7 @@ io.sockets.on("connection", function(socket) {
         `SELECT * FROM mb_chat WHERE myTo = "${data.myFrom}" AND myRead = 0`
       );
 
-      mapResult.forEach(function(value, index) {
+      mapResult.forEach(function (value, index) {
         value.total = 0;
         for (var i = 0; i < results2.length; i++) {
           if (value.MR_number === results2[i].myFrom) {
@@ -88,7 +92,7 @@ io.sockets.on("connection", function(socket) {
         }
       });
 
-      mapResult = mapResult.sort(function(a, b) {
+      mapResult = mapResult.sort(function (a, b) {
         return a.created_at < b.created_at;
       });
 
@@ -116,7 +120,7 @@ io.sockets.on("connection", function(socket) {
     }
   });
 
-  socket.on("clientToSeverDelete", async function(data) {
+  socket.on("clientToSeverDelete", async function (data) {
     console.log("clientToSeverDelete 服務器端收到客戶端資料", data);
 
     await db.queryAsync(
@@ -128,7 +132,7 @@ io.sockets.on("connection", function(socket) {
     );
     // 一開始拿的資料,MR_number有塞我的跟對方的,為了讓MR_number是塞對方的資料,所以要先篩選一次
     var Without_MY_MR_number = [];
-    results.forEach(function(value, index) {
+    results.forEach(function (value, index) {
       if (value.MR_number !== data.myFrom) {
         Without_MY_MR_number.push(value);
       }
@@ -155,7 +159,7 @@ io.sockets.on("connection", function(socket) {
       `SELECT * FROM mb_chat WHERE myTo = "${data.myFrom}" AND myRead = 0`
     );
 
-    mapResult.forEach(function(value, index) {
+    mapResult.forEach(function (value, index) {
       value.total = 0;
       for (var i = 0; i < results2.length; i++) {
         if (value.MR_number === results2[i].myFrom) {
@@ -164,7 +168,7 @@ io.sockets.on("connection", function(socket) {
       }
     });
 
-    mapResult = mapResult.sort(function(a, b) {
+    mapResult = mapResult.sort(function (a, b) {
       return a.created_at < b.created_at;
     });
 
@@ -181,7 +185,11 @@ io.sockets.on("connection", function(socket) {
     });
   });
 
-  socket.on("disconnect", function(data) {
+  socket.on('clientToServerFile', async function (data) {
+    console.log("clientToServerFile 服務器端收到客戶端資料", data);
+  })
+
+  socket.on("disconnect", function (data) {
     socket.disconnect();
 
     for (var i = 0; i < users.length; i++) {
@@ -197,9 +205,10 @@ io.sockets.on("connection", function(socket) {
     io.sockets.emit("SeverToClientPeople", users.length);
   });
 
+
   io.sockets.emit("SeverToClientPeople", users.length);
 });
 
-http.listen(5000, function() {
+http.listen(5000, function () {
   console.log("listening on *:5000");
 });
