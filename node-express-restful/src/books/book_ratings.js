@@ -3,7 +3,7 @@ const mysql = require("mysql");
 const bluebird = require("bluebird");
 const router = express.Router();
 const db = mysql.createConnection({
-  host: "192.168.27.186",
+  host: '192.168.27.186',
   user: "root",
   password: "root",
   database: "pbook"
@@ -23,7 +23,7 @@ router.get("/book_ratings", (req, res) => {
   db.queryAsync(sql)
     .then(results => {
       output.total = results[0]["total"];
-      return db.queryAsync("SELECT * FROM `vb_ratings`" + where );
+      return db.queryAsync("SELECT * FROM `vb_ratings`" + where);
     })
     .then(results => {
       output.rows = results;

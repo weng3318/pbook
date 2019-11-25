@@ -3,13 +3,22 @@ import { Col } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGripHorizontal, faList } from '@fortawesome/free-solid-svg-icons'
-import Page from './Page'
+import Page1 from './Page1'
+import Page2 from './Page2'
 import './Shop.scss'
 import BookInfoPic from './BookInfoPic'
 
 const DataPic = props => {
   function setMode() {
     localStorage.setItem('mode', 'list')
+  }
+  let Page, modeLink
+  if (props.keyword) {
+    Page = Page2
+    modeLink = '/books/search/' + props.nowPage + '/' + props.keyword
+  } else if (!props.keyword) {
+    Page = Page1
+    modeLink = '/books/' + props.nowPage + '/' + props.nowCategories
   }
   return (
     <>
@@ -24,14 +33,14 @@ const DataPic = props => {
         <div className="book_order mx-4 my-3 px-5 d-flex justify-content-between">
           <div>
             <span className="mr-2">顯示模式</span>
-            <Link to="/books/1/1" onClick={() => setMode()}>
+            <Link to={modeLink} onClick={() => setMode()}>
               <FontAwesomeIcon icon={faList} />
             </Link>
-            <Link to="/books/1/1">
+            <Link to={modeLink}>
               <FontAwesomeIcon icon={faGripHorizontal} className="active" />
             </Link>
           </div>
-          <div>
+          {/* <div>
             <span className="mr-2">排序依</span>
             <select>
               <option>書名(小->大)</option>
@@ -40,7 +49,7 @@ const DataPic = props => {
               <option>書名(小->大)</option>
               <option>書名(小->大)</option>
             </select>
-          </div>
+          </div> */}
         </div>
         <div className="book_data2 d-flex flex-wrap">
           {props.shopPayload &&
@@ -50,11 +59,7 @@ const DataPic = props => {
                 className="d-flex flex-column align-items-center data_each m-3"
                 key={data.sid}
               >
-                <BookInfoPic
-                  data={data}
-                  nowCategories={props.nowCategories}
-                  nowPage={props.nowPage}
-                ></BookInfoPic>
+                <BookInfoPic data={data}></BookInfoPic>
               </div>
             ))}
         </div>
@@ -62,6 +67,7 @@ const DataPic = props => {
           shopPayload={props.shopPayload}
           nowCategories={props.nowCategories}
           nowPage={props.nowPage}
+          keyword={props.keyword}
         ></Page>
         {/*Pagination*/}
       </Col>

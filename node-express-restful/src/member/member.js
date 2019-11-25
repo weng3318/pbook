@@ -13,6 +13,7 @@ router.post('/register', (req, res, next) => {
     const crypto = require('crypto')
     let sha1 = crypto.createHash('sha1')
     let hash = sha1.update(req.body.email).digest('hex')
+    let nickname = req.body.nickname
     // console.log(hash);
     // return
     let Member = new member(req.body.name, req.body.email, req.body.password, req.body.filename)
@@ -42,7 +43,7 @@ router.post('/register', (req, res, next) => {
                     db.query(`SELECT MAX(sid) FROM mr_information`,(err, data)=>{
                        new_number = number_blank.slice(0, -3)+ (data[0]['MAX(sid)']+1)
                     //    res.json(new_number)
-                       db.query(Member.getAddMemberSql(new_number, hash), (err, data) => {
+                       db.query(Member.getAddMemberSql(new_number, hash, nickname), (err, data) => {
                            if(err){
                                res.json({
                                    status: "伺服器錯誤，請稍後在試",
@@ -139,8 +140,8 @@ router.post('/queryBookcase/:page?', (req,res)=>{
     let perPage = 15 //每頁幾筆
     output.params = req.params  //可以在網址看params
     output.perPage = perPage;
-    let page = parseInt(req.param.page) || 1
-
+    let page = parseInt(req.params.page) || 1
+    
     let sql = `SELECT COUNT(1) total FROM vb_books b LEFT JOIN br_bookcase bc ON b.isbn = bc.isbn WHERE bc.number='${number}'`
     db.queryAsync(sql)
         .then(result=>{
@@ -150,6 +151,8 @@ router.post('/queryBookcase/:page?', (req,res)=>{
             if(page < 1) page = 1
             if(page > output.totalPage) page = output.totalPage
             output.page = page
+            console.log(page);
+            
             page = (page - 1) * perPage 
             return db.queryAsync(`SELECT b.* FROM vb_books b LEFT JOIN 
                 br_bookcase bc ON b.isbn = bc.isbn WHERE bc.number='${number}' LIMIT ${page}, ${perPage}`)
@@ -170,6 +173,20 @@ router.post('/addBookcase', (req, res)=>{
             status: "新增到書櫃",
             message: "加入到書櫃成功"
         })
+    })
+})
+
+//查詢二手書籍
+router.post('/queryMemberBooks', (req, res)=>{
+    let number = req.body.number
+    db.query(Member.queryMemberBook(number),(err, rows)=>{       
+        if(!rows.length){
+            res.json({
+                message: "查不到資料"
+            })
+        }else{
+            res.json(rows)
+        }
     })
 })
 
@@ -216,6 +233,19 @@ router.post('/login', (req, res, next) => {
 router.get('/categories', (req, res, next)=>{
     db.query(Member.queryCategories(), (err, row)=>{
         res.json({
+            row
+        })
+    })
+})
+
+//刪除上架書籍
+router.post('/deleteBook', (req, res)=>{
+    let sid = req.body.sid
+    console.log("sid",sid);
+    
+    db.query(Member.deleteBook(sid), (err, row) => {
+        res.json({
+            message: "刪除成功",
             row
         })
     })
@@ -325,7 +355,7 @@ const fs = require('fs')
 router.post('/upload', upload.single('avatar'),(req, res) =>{
         console.log("avatar",  req.body.avatar);
         if(req.file && req.file.mimetype){
-            console.log(req.file)
+            // console.log(req.file)
             switch(req.file.mimetype){
                 case 'image/png':
                 case 'image/jpeg':
@@ -353,8 +383,8 @@ router.post('/upload', upload.single('avatar'),(req, res) =>{
 //前端上傳圖片多張
 //API用POSTMAN測試可以
 router.post('/imgFiles', upload.array('avatar', 5 ),(req, res, next) =>{
-        console.log("avatar",  req.body);
-        console.log("Files", req.files.length); 
+        // console.log("avatar",  req.body);
+        // console.log("Files", req.files.length); 
         
         let images = []
         for(let i=0; i<req.files.length;i++){
@@ -381,7 +411,7 @@ router.post('/imgFiles', upload.array('avatar', 5 ),(req, res, next) =>{
                     })
             }
         }
-        console.log("images", images);
+        // console.log("images", images);
         
         res.json({
             message: "上傳成功",

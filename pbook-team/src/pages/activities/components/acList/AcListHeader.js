@@ -51,7 +51,6 @@ function AcListHeader(props) {
           <ul className="nav">
             <li className="nav-item">
               <button
-                active
                 className={
                   'nav-link ' +
                   (props.match.params.acType === 'discount' ? 'active' : '')
@@ -77,8 +76,8 @@ function AcListHeader(props) {
             <p>活動狀態</p>
             <select
               name="status"
-              value={props.visibilityFilters}
               onChange={selectHandler}
+              value={props.visibilityFilter && props.visibilityFilter.value}
             >
               <option value="1">進行中</option>
               <option value="0">尚未開始</option>

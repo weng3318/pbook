@@ -30,11 +30,11 @@
   position: relative;
 }
 
-.myCarouselButton.right {
+.myCarouselButton.myRight {
   margin-right: -10% !important;
 }
 
-.myCarouselButton.left {
+.myCarouselButton.myLeft {
   margin-left: -10% !important;
 }
 
@@ -60,11 +60,11 @@
     height: 30px;
   }
 
-  .myCarouselButton.right {
+  .myCarouselButton.myRight {
     margin-right: -35% !important;
   }
 
-  .myCarouselButton.left {
+  .myCarouselButton.myLeft {
     margin-left: -35% !important;
   }
 
@@ -75,6 +75,7 @@
 
 .carousel-indicators {
   margin-bottom: 5px;
+  z-index: 2;
 }
 
 .carousel-indicators li {

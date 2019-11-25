@@ -8,12 +8,12 @@ class Navbar extends React.Component {
   render() {
     return (
       <>
-          <nav className="brNavbar">
+          <div className="brNavbar">
           <BR_PathNow />
-          <BR_DateTime />
-          </nav>
+          {/* <BR_DateTime /> */}
+          </div>
       </>
-  )
+    )
   }
 }
 

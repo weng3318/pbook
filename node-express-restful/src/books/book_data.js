@@ -3,7 +3,7 @@ const mysql = require("mysql");
 const bluebird = require("bluebird");
 const router = express.Router();
 const db = mysql.createConnection({
-  host: "192.168.27.186",
+  host: '192.168.27.186',
   user: "root",
   password: "root",
   database: "pbook"
@@ -34,7 +34,7 @@ router.get("/book_data/:page?/:categories?/:keyword?", (req, res) => {
     where += " AND `vb_books`.`categories`" + " = " + categories;
     output.categories = categories;
   }
-  
+
   let sql = "SELECT COUNT(1) `total` FROM `vb_books`" + where;
   // console.log(sql);
   db.queryAsync(sql)
