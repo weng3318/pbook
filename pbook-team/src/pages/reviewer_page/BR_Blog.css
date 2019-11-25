@@ -1,3 +1,98 @@
+.br_CKEditor{
+    background: #ccc;
+    min-height: 600px;
+    border-bottom: 2px solid #2d3a3a;
+}
+/* 編輯模式，標題文字 */
+.h3_Red{
+    text-align: center;
+    font-weight: 800;
+    color: #ff525b;
+    margin: 10px 0 5px 0;
+}
+.h3_gray{
+    text-align: center;
+    font-weight: 800;
+    color: #979d9d;
+    margin: 10px 0 5px 0;
+}
+/* 部落格 編輯書評，按鈕 */
+.Blog_Edit{
+    width: 50px;
+    position: absolute;
+    right: 0rem;
+    transform: translateX(-50%);
+    top: 1rem;
+    border:2px solid transparent;
+    border-radius: 25px;
+    transition: 0.5s;
+}
+.Blog_Edit:hover{
+    border:2px solid #ffc408;
+}
+/* 編輯按鈕，按鈕變形，含外框線 (控制位置) */
+.Animate_Edit_Box,.Animate_Close_Box{
+    position: absolute;
+    top: 20px;
+    right: 0;
+    width: 50px;
+    border: 2px 0 2px 2px solid transparent;
+    height: 50px;
+    border-radius: 25px 0 0 25px;
+    transition: 0.3s;
+}
+/* 編輯按鈕，反饋動畫 (長出) */
+.Animate_Edit_Box:hover{
+    width: 140px;
+    border-top: 3px solid #cde2d0;
+    border-bottom: 3px solid #cde2d0;
+    border-left: 3px solid #cde2d0;
+}
+/* 關閉文章，反饋動畫 (長出) */
+.Animate_Close_Box:hover{
+    width: 140px;
+    border-top: 2px solid #ff525b;
+    border-bottom: 2px solid #ff525b;
+    border-left: 2px solid #ff525b;
+}
+/* 編輯按鈕，填滿顏料 (內層導角) */
+.Animate_Edit_btn,.Animate_Close_btn{
+    width: 100%;
+    height: 100%;
+    border-radius: 25px 0 0 25px;
+    background: #2d3a3a;
+}
+/* 編輯模式，圖標 */
+.icon_Blog_Edit,.icon_Blog_Close{
+    position: absolute;;
+    left: 3px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+/* 編輯模式，顯示文字 */
+.text_Blog_Edit,.text_Blog_Close{
+    width: 80px;
+    color: #cde2d0;
+    position: absolute;
+    font-size: 1.2rem;
+    left: 50px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: 0.5s;
+}
+/* 編輯模式，文字 (動畫控制) */
+.Animate_Edit_Box:hover .text_Blog_Edit{
+    display: block;
+    color: #cde2d0;
+    opacity: 1;
+}
+/* 關閉文章，文字 (動畫控制) */
+.Animate_Close_Box:hover .text_Blog_Close{
+    display: block;
+    color: #ff525b;
+    opacity: 1;
+}
 /* 邊框顏色，參照用 */
 .BlogLine {
     border: 3px solid #ff525b;
@@ -18,16 +113,18 @@
 }
 /* 書評部落格 (參照背景) */
 .reviewerBlog {
+    border-bottom: 2px solid #2d3a3a;
     padding: 30px 200px 50px 200px;
     /* background: #fff; */
     /* background: url(../reviewer_page//images/03_評品書.png) center center; */
     max-width: 1920px;
     margin: 0 auto;
     background-size: cover;
+    overflow: hidden;
 }
 /* 書評部落格 (參照偽元素) */
 .reviewerBlog::after{
-    /* content: ""; */
+    content: "";
     display: block;
     background: rgba(0,0,0,.25);
     position: absolute;
@@ -35,6 +132,7 @@
     right:0;
     top:0;
     bottom:0;
+    z-index: -1;
 }
 .BlogBG{
     width: 160%;
@@ -47,9 +145,18 @@
     right: 1rem;
     bottom: 1rem;
 }
-@media (max-width: 900px) {
-    /* 部落格，整體區域 (狀態改變) */
+/* todo.. UX按鈕 */
+@media (max-width: 786px) {
+    /* 部落格內文，RWD (閱讀性調整) */
     .reviewerBlog {
-        padding: 20px 80px 20px 80px;
+        padding: 20px 50px 20px 50px;
+    }
+    /* 編輯按鈕，RWD (位置調整) */
+    .Animate_Edit_Box{
+        top: -100px;
+    }
+    /* 關閉文章，RWD (位置調整) */
+    .Animate_Close_Box{
+        top: 30px;
     }
 }

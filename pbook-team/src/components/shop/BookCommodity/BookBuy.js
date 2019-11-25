@@ -11,11 +11,11 @@ const BookBuy = props => {
     props.bookInfoPayload &&
     props.bookInfoPayload.rows &&
     props.bookInfoPayload.rows[0]
-  function addCart(event) {
-    localStorage.setItem('buy', JSON.stringify(data))
+  function addCart() {
+    console.log('addCart')
   }
-  function addFav(event) {
-    console.log(JSON.parse(localStorage.getItem('buy')).sid)
+  function addFav() {
+    console.log('addFav')
   }
   return (
     <>

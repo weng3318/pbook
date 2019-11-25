@@ -23,6 +23,41 @@
   transform: translate(0, 40px);
 }
 
+/* 搜尋欄 */
+.reviews_search {
+  padding: 10px;
+  height: 20px;
+  width: 500px;
+  border: 1px solid #eaeaea;
+  outline: none;
+}
+.reviews_search:hover {
+  border-color: #a0a0a0 #b9b9b9 #b9b9b9 #b9b9b9;
+}
+.reviews_search:focus {
+  border-color: #cde2d0;
+}
+
+/* 搜尋結果 */
+.reviews_search_result {
+  width: 500px;
+  background: #fff;
+  border: 1px solid #cde2d0;
+  outline: none;
+  transform: translate(0, -1px);
+}
+
+.reviews_search_result li {
+  width: 498px;
+  padding: 0 0 0 10px;
+  background: #fff;
+  outline: none;
+}
+
+.reviews_search_result li:hover {
+  background: #ace;
+}
+
 .reviews_btn {
   background: #fff;
   width: 70px;
@@ -262,8 +297,17 @@
   margin: 1rem 0 2rem 880px;
 }
 
-/* 書評下方點評 */
-.reviews_reply {
+/* 書評下方顯示欄 */
+.reviews_reply_view {
+  border-bottom: 1px solid #ccc;
+  background-color: rgba(204, 204, 204, 0.3);
+  width: 1000px;
+  height: 30px;
+  padding: 4px 8px;
+}
+
+/* 書評下方輸出欄 */
+.reviews_reply_text {
   width: 1000px;
   height: 35px;
   margin: 0 0 10px 0;

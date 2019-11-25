@@ -14,6 +14,11 @@ const ShopDetail = props => {
     <>
       <Col md={7}>
         <div className="shopDetail my-5">
+          <div className="m-4 d-flex justify-content-around align-items-center tableTop">
+            <div className="picName">商品明細</div>
+            <div className="bookAmount">數量</div>
+            <div className="bookPrice">價格</div>
+          </div>
           <div className="m-4 d-flex justify-content-between align-items-center eachDetail">
             <div className="picture">
               <Link to={'/books/information/123'} target="_blank">

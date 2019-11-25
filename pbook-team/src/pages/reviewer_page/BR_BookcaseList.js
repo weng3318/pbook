@@ -1,10 +1,27 @@
 import React from 'react'
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import ReviewerBlog from '../ReviewerBlog'
+import ReviewerBlogEdit from '../ReviewerBlogEdit'
 
 class BR_BookcaseList extends React.Component {
-    render() {
-        // console.log(this.props)
+    constructor(props) {
+        super(props);
+        this.state = {
+         opened: null,
+        }
+        this.handleOpened.bind(this)
+     }
+    //  裝填
+     handleOpened = (opened) => {
+         this.setState({ opened })
+    }
+ 
+     render() {
+        const { opened } = this.state;
+        const { sid } = this.props;
+        const { name } = this.props;
+        const { number } = this.props;
+
     (function(d, s, id) {
         var js, fjs = d.getElementsByTagName(s)[0];
         if (d.getElementById(id)) return;
@@ -14,31 +31,58 @@ class BR_BookcaseList extends React.Component {
       }(document, 'script', 'facebook-jssdk'))
         return (
             <>
-            <Router>
-<section className="ReviewerListAllBox_Bookcase">
+    <section className="ReviewerListAllBox_Bookcase">
             {/* 書籍圖片 */}
-        <Link to={"/reviewer/reviewerBooks/reviewerBlog/"+this.props.sid} className="d-flex justify-content-center borderLineTop">
-          <div className="brAvatarAllBox_Bookcase borderLineLB">
+
+          <div className="brAvatarAllBox_Bookcase" onClick={() => this.handleOpened(this.state.opened === 'blog' ? null : 'blog')}>
             {/* <img className="brBookInfoImg_Bookcase" src={require(`./images_books/vb_9789578587823.jpg`)}/> */}
             {/* <img className="brBookInfoImg_Bookcase" src={require(`./images/${this.props.pic}`)}/> */}
-            <img className="brBookInfoImg_Bookcase" src={`http://localhost/books/src/venderBooks_Management/vb_images/${this.props.pic}`} alt=""/>
+            <img className="brBookInfoImg_Bookcase" src={`http://localhost:5555/images/books/${this.props.pic}`} alt=""/>
+            {/* <img className="brBookInfoImg_Bookcase" src={`http://localhost/books/src/venderBooks_Management/vb_images/${this.props.pic}`} alt=""/> */}
             </div>
-        </Link>
-          <div className="brInfoBox_Bookcase borderLineUpDown"><h5 className="h5_br">書籍內容</h5>
-                <div className="brInfoText_Bookcase">
-                    <span className="bookInfo_Bookcase">書名：</span>{this.props.name}
-                    <br/>
-                    <span className="bookInfo_Bookcase">作者：</span>{this.props.author}
-                    <br/>
-                    <br/>
-                    <h5 className="brInfoText_Bookcase" dangerouslySetInnerHTML={{__html:this.props.introduction? this.props.introduction:this.props.blog}}></h5>
-                </div>
-                {/* <div className="brInfoText ">{this.props.intro}</div> */}
-            <div className="brIconBox_Bookcase">
-            
 
-              {/* <a href='javascript: void(window.open("http://www.facebook.com/share.php?u=".concat
-              (encodeURIComponent("https://i.imgur.com/nLnK93i.png"))));'>分享品書雞</a> */}
+        <div className="bookInfoRWD">
+                <div className="bookNameBox_Bookcase">
+                    <div className="bookName_Bookcase">書名：</div>
+                    <div className="bookNameText_Bookcase">{this.props.name}</div>
+                </div>
+                <div className="beAuthorText">
+                    作者：{this.props.author}
+                </div>
+        </div>
+
+          <div className="brInfoBox_Bookcase borderLineUpDown">
+          {/* <h4 className="h4_br">書籍簡介</h4> */}
+                <div className="brInfoTextBox_Bookcase">
+
+                    <div className="bookInfo">
+                        <div className="bookNameBox_Bookcase">
+                            <div className="bookName_Bookcase">書名：</div>
+                            <div className="bookNameText_Bookcase">{this.props.name}</div>
+                        </div>
+                        <div className="beAuthorText">
+                            作者：{this.props.author}
+                        </div>
+                    </div>
+                    {/* 書櫃區的簡介內文 */}
+                    <h5 className="brInfoText_Bookcase" dangerouslySetInnerHTML={{__html:this.props.introduction? this.props.introduction:this.props.blog}}></h5>
+
+                </div>
+
+            {/* 編輯模式按鈕 */}
+                    <div className="Animate_Edit_Box">
+                        <div className="Animate_Edit_btn" onClick={() => this.handleOpened(opened === 'edit' ? null : 'edit')}>
+                            <img className="icon_Blog_Edit" src={require('../reviewer_page/images/icon_Blog_Edit.png')}/>
+                            <h5 className="text_Blog_Edit">編輯模式</h5>
+                        </div>
+                    </div>
+
+            <div className="brIconBox_Bookcase">
+            {/* 收藏書籍 (圖示) */}
+                <Link to={'/reviewer'} className="brIconShare_Bookcase">
+                        <img className="brMark_img" src={require('../reviewer_page/images/icon_shaer.png')}/>
+                </Link>
+            {/* 分享功能 */}
                     <div className="fbBox">
                         <div className="fb-share-button" 
                             data-href='https://i.imgur.com/PKtu1i4.png'
@@ -47,28 +91,13 @@ class BR_BookcaseList extends React.Component {
                     </div>
               </div>
     </div>
-            {/* 評分組件 */}
+            {/* 評分組件區塊 */}
     {/* <div className="brStarBox_Bookcase borderLine"></div> */}
     </section>
-                <Switch>
-                    <Route exact 
-                    path="/reviewer/reviewerBooks/reviewerBlog/:sid?" 
-                    component={ReviewerBlog} />
-                </Switch>
-                    <a className="brIconShare_Bookcase" href={this.props.youtube} target="black">
-                            <img src={require('../reviewer_page/images/icon_youtube.png')}/>
-                    </a>
-                    <a className="brIconShare_Bookcase" href={this.props.facebook} target="black">
-                            <img src={require('../reviewer_page/images/icon_facebook.png')}/>
-                    </a>
-                    <a className="brIconShare_Bookcase" href={this.props.twitter} target="black">
-                            <img src={require('../reviewer_page/images/icon_twitter.png')}/>
-                    </a>
-                    <a className="brIconShare_Bookcase" href={this.props.facebook} target="black">
-                            <img src={require('../reviewer_page/images/icon_shaer.png')}/>
-                    </a>
-            </Router>
-        {/* <h3>測試書本：{this.props.name}</h3> */}
+    {/* 切換文章 與 編輯 */}                   {/* onHandleOpen 爺爺想打孫女 brBlog brBlogList 母湯 */}
+    {opened === 'blog' && <ReviewerBlog sid={sid} opened={opened} onHandleOpen={this.handleOpened}/>}
+    {opened === 'edit' && <ReviewerBlogEdit sid={sid} name={name} number={number}/>}
+
         {/* <div style={{height:'30px'}}></div> */}
         </>
         )
