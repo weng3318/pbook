@@ -42,7 +42,7 @@ const BookScore = props => {
   const { bookInformation } = props
   useEffect(() => {
     star()
-  },[])
+  }, [])
 
   //資料ajax
   const star = () => {
@@ -176,7 +176,9 @@ const BookScore = props => {
             </div>
           </div>
           <div className="reviews_col">
-            <span className="reviews_bol">{avg[data.sid]}</span>
+            <span className="reviews_bol">
+              {!isNaN(avg[data.sid]) && avg[data.sid]}
+            </span>
             <Box component="fieldset" mt={0} borderColor="transparent">
               <StyledRating
                 name="customized-color"

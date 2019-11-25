@@ -1,13 +1,9 @@
 const express = require("express");
 const url = require("url");
 const mysql = require("mysql");
-const cors = require("cors");
-const body_parser = require("body-parser");
 const bluebird = require("bluebird");
 const router = express.Router();
-const app = express();
 const db = mysql.createConnection({
-
   // host: '192.168.27.186',
   host: '192.168.27.186',
   user: "root",

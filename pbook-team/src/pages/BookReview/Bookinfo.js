@@ -19,6 +19,7 @@ function Bookinfo() {
   const [page, getPage] = useState()
   const [search, setSearch] = useState({
     text: '',
+    getData: false,
   })
   const [s_result, outputResult] = useState([])
   //---------------------------------------------------------------------------
@@ -152,21 +153,26 @@ function Bookinfo() {
         .get(`http://localhost:5555/reviews/search_book/?${search}`)
         .then(res => {
           outputResult(res.data.data)
+          setSearch({ getData: true })
           console.log(res.data)
         })
+    } else {
+      setSearch({ getData: false })
     }
   }
 
   return (
     <>
       <CategoryBar>
-        {categorys.map(data => (
-          <Link key={data.sid} to={'reviews?c=' + data.sid + '&p=1'}>
-            <button value={data.sid} key={data.sid} className="reviews_btn">
-              {data.categoriesName}
-            </button>
-          </Link>
-        ))}
+        {categorys
+          .filter((key, index) => index < 20)
+          .map(data => (
+            <Link key={data.sid} to={'reviews?c=' + data.sid + '&p=1'}>
+              <button value={data.sid} key={data.sid} className="reviews_btn">
+                {data.categoriesName}
+              </button>
+            </Link>
+          ))}
       </CategoryBar>
 
       <div>
@@ -178,10 +184,17 @@ function Bookinfo() {
           placeholder="搜尋書名"
         />
 
-        {s_result !== undefined ? (
+        {search.getData ? (
           <ul className="reviews_search_result">
             {s_result.map(res => (
-              <li>1</li>
+              <li>
+                <a
+                  target=" _blank "
+                  href={`http://localhost:3000/book_reviews/${res.sid}`}
+                >
+                  {res.name}
+                </a>
+              </li>
             ))}
           </ul>
         ) : (
