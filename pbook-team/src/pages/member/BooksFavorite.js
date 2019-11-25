@@ -9,11 +9,11 @@ class BooksFavorite extends React.Component {
     this.state = {
       path: 'http://localhost:5555/images/books/',
       booksData: [],
-      data:[],
+      data: [],
       nowPage: '',
       totalPage: '',
       totalRows: '',
-      page: 1
+      page: 1,
     }
   }
 
@@ -21,17 +21,15 @@ class BooksFavorite extends React.Component {
     this.queryBooks()
   }
 
-  changePage = ( page )=>{
-    console.log(page);
-    this.setState({page})
+  changePage = page => {
+    console.log(page)
+    this.setState({ page })
   }
-
 
   queryBooks = () => {
     // this.changePage()
     let number = JSON.parse(localStorage.getItem('user')).MR_number
-    
-    
+
     fetch('http://localhost:5555/member/queryBookcase/' + this.state.page, {
       method: 'POST',
       headers: {
@@ -46,25 +44,24 @@ class BooksFavorite extends React.Component {
       })
       .then(data => {
         // console.log("data11", data);
-        if (data.totalRows == 0){
-          return 
+        if (data.totalRows == 0) {
+          return
         }
-        this.setState({ 
+        this.setState({
           data,
-          booksData: data.rows ,
+          booksData: data.rows,
           nowPage: data.page,
           totalPage: data.totalPage,
-          totalRows: data.totalRows
+          totalRows: data.totalRows,
         })
       })
   }
   // componentDidUpdate(page){}
 
-  
   render() {
-    console.log("newPage", this.state.page);
-    console.log(this.props.match.params.page);
-    
+    console.log('newPage', this.state.page)
+    console.log(this.props.match.params.page)
+
     let data = this.state.booksData
     //因為第一次渲染是空的會報錯
     // console.log("data ",data && data)
@@ -76,38 +73,13 @@ class BooksFavorite extends React.Component {
       <>
         <div className="booksContent">
           <div className="title">收藏書籍</div>
-<<<<<<< HEAD
-<<<<<<< HEAD
           <div className="wrap flex-wrap">
-            {(data && data).map(data => (
-              <Link
-                to={'/books/information/1/' + data.categories + '/' + data.name}
-              >
-                <div className="list">
-                  <img className="listImg" src={this.state.path + data.pic} />
-                  <div className="booksTitle">{data.name}</div>
-                  {/* <div className="booksInfo"> */}
-                  {/* 預留小圖示 */}
-                  {/* <img class="avatar" src="../images/gift.png" alt=""/> */}
-                  {/* <div className="introduction">
-                                      {data.introduction}
-                                      </div> */}
-                  {/* </div> */}
-                </div>
-              </Link>
-            ))}
-          </div>
-=======
-=======
->>>>>>> shan/master
-             <div className="wrap flex-wrap">
-             {
-                (!data.length)?(
-                  <>
-                    <div className="nobook">目前還沒有收藏書籍</div>
-                  </>
-                ):(
-                  <>
+            {!data.length ? (
+              <>
+                <div className="nobook">目前還沒有收藏書籍</div>
+              </>
+            ) : (
+              <>
                 {(data && data).map(data => (
                   <Link
                     to={'/books/information/' + data.sid}
@@ -115,7 +87,10 @@ class BooksFavorite extends React.Component {
                     key={data.sid}
                   >
                     <div className="list">
-                      <img className="listImg" src={this.state.path + data.pic} />
+                      <img
+                        className="listImg"
+                        src={this.state.path + data.pic}
+                      />
                       <div className="booksTitle">{data.name}</div>
                       {/* <div className="booksInfo"> */}
                       {/* 預留小圖示 */}
@@ -128,20 +103,17 @@ class BooksFavorite extends React.Component {
                   </Link>
                 ))}
               </>
-              )
-            }
-            </div>
+            )}
+          </div>
 
-            <MyPagination 
-              nowPage = {this.state.page}
-              totalPage = {totalPage}
-              totalRows = {totalRows}
-              changePage = {(page) => { this.changePage(page)}}
-              />
-<<<<<<< HEAD
->>>>>>> shan/master
-=======
->>>>>>> shan/master
+          <MyPagination
+            nowPage={this.state.page}
+            totalPage={totalPage}
+            totalRows={totalRows}
+            changePage={page => {
+              this.changePage(page)
+            }}
+          />
         </div>
       </>
     )

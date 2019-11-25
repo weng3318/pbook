@@ -5,24 +5,10 @@ const mysql = require("mysql");
 const bluebird = require("bluebird");
 const router = express.Router();
 const db = mysql.createConnection({
-<<<<<<< HEAD
-<<<<<<< HEAD
-  // host: "localhost",
-  host: "localhost",
-  user: "opcp",
-  password: "opcp2428",
-=======
-=======
-
->>>>>>> shan/master
   // host: '192.168.27.186',
-  host: '192.168.27.186',
+  host: "192.168.27.186",
   user: "root",
   password: "root",
-<<<<<<< HEAD
->>>>>>> shan/master
-=======
->>>>>>> shan/master
   database: "pbook"
 });
 db.connect();
@@ -129,7 +115,7 @@ router.put("/editReview/data", (req, res) => {
 
 //書評下方回復增加API
 router.get("/reply", (req, res) => {
-  const sql = `SELECT mr_information.MR_nickname,vb_reply.* FROM mr_information,vb_reply WHERE mr_information.MR_number = vb_reply.member ORDER BY vb_reply.create_time DESC`;
+  const sql = `SELECT mr_information.MR_nickname,vb_reply.* FROM mr_information,vb_reply WHERE mr_information.MR_number = vb_reply.member ORDER BY vb_reply.create_time ASC`;
   db.query(sql, (error, results) => {
     if (error) {
       return res.send(error);
@@ -139,6 +125,27 @@ router.get("/reply", (req, res) => {
       });
     }
   });
+});
+
+//加入書櫃
+router.post("/bookcase", (req, res) => {
+  let data = [];
+  const bookcase = {
+    number: req.body.number,
+    isbn: req.body.isbn
+  };
+  //INSERT INTO br_bookcase(number, isbn, bookName,blog,created_time)VALUES('MR00166', '9789864777112','','', now())
+  data.push(bookcase);
+  const sql = `INSERT INTO br_bookcase(number,isbn,bookName,blog,created_time) 
+            VALUES('${data[0].number}','${data[0].isbn}', '', '', now()) `;
+  db.query(sql, (error, results) => {
+    if (error) {
+      return res.send(error);
+    } else {
+      return res.send("新增成功");
+    }
+  });
+  console.log(data);
 });
 
 module.exports = router;

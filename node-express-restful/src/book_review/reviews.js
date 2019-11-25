@@ -1,30 +1,13 @@
 const express = require("express");
 const url = require("url");
 const mysql = require("mysql");
-const cors = require("cors");
-const body_parser = require("body-parser");
 const bluebird = require("bluebird");
 const router = express.Router();
-const app = express();
 const db = mysql.createConnection({
-<<<<<<< HEAD
-<<<<<<< HEAD
-  // host: "localhost",
-  host: "localhost",
-  user: "opcp",
-  password: "opcp2428",
-=======
-=======
-
->>>>>>> shan/master
   // host: '192.168.27.186',
   host: '192.168.27.186',
   user: "root",
   password: "root",
-<<<<<<< HEAD
->>>>>>> shan/master
-=======
->>>>>>> shan/master
   database: "pbook"
 });
 db.connect();
