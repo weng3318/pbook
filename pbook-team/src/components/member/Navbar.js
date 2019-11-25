@@ -10,7 +10,7 @@ class Navbar extends React.Component {
       <>
           <div className="brNavbar">
           <BR_PathNow />
-          <BR_DateTime />
+          {/* <BR_DateTime /> */}
           </div>
       </>
     )

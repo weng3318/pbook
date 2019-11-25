@@ -572,11 +572,15 @@ class Login extends React.Component {
                     Forgot your password?
                   </a>
                   {/* <div className="social-container ">
-              <div className="title">快速登入</div>
-              <Link to="/fbLogin">
-                <FbLogin/>
-              </Link>
-            </div> */}
+                    <div className="title">快速登入</div> */}
+                      {/* <Link to="/fbLogin">
+                      <FbLogin className="facebook-login"/> */} 
+                      {/* <div className="facebook-login">
+                        <i class="fab fa-facebook-square" style={{width: '80px'}}></i>
+                        <div className="social_title">Log in with Facebook</div>
+                      </div> */}
+                    {/* </Link> */}
+                  {/* </div> */}
                 </div>
               ) : (
                 <div className="container_front">
@@ -603,12 +607,6 @@ class Login extends React.Component {
                   <button className="login_btn" onClick={this.sendPWD}>
                     寄送EMAIL
                   </button>
-                  {/* <div className="social-container ">
-              <div className="title">快速登入</div>
-              <Link to="/fbLogin">
-              <FbLogin/>
-              </Link>
-            </div> */}
                 </div>
               )}
 

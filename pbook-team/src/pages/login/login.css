@@ -258,12 +258,30 @@
     display: block;
     margin-top: 0em;
   }
+  .facebook-login{
+    border-radius: 3px;
+    height: 42px;
+    width: 80%;
+    font-size: 24px;
+    line-height: 13px;
+    letter-spacing: .5px;
+    border-radius: 10px;
+    background: #cde2e0;
+    font-family: RalewaySemiBold,Helvetica,sans-serif;
+    text-decoration: none;
+    text-transform: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 40px;
+  }
 
   .forgetPassword{
     display: block;
     min-width: 200px;
     margin: 20px;
     padding: 20px;
+    cursor: pointer;
   }
 
   .login_title{

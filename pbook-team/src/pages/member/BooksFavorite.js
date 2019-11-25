@@ -58,7 +58,9 @@ class BooksFavorite extends React.Component {
         })
       })
   }
-  // componentDidUpdate(page)
+  // componentDidUpdate(page){}
+
+  
   render() {
     console.log("newPage", this.state.page);
     console.log(this.props.match.params.page);
@@ -74,28 +76,38 @@ class BooksFavorite extends React.Component {
       <>
         <div className="booksContent">
           <div className="title">收藏書籍</div>
-            <div className="wrap flex-wrap">
-              {(data && data).map(data => (
-                <Link
-                  to={'/books/information/' + data.sid}
-                  target="_blank"
-                  key={data.sid}
-                >
-                  <div className="list">
-                    <img className="listImg" src={this.state.path + data.pic} />
-                    <div className="booksTitle">{data.name}</div>
-                    {/* <div className="booksInfo"> */}
-                    {/* 預留小圖示 */}
-                    {/* <img class="avatar" src="../images/gift.png" alt=""/> */}
-                    {/* <div className="introduction">
-                                      {data.introduction}
-                                      </div> */}
-                    {/* </div> */}
-                  </div>
-                </Link>
-              ))}
+             <div className="wrap flex-wrap">
+             {
+                (!data.length)?(
+                  <>
+                    <div className="nobook">目前還沒有收藏書籍</div>
+                  </>
+                ):(
+                  <>
+                {(data && data).map(data => (
+                  <Link
+                    to={'/books/information/' + data.sid}
+                    target="_blank"
+                    key={data.sid}
+                  >
+                    <div className="list">
+                      <img className="listImg" src={this.state.path + data.pic} />
+                      <div className="booksTitle">{data.name}</div>
+                      {/* <div className="booksInfo"> */}
+                      {/* 預留小圖示 */}
+                      {/* <img class="avatar" src="../images/gift.png" alt=""/> */}
+                      {/* <div className="introduction">
+                                        {data.introduction}
+                                        </div> */}
+                      {/* </div> */}
+                    </div>
+                  </Link>
+                ))}
+              </>
+              )
+            }
             </div>
-            
+
             <MyPagination 
               nowPage = {this.state.page}
               totalPage = {totalPage}

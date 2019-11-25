@@ -61,9 +61,21 @@ class Member{
         return sql
     }
 
+    //查詢二手書櫃
+    queryMemberBook(number){
+        let sql = `SELECT * FROM mb_books WHERE mb_shelveMember = '${number}'`
+        return sql
+    }
+
     //修改資料
     modifyMemberInfoSql(number, email, name, nickname, birthday, mobile, address, filename){
         let sql = `UPDATE mr_information SET MR_email = '${email}',MR_name = '${name}', MR_nickname = '${nickname}',MR_birthday = '${birthday}',MR_mobile = '${mobile}',MR_address = '${address}',MR_pic='${filename}' WHERE MR_number = '${number}' `
+        return sql
+    }
+
+    //刪除二手書上架書籍
+    deleteBook(sid){
+        let sql = `DELETE FROM mb_books WHERE mb_sid = '${sid}'`
         return sql
     }
 

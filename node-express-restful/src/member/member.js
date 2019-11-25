@@ -176,6 +176,20 @@ router.post('/addBookcase', (req, res)=>{
     })
 })
 
+//查詢二手書籍
+router.post('/queryMemberBooks', (req, res)=>{
+    let number = req.body.number
+    db.query(Member.queryMemberBook(number),(err, rows)=>{       
+        if(!rows.length){
+            res.json({
+                message: "查不到資料"
+            })
+        }else{
+            res.json(rows)
+        }
+    })
+})
+
 
 
 //登入
@@ -219,6 +233,19 @@ router.post('/login', (req, res, next) => {
 router.get('/categories', (req, res, next)=>{
     db.query(Member.queryCategories(), (err, row)=>{
         res.json({
+            row
+        })
+    })
+})
+
+//刪除上架書籍
+router.post('/deleteBook', (req, res)=>{
+    let sid = req.body.sid
+    console.log("sid",sid);
+    
+    db.query(Member.deleteBook(sid), (err, row) => {
+        res.json({
+            message: "刪除成功",
             row
         })
     })

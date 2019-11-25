@@ -26,6 +26,12 @@ $content: 24px;
   width: 1180px;
   border-bottom: 3px solid $yellow;
 }
+.nobook{
+  width: 100%;
+  padding-left: 450px;
+  font-size: $big_text;
+  margin-top: 50px;
+}
 
 .err_border {
   background-color: #eee;
@@ -67,6 +73,10 @@ $content: 24px;
     bottom: 0;
     width: 100%;
   }
+  .nobook{
+    @extend .nobook;
+  }
+
   .Book_title {
     @extend .MB_title;
   }
@@ -131,6 +141,10 @@ $content: 24px;
     top: 0;
     bottom: 0;
     width: 100%;
+  }
+
+  .nobook{
+    @extend .nobook;
   }
 
   .title {
