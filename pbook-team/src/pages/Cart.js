@@ -1,10 +1,10 @@
 import React from 'react'
 import Buy from '../components/cart/Buy'
 
-const Cart = () => {
+const Cart = props => {
   return (
     <>
-      <Buy></Buy>
+      <Buy history={props.history}></Buy>
     </>
   )
 }

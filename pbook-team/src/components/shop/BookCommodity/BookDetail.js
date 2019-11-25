@@ -29,14 +29,7 @@ const BookDetail = props => {
             </div>
             <div className="marks d-flex align-items-center justify-content-center mr-3">
               <FontAwesomeIcon icon={faBookmark} className="mr-2" />
-              <span className="fav">
-                {data &&
-                  data.fiveStars + data &&
-                  data.fourStars + data &&
-                  data.threeStars + data &&
-                  data.twoStars + data &&
-                  data.oneStars}
-              </span>
+              <span className="fav">{data && data.totalStars}</span>
               評論
             </div>
           </div>

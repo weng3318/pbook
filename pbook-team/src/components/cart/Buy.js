@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
-import Top from './Top'
+import StepLine from './StepLine'
 import StepOne from './StepOne'
 import StepTwo from './StepTwo'
 import StepThree from './StepThree'
+import Breadcrumb from './Breadcrumb'
 import './Cart.scss'
 
 const Buy = props => {
@@ -11,6 +12,9 @@ const Buy = props => {
   let Steps
   function changeSteps(e) {
     setSteps(e)
+  }
+  function toHome() {
+    props.history.push(`/`)
   }
   if (current === 0) {
     Steps = StepOne
@@ -22,16 +26,17 @@ const Buy = props => {
   return (
     <>
       <Container className="px-0 cart_wrap" fluid={true}>
-        <Container className="py-3 top">
+        <Breadcrumb></Breadcrumb>
+        <Container className="pt-5 pb-3 top">
           <Row>
             <Col md={12}>
-              <Top current={current}></Top>
+              <StepLine current={current}></StepLine>
             </Col>
           </Row>
         </Container>
         <Container>
           <Row>
-            <Steps changeSteps={changeSteps}></Steps>
+            <Steps changeSteps={changeSteps} toHome={toHome}></Steps>
           </Row>
         </Container>
       </Container>
