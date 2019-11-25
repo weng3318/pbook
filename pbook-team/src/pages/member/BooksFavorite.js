@@ -77,6 +77,7 @@ class BooksFavorite extends React.Component {
         <div className="booksContent">
           <div className="title">收藏書籍</div>
 <<<<<<< HEAD
+<<<<<<< HEAD
           <div className="wrap flex-wrap">
             {(data && data).map(data => (
               <Link
@@ -97,6 +98,8 @@ class BooksFavorite extends React.Component {
             ))}
           </div>
 =======
+=======
+>>>>>>> shan/master
              <div className="wrap flex-wrap">
              {
                 (!data.length)?(
@@ -135,6 +138,9 @@ class BooksFavorite extends React.Component {
               totalRows = {totalRows}
               changePage = {(page) => { this.changePage(page)}}
               />
+<<<<<<< HEAD
+>>>>>>> shan/master
+=======
 >>>>>>> shan/master
         </div>
       </>
