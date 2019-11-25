@@ -219,7 +219,7 @@
     }
     /* 頭書，單本書區域 (圖片區) */
     .brAvatarAllBox_Bookcase{
-        margin: 10px;
+        margin: 20px 20px 40px 20px;
         border-right:3px solid transparent;
         border-bottom:3px solid transparent;
         height: 140px;

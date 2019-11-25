@@ -17,9 +17,9 @@ class BR_BlogList extends React.Component {
     render() {
       return (
       <>
-      <div className="Animate_Edit_Box">
-              <div className="Animate_Edit_btn" onClick={() => this.props.onHandleOpen( this.props.opened === 'blog'? null : 'blog' )}>
-                  <img className="icon_Blog_Edit" src={require('../reviewer_page/images/icon_Blog_Close.png')}/>
+      <div className="Animate_Close_Box">
+              <div className="Animate_Close_btn" onClick={() => this.props.onHandleOpen( this.props.opened === 'blog'? null : 'blog' )}>
+                  <img className="icon_Blog_Close" src={require('../reviewer_page/images/icon_Blog_Close.png')}/>
                   <h5 className="text_Blog_Close">關閉文章</h5>
               </div>
       </div>

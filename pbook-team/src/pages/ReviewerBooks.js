@@ -79,10 +79,11 @@ class ReviewerBooks extends React.Component {
     for (let i = 0; i < csData.length; i++) {
       if (csData[i].number == reviewerData.number) {
         bookcaseData = csData[i].isbn
-        console.log('來自書評家',reviewerData.name,'的書籍isbn：',bookcaseData)
+        // console.log('來自書評家',reviewerData.name,'的書籍isbn：',bookcaseData)
       }
     }
-
+    // 熱門書籍數量
+    let hotNum = 5
     return (
       <>
         <BR_Navbar />
@@ -107,7 +108,7 @@ class ReviewerBooks extends React.Component {
               <div className="HotBookBoxAll_Bookcase">
                 {this.state.csData
                   .filter(({ number }) => reviewerData.number === number)
-                  .filter((key, index) => index < 4)
+                  .filter((key, index) => index < hotNum)
                   .map(({ pic, sid, name }) => (
                     <BR_BookcaseHot_books
                       onHandleOpen={this.handleOpened} //進去勒索

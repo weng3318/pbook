@@ -30,8 +30,8 @@
 .Blog_Edit:hover{
     border:2px solid #ffc408;
 }
-/* 編輯按鈕，區塊變形，含外框線 (控制位置) */
-.Animate_Edit_Box{
+/* 編輯按鈕，按鈕變形，含外框線 (控制位置) */
+.Animate_Edit_Box,.Animate_Close_Box{
     position: absolute;
     top: 10px;
     right: 0;
@@ -48,15 +48,22 @@
     border-bottom: 3px solid #cde2d0;
     border-left: 3px solid #cde2d0;
 }
+/* 關閉文章，反饋動畫 (長出) */
+.Animate_Close_Box:hover{
+    width: 140px;
+    border-top: 2px solid #ff525b;
+    border-bottom: 2px solid #ff525b;
+    border-left: 2px solid #ff525b;
+}
 /* 編輯按鈕，填滿顏料 (內層導角) */
-.Animate_Edit_btn{
+.Animate_Edit_btn,.Animate_Close_btn{
     width: 100%;
     height: 100%;
     border-radius: 25px 0 0 25px;
     background: #2d3a3a;
 }
 /* 編輯模式，圖標 */
-.icon_Blog_Edit{
+.icon_Blog_Edit,.icon_Blog_Close{
     position: absolute;;
     left: 3px;
     top: 50%;
@@ -80,7 +87,8 @@
     color: #cde2d0;
     opacity: 1;
 }
-.Animate_Edit_Box:hover .text_Blog_Close{
+/* 關閉文章，文字 (動畫控制) */
+.Animate_Close_Box:hover .text_Blog_Close{
     display: block;
     color: #ff525b;
     opacity: 1;
@@ -137,6 +145,7 @@
     right: 1rem;
     bottom: 1rem;
 }
+/* todo.. UX按鈕 */
 @media (max-width: 786px) {
     /* 部落格內文，RWD (閱讀性調整) */
     .reviewerBlog {
@@ -145,5 +154,9 @@
     /* 編輯按鈕，RWD (位置調整) */
     .Animate_Edit_Box{
         top: -160px;
+    }
+    /* 關閉文章，RWD (位置調整) */
+    .Animate_Close_Box{
+        top: 30px;
     }
 }

@@ -1,5 +1,4 @@
 import React from 'react'
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 import { withRouter } from 'react-router-dom'
 import axios from 'axios'
 import CKEditor from '@ckeditor/ckeditor5-react';
@@ -44,7 +43,7 @@ export class ReviewerBlogEdit extends React.Component {
           BlogData = csData[i]
         }
     }
-    console.log('render csData 書評部落格資料', this.state.csData)
+    // console.log('render csData 書評部落格資料', this.state.csData)
     return (
     <>
       <h3 className="h3_br">書評家{this.props.number} - 編輯模式</h3>
