@@ -156,15 +156,37 @@ router.post('/queryBookcase/:page?', (req,res)=>{
 })
 
 //取個人書櫃書評家資料
-router.post('/queryReviewer', (req, res)=>{
+router.post('/queryReviewer/:page', (req, res)=>{
     let number = req.body.number
-    db.query(Member.queryReviewer(number), (err,rows)=>{
-        console.log(rows);
-        res.json({
-            rows
+    let output = {}
+    let perPage = 3 //每頁幾筆
+    output.params = req.params  //可以在網址看params
+    output.perPage = perPage;
+    let page = parseInt(req.params.page) || 1
+    let sql = `SELECT COUNT(1) total FROM br_reviewerlist b LEFT JOIN br_reviewermark bc ON b.number = bc.number_reviewer WHERE bc.number='${number}'`
+    db.queryAsync(sql)
+        .then( result =>{
+            output.totalRows = result[0]["total"]//總比數
+            output.totalPage = Math.ceil(output.totalRows / perPage) //總頁數
+            if(output.totalPage == 0 ) return
+            if(page < 1 ) page = 1
+            if(page > output.totalPage) page = output.totalPage
+            output.page = page
+            // console.log(page);
+            page = (page - 1) * perPage
+            return db.queryAsync(`SELECT b.* FROM br_reviewerlist b LEFT JOIN 
+                br_reviewermark bc ON b.number = bc.number_reviewer WHERE bc.number='${number}' LIMIT ${page}, ${perPage}`)
         })
-    })
+        .then( result => {
+            output.rows = result
+            res.json(output)
+        })
 })
+
+
+
+
+
 
 //書籍加入個人書櫃
 router.post('/addBookcase', (req, res)=>{

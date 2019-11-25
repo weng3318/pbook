@@ -13,7 +13,8 @@ class BooksFavorite extends React.Component {
       nowPage: '',
       totalPage: '',
       totalRows: '',
-      page: 1
+      page: 1,
+      pagePath: '/member/BooksFavorite/'
     }
   }
 
@@ -59,6 +60,7 @@ class BooksFavorite extends React.Component {
         }
         this.setState({ 
           data,
+          page:1,
           booksData: data.rows ,
           nowPage: data.page,
           totalPage: data.totalPage,
@@ -117,7 +119,7 @@ class BooksFavorite extends React.Component {
             </div>
 
             <MyPagination 
-              
+              pagePath = {this.state.pagePath}
               nowPage = {this.state.page}
               totalPage = {totalPage}
               totalRows = {totalRows}

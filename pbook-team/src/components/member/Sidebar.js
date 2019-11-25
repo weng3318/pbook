@@ -74,12 +74,12 @@ const Sidebar = (props) => {
                   個人書櫃
                 </Accordion.Toggle>
                 <Accordion.Collapse eventKey="0" className="sidebar_item">
-                  <Link to='/member/BooksFavorite'>
+                  <Link to='/member/BooksFavorite/1'>
                     <div style={{cursor: 'pointer'}}>收藏書籍</div>
                   </Link>
                 </Accordion.Collapse>
                 <Accordion.Collapse eventKey="0" className="sidebar_item">
-                <Link to='/member/FavoriteReviwer'>
+                <Link to='/member/FavoriteReviwer/1'>
                   <div style={{cursor: 'pointer'}}>收藏書評家</div>
                 </Link>
                 </Accordion.Collapse>
@@ -171,9 +171,6 @@ const Sidebar = (props) => {
                 <Accordion.Collapse eventKey="0" className="sidebar_item">
                   <div style={{cursor: 'pointer'}}>訂單查詢</div>
                 </Accordion.Collapse>
-                <Accordion.Collapse eventKey="0" className="sidebar_item">
-                  <div style={{cursor: 'pointer'}}>訂單修改</div>
-                </Accordion.Collapse>
               </div>
             </Accordion>
             <Accordion defaultActiveKey="0">
@@ -188,12 +185,12 @@ const Sidebar = (props) => {
                   個人書櫃
                 </Accordion.Toggle>
                 <Accordion.Collapse eventKey="0" className="sidebar_item">
-                  <Link to='/member/BooksFavorite'>
+                  <Link to='/member/BooksFavorite/1'>
                     <div style={{cursor: 'pointer'}}>收藏書籍</div>
                   </Link>
                 </Accordion.Collapse>
                 <Accordion.Collapse eventKey="0" className="sidebar_item">
-                <Link to='/member/FavoriteReviwer'>
+                <Link to='/member/FavoriteReviwer/1'>
                   <div style={{cursor: 'pointer'}}>收藏書評家</div>
                 </Link>
                 </Accordion.Collapse>
@@ -271,7 +268,7 @@ const Sidebar = (props) => {
           <Route exact path="/member/PasswordModify" component={PasswordModify} />
           <Route path="/member/BooksFavorite/:page?" component={BooksFavorite} />
           <Route path="/member/ViewMemberBooks" component={ViewMemberBooks} />
-          <Route path="/member/FavoriteReviwer" component={FavoriteReviwer} />
+          <Route path="/member/FavoriteReviwer/:page?" component={FavoriteReviwer} />
           
         </Switch>
      

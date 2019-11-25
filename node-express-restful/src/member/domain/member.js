@@ -62,8 +62,8 @@ class Member{
     //新增書籍到書櫃
     addToBookcase(number, isbn){
          //把書籍加入最愛的sql
-        let sql = `INSERT INTO br_bookcase(number, pic, isbn, name, info, likebook, readbook, created_time) 
-            VALUES('${number}', '', '${isbn}', '', '', 66,188, now()) `
+        let sql = `INSERT INTO br_bookcase(number, isbn, bookName, blog, likebook, readbook, created_time) 
+            VALUES('${number}', '${isbn}', '', '', 66,188, now()) `
         return sql
     }
 
