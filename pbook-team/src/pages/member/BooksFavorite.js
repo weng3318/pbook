@@ -1,14 +1,19 @@
 import React from 'react'
 import './lukeStyle.scss'
 import { Link } from 'react-router-dom'
+import MyPagination from '../../components/member/MyPagination'
 
 class BooksFavorite extends React.Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
-      path: 'http://localhost/books/src/venderBooks_Management/vb_images/',
+      path: 'http://localhost:5555/images/books/',
       booksData: [],
-      heightNum: {},
+      data:[],
+      nowPage: '',
+      totalPage: '',
+      totalRows: '',
+      page: 1
     }
   }
 
@@ -16,10 +21,18 @@ class BooksFavorite extends React.Component {
     this.queryBooks()
   }
 
-  queryBooks = () => {
-    let number = JSON.parse(localStorage.getItem('user')).MR_number
+  changePage = ( page )=>{
+    console.log(page);
+    this.setState({page})
+  }
 
-    fetch('http://localhost:5555/member/queryBookcase', {
+
+  queryBooks = () => {
+    // this.changePage()
+    let number = JSON.parse(localStorage.getItem('user')).MR_number
+    
+    
+    fetch('http://localhost:5555/member/queryBookcase/' + this.state.page, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -32,40 +45,75 @@ class BooksFavorite extends React.Component {
         return res.json()
       })
       .then(data => {
-        // console.log("data", data.rows);
-        this.setState({ booksData: data.rows })
+        // console.log("data11", data);
+        if (data.totalRows == 0){
+          return 
+        }
+        this.setState({ 
+          data,
+          booksData: data.rows ,
+          nowPage: data.page,
+          totalPage: data.totalPage,
+          totalRows: data.totalRows
+        })
       })
   }
+  // componentDidUpdate(page){}
 
+  
   render() {
+    console.log("newPage", this.state.page);
+    console.log(this.props.match.params.page);
+    
     let data = this.state.booksData
     //因為第一次渲染是空的會報錯
-    console.log(data && data)
-    console.log(data.length)
+    // console.log("data ",data && data)
+    // console.log("props", this.props);
+    let totalPage = this.state.totalPage
+    let totalRows = this.state.totalRows
 
     return (
       <>
         <div className="booksContent">
           <div className="title">收藏書籍</div>
-          <div className="wrap flex-wrap">
-            {(data && data).map(data => (
-              <Link
-                to={'/books/information/1/' + data.categories + '/' + data.name}
-              >
-                <div className="list">
-                  <img className="listImg" src={this.state.path + data.pic} />
-                  <div className="booksTitle">{data.name}</div>
-                  {/* <div className="booksInfo"> */}
-                  {/* 預留小圖示 */}
-                  {/* <img class="avatar" src="../images/gift.png" alt=""/> */}
-                  {/* <div className="introduction">
-                                      {data.introduction}
-                                      </div> */}
-                  {/* </div> */}
-                </div>
-              </Link>
-            ))}
-          </div>
+             <div className="wrap flex-wrap">
+             {
+                (!data.length)?(
+                  <>
+                    <div className="nobook">目前還沒有收藏書籍</div>
+                  </>
+                ):(
+                  <>
+                {(data && data).map(data => (
+                  <Link
+                    to={'/books/information/' + data.sid}
+                    target="_blank"
+                    key={data.sid}
+                  >
+                    <div className="list">
+                      <img className="listImg" src={this.state.path + data.pic} />
+                      <div className="booksTitle">{data.name}</div>
+                      {/* <div className="booksInfo"> */}
+                      {/* 預留小圖示 */}
+                      {/* <img class="avatar" src="../images/gift.png" alt=""/> */}
+                      {/* <div className="introduction">
+                                        {data.introduction}
+                                        </div> */}
+                      {/* </div> */}
+                    </div>
+                  </Link>
+                ))}
+              </>
+              )
+            }
+            </div>
+
+            <MyPagination 
+              nowPage = {this.state.page}
+              totalPage = {totalPage}
+              totalRows = {totalRows}
+              changePage = {(page) => { this.changePage(page)}}
+              />
         </div>
       </>
     )

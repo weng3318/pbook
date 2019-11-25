@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Accordion, Button } from 'react-bootstrap'
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 import Info from '../../pages/member/Info'
@@ -7,15 +7,18 @@ import AddMemberBook from '../../pages/member/AddMemberBook'
 import PasswordModify from '../../pages/member/PasswordModify'
 import BooksFavorite from '../../pages/member/BooksFavorite'
 import ViewMemberBooks from '../../pages/member/ViewMemberBooks'
-import ResetPWD from '../../pages/ResetPWD'
+import FavoriteReviwer from '../../pages/member/FavoriteReviwer'
+// import ResetPWD from '../../pages/ResetPWD'
 import {withRouter} from 'react-router-dom'
 
 import '../../pages/member/lukeStyle.scss'
 
 const Sidebar = (props) => {
+
   return (
     <>
-      <Router>
+     { (JSON.parse(localStorage.getItem('user')).MR_personLevel !== 6)
+       ?(<>
         <div className="side-menu">
           <nav className="sidebar">
             <Accordion defaultActiveKey="0">
@@ -33,12 +36,12 @@ const Sidebar = (props) => {
                 </Accordion.Toggle>
                 <Accordion.Collapse eventKey="0" className="sidebar_item">
                   <Link to="/member/edit">
-                    <a href="css">編輯資料</a>
+                    <div style={{cursor: 'pointer'}}>編輯資料</div>
                   </Link>
                 </Accordion.Collapse>
                 <Accordion.Collapse eventKey="0" className="sidebar_item">
                   <Link to="/member/PasswordModify">
-                  <a href="css">修改密碼</a>
+                  <div style={{cursor: 'pointer'}}>修改密碼</div>
                   </Link>
                 </Accordion.Collapse>
               </div>
@@ -55,10 +58,7 @@ const Sidebar = (props) => {
                   訂單管理
                 </Accordion.Toggle>
                 <Accordion.Collapse eventKey="0" className="sidebar_item">
-                  <a href="css">訂單查詢</a>
-                </Accordion.Collapse>
-                <Accordion.Collapse eventKey="0" className="sidebar_item">
-                  <a href="css">訂單修改</a>
+                  <div style={{cursor: 'pointer'}}>訂單查詢</div>
                 </Accordion.Collapse>
               </div>
             </Accordion>
@@ -75,14 +75,13 @@ const Sidebar = (props) => {
                 </Accordion.Toggle>
                 <Accordion.Collapse eventKey="0" className="sidebar_item">
                   <Link to='/member/BooksFavorite'>
-                    <a href="css">收藏書籍</a>
+                    <div style={{cursor: 'pointer'}}>收藏書籍</div>
                   </Link>
                 </Accordion.Collapse>
                 <Accordion.Collapse eventKey="0" className="sidebar_item">
-                  <a href="css">收藏書評家</a>
-                </Accordion.Collapse>
-                <Accordion.Collapse eventKey="0" className="sidebar_item">
-                  <a href="css">收藏書評</a>
+                <Link to='/member/FavoriteReviwer'>
+                  <div style={{cursor: 'pointer'}}>收藏書評家</div>
+                </Link>
                 </Accordion.Collapse>
               </div>
             </Accordion>
@@ -94,15 +93,16 @@ const Sidebar = (props) => {
                   variant="link"
                   eventKey="0"
                 >
-                <Link to='/member/ViewMemberBooks'
-                style={{color: "#2D3A3A",textDecoration: "none",fontSize: "28px"}}
-                >
                   二手書管理
-                </Link>
                 </Accordion.Toggle>
                 <Accordion.Collapse eventKey="0" className="sidebar_item">
+                <Link to="/member/ViewMemberBooks">
+                <div style={{cursor: 'pointer'}}>配對書籍</div>
+                </Link>
+                </Accordion.Collapse>
+                <Accordion.Collapse eventKey="0" className="sidebar_item">
                 <Link to="/member/AddMemberBook">
-                  <a href="css">配對書籍</a>
+                <div style={{cursor: 'pointer'}}>上架配對書籍</div>
                 </Link>
                 </Accordion.Collapse>
               </div>
@@ -123,24 +123,164 @@ const Sidebar = (props) => {
                 </Accordion.Toggle>
                 <Accordion.Collapse eventKey="0" className="sidebar_item">
                 <Link to="">
-                  <a href="active">相關活動</a>
+                <div style={{cursor: 'pointer'}}>相關活動</div>
                 </Link>
                 </Accordion.Collapse>
               </div>
             </Accordion>
           </nav>
         </div>
+       </>):
+       (<>
+        <div className="side-menu">
+          <nav className="sidebar">
+            <Accordion defaultActiveKey="0">
+              <div className="sidebar_card">
+                <Accordion.Toggle
+                  as={Button}
+                  variant="link"
+                  eventKey="0"
+                  className="sidebar_title"
+                  style={{color: "#2D3A3A",textDecoration: "none",fontSize: "28px"}}
+                >
+                  <Link to="/member" style={{color: "#2D3A3A",textDecoration: "none"}}>
+                    <h2 >會員資料</h2>
+                  </Link>
+                </Accordion.Toggle>
+                <Accordion.Collapse eventKey="0" className="sidebar_item">
+                  <Link to="/member/edit">
+                    <div style={{cursor: 'pointer'}}>編輯資料</div>
+                  </Link>
+                </Accordion.Collapse>
+                <Accordion.Collapse eventKey="0" className="sidebar_item">
+                  <Link to="/member/PasswordModify">
+                  <div style={{cursor: 'pointer'}}>修改密碼</div>
+                  </Link>
+                </Accordion.Collapse>
+              </div>
+            </Accordion>
+            <Accordion defaultActiveKey="0">
+              <div className="sidebar_card">
+                <Accordion.Toggle
+                  className="sidebar_title"
+                  as={Button}
+                  variant="link"
+                  eventKey="0"
+                  style={{color: "#2D3A3A",textDecoration: "none",fontSize: "28px"}}
+                >
+                  訂單管理
+                </Accordion.Toggle>
+                <Accordion.Collapse eventKey="0" className="sidebar_item">
+                  <div style={{cursor: 'pointer'}}>訂單查詢</div>
+                </Accordion.Collapse>
+                <Accordion.Collapse eventKey="0" className="sidebar_item">
+                  <div style={{cursor: 'pointer'}}>訂單修改</div>
+                </Accordion.Collapse>
+              </div>
+            </Accordion>
+            <Accordion defaultActiveKey="0">
+              <div className="sidebar_card">
+                <Accordion.Toggle
+                  className="sidebar_title"
+                  as={Button}
+                  variant="link"
+                  eventKey="0"
+                  style={{color: "#2D3A3A",textDecoration: "none",fontSize: "28px"}}
+                >
+                  個人書櫃
+                </Accordion.Toggle>
+                <Accordion.Collapse eventKey="0" className="sidebar_item">
+                  <Link to='/member/BooksFavorite'>
+                    <div style={{cursor: 'pointer'}}>收藏書籍</div>
+                  </Link>
+                </Accordion.Collapse>
+                <Accordion.Collapse eventKey="0" className="sidebar_item">
+                <Link to='/member/FavoriteReviwer'>
+                  <div style={{cursor: 'pointer'}}>收藏書評家</div>
+                </Link>
+                </Accordion.Collapse>
+              </div>
+            </Accordion>
+            <Accordion defaultActiveKey="0">
+              <div className="sidebar_card">
+                <Accordion.Toggle
+                  className="sidebar_title"
+                  as={Button}
+                  variant="link"
+                  eventKey="0"
+                >
+                <Link to='/member/ViewMemberBooks'
+                style={{color: "#2D3A3A",textDecoration: "none",fontSize: "28px"}}
+                >
+                  二手書管理
+                </Link>
+                </Accordion.Toggle>
+                <Accordion.Collapse eventKey="0" className="sidebar_item">
+                <Link to="/member/AddMemberBook">
+                <div style={{cursor: 'pointer'}}>配對書籍</div>
+                </Link>
+                </Accordion.Collapse>
+              </div>
+            </Accordion>
+            <Accordion defaultActiveKey="0">
+              <div className="sidebar_card">
+                <Accordion.Toggle
+                  className="sidebar_title"
+                  as={Button}
+                  variant="link"
+                  eventKey="0"
+                >
+                <Link to=''
+                style={{color: "#2D3A3A",textDecoration: "none",fontSize: "28px"}}
+                >
+                  活動
+                </Link>
+                </Accordion.Toggle>
+                <Accordion.Collapse eventKey="0" className="sidebar_item">
+                <Link to="">
+                <div style={{cursor: 'pointer'}}>相關活動</div>
+                </Link>
+                </Accordion.Collapse>
+              </div>
+            </Accordion>
+            <Accordion defaultActiveKey="0">
+              <div className="sidebar_card">
+                <Accordion.Toggle
+                  className="sidebar_title"
+                  as={Button}
+                  variant="link"
+                  eventKey="0"
+                >
+                <Link to=''
+                style={{color: "#2D3A3A",textDecoration: "none",fontSize: "28px"}}
+                >
+                  書評家專用
+                </Link>
+                </Accordion.Toggle>
+                <Accordion.Collapse eventKey="0" className="sidebar_item">
+                <Link to="">
+                <div style={{cursor: 'pointer'}}>編輯資料</div>
+                </Link>
+                </Accordion.Collapse>
+              </div>
+            </Accordion>
+          </nav>
+        </div>
+       </>)
+     }
+      
 
         <Switch>
           <Route exact path="/member" component={Info} />
           <Route exact path="/member/edit" component={Edit} />
           <Route exact path="/member/AddMemberBook" component={AddMemberBook} />
           <Route exact path="/member/PasswordModify" component={PasswordModify} />
-          <Route path="/member/BooksFavorite" component={BooksFavorite} />
-          <Route exact path="/member/ViewMemberBooks" component={ViewMemberBooks} />
+          <Route path="/member/BooksFavorite/:page?" component={BooksFavorite} />
+          <Route path="/member/ViewMemberBooks" component={ViewMemberBooks} />
+          <Route path="/member/FavoriteReviwer" component={FavoriteReviwer} />
           
         </Switch>
-      </Router>
+     
     </>
   )
 }

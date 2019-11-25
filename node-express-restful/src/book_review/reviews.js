@@ -7,10 +7,11 @@ const bluebird = require("bluebird");
 const router = express.Router();
 const app = express();
 const db = mysql.createConnection({
-  // host: "localhost",
-  host: "localhost",
-  user: "opcp",
-  password: "opcp2428",
+
+  // host: '192.168.27.186',
+  host: '192.168.27.186',
+  user: "root",
+  password: "root",
   database: "pbook"
 });
 db.connect();
@@ -55,7 +56,7 @@ router.get(`/?`, (req, res) => {
       return db.queryAsync(
         `SELECT * FROM vb_books WHERE categories ${c} ORDER BY ${a} DESC LIMIT ${(page -
           1) *
-          perPage},${perPage}`
+        perPage},${perPage}`
       );
     })
     .then(results => {

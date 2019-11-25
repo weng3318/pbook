@@ -44,12 +44,12 @@ class Member{
     }
     
     //註冊會員
-    getAddMemberSql(new_number, hash){
+    getAddMemberSql(new_number, hash, nickname){
         //進行加密
         // this.MR_password = encryption(this.MR_password)
         //塞入資料
-        let sql = `INSERT INTO mr_information(MR_name, MR_number , MR_email, MR_password, MR_pic, tokenId,  MR_personLevel, MR_createdDate) 
-                        VALUES('${this.MR_name}', '${new_number}', '${this.MR_email}', '${this.MR_password}', '${this.MR_pic}', '${hash}', 1, now()) `
+        let sql = `INSERT INTO mr_information(MR_name, MR_nickname, MR_number , MR_email, MR_password, MR_pic, tokenId,  MR_personLevel, MR_createdDate) 
+                        VALUES('${this.MR_name}', '${nickname}', '${new_number}', '${this.MR_email}', '${this.MR_password}', '${this.MR_pic}', '${hash}', 1, now()) `
         return sql
     }
 
@@ -61,9 +61,21 @@ class Member{
         return sql
     }
 
+    //查詢二手書櫃
+    queryMemberBook(number){
+        let sql = `SELECT * FROM mb_books WHERE mb_shelveMember = '${number}'`
+        return sql
+    }
+
     //修改資料
     modifyMemberInfoSql(number, email, name, nickname, birthday, mobile, address, filename){
         let sql = `UPDATE mr_information SET MR_email = '${email}',MR_name = '${name}', MR_nickname = '${nickname}',MR_birthday = '${birthday}',MR_mobile = '${mobile}',MR_address = '${address}',MR_pic='${filename}' WHERE MR_number = '${number}' `
+        return sql
+    }
+
+    //刪除二手書上架書籍
+    deleteBook(sid){
+        let sql = `DELETE FROM mb_books WHERE mb_sid = '${sid}'`
         return sql
     }
 

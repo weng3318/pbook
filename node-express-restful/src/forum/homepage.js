@@ -6,7 +6,7 @@ const upload = multer({ dest: "tmp_uploads/" }); //圖片上傳
 const fs = require("fs"); //檔案處理
 const moment = require("moment-timezone");
 const db = mysql.createConnection({
-  host: "localhost",
+  host: '192.168.27.186',
   user: "root",
   password: "root",
   database: "pbook"
@@ -185,7 +185,7 @@ router
     let category = data.cate;
     let subCategories = data.subcate;
     let title = data.title;
-    let subTitle = data.textareaValue[0].slice(0,200);
+    let subTitle = data.textareaValue[0].slice(0, 200);
     let demoImage = mainImg;
     let content = {
       element: data.element,
