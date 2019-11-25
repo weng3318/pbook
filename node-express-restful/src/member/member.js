@@ -126,14 +126,6 @@ router.post('/queryEmail', (req, res, next)=>{
 })
 
 //取個人書櫃書籍資料
-// router.post('/queryBookcase', (req,res)=>{
-//     let number = req.body.number
-//     console.log(number);
-    
-//     db.query(Member.queryBooks(number), (err, rows)=>{
-//         res.json(rows)
-//     })
-// })
 router.post('/queryBookcase/:page?', (req,res)=>{
     let number = req.body.number
     let output = {}
@@ -151,7 +143,7 @@ router.post('/queryBookcase/:page?', (req,res)=>{
             if(page < 1) page = 1
             if(page > output.totalPage) page = output.totalPage
             output.page = page
-            console.log(page);
+            // console.log(page);
             
             page = (page - 1) * perPage 
             return db.queryAsync(`SELECT b.* FROM vb_books b LEFT JOIN 
@@ -163,12 +155,23 @@ router.post('/queryBookcase/:page?', (req,res)=>{
         } )
 })
 
+//取個人書櫃書評家資料
+router.post('/queryReviewer', (req, res)=>{
+    let number = req.body.number
+    db.query(Member.queryReviewer(number), (err,rows)=>{
+        console.log(rows);
+        res.json({
+            rows
+        })
+    })
+})
+
 //書籍加入個人書櫃
 router.post('/addBookcase', (req, res)=>{
     let number = req.body.number
     let isbn = req.body.isbn
     db.query(Member.addToBookcase(number, isbn), (err, result)=>{
-        console.log("addBookcase",result);
+        // console.log("addBookcase",result);
         res.json({
             status: "新增到書櫃",
             message: "加入到書櫃成功"
@@ -185,7 +188,7 @@ router.post('/queryMemberBooks', (req, res)=>{
                 message: "查不到資料"
             })
         }else{
-            res.json(rows)
+            res.json({rows})
         }
     })
 })

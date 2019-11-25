@@ -20,11 +20,11 @@ class ViewMemberBooks extends React.Component {
 
       queryMemberBooks = ()=>{
         let number = JSON.parse(localStorage.getItem('user')).MR_number
-        console.log(number);
+        // console.log(number);
         axios.post('http://localhost:5555/member/queryMemberBooks',{ number })
         .then( res =>{
           // console.log(res);
-          this.setState({booksData: res.data})
+          this.setState({booksData: res.data.rows})
         })
 
         // axios.get('http://localhost:5555/member/categories')
@@ -61,7 +61,8 @@ class ViewMemberBooks extends React.Component {
     
     render(){
       let data = this.state.booksData
-      console.log("data1 ", data && data)
+      let createId = 0
+      // console.log("data1 ", data && data)
       
      return(
               <>
@@ -72,7 +73,7 @@ class ViewMemberBooks extends React.Component {
                 (data.length)?(
                   <>
                   {(data && data).map(data => (
-                          <div className="modal-content" style={{width:'450px'}}>
+                          <div className="modal-content" style={{width:'450px'}} key={createId++}>
                             <div className="modal-header">
                                 <h5 className="modal-title" >{data.mb_name}</h5>
                                 <button className="btn btn-warning" style={{width: '80px'}}
@@ -83,7 +84,7 @@ class ViewMemberBooks extends React.Component {
                                 <div style={{width:'250px', height: '240px'}}>
                                     <img 
                                       style= {{objectFit: 'contain', width: '100%', height: '100%'}} 
-                                       src = {this.state.path + data.mb_pic} 
+                                       src = {this.state.path + data.mb_pic.split(',')[0]} 
                                       />
                                 </div>
                                 <div style={{textAlign: 'left', width: '400px'}}>
@@ -96,7 +97,6 @@ class ViewMemberBooks extends React.Component {
                                     <h5>・出版日期：{data.mb_publishDate}</h5>
                                     <h5>・定價：{data.mb_fixedPrice}</h5>
                                     <h5>・頁數：{data.mb_page}</h5>
-                                    <h5>・配對人：{data.mb_pairedMember}</h5>
                                 </div>
                             </div>
                         </div>

@@ -35,13 +35,21 @@ const MyPagination = props => {
     return(
         <>
             <div className="pageWrap pt-5">
-                <Pagination className="d-flex justify-content-center">
-                <LinkContainer to={'/member/BooksFavorite/1'} key={-1}>
+                <Pagination className="d-flex justify-content-center"
+                >
+                <LinkContainer to={'/member/BooksFavorite/1'} key={-1}
+                onClick = { ()=>{
+                        props.changePage(1)
+                    }}
+                >
                     <Pagination.First className="none" />
                 </LinkContainer>
                 <LinkContainer
                     to={'/member/BooksFavorite/' + fp }
                     key={0}
+                    onClick = { ()=>{
+                        props.changePage(fp)
+                    }}
                 >
                     <Pagination.Prev className="none" />
                 </LinkContainer>
@@ -49,12 +57,18 @@ const MyPagination = props => {
                 <LinkContainer
                     to={'/member/BooksFavorite/' + np}
                     key={10000}
+                    onClick = { ()=>{
+                        props.changePage(np)
+                    }}
                 >
                     <Pagination.Next className="none" />
                 </LinkContainer>
                 <LinkContainer
                     to={'/member/BooksFavorite/' + pt}
                     key={10001}
+                    onClick = { ()=>{
+                        props.changePage(pt)
+                    }}
                 >
                     <Pagination.Last className="none" />
                 </LinkContainer>

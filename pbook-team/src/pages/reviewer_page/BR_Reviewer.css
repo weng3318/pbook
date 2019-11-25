@@ -15,6 +15,24 @@
 a:hover{
     text-decoration: none;
 }
+/* 超連結按鈕，hover (小小的動態效果) */
+.brMark_img{
+    width: 30px;
+    left: 15px;
+    transform: translate(-50%);
+    transition: 0.2s;
+}
+.brMark_img:hover{
+    width: 32px;
+    padding: 4px;
+    border:1px solid #ffc408;
+}
+/* 取得資料中... (文字) */
+.h1_br{
+    font-weight: bolder;
+    margin: 1rem;
+    color: #2d3a3a;
+}
 /* 標題，主要文字 */
 .h5_br{
     text-align: center;
@@ -78,6 +96,11 @@ a:hover{
     margin: 0 auto;
     background-size: contain ;
     overflow: hidden;
+    transition: 0.3s;
+}
+/* 頭像反饋 */
+.brAvatarBox:hover{
+    border: 5px solid #fff;
 }
 /* 頭圖 (縮放比例、置中位置) */
 .brAvatarImg{
@@ -99,6 +122,7 @@ a:hover{
 }
 /* 看看書櫃 (按鈕、超連結)*/
 .brReadBooks{
+    min-width: 70px;
     font-size: 1rem;
     color: #2d3a3a;
     margin: 10px;
@@ -143,7 +167,16 @@ a:hover{
 }
 /* 追蹤作者 (按鈕) */
 .brIconFollow{
-    max-width: 75%;;
+    position: absolute;
+    max-width: 80%;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: 0.2s;
+}
+.brIconFollow:hover{
+    max-width: 90%;
+    border-radius: 20px;
+    border:2px solid #ffc408;
 }
 /* 分享圖示 (書評家的 社群圖示) */
 .brIconShare{

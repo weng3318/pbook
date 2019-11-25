@@ -42,6 +42,12 @@ class Member{
                     WHERE bc.number='${number}'`
         return sql
     }
+
+    //查詢收藏書評家資訊
+    queryReviewer(number){
+        let sql = `SELECT b.* FROM br_reviewerlist b JOIN br_reviewermark bc ON b.number=bc.number_reviewer WHERE bc.number='${number}'`
+        return sql 
+    }
     
     //註冊會員
     getAddMemberSql(new_number, hash, nickname){

@@ -25,18 +25,13 @@ const Breadcrumb = props => {
           首頁 > 書籍商城 >{' '}
           <span className="active"> {name[props.nowCategories - 1]}</span>
         </div>
-        <form className="mr-5 search">
+        <form className="mr-5 search" onSubmit={props.Search}>
           <input
             className="searchInput py-1 pl-3"
             type="text"
             placeholder="搜尋"
-            // onKeyPress={() => props.SearchKey()}
           />
-          <button
-            className="searchButton"
-            type="button"
-            onClick={() => props.Search()}
-          >
+          <button className="searchButton" type="submit">
             <FontAwesomeIcon icon={faSearch} />
           </button>
         </form>
