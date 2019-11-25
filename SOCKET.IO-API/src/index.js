@@ -2,10 +2,6 @@ var app = require("express")();
 var http = require("http").createServer(app);
 var io = require("socket.io")(http);
 
-const multer = require('multer');
-const upload = multer({ dest: 'tmp_uploads/' }); //設定上傳暫存目錄
-const fs = require('fs'); //處理檔案的核心套件(內建?)
-
 const bluebird = require("bluebird"); //青鳥
 const mysql = require("mysql");
 // 設定資料庫連線
@@ -44,10 +40,10 @@ io.sockets.on("connection", function (socket) {
         `UPDATE mb_chat SET myRead = 1 WHERE chat_id = "${data.chat_id}" AND myTo = "${data.myFrom}"`
       );
 
-      console.log('測試私人聊天2', `INSERT INTO mb_chat(chat_id, myFrom, myTo, content, myRead, created_at, myDelete) VALUES ("${data.chat_id}","${data.myFrom}","${data.myTo}","${data.content}","${data.myRead}","${data.created_at}", "${data.myDelete}")`);
+      console.log('測試私人聊天2', `INSERT INTO mb_chat(chat_id, myFrom, myTo, content, myRead, created_at, myDelete, myUpload) VALUES ("${data.chat_id}","${data.myFrom}","${data.myTo}","${data.content}","${data.myRead}","${data.created_at}", "${data.myDelete}", "${data.myUpload}")`);
 
       await db.queryAsync(
-        `INSERT INTO mb_chat(chat_id, myFrom, myTo, content, myRead, created_at, myDelete) VALUES ("${data.chat_id}","${data.myFrom}","${data.myTo}",'${data.content}',"${data.myRead}","${data.created_at}", "${data.myDelete}")`
+        `INSERT INTO mb_chat(chat_id, myFrom, myTo, content, myRead, created_at, myDelete, myUpload) VALUES ("${data.chat_id}","${data.myFrom}","${data.myTo}",'${data.content}',"${data.myRead}","${data.created_at}", "${data.myDelete}", "${data.myUpload}")`
       );
 
 
@@ -115,6 +111,7 @@ io.sockets.on("connection", function (socket) {
         myFrom: data.myFrom,
         myTo: users,
         content: data.content,
+        myUpload:data.myUpload,
         created_at: data.created_at
       });
     }
@@ -185,10 +182,6 @@ io.sockets.on("connection", function (socket) {
     });
   });
 
-  socket.on('clientToServerFile', async function (data) {
-    console.log("clientToServerFile 服務器端收到客戶端資料", data);
-  })
-
   socket.on("disconnect", function (data) {
     socket.disconnect();
 
@@ -204,7 +197,6 @@ io.sockets.on("connection", function (socket) {
 
     io.sockets.emit("SeverToClientPeople", users.length);
   });
-
 
   io.sockets.emit("SeverToClientPeople", users.length);
 });

@@ -124,37 +124,6 @@ chat.post("/myBooks", function (req, res) {
 
 });
 
-// // 使用multer處理檔案上傳
-// chat.get('/try-upload', (request, response) => {
-//     response.render('try-upload');
-// })
-// chat.post('/try-upload', upload.single('avatar'), (req, res) => {
-//     if (req.file && req.file.originalname) {
-//         console.log(req.file);
-//         switch (req.file.mimetype) {
-//             case 'image/png':
-//             case 'image/jpeg':
-//                 fs.createReadStream(req.file.path)
-//                     .pipe(
-//                         fs.createWriteStream('public/img/' + req.file.originalname)
-//                     );
-//                 // res.send('ok!');
-//                 break;
-//             default:
-//                 return res.send('上傳檔案格式錯誤!');
-//         }
-//     } else {
-//         res.send('沒有上傳檔案!');
-//     }
-//     res.render('try-upload', {
-//         result: true,
-//         name: req.body.name,
-//         avatar: '/img/' + req.file.originalname
-//     })
-// })
-
-// 前端上傳圖片多張
-
 chat.post('/imgFiles', upload.array('avatar', 5), (req, res, next) => {
     console.log("avatar", req.body);
     console.log("Files", req.files.length);

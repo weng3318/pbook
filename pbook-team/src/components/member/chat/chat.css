@@ -108,7 +108,7 @@
 }
 
 /* Style images */
-.chatWrap .myContainer img {
+.chatWrap .myContainer .memberImg {
   float: left;
   max-width: 60px;
   width: 100%;
@@ -117,7 +117,7 @@
 }
 
 /* Style the right image */
-.chatWrap .myContainer img.right {
+.chatWrap .myContainer .memberImg.right {
   float: right;
   margin: 0px 0px 0px 20px;
   transform: translate(0, 0px);
@@ -238,5 +238,19 @@
 
 .stickerImg{
   width: 60px !important;
+}
+
+.upLoadImg{
+  width: 100PX;
+  height: 100px;
+  margin: 0 5px;
+  border: 1px solid black;
+}
+
+.dataUpLoadImg{
+  width: 40PX;
+  height: 40px;
+  margin: 0 5px;
+  border: 1px solid black;
 }
 

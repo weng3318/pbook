@@ -196,6 +196,7 @@ class Chat extends React.Component {
       myRead: 0,
       created_at: new Date(),
       myDelete: 0,
+      myUpload: 0,
     })
 
     this.textInput.value = ''
@@ -240,6 +241,7 @@ class Chat extends React.Component {
         myRead: 0,
         created_at: new Date(),
         myDelete: 0,
+        myUpload: 0,
       })
 
       this.textInput.value = ''
@@ -335,28 +337,74 @@ class Chat extends React.Component {
       myRead: 0,
       created_at: new Date(),
       myDelete: 0,
+      myUpload: 0,
     })
   }
 
-  handleUpload = e => {
+  handleUpload = async e => {
+    var uploadImg
     const formData = new FormData()
 
-    for (var i = 0; i < e.target.files.length; i++) {
-      formData.append('avatar', e.target.files[i])
+    for (var n = 0; n < e.target.files.length; n++) {
+      formData.append('avatar', e.target.files[n])
+      console.log('formData', formData)
     }
 
-    console.log('formData', formData)
-
-    fetch('http://localhost:5555/nana_use/imgFiles', {
+    await fetch('http://localhost:5555/nana_use/imgFiles', {
       method: 'POST',
       body: formData,
     })
       .then(res => {
-        console.log('上傳檔案成功測試結果', res)
+        return res.json()
+      })
+      .then(imgs => {
+        console.log('imgs.files', imgs.pictures)
+        this.setState({ uploadImg: imgs.pictures })
+        uploadImg = imgs.pictures
       })
       .catch(err => {
         console.log('上傳檔案錯誤', err)
       })
+
+    console.log('測試uploadImg', uploadImg)
+
+    // 利用網址列取得chat_id
+    var chat_id_index = window.location.href.indexOf('#') // console.log(chat_id_index,"26")
+    var chat_id = window.location.href.slice(chat_id_index + 1)
+    // 利用localStorage取得發文者(myFrom)
+    var myFrom = JSON.parse(localStorage.getItem('user')).MR_number
+    // 利用網址取得myTo
+    var chat_id_array = chat_id.split('MR')
+    var myFrom_array = myFrom.split('MR')
+
+    var myTo = []
+    for (var i = 1; i < chat_id_array.length; i++) {
+      for (var k = 1; k < myFrom_array.length; k++) {
+        if (chat_id_array[i] !== myFrom_array[k]) {
+          myTo.push(chat_id_array[i])
+        }
+      }
+    }
+    console.log(myTo[0])
+
+    // 判斷是否是在大廳發出的訊息
+    var square = false
+    if (window.location.href === 'http://localhost:3000/chat') {
+      square = true
+    }
+    console.log('square', square)
+
+    socket.emit(`clientToSeverMsg`, {
+      square: square,
+      chat_id: chat_id,
+      myFrom: myFrom,
+      myTo: 'MR' + myTo[0],
+      content: JSON.stringify(uploadImg),
+      myRead: 0,
+      created_at: new Date(),
+      myDelete: 0,
+      myUpload: 1,
+    })
   }
 
   componentDidMount() {
@@ -390,6 +438,8 @@ class Chat extends React.Component {
   render() {
     console.log('render', this.state.oldDataList)
     console.log('render', this.state.squareData)
+    console.log('render uploadImg', this.state.uploadImg)
+
     let myId = JSON.parse(localStorage.getItem('user')).MR_number
     let myPic = JSON.parse(localStorage.getItem('user')).MR_pic
     let myName = JSON.parse(localStorage.getItem('user')).MR_name
@@ -460,12 +510,33 @@ class Chat extends React.Component {
                             <div className="d-flex flex-column align-self-center chatTextWrap">
                               <span className="chatText">{value.MR_name}</span>
                               {value.myDelete === 0 ? (
-                                <span
-                                  className="chatText"
-                                  dangerouslySetInnerHTML={{
-                                    __html: value.content,
-                                  }}
-                                ></span>
+                                value.myUpload === 1 ? (
+                                  <span className="d-flex">
+                                    {JSON.parse(value.content).map(
+                                      (value, index) => {
+                                        return (
+                                          <span key={index}>
+                                            <img
+                                              className="dataUpLoadImg"
+                                              src={
+                                                'http://localhost:5555/images/chatFile/' +
+                                                value
+                                              }
+                                              alt="Avatar"
+                                            />
+                                          </span>
+                                        )
+                                      }
+                                    )}
+                                  </span>
+                                ) : (
+                                  <span
+                                    className="chatText"
+                                    dangerouslySetInnerHTML={{
+                                      __html: value.content,
+                                    }}
+                                  ></span>
+                                )
                               ) : (
                                 <span className="chatText">
                                   {value.myFrom === myId
@@ -516,21 +587,44 @@ class Chat extends React.Component {
                                     return (
                                       <div key={index}>
                                         <img
+                                          className="memberImg"
                                           src={
                                             'http://localhost:5555/images/member/' +
                                             value2.MR_pic
                                           }
                                           alt="Avatar"
                                         />
-                                        <p
-                                          className="d-flex"
-                                          dangerouslySetInnerHTML={{
-                                            __html:
-                                              value2.MR_name +
-                                              ' 說：' +
-                                              value.content,
-                                          }}
-                                        ></p>
+                                        {value.myUpload === 1 ? (
+                                          <p className="d-flex">
+                                            {value2.MR_name + '說：'}
+                                            {JSON.parse(value.content).map(
+                                              (value, index) => {
+                                                return (
+                                                  <p key={index}>
+                                                    <img
+                                                      className="upLoadImg"
+                                                      src={
+                                                        'http://localhost:5555/images/chatFile/' +
+                                                        value
+                                                      }
+                                                      alt="Avatar"
+                                                    />
+                                                  </p>
+                                                )
+                                              }
+                                            )}
+                                          </p>
+                                        ) : (
+                                          <p
+                                            className="d-flex"
+                                            dangerouslySetInnerHTML={{
+                                              __html:
+                                                value2.MR_name +
+                                                ' 說：' +
+                                                value.content,
+                                            }}
+                                          ></p>
+                                        )}
                                         <span className="time-right">
                                           {moment(value.created_at).format(
                                             'YYYY-MM-DD HH:mm:ss'
@@ -548,14 +642,36 @@ class Chat extends React.Component {
                                     myPic
                                   }
                                   alt="Avatar"
-                                  className="right"
+                                  className="memberImg right"
                                 />
-                                <p
-                                  className="d-flex"
-                                  dangerouslySetInnerHTML={{
-                                    __html: myName + ' 說：' + value.content,
-                                  }}
-                                ></p>
+                                {value.myUpload === 1 ? (
+                                  <p className="d-flex">
+                                    {myName + '說：'}
+                                    {JSON.parse(value.content).map(
+                                      (value, index) => {
+                                        return (
+                                          <p key={index}>
+                                            <img
+                                              className="upLoadImg"
+                                              src={
+                                                'http://localhost:5555/images/chatFile/' +
+                                                value
+                                              }
+                                              alt="Avatar"
+                                            />
+                                          </p>
+                                        )
+                                      }
+                                    )}
+                                  </p>
+                                ) : (
+                                  <p
+                                    className="d-fle"
+                                    dangerouslySetInnerHTML={{
+                                      __html: myName + ' 說：' + value.content,
+                                    }}
+                                  ></p>
+                                )}
                                 <span className="time-left">
                                   {moment(value.created_at).format(
                                     'YYYY-MM-DD HH:mm:ss'
@@ -588,11 +704,13 @@ class Chat extends React.Component {
                                   {(() => {
                                     if (
                                       value2.myFrom !== myId &&
-                                      value2.myDelete === 0
+                                      value2.myDelete === 0 &&
+                                      value2.myUpload === 0
                                     ) {
                                       return (
                                         <div className="myContainer">
                                           <img
+                                            className="memberImg"
                                             src={
                                               'http://localhost:5555/images/member/' +
                                               value.MR_pic
@@ -614,7 +732,8 @@ class Chat extends React.Component {
                                       )
                                     } else if (
                                       value2.myFrom === myId &&
-                                      value2.myDelete === 0
+                                      value2.myDelete === 0 &&
+                                      value2.myUpload === 0
                                     ) {
                                       return (
                                         <div className="myContainer darker">
@@ -624,7 +743,7 @@ class Chat extends React.Component {
                                               myPic
                                             }
                                             alt="Avatar"
-                                            className="right"
+                                            className="memberImg right"
                                           />
                                           <p
                                             className="d-flex"
@@ -644,6 +763,93 @@ class Chat extends React.Component {
                                           >
                                             收回
                                           </i>
+                                        </div>
+                                      )
+                                    } else if (
+                                      value2.myFrom === myId &&
+                                      value2.myDelete === 0 &&
+                                      value2.myUpload === 1
+                                    ) {
+                                      return (
+                                        <div className="myContainer darker">
+                                          <img
+                                            src={
+                                              'http://localhost:5555/images/member/' +
+                                              myPic
+                                            }
+                                            alt="Avatar"
+                                            className="memberImg right"
+                                          />
+                                          <p className="d-flex">
+                                            {JSON.parse(value2.content).map(
+                                              (value, index) => {
+                                                return (
+                                                  <p key={index}>
+                                                    <img
+                                                      className="upLoadImg"
+                                                      src={
+                                                        'http://localhost:5555/images/chatFile/' +
+                                                        value
+                                                      }
+                                                      alt="Avatar"
+                                                    />
+                                                  </p>
+                                                )
+                                              }
+                                            )}
+                                          </p>
+                                          <span className="time-left">
+                                            {moment(value2.created_at).format(
+                                              'YYYY-MM-DD HH:mm:ss'
+                                            )}
+                                          </span>
+                                          <i
+                                            className="fas fa-undo-alt messageDelete"
+                                            data-value={value2.sid}
+                                            onClick={this.handleMessageDelete}
+                                          >
+                                            收回
+                                          </i>
+                                        </div>
+                                      )
+                                    } else if (
+                                      value2.myFrom !== myId &&
+                                      value2.myDelete === 0 &&
+                                      value2.myUpload === 1
+                                    ) {
+                                      return (
+                                        <div className="myContainer">
+                                          <img
+                                            className="memberImg"
+                                            src={
+                                              'http://localhost:5555/images/member/' +
+                                              value.MR_pic
+                                            }
+                                            alt="Avatar"
+                                          />
+                                          <p className="d-flex">
+                                            {JSON.parse(value2.content).map(
+                                              (value, index) => {
+                                                return (
+                                                  <p key={index}>
+                                                    <img
+                                                      className="upLoadImg"
+                                                      src={
+                                                        'http://localhost:5555/images/chatFile/' +
+                                                        value
+                                                      }
+                                                      alt="Avatar"
+                                                    />
+                                                  </p>
+                                                )
+                                              }
+                                            )}
+                                          </p>
+                                          <span className="time-right">
+                                            {moment(value2.created_at).format(
+                                              'YYYY-MM-DD HH:mm:ss'
+                                            )}
+                                          </span>
                                         </div>
                                       )
                                     } else if (

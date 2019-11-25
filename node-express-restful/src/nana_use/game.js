@@ -227,7 +227,7 @@ game.post("/gameSuccessUpdate", function (req, res) {
             // console.log('gameSuccessUpdate測試',chat_id);                
             // console.log('gameSuccessUpdate測試',chat_id);                
             // 創建聊天
-            return db.queryAsync(`INSERT INTO mb_chat(chat_id, myFrom, myTo, content, myRead, myDelete, created_at) VALUES ("${chat_id}","${myTo}","${myFrom}","${content}","0","0","${createdTime}")`)
+            return db.queryAsync(`INSERT INTO mb_chat(chat_id, myFrom, myTo, content, myRead, myDelete, myUpload, created_at) VALUES ("${chat_id}","${myTo}","${myFrom}","${content}","0","0","0","${createdTime}")`)
         }).then(results => {
             console.log('gameSuccessUpdate 新增聊天室對話成功', results);
             res.json({ gameSuccessUpdate: 'gameSuccessUpdate 修改成配對成功成功', gameWait: gameWaitResults, gameInviteMe: gameInviteMeResults, gameSuccess: gameSuccessResults })
