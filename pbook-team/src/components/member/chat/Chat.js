@@ -1,5 +1,12 @@
 import React from 'react'
-import { ListGroup, Tab, Row, Col } from 'react-bootstrap'
+import {
+  ListGroup,
+  Tab,
+  Row,
+  Col,
+  OverlayTrigger,
+  Popover,
+} from 'react-bootstrap'
 import './chat.css'
 
 import axios from 'axios'
@@ -13,11 +20,29 @@ class Chat extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      sticker: [
+        'sticker(0).png',
+        'sticker(1).png',
+        'sticker(2).png',
+        'sticker(3).png',
+        'sticker(4).png',
+        'sticker(5).png',
+        'sticker(6).png',
+        'sticker(7).png',
+        'sticker(8).png',
+        'sticker(9).png',
+        'sticker(10).png',
+        'sticker(11).png',
+        'sticker(12).png',
+        'sticker(13).png',
+        'sticker(14).png',
+      ],
       squareData: [],
       oldDataList: [],
       oldDataMessage: [],
       mySearch: '',
       people: 0,
+      chosenSticker: '',
     }
     if (localStorage.getItem('user') !== null) {
       if (this.props.location.pathname === '/chat') {
@@ -94,7 +119,7 @@ class Chat extends React.Component {
       console.log('客戶端接收服務端發的消息onMsg fullData', fullData)
       console.log('我是誰?', JSON.parse(localStorage.getItem('user')).MR_number)
 
-      this.setState({ squareData: fullData })
+      this.setState({ squareData: [fullData, ...this.state.squareData] })
     }
   }
 
@@ -271,6 +296,48 @@ class Chat extends React.Component {
     window.location.href = 'http://localhost:3000/chat'
   }
 
+  handleSticker = e => {
+    let chosenSticker = e.target.getAttribute('data-sticker')
+    console.log('handleSticker chosenSticker', chosenSticker)
+
+    // 利用網址列取得chat_id
+    var chat_id_index = window.location.href.indexOf('#') // console.log(chat_id_index,"26")
+    var chat_id = window.location.href.slice(chat_id_index + 1)
+    // 利用localStorage取得發文者(myFrom)
+    var myFrom = JSON.parse(localStorage.getItem('user')).MR_number
+    // 利用網址取得myTo
+    var chat_id_array = chat_id.split('MR')
+    var myFrom_array = myFrom.split('MR')
+
+    var myTo = []
+    for (var i = 1; i < chat_id_array.length; i++) {
+      for (var k = 1; k < myFrom_array.length; k++) {
+        if (chat_id_array[i] !== myFrom_array[k]) {
+          myTo.push(chat_id_array[i])
+        }
+      }
+    }
+    console.log(myTo[0])
+
+    // 判斷是否是在大廳發出的訊息
+    var square = false
+    if (window.location.href === 'http://localhost:3000/chat') {
+      square = true
+    }
+    console.log('square', square)
+
+    socket.emit(`clientToSeverMsg`, {
+      square: square,
+      chat_id: chat_id,
+      myFrom: myFrom,
+      myTo: 'MR' + myTo[0],
+      content: `<img class="stickerImg" src="http://localhost:5555/images/chatSticker/${chosenSticker}" alt="Avatar"/>`,
+      myRead: 0,
+      created_at: new Date(),
+      myDelete: 0,
+    })
+  }
+
   componentDidMount() {
     axios
       .post(`http://localhost:5555/nana_use/chatList2`, {
@@ -290,6 +357,7 @@ class Chat extends React.Component {
     })
     if (window.location.href !== 'http://localhost:3000/chat') {
       window.location.href = 'http://localhost:3000/chat'
+      socket.disconnect()
     }
   }
 
@@ -300,8 +368,10 @@ class Chat extends React.Component {
 
   render() {
     console.log('render', this.state.oldDataList)
+    console.log('render', this.state.squareData)
     let myId = JSON.parse(localStorage.getItem('user')).MR_number
     let myPic = JSON.parse(localStorage.getItem('user')).MR_pic
+    let myName = JSON.parse(localStorage.getItem('user')).MR_name
     var count = 0
     return (
       <>
@@ -369,9 +439,12 @@ class Chat extends React.Component {
                             <div className="d-flex flex-column align-self-center chatTextWrap">
                               <span className="chatText">{value.MR_name}</span>
                               {value.myDelete === 0 ? (
-                                <span className="chatText">
-                                  {value.content}
-                                </span>
+                                <span
+                                  className="chatText"
+                                  dangerouslySetInnerHTML={{
+                                    __html: value.content,
+                                  }}
+                                ></span>
                               ) : (
                                 <span className="chatText">
                                   {value.myFrom === myId
@@ -414,24 +487,59 @@ class Chat extends React.Component {
                           <div key={index}>
                             {value.myFrom !== myId ? (
                               <div className="myContainer">
-                                <img
-                                  src="http://localhost:5555/images/member/kura.jpg"
-                                  alt="Avatar"
-                                />
-                                <p>這裡是其他人發出的</p>
-                                <span className="time-right">
-                                  其他人發出的時間
-                                </span>
+                                {value.myTo
+                                  .filter(
+                                    item => item.MR_number === value.myFrom
+                                  )
+                                  .map((value2, index) => {
+                                    return (
+                                      <div key={index}>
+                                        <img
+                                          src={
+                                            'http://localhost:5555/images/member/' +
+                                            value2.MR_pic
+                                          }
+                                          alt="Avatar"
+                                        />
+                                        <p
+                                          className="d-flex"
+                                          dangerouslySetInnerHTML={{
+                                            __html:
+                                              value2.MR_name +
+                                              ' 說：' +
+                                              value.content,
+                                          }}
+                                        ></p>
+                                        <span className="time-right">
+                                          {moment(value.created_at).format(
+                                            'YYYY-MM-DD HH:mm:ss'
+                                          )}
+                                        </span>
+                                      </div>
+                                    )
+                                  })}
                               </div>
                             ) : (
                               <div className="myContainer darker">
                                 <img
-                                  src="http://localhost:5555/images/member/yoko.jpg"
+                                  src={
+                                    'http://localhost:5555/images/member/' +
+                                    myPic
+                                  }
                                   alt="Avatar"
                                   className="right"
                                 />
-                                <p>這裡是我發出的</p>
-                                <span className="time-left">我發出的時間</span>
+                                <p
+                                  className="d-flex"
+                                  dangerouslySetInnerHTML={{
+                                    __html: myName + ' 說：' + value.content,
+                                  }}
+                                ></p>
+                                <span className="time-left">
+                                  {moment(value.created_at).format(
+                                    'YYYY-MM-DD HH:mm:ss'
+                                  )}
+                                </span>
                               </div>
                             )}
                           </div>
@@ -470,7 +578,12 @@ class Chat extends React.Component {
                                             }
                                             alt="Avatar"
                                           />
-                                          <p>{value2.content}</p>
+                                          <p
+                                            className="d-flex"
+                                            dangerouslySetInnerHTML={{
+                                              __html: value2.content,
+                                            }}
+                                          ></p>
                                           <span className="time-right">
                                             {moment(value2.created_at).format(
                                               'YYYY-MM-DD HH:mm:ss'
@@ -492,7 +605,12 @@ class Chat extends React.Component {
                                             alt="Avatar"
                                             className="right"
                                           />
-                                          <p>{value2.content}</p>
+                                          <p
+                                            className="d-flex"
+                                            dangerouslySetInnerHTML={{
+                                              __html: value2.content,
+                                            }}
+                                          ></p>
                                           <span className="time-left">
                                             {moment(value2.created_at).format(
                                               'YYYY-MM-DD HH:mm:ss'
@@ -547,13 +665,49 @@ class Chat extends React.Component {
                       ref={input => (this.textInput = input)}
                       onKeyPress={this.handleSubmit2}
                     />
-                    <div
-                      className="input-group-append chatMessageSubmit"
-                      onClick={this.handleSubmit}
-                    >
+                    <div className="input-group-append">
+                      <OverlayTrigger
+                        trigger="click"
+                        placement="top"
+                        overlay={
+                          <Popover id="popover-positioned-top">
+                            <Popover.Title as="h3">{`品書貼圖`}</Popover.Title>
+                            <Popover.Content>
+                              <div className="chatStickerWrapScroll d-flex flex-wrap justify-content-center">
+                                {this.state.sticker.map((value, index) => {
+                                  return (
+                                    <div key={index}>
+                                      <div className="chatStickerWrap">
+                                        <img
+                                          data-sticker={value}
+                                          onClick={this.handleSticker}
+                                          src={
+                                            'http://localhost:5555/images/chatSticker/' +
+                                            value
+                                          }
+                                          alt="Avatar"
+                                        />
+                                      </div>
+                                    </div>
+                                  )
+                                })}
+                              </div>
+                            </Popover.Content>
+                          </Popover>
+                        }
+                      >
+                        <span
+                          className="input-group-text lime lighten-2 chatMessageSubmit"
+                          id="basic-text1"
+                        >
+                          <i className="far fa-smile-wink"></i>
+                        </span>
+                      </OverlayTrigger>
+
                       <span
-                        className="input-group-text lime lighten-2"
+                        className="input-group-text lime lighten-2 chatMessageSubmit"
                         id="basic-text1"
+                        onClick={this.handleSubmit}
                       >
                         送出
                       </span>

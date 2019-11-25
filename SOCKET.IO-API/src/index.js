@@ -6,7 +6,7 @@ const bluebird = require("bluebird"); //青鳥
 const mysql = require("mysql");
 // 設定資料庫連線
 const db = mysql.createConnection({
-  host: "192.168.31.72",
+  host: "192.168.27.186",
   user: "root",
   password: "root",
   database: "pbook"
@@ -40,9 +40,12 @@ io.sockets.on("connection", function(socket) {
         `UPDATE mb_chat SET myRead = 1 WHERE chat_id = "${data.chat_id}" AND myTo = "${data.myFrom}"`
       );
 
+      console.log('測試私人聊天2',`INSERT INTO mb_chat(chat_id, myFrom, myTo, content, myRead, created_at, myDelete) VALUES ("${data.chat_id}","${data.myFrom}","${data.myTo}","${data.content}","${data.myRead}","${data.created_at}", "${data.myDelete}")`);
+
       await db.queryAsync(
-        `INSERT INTO mb_chat(chat_id, myFrom, myTo, content, myRead, created_at, myDelete) VALUES ("${data.chat_id}","${data.myFrom}","${data.myTo}","${data.content}","${data.myRead}","${data.created_at}", "${data.myDelete}")`
+        `INSERT INTO mb_chat(chat_id, myFrom, myTo, content, myRead, created_at, myDelete) VALUES ("${data.chat_id}","${data.myFrom}","${data.myTo}",'${data.content}',"${data.myRead}","${data.created_at}", "${data.myDelete}")`
       );
+      
 
       const results = await db.queryAsync(
         `SELECT mb_chat.*,MR_number,MR_name,MR_pic FROM mb_chat LEFT JOIN mr_information ON MR_number = myTo OR MR_number = myFrom WHERE myFrom = "${data.myFrom}" OR myTo = "${data.myFrom}" ORDER BY created_at ASC`
@@ -106,7 +109,7 @@ io.sockets.on("connection", function(socket) {
       io.sockets.emit("SeverToClientMsg", {
         square: data.square,
         myFrom: data.myFrom,
-        myFrom: users,
+        myTo: users,
         content: data.content,
         created_at: data.created_at
       });
