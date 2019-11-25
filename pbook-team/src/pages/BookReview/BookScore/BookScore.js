@@ -42,7 +42,7 @@ const BookScore = props => {
   const { bookInformation } = props
   useEffect(() => {
     star()
-  })
+  },[])
 
   //資料ajax
   const star = () => {

@@ -75,7 +75,7 @@ class AddMemberBook extends React.Component {
   // }
 
   onClickhandler() {
-    console.log('pictures', this.state.pictures)
+    // console.log('pictures', this.state.pictures)
 
     const formData = new FormData()
 

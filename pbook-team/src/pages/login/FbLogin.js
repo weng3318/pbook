@@ -32,9 +32,9 @@ class FbLogin extends React.Component{
         let fbContent;
         
         if(this.state.isLoggedIn){
-            fbContent = (
-               window.location.href='/'
-              );
+            // fbContent = (
+            //    window.location.href='/'
+            //   );
         }else{
         fbContent = (
         <FacebookLogin

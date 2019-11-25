@@ -66,7 +66,7 @@ class Info extends React.Component {
         let member = this.state.member
         let newPic = 'http://localhost:5555/images/member/' +
         member.MR_pic 
-        console.log('newPic'+ newPic);
+        // console.log('newPic'+ newPic);
         
 
         return (

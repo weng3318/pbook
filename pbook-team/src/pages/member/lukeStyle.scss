@@ -13,7 +13,7 @@ $content: 24px;
 }
 
 .contentWrap {
-  height: 80vw;
+  min-height: 80vw;
   width: 1280px;
 }
 
@@ -25,6 +25,12 @@ $content: 24px;
   padding-bottom: 50px;
   width: 1180px;
   border-bottom: 3px solid $yellow;
+}
+.nobook{
+  width: 100%;
+  padding-left: 450px;
+  font-size: $big_text;
+  margin-top: 50px;
 }
 
 .err_border {
@@ -46,11 +52,72 @@ $content: 24px;
 
 //查看二手書書籍
 .viewMemberBooks {
-  @extend .contentWrap;
+  position: absolute;
+  right: 0;
+  left: 320px;
+  height: 100%;
+  padding: 31px;
+  // color: $yellow;
+  // box-shadow: inset 0 20px 6rem #2d3a3a, inset 0 20px 6rem #2d3a3a;
+  margin: 0;
+  transition: 0.5s;
+
+  &::before {
+    content: '';
+    display: block;
+    // background: rgba(0, 0, 0, 0.7);
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+  }
+  .nobook{
+    @extend .nobook;
+  }
+
   .Book_title {
     @extend .MB_title;
   }
+  .books_container{
+    display: flex;
+  }
+  .modal-content{
+    margin: 10px 15px;
+  }
+
 }
+
+//分頁按鈕
+.pageWrap {
+      width: 100%;
+      .pagination {
+        .page-item {
+          &.active {
+            .page-link {
+              background-color: $main_color;
+              border-color: $main_color;
+              color: #ffffff;
+            }
+          }
+          .page-link {
+            color: $black;
+            &:focus {
+              z-index: 2;
+              box-shadow: 0 0 0 0.2rem $main_color;
+            }
+          }
+        }
+        .none {
+          .page-link {
+            background-color: #ffffff !important;
+            border-color: #ffffff !important;
+            color: $black !important;
+          }
+        }
+      }
+    }
 
 //收藏書籍
 .booksContent {
@@ -74,6 +141,10 @@ $content: 24px;
     top: 0;
     bottom: 0;
     width: 100%;
+  }
+
+  .nobook{
+    @extend .nobook;
   }
 
   .title {

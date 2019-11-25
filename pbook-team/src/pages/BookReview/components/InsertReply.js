@@ -3,6 +3,15 @@ import React, { useRef, useEffect } from 'react'
 import styled from '@emotion/styled'
 import BookScoreForBR from '../BookScore/BookScoreForBR'
 
+const UseFocus = () => {
+  const txt = useRef(null)
+  const setFocus = () => {
+    txt.current && txt.current.focus()
+  }
+
+  return [txt, setFocus]
+}
+
 function InsertReply(props) {
   //橫排
   const BookRow = styled.div`
@@ -34,10 +43,6 @@ function InsertReply(props) {
   const { user, review, submitHandler, changeHandler, login } = props
   // useEffect(() => {}, [changeHandler, submitHandler, review])
   const txt = useRef(null)
-
-  useEffect(() => {
-    txt.current.focus()
-  }, [])
 
   return (
     <>
