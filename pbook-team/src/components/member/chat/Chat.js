@@ -1,5 +1,12 @@
 import React from 'react'
-import { ListGroup, Tab, Row, Col, Tabs } from 'react-bootstrap'
+import {
+  ListGroup,
+  Tab,
+  Row,
+  Col,
+  OverlayTrigger,
+  Popover,
+} from 'react-bootstrap'
 import './chat.css'
 
 import axios from 'axios'
@@ -13,16 +20,43 @@ class Chat extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      sticker: [
+        'sticker(0).png',
+        'sticker(1).png',
+        'sticker(2).png',
+        'sticker(3).png',
+        'sticker(4).png',
+        'sticker(5).png',
+        'sticker(6).png',
+        'sticker(7).png',
+        'sticker(8).png',
+        'sticker(9).png',
+        'sticker(10).png',
+        'sticker(11).png',
+        'sticker(12).png',
+        'sticker(13).png',
+        'sticker(14).png',
+      ],
+      squareData: [],
       oldDataList: [],
       oldDataMessage: [],
       mySearch: '',
+      people: 0,
+      chosenSticker: '',
     }
     if (localStorage.getItem('user') !== null) {
       if (this.props.location.pathname === '/chat') {
-        socket = io.connect('ws://localhost:5000/')
+        socket = io.connect('ws://localhost:5000/', {
+          query: {
+            MR_number: JSON.parse(localStorage.getItem('user')).MR_number,
+            MR_name: JSON.parse(localStorage.getItem('user')).MR_name,
+            MR_pic: JSON.parse(localStorage.getItem('user')).MR_pic,
+          },
+        })
       }
     }
     socket.on('SeverToClientMsg', this.onMsg)
+    socket.on('SeverToClientDelete', this.onMsgDelete)
   }
 
   handleSearch = () => {
@@ -33,7 +67,7 @@ class Chat extends React.Component {
 
   handleMessage = async () => {
     this.myDiv.classList.add('hide')
-    this.messageSearch.classList.add('show-inline-flex')
+    // this.messageSearch.classList.add('show-inline-flex')
     console.log('點擊左邊那欄第一次拿chatMessage')
     await axios
       .post(`http://localhost:5555/nana_use/chatMessage2`, {
@@ -48,8 +82,54 @@ class Chat extends React.Component {
   }
 
   onMsg = fullData => {
-    console.log('客戶端接收服務端發的消息', fullData)
+    if (fullData.square === false) {
+      console.log('私人聊天')
+      console.log('客戶端接收服務端發的消息onMsg fullData', fullData)
+      console.log('我是誰?', JSON.parse(localStorage.getItem('user')).MR_number)
+      console.log('客戶端接收服務端發的消息onMsg fullData.data?', fullData.data)
+
+      if (
+        fullData.data.myFrom ===
+        JSON.parse(localStorage.getItem('user')).MR_number
+      ) {
+        this.setState({
+          oldDataList: fullData.oldDataList,
+          oldDataMessage: fullData.oldDataMessage,
+        })
+      } else if (
+        fullData.data.myTo ===
+        JSON.parse(localStorage.getItem('user')).MR_number
+      ) {
+        axios
+          .post(`http://localhost:5555/nana_use/chatList2`, {
+            memberId: JSON.parse(localStorage.getItem('user')).MR_number,
+          })
+          .then(res => {
+            this.setState({
+              oldDataList: res.data,
+              oldDataMessage: fullData.oldDataMessage,
+            })
+          })
+          .catch(error => {
+            console.log('componentDidMount拿資料時有錯誤', error)
+          })
+      }
+    } else {
+      console.log('廣場聊天')
+      console.log('客戶端接收服務端發的消息onMsg fullData', fullData)
+      console.log('我是誰?', JSON.parse(localStorage.getItem('user')).MR_number)
+
+      this.setState({ squareData: [fullData, ...this.state.squareData] })
+    }
+  }
+
+  onMsgDelete = fullData => {
+    console.log('客戶端接收服務端發的消息onMsgDelete fullData', fullData)
     console.log('我是誰?', JSON.parse(localStorage.getItem('user')).MR_number)
+    console.log(
+      '客戶端接收服務端發的消息onMsgDelete fullData.data?',
+      fullData.data
+    )
 
     if (
       fullData.data.myFrom ===
@@ -57,7 +137,7 @@ class Chat extends React.Component {
     ) {
       this.setState({
         oldDataList: fullData.oldDataList,
-        oldDataMessage: [fullData.data, ...this.state.oldDataMessage],
+        oldDataMessage: fullData.oldDataMessage,
       })
     } else if (
       fullData.data.myTo === JSON.parse(localStorage.getItem('user')).MR_number
@@ -69,7 +149,7 @@ class Chat extends React.Component {
         .then(res => {
           this.setState({
             oldDataList: res.data,
-            oldDataMessage: [fullData.data, ...this.state.oldDataMessage],
+            oldDataMessage: fullData.oldDataMessage,
           })
         })
         .catch(error => {
@@ -100,14 +180,23 @@ class Chat extends React.Component {
 
     // 取得對話文字
     var textInput = this.textInput.value
+    // 判斷是否是在大廳發出的訊息
+    var square = false
+    if (window.location.href === 'http://localhost:3000/chat') {
+      square = true
+    }
+    console.log('square', square)
 
     socket.emit(`clientToSeverMsg`, {
+      square: square,
       chat_id: chat_id,
       myFrom: myFrom,
       myTo: 'MR' + myTo[0],
       content: textInput,
       myRead: 0,
       created_at: new Date(),
+      myDelete: 0,
+      myUpload: 0,
     })
 
     this.textInput.value = ''
@@ -136,14 +225,23 @@ class Chat extends React.Component {
 
       // 取得對話文字
       var textInput = this.textInput.value
+      // 判斷是否是在大廳發出的訊息
+      var square = false
+      if (window.location.href === 'http://localhost:3000/chat') {
+        square = true
+      }
+      console.log('square', square)
 
       socket.emit('clientToSeverMsg', {
+        square: square,
         chat_id: chat_id,
         myFrom: myFrom,
         myTo: 'MR' + myTo[0],
         content: textInput,
         myRead: 0,
         created_at: new Date(),
+        myDelete: 0,
+        myUpload: 0,
       })
 
       this.textInput.value = ''
@@ -152,6 +250,27 @@ class Chat extends React.Component {
 
   handleMessageDelete = e => {
     let MessageSid = e.target.getAttribute('data-value')
+    console.log('handleMessageDelete MessageSid1', MessageSid)
+
+    // 利用網址列取得chat_id
+    var chat_id_index = window.location.href.indexOf('#') // console.log(chat_id_index,"26")
+    var chat_id = window.location.href.slice(chat_id_index + 1)
+    // 利用localStorage取得發文者(myFrom)
+    var myFrom = JSON.parse(localStorage.getItem('user')).MR_number
+    // 利用網址取得myTo
+    var chat_id_array = chat_id.split('MR')
+    var myFrom_array = myFrom.split('MR')
+
+    var myTo = []
+    for (var i = 1; i < chat_id_array.length; i++) {
+      for (var k = 1; k < myFrom_array.length; k++) {
+        if (chat_id_array[i] !== myFrom_array[k]) {
+          myTo.push(chat_id_array[i])
+        }
+      }
+    }
+    console.log(myTo[0])
+
     swal({
       title: '您確定要收回嗎?',
       text: '一旦收回,將會沒辦法復原喔!',
@@ -164,9 +283,128 @@ class Chat extends React.Component {
         swal('您的訊息已經被收回!', {
           icon: 'success',
         })
+        socket.emit(`clientToSeverDelete`, {
+          MessageSid: MessageSid,
+          memberId: JSON.parse(localStorage.getItem('user')).MR_number,
+          chat_id: chat_id,
+          myFrom: myFrom,
+          myTo: 'MR' + myTo[0],
+        })
       }
     })
-    console.log(MessageSid)
+  }
+
+  goBackToSquare = () => {
+    window.location.href = 'http://localhost:3000/chat'
+  }
+
+  handleSticker = e => {
+    let chosenSticker = e.target.getAttribute('data-sticker')
+    console.log('handleSticker chosenSticker', chosenSticker)
+
+    // 利用網址列取得chat_id
+    var chat_id_index = window.location.href.indexOf('#') // console.log(chat_id_index,"26")
+    var chat_id = window.location.href.slice(chat_id_index + 1)
+    // 利用localStorage取得發文者(myFrom)
+    var myFrom = JSON.parse(localStorage.getItem('user')).MR_number
+    // 利用網址取得myTo
+    var chat_id_array = chat_id.split('MR')
+    var myFrom_array = myFrom.split('MR')
+
+    var myTo = []
+    for (var i = 1; i < chat_id_array.length; i++) {
+      for (var k = 1; k < myFrom_array.length; k++) {
+        if (chat_id_array[i] !== myFrom_array[k]) {
+          myTo.push(chat_id_array[i])
+        }
+      }
+    }
+    console.log(myTo[0])
+
+    // 判斷是否是在大廳發出的訊息
+    var square = false
+    if (window.location.href === 'http://localhost:3000/chat') {
+      square = true
+    }
+    console.log('square', square)
+
+    socket.emit(`clientToSeverMsg`, {
+      square: square,
+      chat_id: chat_id,
+      myFrom: myFrom,
+      myTo: 'MR' + myTo[0],
+      content: `<img class="stickerImg" src="http://localhost:5555/images/chatSticker/${chosenSticker}" alt="Avatar"/>`,
+      myRead: 0,
+      created_at: new Date(),
+      myDelete: 0,
+      myUpload: 0,
+    })
+  }
+
+  handleUpload = async e => {
+    var uploadImg
+    const formData = new FormData()
+
+    for (var n = 0; n < e.target.files.length; n++) {
+      formData.append('avatar', e.target.files[n])
+      console.log('formData', formData)
+    }
+
+    await fetch('http://localhost:5555/nana_use/imgFiles', {
+      method: 'POST',
+      body: formData,
+    })
+      .then(res => {
+        return res.json()
+      })
+      .then(imgs => {
+        console.log('imgs.files', imgs.pictures)
+        this.setState({ uploadImg: imgs.pictures })
+        uploadImg = imgs.pictures
+      })
+      .catch(err => {
+        console.log('上傳檔案錯誤', err)
+      })
+
+    console.log('測試uploadImg', uploadImg)
+
+    // 利用網址列取得chat_id
+    var chat_id_index = window.location.href.indexOf('#') // console.log(chat_id_index,"26")
+    var chat_id = window.location.href.slice(chat_id_index + 1)
+    // 利用localStorage取得發文者(myFrom)
+    var myFrom = JSON.parse(localStorage.getItem('user')).MR_number
+    // 利用網址取得myTo
+    var chat_id_array = chat_id.split('MR')
+    var myFrom_array = myFrom.split('MR')
+
+    var myTo = []
+    for (var i = 1; i < chat_id_array.length; i++) {
+      for (var k = 1; k < myFrom_array.length; k++) {
+        if (chat_id_array[i] !== myFrom_array[k]) {
+          myTo.push(chat_id_array[i])
+        }
+      }
+    }
+    console.log(myTo[0])
+
+    // 判斷是否是在大廳發出的訊息
+    var square = false
+    if (window.location.href === 'http://localhost:3000/chat') {
+      square = true
+    }
+    console.log('square', square)
+
+    socket.emit(`clientToSeverMsg`, {
+      square: square,
+      chat_id: chat_id,
+      myFrom: myFrom,
+      myTo: 'MR' + myTo[0],
+      content: JSON.stringify(uploadImg),
+      myRead: 0,
+      created_at: new Date(),
+      myDelete: 0,
+      myUpload: 1,
+    })
   }
 
   componentDidMount() {
@@ -175,20 +413,21 @@ class Chat extends React.Component {
         memberId: JSON.parse(localStorage.getItem('user')).MR_number,
       })
       .then(res => {
-        if (res.data.length === 0) {
-          this.setState({
-            visible: true,
-            oldDataList: res.data,
-          })
-        } else {
-          this.setState({
-            oldDataList: res.data,
-          })
-        }
+        this.setState({
+          oldDataList: res.data,
+        })
       })
       .catch(error => {
         console.log('componentDidMount拿資料時有錯誤', error)
       })
+    socket.on(`SeverToClientPeople`, data => {
+      this.setState({ people: data })
+      console.log('人數', data)
+    })
+    if (window.location.href !== 'http://localhost:3000/chat') {
+      window.location.href = 'http://localhost:3000/chat'
+      socket.disconnect()
+    }
   }
 
   componentWillUnmount() {
@@ -197,8 +436,13 @@ class Chat extends React.Component {
   }
 
   render() {
+    console.log('render', this.state.oldDataList)
+    console.log('render', this.state.squareData)
+    console.log('render uploadImg', this.state.uploadImg)
+
     let myId = JSON.parse(localStorage.getItem('user')).MR_number
     let myPic = JSON.parse(localStorage.getItem('user')).MR_pic
+    let myName = JSON.parse(localStorage.getItem('user')).MR_name
     var count = 0
     return (
       <>
@@ -224,6 +468,17 @@ class Chat extends React.Component {
                         <i className="fas fa-search" aria-hidden="true"></i>
                       </span>
                     </form>
+                  </ListGroup.Item>
+                  <ListGroup.Item>
+                    <span className="d-flex justify-content-center">
+                      <button
+                        type="button"
+                        className="btn btn-outline-secondary"
+                        onClick={this.goBackToSquare}
+                      >
+                        回到品書聊天廣場
+                      </button>
+                    </span>
                   </ListGroup.Item>
 
                   {this.state.oldDataList
@@ -253,10 +508,42 @@ class Chat extends React.Component {
                               ></img>
                             </div>
                             <div className="d-flex flex-column align-self-center chatTextWrap">
-                              <span className="chatText">
-                                {'和[' + value.MR_name + ']的聊天室'}
-                              </span>
-                              <span className="chatText">{value.content}</span>
+                              <span className="chatText">{value.MR_name}</span>
+                              {value.myDelete === 0 ? (
+                                value.myUpload === 1 ? (
+                                  <span className="d-flex">
+                                    {JSON.parse(value.content).map(
+                                      (value, index) => {
+                                        return (
+                                          <span key={index}>
+                                            <img
+                                              className="dataUpLoadImg"
+                                              src={
+                                                'http://localhost:5555/images/chatFile/' +
+                                                value
+                                              }
+                                              alt="Avatar"
+                                            />
+                                          </span>
+                                        )
+                                      }
+                                    )}
+                                  </span>
+                                ) : (
+                                  <span
+                                    className="chatText"
+                                    dangerouslySetInnerHTML={{
+                                      __html: value.content,
+                                    }}
+                                  ></span>
+                                )
+                              ) : (
+                                <span className="chatText">
+                                  {value.myFrom === myId
+                                    ? '您已收回訊息'
+                                    : value.MR_name + '已收回訊息'}
+                                </span>
+                              )}
                             </div>
                             {value.total === 0 ? (
                               <div className="d-flex flex-column align-content-center position-absolute newest hide">
@@ -281,15 +568,133 @@ class Chat extends React.Component {
               <Col sm={8}>
                 <Tab.Content>
                   <div className="myDefault" ref={div => (this.myDiv = div)}>
-                    <img
+                    <div className="p-2">
+                      <i className="far fa-comments mx-2"></i>
+                      歡迎來到品書聊天廣場！目前有{this.state.people}
+                      位會員正在線上。
+                    </div>
+                    <div className="chatMessageScroll">
+                      {this.state.squareData.map((value, index) => {
+                        return (
+                          <div key={index}>
+                            {value.myFrom !== myId ? (
+                              <div className="myContainer">
+                                {value.myTo
+                                  .filter(
+                                    item => item.MR_number === value.myFrom
+                                  )
+                                  .map((value2, index) => {
+                                    return (
+                                      <div key={index}>
+                                        <img
+                                          className="memberImg"
+                                          src={
+                                            'http://localhost:5555/images/member/' +
+                                            value2.MR_pic
+                                          }
+                                          alt="Avatar"
+                                        />
+                                        {value.myUpload === 1 ? (
+                                          <p className="d-flex">
+                                            {value2.MR_name + '說：'}
+                                            {JSON.parse(value.content).map(
+                                              (value, index) => {
+                                                return (
+                                                  <p key={index}>
+                                                    <img
+                                                      className="upLoadImg"
+                                                      src={
+                                                        'http://localhost:5555/images/chatFile/' +
+                                                        value
+                                                      }
+                                                      alt="Avatar"
+                                                    />
+                                                  </p>
+                                                )
+                                              }
+                                            )}
+                                          </p>
+                                        ) : (
+                                          <p
+                                            className="d-flex"
+                                            dangerouslySetInnerHTML={{
+                                              __html:
+                                                value2.MR_name +
+                                                ' 說：' +
+                                                value.content,
+                                            }}
+                                          ></p>
+                                        )}
+                                        <span className="time-right">
+                                          {moment(value.created_at).format(
+                                            'YYYY-MM-DD HH:mm:ss'
+                                          )}
+                                        </span>
+                                      </div>
+                                    )
+                                  })}
+                              </div>
+                            ) : (
+                              <div className="myContainer darker">
+                                <img
+                                  src={
+                                    'http://localhost:5555/images/member/' +
+                                    myPic
+                                  }
+                                  alt="Avatar"
+                                  className="memberImg right"
+                                />
+                                {value.myUpload === 1 ? (
+                                  <p className="d-flex">
+                                    {myName + '說：'}
+                                    {JSON.parse(value.content).map(
+                                      (value, index) => {
+                                        return (
+                                          <p key={index}>
+                                            <img
+                                              className="upLoadImg"
+                                              src={
+                                                'http://localhost:5555/images/chatFile/' +
+                                                value
+                                              }
+                                              alt="Avatar"
+                                            />
+                                          </p>
+                                        )
+                                      }
+                                    )}
+                                  </p>
+                                ) : (
+                                  <p
+                                    className="d-fle"
+                                    dangerouslySetInnerHTML={{
+                                      __html: myName + ' 說：' + value.content,
+                                    }}
+                                  ></p>
+                                )}
+                                <span className="time-left">
+                                  {moment(value.created_at).format(
+                                    'YYYY-MM-DD HH:mm:ss'
+                                  )}
+                                </span>
+                              </div>
+                            )}
+                          </div>
+                        )
+                      })}
+                    </div>
+                    {/* <img
                       alt="背景圖"
                       src={require('./images/admin_bg.png')}
-                    ></img>
+                    ></img> */}
                   </div>
-
                   {this.state.oldDataList.map((value, index) => {
                     return (
                       <Tab.Pane key={index} eventKey={'#' + value.chat_id}>
+                        <div className="p-2">
+                          <i className="far fa-comment-dots mx-2"></i>
+                          {'您正在和[' + value.MR_name + ']聊天'}
+                        </div>
                         <div className="chatMessageScroll">
                           {/* eslint-disable-next-line array-callback-return */}
                           {this.state.oldDataMessage.map((value2, index2) => {
@@ -297,17 +702,27 @@ class Chat extends React.Component {
                               return (
                                 <div key={index2}>
                                   {(() => {
-                                    if (value2.myFrom !== myId) {
+                                    if (
+                                      value2.myFrom !== myId &&
+                                      value2.myDelete === 0 &&
+                                      value2.myUpload === 0
+                                    ) {
                                       return (
                                         <div className="myContainer">
                                           <img
+                                            className="memberImg"
                                             src={
                                               'http://localhost:5555/images/member/' +
                                               value.MR_pic
                                             }
                                             alt="Avatar"
                                           />
-                                          <p>{value2.content}</p>
+                                          <p
+                                            className="d-flex"
+                                            dangerouslySetInnerHTML={{
+                                              __html: value2.content,
+                                            }}
+                                          ></p>
                                           <span className="time-right">
                                             {moment(value2.created_at).format(
                                               'YYYY-MM-DD HH:mm:ss'
@@ -315,7 +730,11 @@ class Chat extends React.Component {
                                           </span>
                                         </div>
                                       )
-                                    } else {
+                                    } else if (
+                                      value2.myFrom === myId &&
+                                      value2.myDelete === 0 &&
+                                      value2.myUpload === 0
+                                    ) {
                                       return (
                                         <div className="myContainer darker">
                                           <img
@@ -324,9 +743,14 @@ class Chat extends React.Component {
                                               myPic
                                             }
                                             alt="Avatar"
-                                            className="right"
+                                            className="memberImg right"
                                           />
-                                          <p>{value2.content}</p>
+                                          <p
+                                            className="d-flex"
+                                            dangerouslySetInnerHTML={{
+                                              __html: value2.content,
+                                            }}
+                                          ></p>
                                           <span className="time-left">
                                             {moment(value2.created_at).format(
                                               'YYYY-MM-DD HH:mm:ss'
@@ -337,12 +761,114 @@ class Chat extends React.Component {
                                             data-value={value2.sid}
                                             onClick={this.handleMessageDelete}
                                           >
-                                            <span>收回</span>
-                                          </i>
-                                          <i className="fas fa-edit messageEdit">
-                                            <span>修改</span>
+                                            收回
                                           </i>
                                         </div>
+                                      )
+                                    } else if (
+                                      value2.myFrom === myId &&
+                                      value2.myDelete === 0 &&
+                                      value2.myUpload === 1
+                                    ) {
+                                      return (
+                                        <div className="myContainer darker">
+                                          <img
+                                            src={
+                                              'http://localhost:5555/images/member/' +
+                                              myPic
+                                            }
+                                            alt="Avatar"
+                                            className="memberImg right"
+                                          />
+                                          <p className="d-flex">
+                                            {JSON.parse(value2.content).map(
+                                              (value, index) => {
+                                                return (
+                                                  <p key={index}>
+                                                    <img
+                                                      className="upLoadImg"
+                                                      src={
+                                                        'http://localhost:5555/images/chatFile/' +
+                                                        value
+                                                      }
+                                                      alt="Avatar"
+                                                    />
+                                                  </p>
+                                                )
+                                              }
+                                            )}
+                                          </p>
+                                          <span className="time-left">
+                                            {moment(value2.created_at).format(
+                                              'YYYY-MM-DD HH:mm:ss'
+                                            )}
+                                          </span>
+                                          <i
+                                            className="fas fa-undo-alt messageDelete"
+                                            data-value={value2.sid}
+                                            onClick={this.handleMessageDelete}
+                                          >
+                                            收回
+                                          </i>
+                                        </div>
+                                      )
+                                    } else if (
+                                      value2.myFrom !== myId &&
+                                      value2.myDelete === 0 &&
+                                      value2.myUpload === 1
+                                    ) {
+                                      return (
+                                        <div className="myContainer">
+                                          <img
+                                            className="memberImg"
+                                            src={
+                                              'http://localhost:5555/images/member/' +
+                                              value.MR_pic
+                                            }
+                                            alt="Avatar"
+                                          />
+                                          <p className="d-flex">
+                                            {JSON.parse(value2.content).map(
+                                              (value, index) => {
+                                                return (
+                                                  <p key={index}>
+                                                    <img
+                                                      className="upLoadImg"
+                                                      src={
+                                                        'http://localhost:5555/images/chatFile/' +
+                                                        value
+                                                      }
+                                                      alt="Avatar"
+                                                    />
+                                                  </p>
+                                                )
+                                              }
+                                            )}
+                                          </p>
+                                          <span className="time-right">
+                                            {moment(value2.created_at).format(
+                                              'YYYY-MM-DD HH:mm:ss'
+                                            )}
+                                          </span>
+                                        </div>
+                                      )
+                                    } else if (
+                                      value2.myFrom !== myId &&
+                                      value2.myDelete === 1
+                                    ) {
+                                      return (
+                                        <span className="chatDeleteMessage">
+                                          {value.MR_name + '已收回訊息'}
+                                        </span>
+                                      )
+                                    } else if (
+                                      value2.myFrom === myId &&
+                                      value2.myDelete === 1
+                                    ) {
+                                      return (
+                                        <span className="chatDeleteMessage">
+                                          您已收回訊息
+                                        </span>
                                       )
                                     }
                                   })()}
@@ -355,7 +881,7 @@ class Chat extends React.Component {
                     )
                   })}
                   <div
-                    className="input-group md-form form-sm form-2 my-3 hide"
+                    className="input-group md-form form-sm form-2 my-3"
                     ref={messageSearch => (this.messageSearch = messageSearch)}
                   >
                     <input
@@ -366,13 +892,72 @@ class Chat extends React.Component {
                       ref={input => (this.textInput = input)}
                       onKeyPress={this.handleSubmit2}
                     />
-                    <div
-                      className="input-group-append chatMessageSubmit"
-                      onClick={this.handleSubmit}
-                    >
+                    <div className="input-group-append">
                       <span
-                        className="input-group-text lime lighten-2"
+                        className="input-group-text lime lighten-2 chatMessageSubmit position-relative"
                         id="basic-text1"
+                        style={{ width: '41.5px' }}
+                      >
+                        <i className="fas fa-upload position-absolute"></i>
+                        <input
+                          type="file"
+                          name="file"
+                          id="fileUpload"
+                          multiple="multiple"
+                          className="position-absolute"
+                          style={{
+                            opacity: 0,
+                            width: '41.5px',
+                            top: 0,
+                            left: 0,
+                            fontSize: '20px',
+                          }}
+                          onChange={this.handleUpload}
+                        ></input>
+                      </span>
+
+                      <OverlayTrigger
+                        trigger="click"
+                        placement="top"
+                        overlay={
+                          <Popover id="popover-positioned-top">
+                            <Popover.Title as="h3">{`品書貼圖`}</Popover.Title>
+                            <Popover.Content>
+                              <div className="chatStickerWrapScroll d-flex flex-wrap justify-content-center">
+                                {this.state.sticker.map((value, index) => {
+                                  return (
+                                    <div key={index}>
+                                      <div className="chatStickerWrap">
+                                        <img
+                                          data-sticker={value}
+                                          onClick={this.handleSticker}
+                                          src={
+                                            'http://localhost:5555/images/chatSticker/' +
+                                            value
+                                          }
+                                          alt="Avatar"
+                                        />
+                                      </div>
+                                    </div>
+                                  )
+                                })}
+                              </div>
+                            </Popover.Content>
+                          </Popover>
+                        }
+                      >
+                        <span
+                          className="input-group-text lime lighten-2 chatMessageSubmit"
+                          id="basic-text1"
+                        >
+                          <i className="far fa-smile-wink"></i>
+                        </span>
+                      </OverlayTrigger>
+
+                      <span
+                        className="input-group-text lime lighten-2 chatMessageSubmit"
+                        id="basic-text1"
+                        onClick={this.handleSubmit}
                       >
                         送出
                       </span>

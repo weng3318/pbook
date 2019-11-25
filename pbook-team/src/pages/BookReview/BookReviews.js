@@ -84,9 +84,6 @@ const Member = styled.div`
   height: 100px;
   margin: 0 0 0 5px;
 `
-
-const Submit = styled.button``
-
 //------------------------------------------------------------------------------------------------------
 
 const List = () => {
@@ -105,20 +102,20 @@ const List = () => {
   //CRUD設定
   const [review, setReview] = useState({
     id: '',
-    isbn: '',
     sid: '',
     pic: '',
     editReview: '',
     reviewText: '',
-    replyText: '',
     book: urlParams,
     star: '1',
     isEdit: false,
   })
-  const [x, y] = useState({})
+  //ISBN
+  const [ISBN, setISBN] = useState()
   //書評下方顯示欄資料
   const [reply, setReply] = useState([])
-  const [txt, setTxt] = useState()
+  const [reviewID, setReviewID] = useState(1)
+  let replyTxt
 
   useEffect(() => {
     bookList()
@@ -141,6 +138,7 @@ const List = () => {
       .then(res => {
         let data = res.data.data[0]
         setList(res.data.data)
+        setISBN(res.data.data[0].isbn)
         // setReview({ ...review, isbn: data.isbn, pic: data.pic })
       })
       .catch(error => {
@@ -166,8 +164,8 @@ const List = () => {
     e.preventDefault()
     if (e.which === 13) {
       console.log('123')
-      submitHandler(e)
-      updateHandler(e)
+      submitHandler2(e)
+      // updateHandler(e)
     }
   }
 
@@ -177,11 +175,16 @@ const List = () => {
       ...review,
       [e.target.name]: e.target.value,
     })
-    let x = e.target.name
-    for (let i = 1; i < memberReview.length; i++) {
-      if (e.target.name == memberReview[i].sid) {
-      }
+  }
+  //輸入時更新資料下方回覆
+  const changeHandler2 = e => {
+    setReviewID(e.target.name)
+    replyTxt = {
+      name: e.target.value,
     }
+    console.log(replyTxt)
+    console.log(replyTxt.name)
+    console.log(reviewID)
   }
 
   //新增資料
@@ -215,7 +218,36 @@ const List = () => {
       swal('書評內容為空')
     }
   }
+  //新增資料下方回覆
+  const submitHandler2 = e => {
+    e.preventDefault()
+    let api = `http://localhost:5555/reviews/reply/InsertData`
 
+    if (user.isLogin) {
+      axios
+        .post(api, {
+          id: review.id,
+          review_sid: reviewID,
+          reply: replyTxt.name,
+        })
+        .then(res => {
+          swal('新增成功', '', 'success').then(value => {
+            setTimeout(() => {
+              window.location.reload()
+            }, 100)
+          })
+        })
+
+        .catch(error => {
+          setReview({
+            error: true,
+            submitSuccess: false,
+          })
+        })
+    } else {
+      swal('書評內容為空')
+    }
+  }
   //更新資料
   const updateHandler = e => {
     e.preventDefault()
@@ -277,12 +309,16 @@ const List = () => {
   //加入書櫃
   const addCase = e => {
     e.preventDefault()
-    let api = `http://localhost:5555/member/addBookcase`
+    let api = `http://localhost:5555/reviews/bookcase`
     if (user.isLogin) {
-      axios.post(api, {
-        number: review.book,
-        isbn: review.isbn,
-      })
+      axios
+        .post(api, {
+          number: review.id,
+          isbn: ISBN,
+        })
+        .then(res => {
+          swal('新增成功', '', 'success')
+        })
     } else {
       swal('請登入會員').then(value => {
         login()
@@ -339,7 +375,7 @@ const List = () => {
               <BookScoreAndLine List={List} />
             </BookRow>
             <form onSubmit={addCase}>
-              <button type="submit" onClick={addCase} className="BookCase">
+              <button type="submit" className="BookCase">
                 加入書櫃
               </button>
             </form>
@@ -374,7 +410,7 @@ const List = () => {
                 name="reviewText"
                 value={review.reviewText}
                 onChange={changeHandler}
-                onKeyPress={keypress}
+                // onKeyPress={keypress}
                 placeholder="新增評論..."
               />
               <BookRow>
@@ -435,7 +471,7 @@ const List = () => {
                     name="editReview"
                     value={review.editReview}
                     onChange={changeHandler}
-                    onKeyPress={keypress}
+                    // onKeyPress={keypress}
                   />
                   <button type="submit" className="reviews_UpdateBtn">
                     修改評論
@@ -458,10 +494,11 @@ const List = () => {
                 )
               )}
               {user.isLogin ? (
-                <form key={data.sid}>
+                <form onSubmit={submitHandler2} key={data.book}>
                   <textarea
-                    value={txt}
-                    onChange={e => setTxt(e.target.value)}
+                    key={data.sid}
+                    value={replyTxt}
+                    onChange={changeHandler2}
                     name={data.sid}
                     placeholder="回覆此書評"
                     className="reviews_reply_text"

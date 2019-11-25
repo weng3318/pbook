@@ -94,6 +94,7 @@
   color: #fff !important;
   text-decoration: none !important;
   text-align: center;
+  background: none;
 }
 
 .titleEn {
@@ -246,7 +247,7 @@
 .guide-shadow:after {
   font-size: 5vw;
   position: absolute;
-  content: '您還沒有可以聊天的好友喔!\A請去玩玩我們的二手書配對遊戲吧!\A請點擊右上角的「二手書配對」!';
+  content: '您還沒有可以私人聊天的好友喔!\A請去玩玩我們的二手書配對遊戲吧!\A請點擊右上角的「二手書配對」!';
   white-space: pre-wrap;
   width: 100%;
   display: flex;

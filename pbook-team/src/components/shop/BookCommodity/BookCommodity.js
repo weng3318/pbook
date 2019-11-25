@@ -26,7 +26,10 @@ const BookCommodity = props => {
           <Row>
             <BookPic bookInfoPayload={bookInfoPayload}></BookPic>
             <BookDetail bookInfoPayload={bookInfoPayload}></BookDetail>
-            <BookBuy bookInfoPayload={bookInfoPayload}></BookBuy>
+            <BookBuy
+              bookInfoPayload={bookInfoPayload}
+              history={props.history}
+            ></BookBuy>
           </Row>
         </Container>
         <Container>

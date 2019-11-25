@@ -23,7 +23,7 @@ const Shop = props => {
   const Search = event => {
     searchValue = document.querySelector('.searchInput').value
     setValue(searchValue)
-    window.location.href = '/books/search/1/' + searchValue
+    props.history.push(`/books/search/1/${searchValue}`)
     event.preventDefault()
     return false
   }
