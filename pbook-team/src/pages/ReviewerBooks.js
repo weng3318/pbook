@@ -1,5 +1,4 @@
 import React from 'react'
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 // import Data from '../pages/reviewer_page/data/reviewer_data'
 import { withRouter } from 'react-router-dom'
 import BR_ReviewerList from './reviewer_page/BR_ReviewerList'
@@ -7,8 +6,6 @@ import BR_BookcaseList from './reviewer_page/BR_BookcaseList'
 import BR_BookcaseHot_books from './reviewer_page/BR_BookcaseHot_books'
 import BR_Navbar from './reviewer_page/BR_Navbar'
 import ReviewerBlog from './ReviewerBlog'
-import ReviewerBlogEdit from './ReviewerBlogEdit'
-
 import axios from 'axios'
 
 class ReviewerBooks extends React.Component {
@@ -22,6 +19,7 @@ class ReviewerBooks extends React.Component {
     }
     this.handleOpened.bind(this)
   }
+
   componentDidMount() {
     let newbrData
     let newcsData
@@ -43,11 +41,14 @@ class ReviewerBooks extends React.Component {
         console.log('前端沒有取得資料', error)
       })
   }
+
     // 裝填
   handleOpened = (opened, openedSid) => {
     this.setState({ opened, openedSid })
   }
+
   render() {
+    
     // 進去撈 sid#state
     const { opened, openedSid } = this.state
 
@@ -58,7 +59,7 @@ class ReviewerBooks extends React.Component {
     if (this.state.brData.length === 0)
       return (
         <>
-          <h1 className="br_h1">取得資料中...</h1>
+          <h1 className="h1_br">取得資料中...</h1>
         </>
       )
 
@@ -99,7 +100,6 @@ class ReviewerBooks extends React.Component {
             tube={reviewerData.tube}
           ></BR_ReviewerList>
 
-          {/* <Router> */}
           {/* 熱門書評列表 */}
           <div className="HotBookBoxAll_Light">
             <div className="blackBG">
@@ -123,15 +123,6 @@ class ReviewerBooks extends React.Component {
           </div>
 
           {opened === 'blog' && <ReviewerBlog sid={openedSid} opened={opened} onHandleOpen={this.handleOpened}/>}
-        
-          {/* <Switch>
-              <Route
-                exact
-                path="/reviewer/reviewerBooks/reviewerBlog/:sid?"
-                component={ReviewerBlog}
-              />
-            </Switch>
-          </Router> */}
 
           {/* 針對書評家 - 書櫃列表 */}
           {this.state.csData

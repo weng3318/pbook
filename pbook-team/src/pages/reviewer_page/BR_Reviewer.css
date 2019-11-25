@@ -16,7 +16,7 @@ a:hover{
     text-decoration: none;
 }
 /* 取得資料中... (文字) */
-.br_h1{
+.h1_br{
     font-weight: bolder;
     margin: 1rem;
     color: #2d3a3a;

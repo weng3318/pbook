@@ -137,9 +137,13 @@
     right: 1rem;
     bottom: 1rem;
 }
-@media (max-width: 900px) {
-    /* 部落格，整體區域 (狀態改變) */
+@media (max-width: 786px) {
+    /* 部落格內文，RWD (閱讀性調整) */
     .reviewerBlog {
-        padding: 20px 80px 20px 80px;
+        padding: 20px 50px 20px 50px;
+    }
+    /* 編輯按鈕，RWD (位置調整) */
+    .Animate_Edit_Box{
+        top: -160px;
     }
 }

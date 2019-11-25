@@ -9,9 +9,9 @@ class BR_BookcaseList extends React.Component {
         this.state = {
          opened: null,
         }
-        // this.handleOpened.bind(this)
+        this.handleOpened.bind(this)
      }
-    //  裝填，改變
+    //  裝填
      handleOpened = (opened) => {
          this.setState({ opened })
     }
@@ -31,38 +31,51 @@ class BR_BookcaseList extends React.Component {
       }(document, 'script', 'facebook-jssdk'))
         return (
             <>
-            {/* <Router> */}
     <section className="ReviewerListAllBox_Bookcase">
             {/* 書籍圖片 */}
-        {/* <Link to={"/reviewer/reviewerBooks/reviewerBlog/"+this.props.sid} className="d-flex justify-content-center borderLineTop"> */}
+
           <div className="brAvatarAllBox_Bookcase" onClick={() => this.handleOpened(this.state.opened === 'blog' ? null : 'blog')}>
             {/* <img className="brBookInfoImg_Bookcase" src={require(`./images_books/vb_9789578587823.jpg`)}/> */}
             {/* <img className="brBookInfoImg_Bookcase" src={require(`./images/${this.props.pic}`)}/> */}
             <img className="brBookInfoImg_Bookcase" src={`http://localhost/books/src/venderBooks_Management/vb_images/${this.props.pic}`} alt=""/>
             </div>
-        {/* </Link> */}
-          <div className="brInfoBox_Bookcase borderLineUpDown"><h5 className="h5_br">書籍簡介</h5>
-                <div className="brInfoTextBox_Bookcase">
-                    <div className="bookNameBox_Bookcase">
-                        <div className="bookName_Bookcase">書名：</div>
-                        <div className="bookNameText_Bookcase">{this.props.name}</div>
-                    </div>
-                    <div className="beAuthorText">作者：{this.props.author}</div>
 
+        <div className="bookInfoRWD">
+                <div className="bookNameBox_Bookcase">
+                    <div className="bookName_Bookcase">書名：</div>
+                    <div className="bookNameText_Bookcase">{this.props.name}</div>
+                </div>
+                <div className="beAuthorText">
+                    作者：{this.props.author}
+                </div>
+        </div>
+
+          <div className="brInfoBox_Bookcase borderLineUpDown">
+          {/* <h4 className="h4_br">書籍簡介</h4> */}
+                <div className="brInfoTextBox_Bookcase">
+
+                    <div className="bookInfo">
+                        <div className="bookNameBox_Bookcase">
+                            <div className="bookName_Bookcase">書名：</div>
+                            <div className="bookNameText_Bookcase">{this.props.name}</div>
+                        </div>
+                        <div className="beAuthorText">
+                            作者：{this.props.author}
+                        </div>
+                    </div>
+                    {/* 書櫃區的簡介內文 */}
                     <h5 className="brInfoText_Bookcase" dangerouslySetInnerHTML={{__html:this.props.introduction? this.props.introduction:this.props.blog}}></h5>
+
                 </div>
 
             {/* 編輯模式按鈕 */}
-                {/* <Link className="Animate_Edit_Box" to={"/reviewer/reviewerBooks/reviewerBlog/reviewerBlogEdit/"+this.props.sid}> */}
                     <div className="Animate_Edit_Box">
                         <div className="Animate_Edit_btn" onClick={() => this.handleOpened(opened === 'edit' ? null : 'edit')}>
                             <img className="icon_Blog_Edit" src={require('../reviewer_page/images/icon_Blog_Edit.png')}/>
                             <h5 className="text_Blog_Edit">編輯模式</h5>
                         </div>
                     </div>
-                {/* </Link> */}
-                {/* <Link className="" to={"/reviewer/reviewerBooks/reviewerBlog/reviewerBlogEdit/"+this.props.sid}>
-                </Link> */}
+
             <div className="brIconBox_Bookcase">
             {/* 收藏書籍 (圖示) */}
                 <Link to={'/reviewer'} className="brIconShare_Bookcase">
@@ -80,21 +93,10 @@ class BR_BookcaseList extends React.Component {
             {/* 評分組件區塊 */}
     {/* <div className="brStarBox_Bookcase borderLine"></div> */}
     </section>
-            {/* 切換 部落格文章 與 編輯模式 */}                 {/* onHandleOpen 爺爺想見孫女 brBlog brBlogList*/}
+    {/* 切換文章 與 編輯 */}                   {/* onHandleOpen 爺爺想打孫女 brBlog brBlogList 母湯 */}
     {opened === 'blog' && <ReviewerBlog sid={sid} opened={opened} onHandleOpen={this.handleOpened}/>}
     {opened === 'edit' && <ReviewerBlogEdit sid={sid} name={name} number={number}/>}
-                    {/* <Switch>
-                        <Route exact 
-                        path="/reviewer/reviewerBooks/reviewerBlog/:sid?" 
-                        component={ReviewerBlog} />
-                        <Route
-                        exact
-                        path="/reviewer/reviewerBooks/reviewerBlog/reviewerBlogEdit/:sid?"
-                        component={ReviewerBlogEdit}
-                        />
-                    </Switch> */}
-            {/* </Router> */}
-        {/* <h3>測試書本：{this.props.name}</h3> */}
+
         {/* <div style={{height:'30px'}}></div> */}
         </>
         )

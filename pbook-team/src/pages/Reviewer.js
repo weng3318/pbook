@@ -29,7 +29,7 @@ export class Reviewer extends React.Component {
         })
     }
     render() {
-     if (this.state.brData.length === 0) return <h1 className="br_h1">取得資料中...</h1>
+     if (this.state.brData.length === 0) return <h1 className="h1_br">取得資料中...</h1>
       console.log('所有的書評家',this.state.brData)
 
         return (

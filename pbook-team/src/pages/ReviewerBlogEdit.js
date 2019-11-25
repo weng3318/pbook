@@ -32,7 +32,7 @@ export class ReviewerBlogEdit extends React.Component {
     if (this.state.csData.length === 0)
       return (
         <>
-          <h1 className="br_h1">取得資料中...</h1>
+          <h1 className="h1_br">取得資料中...</h1>
         </>
       )
     let csData = this.state.csData
