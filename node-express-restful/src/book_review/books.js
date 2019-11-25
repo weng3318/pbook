@@ -5,10 +5,17 @@ const mysql = require("mysql");
 const bluebird = require("bluebird");
 const router = express.Router();
 const db = mysql.createConnection({
+<<<<<<< HEAD
   // host: "localhost",
   host: "localhost",
   user: "opcp",
   password: "opcp2428",
+=======
+  // host: '192.168.27.186',
+  host: '192.168.27.186',
+  user: "root",
+  password: "root",
+>>>>>>> shan/master
   database: "pbook"
 });
 db.connect();

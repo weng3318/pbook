@@ -23,8 +23,14 @@ class AddMemberBook extends React.Component {
       // categoriesItem:""
     }
     this.handleChange = this.handleChange.bind(this)
-    this.addBooks = this.addBooks.bind(this)
-    // this.onDrop = this.onDrop.bind(this)
+  }
+
+  onDrop = (picture) =>{
+    console.log(picture);
+
+    this.setState({
+      pictures: this.state.pictures.concat(picture),
+    });
   }
 
   //分類按鈕點擊後印出文字
@@ -69,7 +75,7 @@ class AddMemberBook extends React.Component {
   // }
 
   onClickhandler() {
-    console.log('pictures', this.state.pictures)
+    // console.log('pictures', this.state.pictures)
 
     const formData = new FormData()
 
@@ -95,8 +101,23 @@ class AddMemberBook extends React.Component {
         console.log('err=', err)
       })
   }
+  success = (status, message) => {
+    swal({
+      title: status,
+      text: message,
+      icon: 'success',
+      button: 'OK',
+    }).then(title => {
+      if (title === '上架書籍成功') {
+        swal('您已經成功登入!', {
+          icon: 'success',
+        })
+      } 
+    })
+  }
 
-  fail(status, message) {
+
+  fail = (status, message) => {
     swal({
       title: status,
       text: message,
@@ -105,57 +126,10 @@ class AddMemberBook extends React.Component {
     })
   }
 
-  //上架書籍
-  addBooks() {
-    this.onClickhandler()
 
-    console.log('upload success')
-
-    fetch('http://localhost:5555/member/addBook', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        isbn: this.state.isbn,
-        name: this.state.name,
-        author: this.state.author,
-        publishing: this.state.publishing,
-        publishDate: this.state.publishDate,
-        version: this.state.version,
-        price: this.state.price,
-        pages: this.state.pages,
-        savingStatus: this.state.savingStatus,
-        memberNo: this.state.memberNo,
-        categories: this.state.categories,
-        remark: this.state.remark,
-      }),
-    })
-      .then(response => {
-        if (!response) throw new Error(response.statusText)
-        console.log('3' + response)
-        return response.json()
-      })
-      .then(data => {
-        let status = data.status
-        let message = data.message
-        console.log('新增書籍', data)
-        if (data.status === '上架書籍成功') {
-          this.success(status, message)
-        }
-        if (status === '上架書籍失敗') {
-          this.fail(status, message)
-        }
-      })
-      .catch(error => {
-        console.log('error = ' + error)
-      })
-  }
 
   //上架書籍
-  async addBooks() {
-    // await this.onClickhandler()
-    // console.log("upload success");
+  addBooks = () => {
     const formData = new FormData()
 
     for (var i = 0; i < this.state.pictures.length; i++) {

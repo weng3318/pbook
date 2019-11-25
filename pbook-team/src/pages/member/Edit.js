@@ -17,16 +17,13 @@ class Edit extends React.Component {
       member: {},
       selectedFile: null,
     }
-    this.handleChange = this.handleChange.bind(this)
-    this.handleEdit = this.handleEdit.bind(this)
-    this.onChangeHandler = this.onChangeHandler.bind(this)
   }
 
   componentDidMount() {
     this.queryMember()
   }
 
-  queryMember() {
+  queryMember = () => {
     let number = JSON.parse(localStorage.getItem('user')).MR_number
     fetch('http://localhost:5555/member', {
       method: 'POST',
@@ -44,8 +41,8 @@ class Edit extends React.Component {
         return response.json()
       })
       .then(data => {
-          console.log("test", JSON.stringify(data));
-        if (data[0].MR_birthday !== null && data[0].MR_nickname !== null) {
+          // console.log("test", JSON.stringify(data));
+        if (data[0].MR_birthday !== null && data[0].MR_mobile !== null && data[0].MR_address !== null ) {
           let bdy = data[0].MR_birthday
           let birthday = bdy.slice(0, 10)
           this.setState({
@@ -65,16 +62,13 @@ class Edit extends React.Component {
           name: data[0].MR_name,
           email: data[0].MR_email,
           number: data[0].MR_number,
-          nickname: '',
-          birthday: '',
-          mobile: data[0].MR_mobile,
-          address: data[0].MR_address,
+          nickname: data[0].MR_nickname,
           member: data[0],
         })
       })
   }
 
-  success(status, message) {
+  success = (status, message) => {
     swal({
       title: status,
       text: message,
@@ -85,14 +79,14 @@ class Edit extends React.Component {
         swal('您已經成功做了修改!', {
           icon: 'success',
         })
-        setTimeout(() => {
-          window.location.href = '/member'
-        }, 1000)
       }
+      setTimeout(()=>{
+        window.location = '/member'
+      }, 1000)
     })
   }
 
-  fail(status, message) {
+  fail = (status, message) => {
     swal({
       title: status,
       text: message,
@@ -102,40 +96,46 @@ class Edit extends React.Component {
   }
 
   //照片上傳
-  onChangeHandler(e) {
+  onChangeHandler = (e) => {
     // console.log(e.target.files[0]);
     this.setState({
       selectedFile: e.target.files[0],
     })
   }
 
-  handleChange(e) {
+  handleChange = (e) => {
     const name = e.target.name
     const obj = {}
     obj[name] = e.target.value
     this.setState(obj)
   }
 
-  handleEdit() {
+  handleEdit = () => {
+    
     let number = JSON.parse(localStorage.getItem('user')).MR_number
     const formData = new FormData()
     let fileField = document.querySelector("input[type='file']")
     formData.append('avatar', fileField.files[0])
-    console.log(formData)
+    // console.log(formData)
     let imgFile = ''
-
     fetch('http://localhost:5555/member/upload', {
       method: 'POST',
       // credentials: 'include',
       body: formData,
     })
       .then(res => {
-        console.log('res:', res)
+        // console.log('res:', res)
         return res.json()
       })
       .then(img => {
-        imgFile = img.filename
-        console.log(imgFile)
+        // console.log("imgFile", img)
+        if(img.filename ==""){
+          imgFile = "品書印章.png"
+        }
+        else{
+          imgFile = img.filename
+        }
+        // console.log(1111);
 
         fetch('http://localhost:5555/member/edit', {
           method: 'POST',
@@ -158,7 +158,7 @@ class Edit extends React.Component {
             return response.json()
           })
           .then(data => {
-            console.log('data', JSON.stringify(data))
+            // console.log('data', JSON.stringify(data))
             let status = data.status
             let message = data.message
             if (status === '修改成功') {

@@ -1,6 +1,7 @@
 import express from "express";
 import bodyparser from "body-parser";
 import cors from "cors";
+import { request } from "http";
 
 const app = express();
 const mysql = require("mysql");
@@ -32,7 +33,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 const session = require("express-session");
-var FileStore = require('session-file-store')(session);
+var FileStore = require("session-file-store")(session);
 var fileStoreOptions = {};
 
 // 設定session的middleware
@@ -40,7 +41,7 @@ app.use(
   session({
     store: new FileStore(fileStoreOptions),
     //新用戶沒有使用到session物件時不會建立session和發送cookie
-    saveUninitialized: false,
+    saveUninitialized: true,
     resave: true,
     secret: "yoko0509",
     cookie: {
@@ -48,28 +49,31 @@ app.use(
     }
   })
 );
-
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(express.static("public"));
-
+// app.use((req, res, next) => {
+//   req.session.cart = {};
+//   next();
+// });
 
 app.use("/member", require("./src/member/member"));
 app.use("/forum", require("./src/forum/homepage"));
+app.use("/books", require("./src/books/bookApi"));
+
 
 app.use("/nana_use", require("./src/nana_use/chat"));
 app.use("/nana_use", require("./src/nana_use/game"));
-app.use("/books", require('./src/books/bookApi'));
 
-app.use('/activities', require('./src/activities/acApi'))
-app.use('/reviews', require('./src/book_review/reviews'))
+
+app.use("/activities", require("./src/activities/acApi"));
+app.use("/reviews", require("./src/book_review/reviews"));
 
 //下面三行有衝突我先註解掉
-app.use('/reviews', require('./src/book_review/books'))
-app.use('/reviewer', require('./src/reviewer/brReviewerList'))
-app.use('/reviewer', require('./src/reviewer/brBookcase'))
-app.use('/reviewer', require('./src/reviewer/brBooks'))
-
+app.use("/reviews", require("./src/book_review/books"));
+app.use("/reviewer", require("./src/reviewer/brReviewerList"));
+app.use("/reviewer", require("./src/reviewer/brBookcase"));
+app.use("/reviewer", require("./src/reviewer/brBooks"));
 
 app.get("/", function(req, res) {
   res.send("Home");

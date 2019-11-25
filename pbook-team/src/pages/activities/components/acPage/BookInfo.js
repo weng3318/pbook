@@ -4,7 +4,17 @@ import moment from 'moment'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCaretRight } from '@fortawesome/free-solid-svg-icons'
 import './bookInfo.scss'
+import { connect } from 'react-redux'
 function BookInfo(props) {
+  let discount = 0
+  if (
+    props.discountAmount[props.memberLevel] &&
+    props.discountAmount[props.memberLevel].data
+  ) {
+    discount = +props.discountAmount[props.memberLevel].data.find(
+      v => v.sid === props.sid
+    ).discount
+  }
   return (
     <div className="book_box col-md-3 mb-5">
       <figure className="mb-1">
@@ -33,8 +43,14 @@ function BookInfo(props) {
                 作者：{props.author}
               </span>
               <div className="">
+                <span className="fixedPrice">
+                  原價 <strike>{props.fixed_price}</strike>元
+                </span>{' '}
                 <span className="price">79</span> 折
-                <span className="price">{props.fixed_price}</span> 元
+                <span className="price discountPrice">
+                  {Math.round((props.fixed_price * (100 - discount)) / 100)}
+                </span>{' '}
+                元
               </div>
             </span>
             {/* <div className="intro">{props.introduction}</div> */}
@@ -47,4 +63,7 @@ function BookInfo(props) {
     </div>
   )
 }
-export default BookInfo
+const mapStateToProps = state => ({
+  discountAmount: state.discountAmount,
+})
+export default connect(mapStateToProps)(BookInfo)
