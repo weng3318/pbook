@@ -18,11 +18,19 @@ class BooksFavorite extends React.Component {
   }
 
   componentDidMount() {
-    this.queryBooks()
+   this.queryBooks()
+   this.changePage()
+
+  }
+  componentDidUpdate(prevProps){
+    if (this.props.match.params.page !== prevProps.match.params.page) {
+      this.queryBooks()
+    }
+   
   }
 
   changePage = ( page )=>{
-    console.log(page);
+    // console.log(page);
     this.setState({page})
   }
 
@@ -58,12 +66,12 @@ class BooksFavorite extends React.Component {
         })
       })
   }
-  // componentDidUpdate(page){}
+  
 
   
   render() {
-    console.log("newPage", this.state.page);
-    console.log(this.props.match.params.page);
+    // console.log("newPage", this.state.page);
+    // console.log(this.props.match.params.page);
     
     let data = this.state.booksData
     //因為第一次渲染是空的會報錯
@@ -109,6 +117,7 @@ class BooksFavorite extends React.Component {
             </div>
 
             <MyPagination 
+              
               nowPage = {this.state.page}
               totalPage = {totalPage}
               totalRows = {totalRows}

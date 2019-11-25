@@ -119,6 +119,40 @@ $content: 24px;
       }
     }
 
+//收藏書評家
+.reviewerContent{
+  position: absolute;
+  right: 0;
+  left: 320px;
+  height: 100%;
+  padding: 31px;
+  color: $yellow;
+  box-shadow: inset 0 20px 6rem #2d3a3a, inset 0 20px 6rem #2d3a3a;
+  margin: 0;
+  transition: 0.5s;
+
+  &::before {
+    content: '';
+    display: block;
+    background: rgba(0, 0, 0, 0.7);
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+  }
+  .nobook{
+    @extend .nobook;
+  }
+  .title{
+    @extend .MB_title;
+  }
+  
+
+
+}
+
 //收藏書籍
 .booksContent {
   position: absolute;
