@@ -1,5 +1,4 @@
 import React from 'react'
-// import Data from '../pages/reviewer_page/data/reviewer_data'
 import { withRouter } from 'react-router-dom'
 import BR_ReviewerList from './reviewer_page/BR_ReviewerList'
 import BR_BookcaseList from './reviewer_page/BR_BookcaseList'

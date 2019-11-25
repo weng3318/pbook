@@ -37,7 +37,8 @@ class BR_BookcaseList extends React.Component {
           <div className="brAvatarAllBox_Bookcase" onClick={() => this.handleOpened(this.state.opened === 'blog' ? null : 'blog')}>
             {/* <img className="brBookInfoImg_Bookcase" src={require(`./images_books/vb_9789578587823.jpg`)}/> */}
             {/* <img className="brBookInfoImg_Bookcase" src={require(`./images/${this.props.pic}`)}/> */}
-            <img className="brBookInfoImg_Bookcase" src={`http://localhost/books/src/venderBooks_Management/vb_images/${this.props.pic}`} alt=""/>
+            <img className="brBookInfoImg_Bookcase" src={`http://localhost:5555/images/books/${this.props.pic}`} alt=""/>
+            {/* <img className="brBookInfoImg_Bookcase" src={`http://localhost/books/src/venderBooks_Management/vb_images/${this.props.pic}`} alt=""/> */}
             </div>
 
         <div className="bookInfoRWD">
@@ -79,7 +80,7 @@ class BR_BookcaseList extends React.Component {
             <div className="brIconBox_Bookcase">
             {/* 收藏書籍 (圖示) */}
                 <Link to={'/reviewer'} className="brIconShare_Bookcase">
-                        <img src={require('../reviewer_page/images/icon_shaer.png')}/>
+                        <img className="brMark_img" src={require('../reviewer_page/images/icon_shaer.png')}/>
                 </Link>
             {/* 分享功能 */}
                     <div className="fbBox">

@@ -1,10 +1,7 @@
 import React from 'react'
-import Chat from '../components/member/chat/Chat'
-import Data from '../pages/reviewer_page/data/reviewer_data'
 import BR_ReviewerList from './reviewer_page/BR_ReviewerList'
 import BR_Navbar from './reviewer_page/BR_Navbar'
 import axios from 'axios'
-import { Link } from 'react-router-dom'
 // 書評家使用的CSS
 import '../pages/reviewer_page/BR_Bookcase.css'
 import '../pages/reviewer_page/BR_Reviewer.css'

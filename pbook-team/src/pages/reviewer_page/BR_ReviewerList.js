@@ -30,9 +30,9 @@ class BR_ReviewerList extends React.Component {
 
               <Link to={"/reviewer/reviewerBooks/"+this.props.sid} className="d-flex justify-content-center borderLineTop">
               <div className="brIconBox">
-                <img src={require('../reviewer_page/images/P_logo.png')}/>
+                <img className="brMark_img" src={require('../reviewer_page/images/P_logo.png')}/>
               </div>
-              <div className="brReadBooks">看看書櫃</div>
+                <div className="brReadBooks">看看書櫃</div>
               </Link>
               
               <Link>
@@ -43,13 +43,13 @@ class BR_ReviewerList extends React.Component {
 
               <div className="brIconBox borderLineTop">
               <a className="brIconShare" href={this.props.youtube} target="black">
-                    <img src={require('../reviewer_page/images/icon_youtube.png')}/>
+                    <img className="brMark_img" src={require('../reviewer_page/images/icon_youtube.png')}/>
               </a>
               <a className="brIconShare" href={this.props.facebook} target="black">
-                    <img src={require('../reviewer_page/images/icon_facebook.png')}/>
+                    <img className="brMark_img" src={require('../reviewer_page/images/icon_facebook.png')}/>
               </a>
               <a className="brIconShare" href={this.props.twitter} target="black">
-                    <img src={require('../reviewer_page/images/icon_twitter.png')}/>
+                    <img className="brMark_img" src={require('../reviewer_page/images/icon_twitter.png')}/>
               </a>
               </div>
           </div>
