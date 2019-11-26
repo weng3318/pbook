@@ -11,6 +11,8 @@ import BookScore from './BookScore/BookScore'
 import BookLine from './BookLine/BookLine'
 import Category from './Category'
 import './Reviews.css'
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
+import 'react-tabs/style/react-tabs.css'
 
 function Bookinfo() {
   const [bookInformation, setBookInformation] = useState([]) //書籍資料
@@ -56,7 +58,7 @@ function Bookinfo() {
     display: flex;
     flex-wrap: wrap;
     margin: 0 auto;
-    width: 810px;
+    width: 1000px;
   `
 
   //右上排列方式欄位
@@ -163,7 +165,7 @@ function Bookinfo() {
 
   return (
     <>
-      <CategoryBar>
+      {/* <CategoryBar>
         {categorys
           .filter((key, index) => index < 20)
           .map(data => (
@@ -172,6 +174,19 @@ function Bookinfo() {
                 {data.categoriesName}
               </button>
             </Link>
+          ))}
+      </CategoryBar> */}
+      <CategoryBar>
+        {categorys
+          .filter((key, index) => index < 20)
+          .map(data => (
+            <Tabs>
+              <TabList>
+                <Link key={data.sid} to={'reviews?c=' + data.sid + '&p=1'}>
+                  <Tab> {data.categoriesName}</Tab>
+                </Link>
+              </TabList>
+            </Tabs>
           ))}
       </CategoryBar>
 
