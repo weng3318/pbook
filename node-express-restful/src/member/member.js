@@ -197,7 +197,7 @@ router.post('/addBookcase', (req, res)=>{
         .then( row => {
             console.log(row[0].total);
             if(row[0].total >= 1 ){
-                console.log(456);
+                // console.log(456);
             
                 res.json({
                     message: "本書已加入過收藏"
@@ -212,11 +212,12 @@ router.post('/addBookcase', (req, res)=>{
             })
             .then(result=>{
                 // console.log(result);
-                res.json({
-                    status: "新增到書櫃",
-                    message: "加入到書櫃成功"
+                if(result)
+                    res.json({
+                        status: "新增到書櫃",
+                        message: "加入到書櫃成功"
                     })
-                })            
+            })            
         })
 
 //查詢二手書籍
