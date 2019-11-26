@@ -112,19 +112,17 @@ class BooksFavorite extends React.Component {
                     </div>
                   </Link>
                 ))}
+                <MyPagination 
+                  pagePath = {this.state.pagePath}
+                  nowPage = {this.state.page}
+                  totalPage = {totalPage}
+                  totalRows = {totalRows}
+                  changePage = {(page) => { this.changePage(page)}}
+                  />
               </>
             )}
           </div>
-
-            <MyPagination 
-              pagePath = {this.state.pagePath}
-              nowPage = {this.state.page}
-              totalPage = {totalPage}
-              totalRows = {totalRows}
-              changePage = {(page) => { this.changePage(page)}}
-              />
         </div>
-
         </ScrollToTop>
       </>
     )

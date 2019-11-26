@@ -205,8 +205,8 @@ router.post('/addBookcase', (req, res)=>{
                 return
             }else{
                 //新增書籍到書櫃
-                let sql = `INSERT INTO br_bookcase(number, isbn, bookName, blog, created_time) 
-                            VALUES('${number}', '${isbn}', '', '',now()) `
+                let sql = `INSERT INTO br_bookcase(number, isbn, title, bookName, blog, created_time) 
+                            VALUES('${number}', '${isbn}', '', '', '',now()) `
                 return db.queryAsync(sql)
                 }
             })
