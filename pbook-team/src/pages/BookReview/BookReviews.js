@@ -12,6 +12,8 @@ import InsertReply from './components/InsertReply'
 import { faTimes, faPen, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import swal from '@sweetalert/with-react'
+import { BrowserRouter as Router, Route, Link, NavLink } from 'react-router-dom'
+import { LinkContainer } from 'react-router-bootstrap'
 
 //---------------------------------------------------------------------------------------------------------
 
@@ -41,6 +43,8 @@ const BookColumn = styled.div`
 
 //直排右側分數
 const BookColumnScore = styled.div`
+  position: relative;
+  bottom: 130px;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -89,6 +93,8 @@ const List = () => {
 
   //上方書本資料
   const [List, setList] = useState([])
+  //推薦書本資料
+  const [recommendBook, setRecommendBook] = useState([])
   //會員書評
   const [memberReview, getMemberReview] = useState([])
   //會員個人資料設定
@@ -126,6 +132,7 @@ const List = () => {
     bookList()
     reviewList()
     replyText()
+
     if (JSON.parse(localStorage.getItem('user')) !== null) {
       let data = JSON.parse(localStorage.getItem('user'))
       setUser({
@@ -134,8 +141,9 @@ const List = () => {
         nickname: data.MR_nickname,
       })
       setReview({ ...review, id: data.MR_number })
+      recommend(data.MR_number)
     }
-  }, [InsertReply])
+  }, [])
   //書評分頁資料ajax
   const bookList = async () => {
     await axios
@@ -163,7 +171,16 @@ const List = () => {
         console.log(error)
       })
   }
-  //書評回覆 ENTER 發送&修改
+  //書籍推薦資料
+  const recommend = async e => {
+    await axios
+      .get(`http://localhost:5555/activities/recommend-books/${e}/5`)
+      .then(res => {
+        setRecommendBook(res.data)
+        console.log(res.data)
+      })
+  }
+  //書評回覆 用ENTER 發送&修改
   const keypress = e => {
     if (e.which === 13) {
       if (replyMode.editReply !== '' && replyMode.editReply !== undefined) {
@@ -393,7 +410,7 @@ const List = () => {
             </BookColumn>
             <BookColumn>
               <BookInfo>
-                <h4>{data.name}</h4>
+                <h3>{data.name}</h3>
                 {'作者:'}
                 {data.author}
                 <br />
@@ -411,19 +428,33 @@ const List = () => {
             </BookColumn>
           </Book>
         ))}
-        <div>
-          <BookColumnScore>
-            <button className="BookBuy">立即購買</button>
-            <BookRow>
-              <BookScoreAndLine List={List} />
-            </BookRow>
-            <form onSubmit={addCase}>
-              <button type="submit" className="BookCase">
-                加入書櫃
-              </button>
-            </form>
-          </BookColumnScore>
+        <div className="reviews_recommendText">推薦書籍</div>
+        <div className="reviews_recommendBook">
+          {recommendBook.map((book, index) => (
+            <Link to={'/book_reviews/' + book.sid}>
+              <div key={index}>
+                <img
+                  className="reviews_recommendBook_img"
+                  src={require('./images/' + book.pic)}
+                />
+                <div className="reviews_recommendBookName">{book.name}</div>
+              </div>
+            </Link>
+          ))}
         </div>
+
+        <BookColumnScore>
+          <button className="reviews_BookBuy">立即購買</button>
+          <BookRow>
+            <BookScoreAndLine List={List} />
+          </BookRow>
+          <form onSubmit={addCase}>
+            <button type="submit" className="reviews_BookCase">
+              加入書櫃
+            </button>
+          </form>
+        </BookColumnScore>
+
         {/* <InsertReply
           user={user}
           login={login}
@@ -531,7 +562,10 @@ const List = () => {
                       src={`http://localhost:5555/images/member/${item.MR_pic}`}
                     />
                     {replyMode.isEdit && replyMode.sid === item.reply_sid ? (
-                      <form className="reviews_reply_form" onSubmit={updateHandler}>
+                      <form
+                        className="reviews_reply_form"
+                        onSubmit={updateHandler}
+                      >
                         {item.MR_nickname}
                         &nbsp;
                         {':'}

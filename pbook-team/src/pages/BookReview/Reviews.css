@@ -154,7 +154,7 @@
   color: #ffc408;
 }
 
-/* ----------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
 /*  /list  進入單本書籍後 書評頁面 */
 .reviews_line {
   display: flex;
@@ -186,29 +186,59 @@
 }
 
 /* 購買按鈕 */
-.BookBuy {
+.reviews_BookBuy {
   width: 110px;
   height: 30px;
-  margin: 15px 0;
   border-radius: 8px;
   background-color: #cde2d0;
   color: #2d3a3a;
   border: 1px solid #ccc;
-  transform: translate(-160px, 0);
   outline: none;
+  position: absolute;
+  right: 160px;
+  bottom: 100px;
+}
+/* 推薦書籍文字 */
+.reviews_recommendText {
+  font-size: 18px;
+  margin: 0 0 0 10px;
+}
+/* 書本推薦區 橫排*/
+.reviews_recommendBook {
+  width: 700px;
+  display: flex;
+  justify-content: space-around;
+}
+/* 書本推薦區圖片 */
+.reviews_recommendBook_img {
+  max-height: 100%;
+  max-width: 100%;
+  width: 120px;
+  height: 120px;
+  margin: 0 5px;
+  border: 1px solid #ccc;
+}
+/* 書本推薦區文字 */
+.reviews_recommendBookName {
+  margin: 0 auto;
+  text-align: center;
+  font-size: 13px;
+  width: 120px;
+  word-break: break-all;
 }
 
 /* 書櫃按鈕 */
-.BookCase {
+.reviews_BookCase {
   width: 110px;
   height: 30px;
-  margin: 15px 0;
   border-radius: 8px;
   background-color: #2d3a3a;
   color: #ffc408;
-  transform: translate(-160px, 0);
   outline: none;
   border: none;
+  position: absolute;
+  right: 160px;
+  top: 10px;
 }
 
 /* 書評輸入欄 */
@@ -314,7 +344,7 @@
 /* 書評回覆顯示欄 */
 .reviews_reply_view {
   position: relative;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px dashed #ccc;
   background-color: rgba(204, 204, 204, 0.3);
   width: 1000px;
   height: 60px;

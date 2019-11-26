@@ -30,6 +30,7 @@ router.get("/book_reviews/:sid?", (req, res) => {
   });
 });
 
+
 //書本評分資料
 router.get("/book_ratings", (req, res) => {
   const sql = `SELECT star,book FROM vb_ratings WHERE 1`;
