@@ -192,14 +192,32 @@ router.post('/queryReviewer/:page', (req, res)=>{
 router.post('/addBookcase', (req, res)=>{
     let number = req.body.number
     let isbn = req.body.isbn
-    db.query(Member.addToBookcase(number, isbn), (err, result)=>{
-        // console.log("addBookcase",result);
-        res.json({
-            status: "新增到書櫃",
-            message: "加入到書櫃成功"
+    let sql = `SELECT COUNT(1) total FROM br_bookcase WHERE number = '${number}' && isbn = '${isbn}'`
+    db.queryAsync(sql)
+        .then( row => {
+            console.log(row[0].total);
+            if(row[0].total >= 1 ){
+                console.log(456);
+            
+                res.json({
+                    message: "本書已加入過收藏"
+                })
+                return
+            }else{
+                //新增書籍到書櫃
+                let sql = `INSERT INTO br_bookcase(number, isbn, bookName, blog, created_time) 
+                            VALUES('${number}', '${isbn}', '', '',now()) `
+                return db.queryAsync(sql)
+                }
+            })
+            .then(result=>{
+                // console.log(result);
+                res.json({
+                    status: "新增到書櫃",
+                    message: "加入到書櫃成功"
+                    })
+                })            
         })
-    })
-})
 
 //查詢二手書籍
 router.post('/queryMemberBooks', (req, res)=>{

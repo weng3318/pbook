@@ -3,6 +3,7 @@ import './lukeStyle.scss'
 import { Link } from 'react-router-dom'
 import MyPagination from '../../components/member/MyPagination'
 import axios from 'axios'
+import ScrollToTop from '../activities/components/ScrollToTop'
 
 class FavoriteReviwer extends React.Component {
   constructor(props) {
@@ -59,6 +60,7 @@ class FavoriteReviwer extends React.Component {
 
     return (
       <>
+      <ScrollToTop>
         <div className="reviewerContent">
           <div className="title">收藏書評家</div>
           <div className="wrap flex-wrap">
@@ -78,7 +80,7 @@ class FavoriteReviwer extends React.Component {
                         />
                       </div>
                     </Link>
-                    <h5 className="h5_br">{data.name}</h5>
+                    <h5 className="h5_br">{data.br_name}</h5>
 
                     <div className="brIconBox">
                       <div className="AvatarInfo">{data.job}</div>
@@ -172,6 +174,7 @@ class FavoriteReviwer extends React.Component {
             />
           </div>
         </div>
+        </ScrollToTop>
       </>
     )
   }

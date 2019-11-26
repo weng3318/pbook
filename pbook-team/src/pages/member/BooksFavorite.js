@@ -2,6 +2,8 @@ import React from 'react'
 import './lukeStyle.scss'
 import { Link } from 'react-router-dom'
 import MyPagination from '../../components/member/MyPagination'
+import ScrollToTop from '../activities/components/ScrollToTop'
+
 
 class BooksFavorite extends React.Component {
   constructor(props) {
@@ -78,6 +80,7 @@ class BooksFavorite extends React.Component {
 
     return (
       <>
+      <ScrollToTop>
         <div className="booksContent">
           <div className="title">收藏書籍</div>
           <div className="wrap flex-wrap">
@@ -121,6 +124,8 @@ class BooksFavorite extends React.Component {
               changePage = {(page) => { this.changePage(page)}}
               />
         </div>
+
+        </ScrollToTop>
       </>
     )
   }

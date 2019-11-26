@@ -59,14 +59,6 @@ class Member{
         return sql
     }
 
-    //新增書籍到書櫃
-    addToBookcase(number, isbn){
-         //把書籍加入最愛的sql
-        let sql = `INSERT INTO br_bookcase(number, isbn, bookName, blog, likebook, readbook, created_time) 
-            VALUES('${number}', '${isbn}', '', '', 66,188, now()) `
-        return sql
-    }
-
     //查詢二手書櫃
     queryMemberBook(number){
         let sql = `SELECT * FROM mb_books WHERE mb_shelveMember = '${number}'`
