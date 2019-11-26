@@ -22,6 +22,7 @@ class Member extends React.Component {
               <Sidebar />
               {/* <Edit />
               <Info /> */}
+              
             </div>
           </div>
         </Row>

@@ -1,33 +1,32 @@
 import React from 'react'
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 class BR_ReviewerList extends React.Component {
   render(props) {
     // console.log(this.props)
-    ;(function(d, s, id) {
-      var js,
-        fjs = d.getElementsByTagName(s)[0]
-      if (d.getElementById(id)) return
-      js = d.createElement(s)
-      js.id = id
-      js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0'
-      fjs.parentNode.insertBefore(js, fjs)
-    })(document, 'script', 'facebook-jssdk')
+    (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'))
+
+    // 點擊追蹤圖示導向
+    let Hash = `#${this.props.number}`
     return (
       <>
-        <section className="ReviewerListAllBox reviewerList">
-          <div className="d-flex">
-            <div className="brAvatarAllBox borderLine">
+      {/* 設定書評列表的 id={會員編號} {this.props.number} */}
+<section id={this.props.number} className="ReviewerListAllBox reviewerList">
+    <div className="d-flex">
+          <div className="brAvatarAllBox borderLine">
               <h5 className="h5_br">{this.props.title}</h5>
-              <Link to={'/reviewer/reviewerBooks/' + this.props.sid}>
-                <div className="brAvatarBox">
-                  <img
-                    className="brAvatarImg"
-                    src={require(`./images/${this.props.img}`)}
-                  />
-                </div>
-              </Link>
-              <h5 className="h5_br">{this.props.name}</h5>
+            <Link to={"/reviewer/reviewerBooks/"+this.props.sid}>
+              <div className="brAvatarBox">
+              <img className="brAvatarImg" src={require(`./images/${this.props.img}`)}/>
+              </div>
+            </Link>
+              <h5 className="h5_br">{this.props.br_name}</h5>
 
               <div className="brIconBox">
                 <div className="AvatarInfo">{this.props.job}</div>
@@ -45,14 +44,12 @@ class BR_ReviewerList extends React.Component {
                 </div>
                 <div className="brReadBooks">看看書櫃</div>
               </Link>
-
-              <Link>
-                <div className="brIconBox borderLineTop">
-                  <img
-                    className="brIconFollow"
-                    src={require('../reviewer_page/images/icon_follow.png')}
-                  />
-                </div>
+              
+              {/* 追蹤作者 */}
+              <Link to={`/reviewer${Hash}`}>
+                  <div className="brIconBox borderLineTop">
+                      <img className="brIconFollow" src={require('../reviewer_page/images/icon_follow.png')}/>
+                  </div>
               </Link>
 
               <div className="brIconBox borderLineTop">

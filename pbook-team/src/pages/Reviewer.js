@@ -34,62 +34,33 @@ export class Reviewer extends React.Component {
       <>
         <BR_Navbar />
         <h1>書評家</h1>
-        {/* {Data */}
-        <div className="bg_pic">
-          {/* {this.state.brData
-            .filter(({ name }) => '達克尼斯' == name)
-            .map(({ sid, title, img, name, job, intro, bookcase, youtube, facebook, twitter, tube,}) => (
-              <BR_ReviewerList
-                key={sid}
-                // to={'/ReviewerBooks/' + sid}
-                sid={sid}
-                title={title}
-                img={img}
-                name={name}
-                job={job}
-                intro={intro}
-                bookcase={bookcase}
-                youtube={youtube}
-                facebook={facebook}
-                twitter={twitter}
-                tube={tube}
-              ></BR_ReviewerList>
-            ))} */}
-
-          {/* <Chat sid="MR00001"/> */}
           {/* {Data */}
-          {this.state.brData.map(
-            ({
-              sid,
-              title,
-              img,
-              name,
-              job,
-              intro,
-              bookcase,
-              youtube,
-              facebook,
-              twitter,
-              tube,
-            }) => (
-              <BR_ReviewerList
-                key={sid}
-                // to={'/ReviewerBooks/' + sid}
-                sid={sid}
-                title={title}
-                img={img}
-                name={name}
-                job={job}
-                intro={intro}
-                bookcase={bookcase}
-                youtube={youtube}
-                facebook={facebook}
-                twitter={twitter}
-                tube={tube}
-              ></BR_ReviewerList>
-            )
-          )}
-        </div>
+      <div className="bg_pic">
+        {/* <Chat sid="MR00001"/> */}
+        {/* {Data */}
+        {this.state.brData
+        .map(({ sid, title, img, br_name, job, intro, bookcase, youtube, facebook, twitter, tube, number }) => (
+            <BR_ReviewerList
+            // 設定
+              id={number}
+            // 帶入
+              number={number}
+              key={sid}
+              sid={sid}
+              title={title}
+              img={img}
+              br_name={br_name}
+              job={job}
+              intro={intro}
+              bookcase={bookcase}
+              youtube={youtube}
+              facebook={facebook}
+              twitter={twitter}
+              tube={tube}
+            ></BR_ReviewerList>
+          )
+        )}
+    </div>
       </>
     )
   }
