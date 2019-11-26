@@ -64,6 +64,7 @@ app.use("/books", require("./src/books/bookApi"));
 
 app.use("/nana_use", require("./src/nana_use/chat"));
 app.use("/nana_use", require("./src/nana_use/game"));
+app.use("/nana_use", require("./src/nana_use/index"));
 
 
 app.use("/activities", require("./src/activities/acApi"));

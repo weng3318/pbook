@@ -1,5 +1,6 @@
 import React from 'react'
 import { Carousel } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
 
 import './carousel.css'
 
@@ -25,25 +26,31 @@ export default class Home extends React.Component {
     return (
       <Carousel nextIcon={nextIcon} prevIcon={prevIcon}>
         <Carousel.Item>
-          <img
-            className="carousel-item d-block w-100"
-            src={require('./images/getImage_01.jpg')}
-            alt="First slide"
-          />
+          <Link to="/activities/offline/13" target="_blank">
+            <img
+              className="carousel-item d-block w-100"
+              src="http://localhost:5555/ac/images/1200x628_20191001111150.jpg"
+              alt="First slide"
+            />
+          </Link>
         </Carousel.Item>
         <Carousel.Item>
-          <img
-            className="carousel-item d-block w-100"
-            src={require('./images/getImage_02.jpg')}
-            alt="First slide"
-          />
+          <Link to="/activities/offline/11" target="_blank">
+            <img
+              className="carousel-item d-block w-100"
+              src="http://localhost:5555/ac/images/1200x628_20191028180100.png"
+              alt="First slide"
+            />
+          </Link>
         </Carousel.Item>
         <Carousel.Item>
-          <img
-            className="carousel-item d-block w-100"
-            src={require('./images/getImage_03.jpg')}
-            alt="First slide"
-          />
+          <Link to="/activities/offline/23" target="_blank">
+            <img
+              className="carousel-item d-block w-100"
+              src="http://localhost:5555/ac/images/0928_20190924180838.jpg"
+              alt="First slide"
+            />
+          </Link>
         </Carousel.Item>
       </Carousel>
     )

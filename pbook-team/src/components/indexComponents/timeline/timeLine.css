@@ -13,6 +13,10 @@
   font-size: 20px;
 }
 
+.timeline-more a{
+  color: black;
+}
+
 .timeline-more:hover span {
   text-shadow: 0.1em 0.1em 0 rgb(173, 173, 173);
 }
@@ -40,4 +44,8 @@
   min-height: 6.5vw;
   background: url(./images/bird.png) center center no-repeat;
   background-size: cover;
+}
+
+.buttons{
+  position: static;
 }
