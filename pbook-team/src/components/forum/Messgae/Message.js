@@ -20,7 +20,6 @@ import {
 } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 
-
 import TextareaAutosize from 'react-textarea-autosize'
 
 import avatar from './2.jpg'
@@ -30,7 +29,7 @@ import avatar from './2.jpg'
 const Massage = props => {
   const classes = useStyles()
 
-  let textInput = createRef();
+  let textInput = createRef()
 
   const [login, setLogin] = useState(false)
   const [response, setResponse] = useState(false)
@@ -66,11 +65,13 @@ const Massage = props => {
     let reponseInput = document.querySelector('#reponseInput').value
     formData.append('contentValue', reponseInput)
 
-    fetch(`http://localhost:5555/forum/article/newResponse/${props.articleId}/${login.MR_number}`,
-      { method: 'POST', body: formData })
-      .then(() => {
-        loadingMessage()
-      })
+    fetch(
+      `http://localhost:5555/forum/article/newResponse/${props.articleId}/${login.MR_number}`,
+      { method: 'POST', body: formData }
+    ).then(() => {
+      loadingMessage()
+      reponseInput = document.querySelector('#reponseInput').value = ''
+    })
   }
 
   if (!response) {
@@ -80,7 +81,6 @@ const Massage = props => {
       </>
     )
   } else {
-    // return <MessageChild key={response[i].sid} response={response[i]} />
     let count = 0
     return (
       <div>
@@ -90,8 +90,7 @@ const Massage = props => {
               alt=""
               src={
                 login
-                  ? 'http://localhost:5555/images/member/' +
-                  props.member.MR_pic
+                  ? 'http://localhost:5555/images/member/' + login.MR_pic
                   : avatar
               }
             ></img>
@@ -113,13 +112,20 @@ const Massage = props => {
               <span>回覆文章</span>
             </BootstrapButton>
           ) : (
-              ''
-            )}
+            ''
+          )}
         </div>
         {response.map(item => {
           if (count < props.showResponse) {
             count++
-            return <MessageChild key={item.sid} response={item} sid={item.sid} like={item.fm_resLike} />
+            return (
+              <MessageChild
+                key={item.sid}
+                response={item}
+                sid={item.sid}
+                like={item.fm_resLike}
+              />
+            )
           } else {
             return ''
           }
@@ -129,12 +135,13 @@ const Massage = props => {
   }
 }
 
-
 const MessageChild = props => {
   const [like, setLike] = useState(0)
-  useEffect(() => { setLike(props.like) }, [])
+  useEffect(() => {
+    setLike(props.like)
+  }, [])
 
-  const handleResponseLike = (sid) => {
+  const handleResponseLike = sid => {
     fetch(`http://localhost:5555/forum/article/responseLike/${sid}/${like}`, {
       method: 'GET',
     })
@@ -142,7 +149,6 @@ const MessageChild = props => {
         return response.json()
       })
       .then(result => {
-
         if (result.affectedRows === 1) {
           setLike(like + 1)
         }
@@ -172,7 +178,10 @@ const MessageChild = props => {
           <pre className="pre-content">{props.response.fm_responseContent}</pre>
         </div>
         <div className="social-area2">
-          <div className="dis-flex thumb-sm" onClick={() => handleResponseLike(props.sid)}>
+          <div
+            className="dis-flex thumb-sm"
+            onClick={() => handleResponseLike(props.sid)}
+          >
             <div className="thumb-frame">
               <ThumbUpIcon style={{ fontSize: 20 }} />
             </div>

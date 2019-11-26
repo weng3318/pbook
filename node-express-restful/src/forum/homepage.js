@@ -6,7 +6,7 @@ const upload = multer({ dest: "tmp_uploads/" }); //圖片上傳
 const fs = require("fs"); //檔案處理
 const moment = require("moment-timezone");
 const db = mysql.createConnection({
-  host: '192.168.27.186',
+  host: "192.168.27.186",
   user: "root",
   password: "root",
   database: "pbook"
@@ -51,7 +51,7 @@ router
     });
   });
 
-//card1 讀取作者資料 writer
+//userDetails 讀取作者資料 writer
 router
   .route("/homepage/:memberId/:category")
   .all((req, res, next) => {
@@ -60,26 +60,30 @@ router
   .get((req, res) => {
     let memberId = req.params.memberId;
     let category = req.params.category;
-    let sql =
-      "SELECT * FROM `mr_information`JOIN `vb_categories` ON `vb_categories`.sid='" +
-      category +
-      "' WHERE `MR_number`= '" +
-      memberId +
-      "'";
+    let output = {};
+    let sql = `SELECT * FROM mr_information JOIN vb_categories ON vb_categories.sid='${category}' WHERE MR_number= '${memberId}'`;
     // res.json(sql);
-    db.query(sql, (error, results, fields) => {
-      if (error) throw error;
-      res.json(results);
-    });
+    db.queryAsync(sql)
+      .then(results => {
+        output.writer = results[0]; 
+        sql = `SELECT COUNT(1) FROM fm_favorite WHERE fm_lovewriter='${memberId}'`;
+        return db.queryAsync(sql);
+      })
+      .then(results => {
+        console.log(results[0]['COUNT(1)']);
+        output.follow = results[0]['COUNT(1)'];
+        res.json(output);
+      });
   });
 
 //讀取文章內容 article content
 router
-  .route("/article/content/:articleId")
+  .route("/article/content/:articleId/:userId")
   .all((req, res, next) => {
     next();
   })
   .get((req, res) => {
+    let userId = req.params.userId;
     let articleId = req.params.articleId;
     let output = {};
     let sql =
@@ -102,11 +106,107 @@ router
       })
       .then(result => {
         output.responseNO = result[0];
+        sql = `SELECT COUNT(1) FROM fm_bookmark WHERE fm_memberId='${userId}' AND fm_articleId='${articleId}'`;
+        return db.queryAsync(sql);
+      })
+      .then(result => {
+        output.bookmark = result[0];
+        sql = `SELECT COUNT(1) FROM fm_favorite WHERE fm_userId='${userId}'AND fm_lovewriter='${output.member.MR_number}'`;
+        return db.queryAsync(sql);
+      })
+      .then(result => {
+        output.favorite = result[0];
+        let sql = `UPDATE fm_article SET fm_read=${output.article.fm_read +
+          1} WHERE fm_articleId='${articleId}'`;
+        return db.queryAsync(sql);
+      })
+      .then(result => {
         res.json(output);
       });
   });
 
-//喜歡文章 like 
+//添加書籤 bookmark
+router
+  .route("/article/bookmark/add/:articleId/:userId")
+  .all((req, res, next) => {
+    next();
+  })
+  .get((req, res) => {
+    let articleId = req.params.articleId;
+    let fm_memberId = req.params.userId;
+    let fm_articleId = null;
+    let fm_responseId = null;
+
+    if (articleId.indexOf("MR") > 0) {
+      fm_articleId = articleId;
+    } else {
+      fm_responseId = articleId;
+    }
+    let sql = `INSERT INTO fm_bookmark(fm_bookmarkSid, fm_articleId, fm_responseId, fm_memberId) VALUES (NULL,?,?,?)`;
+
+    db.query(
+      sql,
+      [fm_articleId, fm_responseId, fm_memberId],
+      (error, results, field) => {
+        res.json(results);
+      }
+    );
+  });
+
+//移除書籤 bookmark
+router.route("/article/bookmark/delete/:articleId/:userId").get((req, res) => {
+  let articleId = req.params.articleId;
+  let fm_memberId = req.params.userId;
+  let fm_articleId = null;
+  let fm_responseId = null;
+  let sql = "";
+  if (articleId.indexOf("MR") > 0) {
+    fm_articleId = articleId;
+    sql = `DELETE FROM fm_bookmark WHERE fm_memberId='${fm_memberId}' AND fm_articleId='${fm_articleId}'`;
+  } else {
+    fm_responseId = articleId;
+    sql = `DELETE FROM fm_bookmark WHERE fm_memberId='${fm_memberId}' AND fm_responseId='${fm_responseId}'`;
+  }
+  db.query(sql, (error, results, field) => {
+    res.json(results);
+  });
+});
+
+//追蹤作者 add favorite writer
+router
+  .route("/article/follow/add/:writerId/:userId")
+  .all((req, res, next) => {
+    next();
+  })
+  .get((req, res) => {
+    let writerId = req.params.writerId;
+    let userId = req.params.userId;
+
+    let sql = `INSERT INTO fm_favorite(sid, fm_lovewriter, fm_userId) VALUES (NULL,?,?)`;
+    db.query(sql, [writerId, userId], (error, results, field) => {
+      if (error) throw error;
+      res.json(results);
+    });
+  });
+
+//取消追蹤作者  delete favorite writer
+router
+  .route("/article/follow/delete/:writerId/:userId")
+  .all((req, res, next) => {
+    next();
+  })
+  .get((req, res) => {
+    let writerId = req.params.writerId;
+    let userId = req.params.userId;
+
+    let sql = `DELETE FROM fm_favorite WHERE fm_userId='${userId}'AND fm_lovewriter='${writerId}'`;
+    db.query(sql, (error, results, field) => {
+      if (error) throw error;
+      res.json(results);
+    });
+  });
+
+//喜歡文章 like
 router
   .route("/article/like/:articleId/:prevLike")
   .all((req, res, next) => {
@@ -116,7 +216,8 @@ router
     let articleId = req.params.articleId;
     let prevLike = req.params.prevLike;
 
-    let sql = `UPDATE fm_article SET fm_like=${+prevLike + 1} WHERE fm_articleId='${articleId}'`
+    let sql = `UPDATE fm_article SET fm_like=${+prevLike +
+      1} WHERE fm_articleId='${articleId}'`;
     db.queryAsync(sql).then(results => {
       res.json(results);
     });
@@ -131,17 +232,20 @@ router
   .post(upload.array(), (req, res) => {
     let fm_articleId = req.params.articleId;
     let fm_responseId = req.params.memberId;
-    let fm_responseContent = req.body.contentValue
-    console.log(123, req.body)
-    let sql = `INSERT INTO fm_articleresponse(sid, fm_articleId, fm_responseId, fm_responseContent, fm_resLike, responseTime) VALUES (NULL,?,?,?,0,NOW())`
-    db.query(sql, [fm_articleId, fm_responseId, fm_responseContent], (error, results, fields) => {
-      if (error) throw (error)
-      res.json(results)
-    })
+    let fm_responseContent = req.body.contentValue;
+    console.log(123, req.body);
+    let sql = `INSERT INTO fm_articleresponse(sid, fm_articleId, fm_responseId, fm_responseContent, fm_resLike, responseTime) VALUES (NULL,?,?,?,0,NOW())`;
+    db.query(
+      sql,
+      [fm_articleId, fm_responseId, fm_responseContent],
+      (error, results, fields) => {
+        if (error) throw error;
+        res.json(results);
+      }
+    );
   });
 
-
-//喜歡留言 response like 
+//喜歡留言 response like
 router
   .route("/article/responseLike/:sid/:prevLike")
   .all((req, res, next) => {
@@ -151,11 +255,12 @@ router
     let prevLike = req.params.prevLike;
     let sid = req.params.sid;
 
-    let sql = `UPDATE fm_articleresponse SET fm_resLike = ${+prevLike + 1} WHERE sid = '${sid}'`
+    let sql = `UPDATE fm_articleresponse SET fm_resLike = ${+prevLike +
+      1} WHERE sid = '${sid}'`;
     db.query(sql, (error, results, fields) => {
-      if (error) throw (error)
-      res.json(results)
-    })
+      if (error) throw error;
+      res.json(results);
+    });
   });
 
 //讀取留言 message
@@ -166,8 +271,7 @@ router
   })
   .get((req, res) => {
     let articleId = req.params.articleId;
-
-    let sql = `SELECT * FROM fm_articleresponse JOIN mr_information mr ON mr.MR_number = fm_responseId WHERE fm_articleId="${articleId}"`;
+    let sql = `SELECT res.* ,mr.MR_pic, mr.MR_nickname FROM fm_articleresponse res JOIN  mr_information mr ON mr.MR_number=fm_responseId WHERE fm_articleId ='${articleId}'`;
     db.queryAsync(sql).then(results => {
       res.json(results);
     });
@@ -190,7 +294,7 @@ router
     db.queryAsync(sql)
       .then(results => {
         output.featured = results;
-        sql = "SELECT * FROM `fm_article` WHERE `fm_category`='" + number + "'";
+        sql = `SELECT * FROM fm_article JOIN vb_categories vb ON vb.sid= '${number}' WHERE fm_category='${number}'`;
         return db.queryAsync(sql);
       })
       .then(results => {
@@ -205,6 +309,20 @@ router
         output.subcategory = results;
         res.json(output);
       });
+  });
+
+//搜尋serach
+router
+  .route("/search/:keyWord")
+  .all((req, res, next) => {
+    next();
+  })
+  .get((req, res) => {
+    let keyWord = req.params.keyWord;
+    let sql = `SELECT * FROM fm_article  JOIN vb_categories vb ON vb.sid= fm_article.fm_category WHERE fm_title LIKE '%${keyWord}%'`;
+    db.queryAsync(sql).then(results => {
+      res.json(results);
+    });
   });
 
 //發表新文章
@@ -257,14 +375,21 @@ router
     let category = data.cate;
     let subCategories = data.subcate;
     let title = data.title;
-    let subTitle = data.textareaValue[0].slice(0, 200);
+
+    let subTitle = data.textareaValue.filter(item => {
+      if (item !== "") {
+        return item.slice(0, 200);
+      }
+    })[0];
+    console.log(subTitle);
     let demoImage = mainImg;
     let content = {
       element: data.element,
-      textareaValue: data.textareaValue
+      textareaValue: data.textareaValue.filter(item => item !== "")
     };
     fs.writeFile(
       __dirname + "/../../public/forum/content/" + articleId + ".json",
+
       JSON.stringify(content),
       error => {
         if (error) return console.log(error);

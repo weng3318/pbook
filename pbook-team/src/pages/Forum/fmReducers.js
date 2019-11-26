@@ -55,6 +55,7 @@ function letMeLogin(state = loginOrNot, action) {
 const detailInitState = {
   update: false,
   data: false,
+  follow: false,
 }
 
 function UserDetails(state = detailInitState, action) {
@@ -62,7 +63,29 @@ function UserDetails(state = detailInitState, action) {
     // case 'FM_USER_REQUEST':
     //   return { ...state, data: action.data }
     case 'FM_USER_RECEIVE':
-      return { ...state, data: action.data, update: true }
+      return {
+        ...state,
+        data: action.data.writer,
+        follow: action.data.follow,
+        update: true,
+      }
+    default:
+      return state
+  }
+}
+//---- UserDetails End --------
+
+//---- Follower --------
+const followerInitState = { follow: false, data: '' }
+
+function isFollower(state = followerInitState, action) {
+  switch (action.type) {
+    // case 'FM_USER_REQUEST':
+    //   return { ...state, data: action.data }
+    case 'SET_FOLLOW':
+      return { ...state, follow: !state.follow }
+    case 'FOLLOWER_RECEIVE':
+      return { ...state, data: action.data }
     default:
       return state
   }
@@ -82,12 +105,14 @@ function readMoreResponse(state = NumberInitState, action) {
       return state
   }
 }
+
 //-----readMore response end----
 const ListReducer = {
   UserDetails,
   postArticle,
   letMeLogin,
   readMoreResponse,
+  isFollower,
 }
 
 export default ListReducer

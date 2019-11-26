@@ -25,7 +25,6 @@ export const readMoreResponse = number => ({
 })
 
 //給UserDetailsFetch用=======
-// fetch data list
 const fmUserRequest = () => {
   return {
     type: 'FM_USER_REQUEST',
@@ -52,6 +51,31 @@ export const fmUserFetch = (memberId, fm_category) => async dispatch => {
       }
     )
     dispatch(fmUserReceive(await response.json()))
+  } catch (error) {
+    console.log('error', error)
+  }
+}
+
+//給isFollowerFetch用=======
+const followerRequest = () => {
+  return {
+    type: 'FOLLOWER_REQUEST',
+  }
+}
+const followerReceive = json => {
+  return {
+    type: 'FOLLOWER_RECEIVE',
+    data: json,
+  }
+}
+export const followerFetch = (followMemberId, memberId) => async dispatch => {
+  dispatch(followerRequest())
+  try {
+    let response = await fetch(
+      `http://localhost:5555/forum/article/follow/delete/${followMemberId}/${memberId}`,
+      { method: 'GET' }
+    )
+    dispatch(followerReceive(await response.json()))
   } catch (error) {
     console.log('error', error)
   }

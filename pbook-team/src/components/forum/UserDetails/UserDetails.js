@@ -1,6 +1,10 @@
 import React from 'react'
 import './UserDetails.scss'
 import { connect } from 'react-redux'
+
+//material UI
+import StarsIcon from '@material-ui/icons/Stars'
+import Button from '@material-ui/core/Button'
 import {
   userHover,
   categoryHover,
@@ -17,6 +21,14 @@ class UserDetails extends React.Component {
       user: false,
       userHover: false,
       categoryHover: false,
+      level: [
+        '品書會員',
+        '品書學徒',
+        '品書專家',
+        '品書大師',
+        '品書至尊',
+        '書評家',
+      ],
     }
   }
 
@@ -54,7 +66,7 @@ class UserDetails extends React.Component {
       return <span>Loading</span>
     } else {
       let article = this.props.article
-      let user = this.props.data[0]
+      let user = this.props.data
       let userImage = user.MR_pic
 
       return (
@@ -63,11 +75,11 @@ class UserDetails extends React.Component {
           <div className="card-details">
             <img
               className="card-details-img "
-              src={'http://localhost:5555/images/member/' + userImage}
+              src={'http://localhost:5555/images/member/' + user.MR_pic}
               alt=""
               onClick={this.handleUserClick}
             />
-            <div className="card-writer-wrapper">
+            <div className="card-writer-wrapper pl-3">
               <div>
                 <a
                   href="#1"
@@ -77,17 +89,58 @@ class UserDetails extends React.Component {
                   onMouseLeave={this.handleUserMouseInOut}
                 >
                   {user.MR_nickname}
+                  {/* hover user details */}
                   <div
                     className={
                       'userFrame ' +
                       (this.state.userHover ? 'displayBlock' : 'displayNone')
                     }
                   >
-                    user details<br></br>user details<br></br>user details
-                    <br></br>user details
+                    <div className="title-line"></div>
+                    <div className="title">
+                      <span>{user.MR_nickname}</span>
+                      <span className="d-flex flex-align-center">
+                        <StarsIcon
+                          className="icon pr-1"
+                          style={{ fontSize: 26 }}
+                        ></StarsIcon>
+                        <span>
+                          {this.state.level[`${user.MR_personLevel}`]}
+                        </span>
+                      </span>
+                    </div>
+                    <hr></hr>
+                    <div className="subtitle">
+                      從
+                      <span className="m-1">
+                        {user.MR_createdDate.slice(0, 10)}{' '}
+                      </span>
+                      成為品書會員
+                    </div>
+                    <div
+                      className="mt-1 pr-2 introduction"
+                      title={user.MR_introduction}
+                    >
+                      {user.MR_introduction}
+                    </div>
+                    <hr></hr>
+                    <div>
+                      <span className="followText">
+                        <span className="mr-3">{this.props.follow || 5}</span>
+                        <span className="mr-3">人追蹤中</span>
+                        <Button variant="outlined" color="secondary">
+                          追蹤作者
+                        </Button>
+                      </span>
+                    </div>
                   </div>
                 </a>
-                <span>發表於</span>
+                <span className="ml-2">
+                  發表於
+                  <span className="categories-name ml-2">
+                    {article.categoriesName}
+                  </span>
+                </span>
                 <a
                   href="#2"
                   className="card-category-link"
@@ -117,7 +170,7 @@ class UserDetails extends React.Component {
                     this.props.read ? 'displayInlineBlock' : 'displayNone'
                   }
                 >
-                  {article.fm_read}人閱讀
+                  <span className="mr-1">{article.fm_read}</span>人閱讀
                 </span>
                 <span
                   className={
@@ -125,7 +178,7 @@ class UserDetails extends React.Component {
                     (this.props.read ? 'displayInlineBlock' : 'displayNone')
                   }
                 >
-                  16則留言
+                  <span className="mr-1">{this.props.message}</span>則留言
                 </span>
               </div>
             </div>
@@ -138,10 +191,9 @@ class UserDetails extends React.Component {
 
 // 綁定props.todos <=> store.todos
 const mapStateToProps = store => ({
-  userHover: store.UserDetails.userHover,
-  categoryHover: store.UserDetails.cateHover,
   update: store.UserDetails.update,
   data: store.UserDetails.data,
+  follow: store.UserDetails.follow,
 })
 
 // redux(state)綁定到此元件的props、dispatch方法自動綁定到此元件的props

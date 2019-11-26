@@ -2,9 +2,10 @@
   $season-green: #cde2d0;
   $gery-gery: #979d9d;
   margin-bottom: 30px;
+  background: url('../../../images/bg.png');
   .navbarControl {
     background-color: $season-green;
-    .F-nav-link{
+    .F-nav-link {
       line-height: 33px;
     }
     .F-nav-link.active {

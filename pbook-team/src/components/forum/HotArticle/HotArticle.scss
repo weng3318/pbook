@@ -1,3 +1,4 @@
+@import '../../../pages/Forum//scss/systemcolor';
 .forumPage {
   $season-green: #cde2d0;
   $grey-grey: #979d9d;
@@ -17,6 +18,9 @@
         border: 3px solid $season-green;
         margin-right: 10px;
       }
+    }
+    .nickname {
+      color: $Darjeeling;
     }
     .tilte-line {
       background: $grey-grey;

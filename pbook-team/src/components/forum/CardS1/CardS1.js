@@ -11,8 +11,20 @@ class CardS1 extends React.PureComponent {
   constructor(props) {
     super(props)
     this.state = {
+      messageCount: [],
       user: [],
     }
+  }
+  componentDidUpdate() {
+    fetch(
+      `http://localhost:5555/forum/message/content/${this.props.data.fm_articleId}`
+    )
+      .then(res => {
+        return res.json()
+      })
+      .then(result => {
+        this.setState({ messageCount: result.length })
+      })
   }
 
   render() {
@@ -26,43 +38,45 @@ class CardS1 extends React.PureComponent {
       )
     } else {
       let article = this.props.data
-      let image_name = article.fm_demoImage
-
       return (
         <>
-          <figure className="card-figure card-module">
-            <Link to={`/forum/article/${article.fm_articleId}`}>
-              <img
-                className="card-s1-img"
-                alt=""
-                src={
-                  'http://localhost:5555/images/forum/article_key/' + image_name
-                }
-              />
-            </Link>
-            <div className="card-body">
+          <div className="cards-frame">
+            <figure className="card-figure card-module">
               <Link to={`/forum/article/${article.fm_articleId}`}>
-                <div className="card-title-font" title={article.fm_title}>
-                  {article.fm_title}
-                </div>
-              </Link>
-              <Link to={`/forum/article/${article.fm_articleId}`}>
-                <div
-                  className="card-s1-subTitle card-subtitle-font"
-                  title={article.fm_subTitle}
-                >
-                  {article.fm_subTitle}
-                </div>
-              </Link>
-              <div className="user-details">
-                <UserDetails
-                  read={true}
-                  article={article}
-                  memberId={article.fm_memberId}
+                <img
+                  className="card-s1-img"
+                  alt=""
+                  src={
+                    'http://localhost:5555/images/forum/article_key/' +
+                    article.fm_demoImage
+                  }
                 />
+              </Link>
+              <div className="card-body">
+                <Link to={`/forum/article/${article.fm_articleId}`}>
+                  <div className="card-title-font" title={article.fm_title}>
+                    {article.fm_title}
+                  </div>
+                </Link>
+                <Link to={`/forum/article/${article.fm_articleId}`}>
+                  <div
+                    className="card-s1-subTitle card-subtitle-font"
+                    // title={article.fm_subTitle}
+                  >
+                    {article.fm_subTitle}
+                  </div>
+                </Link>
+                <div className="user-details">
+                  <UserDetails
+                    read={true}
+                    article={article}
+                    memberId={article.fm_memberId}
+                    message={this.state.messageCount}
+                  />
+                </div>
               </div>
-            </div>
-          </figure>
+            </figure>
+          </div>
         </>
       )
     }

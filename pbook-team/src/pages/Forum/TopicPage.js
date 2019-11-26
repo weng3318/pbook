@@ -130,7 +130,7 @@ class TopicPage extends React.Component {
               {/* </Link> */}
             </div>
             <Carousel />
-            <div className="cards-wrapper">
+            <div className="cards-wrapper ">
               {this.state.articles.map(value => (
                 <CardS1 key={value.fm_articleId} data={value}></CardS1>
               ))}

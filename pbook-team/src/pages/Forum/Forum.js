@@ -46,41 +46,44 @@ class Forum extends React.Component {
         //這裡可以顯示一些訊息
         console.error(error)
       })
-    window.addEventListener('scroll', () => {
-      let contentTop = document.documentElement.clientHeight
-      let scrollTop = document.documentElement.scrollTop
-      let scrollHeight = document.documentElement.scrollHeight
-      let reLoadValue = scrollHeight - contentTop - 100
-      let stopValue = scrollHeight - contentTop - 50
-      if (!this.state.outOfList) {
-        if (scrollTop > reLoadValue) {
-          let newNumber = this.state.number + 5
-          fetch(`http://localhost:5555/forum/articleList/${newNumber}`, {
-            method: 'GET',
+    window.addEventListener('scroll', this.scrollEvent)
+  }
+
+  scrollEvent = () => {
+    let contentTop = document.documentElement.clientHeight
+    let scrollTop = document.documentElement.scrollTop
+    let scrollHeight = document.documentElement.scrollHeight
+    let reLoadValue = scrollHeight - contentTop - 100
+    let stopValue = scrollHeight - contentTop - 50
+    if (!this.state.outOfList) {
+      if (scrollTop > reLoadValue) {
+        let newNumber = this.state.number + 5
+        fetch(`http://localhost:5555/forum/articleList/${newNumber}`, {
+          method: 'GET',
+        })
+          .then(res => {
+            if (!res.ok) throw new Error(res.statusText)
+            return res.json()
           })
-            .then(res => {
-              if (!res.ok) throw new Error(res.statusText)
-              return res.json()
+          .then(result2 => {
+            this.setState({
+              articleList: result2,
+              number: newNumber,
             })
-            .then(result2 => {
-              this.setState({
-                articleList: result2,
-                number: newNumber,
-              })
-              document.documentElement.scrollTop = reLoadValue
-            })
-        }
-        if (scrollTop === stopValue) {
-          this.setState({ outOfList: true })
-        }
+            document.documentElement.scrollTop = reLoadValue
+          })
       }
-    })
+      if (scrollTop === stopValue) {
+        console.log('list end')
+        window.removeEventListener('scroll', () => {})
+        this.setState({ outOfList: true })
+      }
+    }
   }
   componentWillUnmount() {
-    window.removeEventListener('scroll', () => {})
+    window.removeEventListener('scroll', this.scrollEvent)
   }
   render() {
-   
     return (
       <>
         <div className="container">
