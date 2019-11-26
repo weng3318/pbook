@@ -26,7 +26,8 @@ export class ReviewerBlogEdit extends React.Component {
         console.log('前端沒有取得資料', error)
       })
   }
-  render(props) {
+
+  render() {
     // if (!this.state.csData.length) return <></>
     if (this.state.csData.length === 0)
       return (
@@ -43,36 +44,68 @@ export class ReviewerBlogEdit extends React.Component {
           BlogData = csData[i]
         }
     }
-    // console.log('render csData 書評部落格資料', this.state.csData)
-    
+      
     return (
     <>
-      <h3 className="h3_br">書評家{this.props.number} - 編輯模式</h3>
-      <h5 className="h5_br">你正在編輯 <h3 className="h3_Red">{this.props.name}</h3></h5>
+      <h3 className="h3_br">書評家{BlogData.br_name} - 編輯模式</h3>
       <section className="br_CKEditor">
+          <div className="Animate_Close_Box">
+              <div className="Animate_Close_btn" onClick={() => this.props.onHandleOpen( this.props.opened === 'edit'? null : 'edit' )}>
+                  <img className="icon_Blog_Close" src={require('./reviewer_page/images/icon_Blog_Close.png')}/>
+                  <h5 className="text_Blog_Close">關閉編輯</h5>
+              </div>
+          </div>
 
-            <div className="App">
-                <h2>Using CKEditor 5 build in React</h2>
+        <h5 className="h5_br">你正在編輯<h3 className="h3_Red">{this.props.name}</h3></h5>
+
+        <section className="Blog_textarea">
+          <form method="post" action="">
                 <CKEditor
-                    editor={ ClassicEditor }
-                    data="<p>Hello from CKEditor 5!</p>"
+                  editor={ ClassicEditor }
+                  config={{
+                      toolbar: [
+                        "heading",
+                        "|",
+                        "bold",
+                        "italic",
+                        "link",
+                        "bulletedList",
+                        "numberedList",
+                        "blockQuote",
+                        "insertTable",
+                        "undo",
+                        "redo"
+                      ]
+                  }}
+        
+                    data={this.props.blog}
+
                     onInit={ editor => {
-                        // You can store the "editor" and use when it is needed.
-                        console.log( 'Editor is ready to use!', editor );
+                      // 儲存編輯器，發送資料
+                        console.log( '編輯器啟動', editor );
+                      // 添加decoupled-document 工具欄導入
+                        editor.ui.getEditableElement().parentElement.insertBefore(
+                            editor.ui.view.toolbar.element,
+                            editor.ui.getEditableElement()
+                        );
                     } }
+
                     onChange={ ( event, editor ) => {
                         const data = editor.getData();
                         console.log( { event, editor, data } );
                     } }
+
                     onBlur={ ( event, editor ) => {
-                        console.log( 'Blur.', editor );
+                        console.log( '失焦!Blur.', editor );
                     } }
+
                     onFocus={ ( event, editor ) => {
-                        console.log( 'Focus.', editor );
+                        console.log( '關注!Focus.', editor );
                     } }
                 />
-            </div>
-
+            <input className="Blog_submit" type="submit" value="編輯完成"/>
+            </form>
+          </section>
       </section>
     </>
     )
