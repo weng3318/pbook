@@ -77,6 +77,17 @@ class Member{
         return sql
     }
 
+    //刪除書籍追蹤
+    removeBookcase(number, isbn){
+        let sql = `DELETE FROM br_bookcase WHERE number = '${number}' && isbn = ${isbn}`
+        return sql
+    }
+    //刪除書評家追蹤
+    removeBookcase_Review(number, number_reviewer){
+        let sql = `DELETE FROM br_reviewermark WHERE number = '${number}' && number_reviewer = '${number_reviewer}'`
+        return sql
+    }
+
 
     //修改密碼
     changePassword(number,password){

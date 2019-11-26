@@ -39,7 +39,7 @@ var fileStoreOptions = {};
 // 設定session的middleware
 app.use(
   session({
-    store: new FileStore(fileStoreOptions),
+    // store: new FileStore(fileStoreOptions),
     //新用戶沒有使用到session物件時不會建立session和發送cookie
     saveUninitialized: true,
     resave: true,
