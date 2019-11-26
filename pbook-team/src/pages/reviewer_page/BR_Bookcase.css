@@ -173,7 +173,6 @@
 }
 /* 書籍內容，書名 (區塊) */
 .bookNameBox_Bookcase{
-    min-width: 300px;
     display: flex;
     line-height: 40px;
     height: 40px;
@@ -251,6 +250,7 @@
 @media (max-width: 786px) {
     .ReviewerListAllBox_Bookcase{
         display: block;
+        overflow: hidden;
     }
     /* 頭書，單本書區域 (圖片區) */
     .brAvatarAllBox_Bookcase{

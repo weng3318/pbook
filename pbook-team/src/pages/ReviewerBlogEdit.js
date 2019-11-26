@@ -59,8 +59,10 @@ export class ReviewerBlogEdit extends React.Component {
         <h5 className="h5_br">你正在編輯<h3 className="h3_Red">{this.props.name}</h3></h5>
 
         <section className="Blog_textarea">
+        
           <form method="post" action="">
                 <CKEditor
+                name={this.props.name}
                   editor={ ClassicEditor }
                   config={{
                       toolbar: [
@@ -103,6 +105,7 @@ export class ReviewerBlogEdit extends React.Component {
                         console.log( '關注!Focus.', editor );
                     } }
                 />
+
             <input className="Blog_submit" type="submit" value="編輯完成"/>
             </form>
           </section>

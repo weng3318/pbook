@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import ReviewerBlog from '../ReviewerBlog'
 import ReviewerBlogEdit from '../ReviewerBlogEdit'
+import ScrollToTop from '../../pages/activities/components/ScrollToTop'
 
 class BR_BookcaseList extends React.Component {
     constructor(props) {
@@ -22,6 +23,7 @@ class BR_BookcaseList extends React.Component {
         const { name } = this.props;
         const { number } = this.props;
         const { blog } = this.props;
+        const { vb_book_sid } = this.props;
 
     (function(d, s, id) {
         var js, fjs = d.getElementsByTagName(s)[0];
@@ -31,16 +33,18 @@ class BR_BookcaseList extends React.Component {
         fjs.parentNode.insertBefore(js, fjs);
       }(document, 'script', 'facebook-jssdk'))
 
-    // 點擊收藏圖示導向
-    let Hash = `${this.props.sid}`
+    // 點擊more圖示導向書籍詳細列
+    let Hash = `${vb_book_sid}`
         return (
             <>
-    <section className="ReviewerListAllBox_Bookcase">
+        {/* <ScrollToTop> */}
+        <section className="ReviewerListAllBox_Bookcase">
             {/* 書籍圖片 */}
           <div className="brAvatarAllBox_Bookcase" id={this.props.sid} onClick={() => this.handleOpened(this.state.opened === 'blog' ? null : 'blog')}>
             {/* <img className="brBookInfoImg_Bookcase" src={require(`./images_books/vb_9789578587823.jpg`)}/> */}
             {/* <img className="brBookInfoImg_Bookcase" src={require(`./images/${this.props.pic}`)}/> */}
             <img className="brBookInfoImg_Bookcase" src={`http://localhost:5555/images/books/${this.props.pic}`} alt=""/>
+            
             {/* <img className="brBookInfoImg_Bookcase" src={`http://localhost/books/src/venderBooks_Management/vb_images/${this.props.pic}`} alt=""/> */}
             </div>
 
@@ -49,7 +53,7 @@ class BR_BookcaseList extends React.Component {
                     <div className="bookName_Bookcase">書名：</div>
                     <div className="bookNameText_Bookcase">{this.props.name}</div>
                 </div>
-                <div className="beAuthorText">作者：{this.props.author}</div>
+                <div className="bookName_Bookcase">作者：{this.props.author}</div>
         </div>
 
           <div className="brInfoBox_Bookcase borderLineUpDown">
@@ -108,6 +112,7 @@ class BR_BookcaseList extends React.Component {
     {opened === 'edit' && <ReviewerBlogEdit sid={sid} name={name} number={number} opened={opened} onHandleOpen={this.handleOpened} blog={blog}/>}
 
         {/* <div style={{height:'30px'}}></div> */}
+        {/* </ScrollToTop> */}
         </>
         )
     }
