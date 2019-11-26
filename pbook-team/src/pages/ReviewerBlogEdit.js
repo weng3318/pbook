@@ -56,10 +56,10 @@ export class ReviewerBlogEdit extends React.Component {
         this.setState({
           init: true
         })
-
   // ----------------------------------------------------------------
   }
-  render(props) {
+
+  render() {
     // if (!this.state.csData.length) return <></>
     if (this.state.csData.length === 0)
       return (

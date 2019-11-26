@@ -16,7 +16,7 @@ class BR_ReviewerList extends React.Component {
     let Hash = `#${this.props.number}`
     return (
       <>
-      {/* 設定了書評家 id={會員編號} {this.props.number} */}
+      {/* 設定書評列表的 id={會員編號} {this.props.number} */}
 <section id={this.props.number} className="ReviewerListAllBox reviewerList">
     <div className="d-flex">
           <div className="brAvatarAllBox borderLine">

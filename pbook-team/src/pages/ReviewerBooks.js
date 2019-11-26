@@ -73,12 +73,12 @@ class ReviewerBooks extends React.Component {
       }
     }
 
-    // 指定會員的書櫃資料，撈出來進行處理
+    // 指定會員的書櫃，收藏的書籍
     let bookcaseData = null
     for (let i = 0; i < csData.length; i++) {
       if (csData[i].number == reviewerData.number) {
         bookcaseData = csData[i].isbn
-        // console.log('來自書評家',reviewerData.name,'的書籍isbn：',bookcaseData)
+    // console.log('來自書評家',reviewerData.name,'的書籍isbn：',bookcaseData)
       }
     }
 
@@ -131,7 +131,7 @@ class ReviewerBooks extends React.Component {
           {/* 針對書評家 - 書櫃列表 */}
           {this.state.csData
             .filter(({ number }) => number === reviewerData.number)
-            .map(({ name, pic, author, sid, introduction, blog, tube, likebook, readbook, number, isbn }) => (
+            .map(({ br_name,name, pic, author, sid, introduction, blog, tube, likebook, readbook, number, isbn }) => (
               <BR_BookcaseList
                 id={sid} // 點擊熱門書名傳送至對應#id
                 isbn={isbn}
