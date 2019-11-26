@@ -67,10 +67,12 @@ app.use("/nana_use", require("./src/nana_use/game"));
 
 
 app.use("/activities", require("./src/activities/acApi"));
-app.use("/reviews", require("./src/book_review/reviews"));
 
-//下面三行有衝突我先註解掉
+app.use("/reviews", require("./src/book_review/reviews"));
 app.use("/reviews", require("./src/book_review/books"));
+app.use("/reviews", require("./src/book_review/reply"));
+//下面三行有衝突我先註解掉
+
 app.use("/reviewer", require("./src/reviewer/brReviewerList"));
 app.use("/reviewer", require("./src/reviewer/brBookcase"));
 app.use("/reviewer", require("./src/reviewer/brBooks"));

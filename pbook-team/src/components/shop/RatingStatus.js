@@ -86,11 +86,7 @@ const RatingStatus = props => {
             <Rating value={props.data.avg} readOnly />
           </Box>
           <span className="book_review">
-            {props.data.fiveStars +
-              props.data.fourStars +
-              props.data.threeStars +
-              props.data.twoStars +
-              props.data.oneStars}
+            {props.data.totalStars}
             篇評論
           </span>
         </div>

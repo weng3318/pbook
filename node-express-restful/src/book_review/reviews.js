@@ -1,11 +1,8 @@
 const express = require("express");
 const url = require("url");
 const mysql = require("mysql");
-const cors = require("cors");
-const body_parser = require("body-parser");
 const bluebird = require("bluebird");
 const router = express.Router();
-const app = express();
 const db = mysql.createConnection({
   // host: '192.168.27.186',
   host: '192.168.27.186',
@@ -29,7 +26,6 @@ router.post("/categoryBar", (req, res) => {
     }
   });
 });
-//SELECT COUNT(1) FROM `vb_books` WHERE categories ${c}
 //書本內容
 router.get(`/?`, (req, res) => {
   let c, a, page;
@@ -68,7 +64,24 @@ router.get(`/?`, (req, res) => {
       res.send(error);
     });
 });
-
+//搜尋內容
+router.get("/search_book/?", (req, res) => {
+  let search;
+  const urlpart = url.parse(req.url, true);
+  search = decodeURI(urlpart.search.replace("?", ""));
+  console.log(search);
+  const sql = `SELECT sid,name,author FROM vb_books WHERE name LIKE '%${search}%' OR author LIKE '%${search}%'`;
+    db.query(sql, (error, results) => {
+      if (error) {
+        return res.send(error);
+      } else {
+        return res.json({
+          data: results
+        });
+      }
+    });
+  
+});
 
 //書本各分類數量
 

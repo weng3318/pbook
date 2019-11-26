@@ -12,7 +12,7 @@ const db = mysql.createConnection({
 db.connect()
 bluebird.promisifyAll(db)
 // 每一頁數量
-const perPage = 10
+const perPage = 200
 router.get('/brReviewerList/:page?/:keyword?', (req, res) => {
     // 頁數資料傳輸
     const output = {}; 

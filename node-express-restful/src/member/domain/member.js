@@ -42,6 +42,12 @@ class Member{
                     WHERE bc.number='${number}'`
         return sql
     }
+
+    //查詢收藏書評家資訊
+    queryReviewer(number){
+        let sql = `SELECT b.* FROM br_reviewerlist b JOIN br_reviewermark bc ON b.number=bc.number_reviewer WHERE bc.number='${number}'`
+        return sql 
+    }
     
     //註冊會員
     getAddMemberSql(new_number, hash, nickname){
@@ -50,14 +56,6 @@ class Member{
         //塞入資料
         let sql = `INSERT INTO mr_information(MR_name, MR_nickname, MR_number , MR_email, MR_password, MR_pic, tokenId,  MR_personLevel, MR_createdDate) 
                         VALUES('${this.MR_name}', '${nickname}', '${new_number}', '${this.MR_email}', '${this.MR_password}', '${this.MR_pic}', '${hash}', 1, now()) `
-        return sql
-    }
-
-    //新增書籍到書櫃
-    addToBookcase(number, isbn){
-         //把書籍加入最愛的sql
-        let sql = `INSERT INTO br_bookcase(number, pic, isbn, name, info, likebook, readbook, created_time) 
-            VALUES('${number}', '', '${isbn}', '', '', 66,188, now()) `
         return sql
     }
 

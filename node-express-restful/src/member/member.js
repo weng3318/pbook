@@ -126,14 +126,6 @@ router.post('/queryEmail', (req, res, next)=>{
 })
 
 //取個人書櫃書籍資料
-// router.post('/queryBookcase', (req,res)=>{
-//     let number = req.body.number
-//     console.log(number);
-    
-//     db.query(Member.queryBooks(number), (err, rows)=>{
-//         res.json(rows)
-//     })
-// })
 router.post('/queryBookcase/:page?', (req,res)=>{
     let number = req.body.number
     let output = {}
@@ -151,7 +143,7 @@ router.post('/queryBookcase/:page?', (req,res)=>{
             if(page < 1) page = 1
             if(page > output.totalPage) page = output.totalPage
             output.page = page
-            console.log(page);
+            // console.log(page);
             
             page = (page - 1) * perPage 
             return db.queryAsync(`SELECT b.* FROM vb_books b LEFT JOIN 
@@ -163,18 +155,70 @@ router.post('/queryBookcase/:page?', (req,res)=>{
         } )
 })
 
+//取個人書櫃書評家資料
+router.post('/queryReviewer/:page', (req, res)=>{
+    let number = req.body.number
+    let output = {}
+    let perPage = 3 //每頁幾筆
+    output.params = req.params  //可以在網址看params
+    output.perPage = perPage;
+    let page = parseInt(req.params.page) || 1
+    let sql = `SELECT COUNT(1) total FROM br_reviewerlist b LEFT JOIN br_reviewermark bc ON b.number = bc.number_reviewer WHERE bc.number='${number}'`
+    db.queryAsync(sql)
+        .then( result =>{
+            output.totalRows = result[0]["total"]//總比數
+            output.totalPage = Math.ceil(output.totalRows / perPage) //總頁數
+            if(output.totalPage == 0 ) return
+            if(page < 1 ) page = 1
+            if(page > output.totalPage) page = output.totalPage
+            output.page = page
+            // console.log(page);
+            page = (page - 1) * perPage
+            return db.queryAsync(`SELECT b.* FROM br_reviewerlist b LEFT JOIN 
+                br_reviewermark bc ON b.number = bc.number_reviewer WHERE bc.number='${number}' LIMIT ${page}, ${perPage}`)
+        })
+        .then( result => {
+            output.rows = result
+            res.json(output)
+        })
+})
+
+
+
+
+
+
 //書籍加入個人書櫃
 router.post('/addBookcase', (req, res)=>{
     let number = req.body.number
     let isbn = req.body.isbn
-    db.query(Member.addToBookcase(number, isbn), (err, result)=>{
-        console.log("addBookcase",result);
-        res.json({
-            status: "新增到書櫃",
-            message: "加入到書櫃成功"
+    let sql = `SELECT COUNT(1) total FROM br_bookcase WHERE number = '${number}' && isbn = '${isbn}'`
+    db.queryAsync(sql)
+        .then( row => {
+            console.log(row[0].total);
+            if(row[0].total >= 1 ){
+                // console.log(456);
+            
+                res.json({
+                    message: "本書已加入過收藏"
+                })
+                return
+            }else{
+                //新增書籍到書櫃
+                let sql = `INSERT INTO br_bookcase(number, isbn, title, bookName, blog, created_time) 
+                            VALUES('${number}', '${isbn}', '', '', '',now()) `
+                return db.queryAsync(sql)
+                }
+            })
+            .then(result=>{
+                // console.log(result);
+                if(result)
+                    res.json({
+                        status: "新增到書櫃",
+                        message: "加入到書櫃成功"
+                    })
+            })            
         })
-    })
-})
 
 //查詢二手書籍
 router.post('/queryMemberBooks', (req, res)=>{
@@ -185,7 +229,7 @@ router.post('/queryMemberBooks', (req, res)=>{
                 message: "查不到資料"
             })
         }else{
-            res.json(rows)
+            res.json({rows})
         }
     })
 })

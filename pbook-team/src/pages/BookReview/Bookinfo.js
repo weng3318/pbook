@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { BrowserRouter as Router, Route, Link, NavLink } from 'react-router-dom'
 import styled from '@emotion/styled'
 import { LinkContainer } from 'react-router-bootstrap'
@@ -17,21 +17,20 @@ function Bookinfo() {
   const [array, setArray] = useState(1) //排序方式
   const [categorys, setCategorys] = useState([])
   const [page, getPage] = useState()
-  const [bs, setBs] = useState([])
+  const [search, setSearch] = useState({
+    text: '',
+    getData: false,
+  })
+  const [s_result, outputResult] = useState([])
   //---------------------------------------------------------------------------
   //分頁功能
 
   let pageNum = []
   let c,
-    y,
-    x,
     p = 1,
     s1,
     s2
   const url = window.location.search.replace('?', '')
-  y = window.location.search
-  x = window.location.href.slice(-1)
-  console.log(window.location)
   if (url !== '') {
     let urlSplit = url.split('&')
     if (url.indexOf('c') !== -1) {
@@ -127,7 +126,6 @@ function Bookinfo() {
       .then(res => {
         setBookInformation(res.data.rows)
         getPage(Math.ceil(res.data.total / 10))
-        console.log(res.data)
       })
       .catch(error => {
         console.log(error)
@@ -136,7 +134,7 @@ function Bookinfo() {
 
   for (let i = 1; i <= page; i++) {
     pageNum.push(
-      <LinkContainer to={'reviews?' + c + 'p=' + i}>
+      <LinkContainer key={i} to={'reviews?' + c + 'p=' + i}>
         <Pagination.Item className="reviews_paginationNum" value={i}>
           {i}
         </Pagination.Item>
@@ -144,17 +142,65 @@ function Bookinfo() {
     )
   }
 
+  const changeHandler = e => {
+    e.preventDefault()
+    setSearch({
+      [e.target.name]: e.target.value,
+    })
+    let search = e.target.value
+    if (search !== '') {
+      axios
+        .get(`http://localhost:5555/reviews/search_book/?${search}`)
+        .then(res => {
+          outputResult(res.data.data)
+          setSearch({ getData: true })
+          console.log(res.data)
+        })
+    } else {
+      setSearch({ getData: false })
+    }
+  }
+
   return (
     <>
       <CategoryBar>
-        {categorys.map((data, index) => (
-          <Link to={'reviews?c=' + data.sid + '&p=1'}>
-            <button value={data.sid} key={index} className="reviews_btn">
-              {data.categoriesName}
-            </button>
-          </Link>
-        ))}
+        {categorys
+          .filter((key, index) => index < 20)
+          .map(data => (
+            <Link key={data.sid} to={'reviews?c=' + data.sid + '&p=1'}>
+              <button value={data.sid} key={data.sid} className="reviews_btn">
+                {data.categoriesName}
+              </button>
+            </Link>
+          ))}
       </CategoryBar>
+
+      <div>
+        <input
+          value={search.text}
+          onChange={changeHandler}
+          className="reviews_search"
+          type="search"
+          placeholder="搜尋書名"
+        />
+
+        {search.getData ? (
+          <ul className="reviews_search_result">
+            {s_result.map(res => (
+              <li>
+                <a
+                  target=" _blank "
+                  href={`http://localhost:3000/book_reviews/${res.sid}`}
+                >
+                  {res.name}
+                </a>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          ''
+        )}
+      </div>
 
       <OptionBar>
         <select
@@ -172,11 +218,11 @@ function Bookinfo() {
 
       <Book>
         <BookColumn>
-          {bookInformation.map((data, index) => (
-            <BookImage>
+          {bookInformation.map(data => (
+            <BookImage key={data.sid}>
               <Link to={'/book_reviews/' + data.sid}>
                 <img
-                  key={index}
+                  key={data.sid}
                   className="reviews_img"
                   src={require('./images/' + data.pic)}
                 />

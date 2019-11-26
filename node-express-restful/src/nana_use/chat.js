@@ -4,6 +4,10 @@ const chat = express.Router();
 const bluebird = require("bluebird"); //青鳥
 const _ = require("lodash"); //loadsh,處理數據的各種方法
 
+const multer = require('multer');
+const upload = multer({ dest: 'tmp_uploads/' }); //設定上傳暫存目錄
+const fs = require('fs'); //處理檔案的核心套件(內建?)
+
 const mysql = require("mysql");
 // 設定資料庫連線
 const db = mysql.createConnection({
@@ -119,5 +123,43 @@ chat.post("/myBooks", function (req, res) {
         });
 
 });
+
+chat.post('/imgFiles', upload.array('avatar', 5), (req, res, next) => {
+    console.log("avatar", req.body);
+    console.log("Files", req.files.length);
+
+    let images = []
+    for (let i = 0; i < req.files.length; i++) {
+        if (req.files[i] && req.files[i].mimetype) {
+            // console.log([i]);
+            switch (req.files[i].mimetype) {
+                case 'image/png':
+                case 'image/jpeg':
+                    fs.createReadStream(req.files[i].path)
+                        .pipe(
+                            fs.createWriteStream('public/images/chatFile/' + req.files[i].originalname)
+                        )
+                    images.push(req.files[i].originalname)
+                    // console.log(images);            
+                    continue;
+                default:
+                    return res.send('bad file type')
+            }
+
+        } else {
+            console.log('222');
+            res.json({
+                pictures: images
+            })
+        }
+    }
+    console.log("images", images);
+
+    res.json({
+        message: "上傳成功",
+        pictures: images
+    })
+
+})
 
 module.exports = chat;

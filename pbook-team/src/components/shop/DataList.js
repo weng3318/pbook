@@ -46,9 +46,13 @@ const DataList = props => {
             <select>
               <option>書名(小->大)</option>
               <option>書名(大->小)</option>
-              <option>書名(小->大)</option>
-              <option>書名(小->大)</option>
-              <option>書名(小->大)</option>
+              <option>分類(小->大)</option>
+              <option>分類(大->小)</option>
+              <option>作者(大->小)</option>
+              <option>作者(大->小)</option>
+              <option>評分(大->小)</option>
+              <option>評分(大->小)</option>
+              
             </select>
           </div> */}
         </div>

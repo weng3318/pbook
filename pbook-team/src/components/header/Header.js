@@ -18,7 +18,7 @@ import Chat from '../../components/member/chat/Chat'
 import Guide from 'react-guide'
 import axios from 'axios'
 import ReviewerBooks from '../../pages/ReviewerBooks'
-import ReviewerBlog from '../../pages/ReviewerBlog'
+import ReviewerBlogEdit from '../../pages/ReviewerBlogEdit'
 import BookReviews from '../../pages/BookReview/BookReviews'
 import ResetPWD from '../../pages/ResetPWD'
 import { browserHistory } from 'react-router'
@@ -33,6 +33,7 @@ class Header extends React.Component {
     this.state = {
       loginImg: '',
       nickname: '',
+      cart: '',
       member: {},
       login: false,
       visible: false,
@@ -44,6 +45,16 @@ class Header extends React.Component {
 
   //   this.setState({hasData:true,id:memberData.MR_number,name:memberData.MR_name,level:memberData.MR_personLevel})
   // }
+
+  goCart = e => {
+    if (localStorage.user !== undefined) {
+      this.setState.cart = '/cart'
+      console.log(this.props)
+      window.location.href = '/cart'
+    } else {
+      this.props.dispatch(letMeLogin())
+    }
+  }
 
   handleLoginButton = event => {
     let loginButton = event.currentTarget
@@ -182,10 +193,7 @@ class Header extends React.Component {
         let newPic = 'http://localhost:5555/images/member/' + data[0].MR_pic
         let nickname = data[0].MR_nickname
 
-        this.setState({ loginImg: newPic,
-                        nickname,
-                        member: data[0] 
-                      })
+        this.setState({ loginImg: newPic, nickname, member: data[0] })
       })
   }
 
@@ -237,7 +245,11 @@ class Header extends React.Component {
             <div className="mwt_border"></div>
 
             <div className="cartButton position-absolute d-flex flex-column justify-content-center align-items-center pointer">
-              <Link to="/cart" className="titleZh-white">
+              <Link
+                to={this.state.cart}
+                onClick={this.goCart}
+                className="titleZh-white"
+              >
                 購物車
               </Link>
               <span className="titleEn">CART</span>
@@ -259,9 +271,7 @@ class Header extends React.Component {
                   className="loginButton position-absolute d-flex flex-column justify-content-center align-items-center pointer"
                   onClick={this.handleLoginButton}
                 >
-                  <span className="titleZh-white">
-                    {this.state.nickname}
-                  </span>
+                  <span className="titleZh-white">{this.state.nickname}</span>
                   <span className="titleEn">
                     {
                       level[
@@ -500,13 +510,13 @@ class Header extends React.Component {
               <Route exact path="/reviewer" component={Reviewer} />
               <Route
                 exact
-                path="/Reviewer/ReviewerBooks/:sid?"
+                path="/reviewer/reviewerBooks/:sid?"
                 component={ReviewerBooks}
               />
               <Route
                 exact
-                path="/reviewer/reviewerBooks/reviewerBlog/:sid?"
-                component={ReviewerBlog}
+                path="/reviewer/reviewerBooks/reviewerBlog/ReviewerBlogEdit/:sid?"
+                component={ReviewerBlogEdit}
               />
 
               <Route path="/books" component={Books} />

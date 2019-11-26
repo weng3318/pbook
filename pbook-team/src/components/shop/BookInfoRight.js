@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import RatingStatus from './RatingStatus'
 import './Shop.scss'
 
@@ -12,7 +13,9 @@ const BookInfoRight = props => {
         </span>
         <button className="addCart mb-2">放入購物車</button>
         <RatingStatus data={props.data}></RatingStatus>
-        <button className="addReview">+本書短評</button>
+        <Link to={'/book_reviews/' + props.data.sid} className="addReview">
+          +本書短評
+        </Link>
       </div>
     </>
   )

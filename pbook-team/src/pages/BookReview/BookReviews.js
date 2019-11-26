@@ -84,9 +84,6 @@ const Member = styled.div`
   height: 100px;
   margin: 0 0 0 5px;
 `
-
-const Submit = styled.button``
-
 //------------------------------------------------------------------------------------------------------
 
 const List = () => {
@@ -94,29 +91,36 @@ const List = () => {
   const urlParams = window.location.pathname.replace('/book_reviews/', '')
 
   //變數
-  const [List, setList] = useState([])
-  const [score, setScore] = useState([])
-  const [memberReview, getMemberReview] = useState([])
+  const [List, setList] = useState([]) //上方書本資料
+  const [memberReview, getMemberReview] = useState([]) //會員書評
+  //會員個人資料設定
   const [user, setUser] = useState({
     isLogin: false,
     pic: 'yui.png',
     nickname: '',
   })
+  //CRUD設定
   const [review, setReview] = useState({
     id: '',
     sid: '',
+    pic: '',
     editReview: '',
     reviewText: '',
     book: urlParams,
     star: '1',
     isEdit: false,
-    submitSuccess: false,
-    error: false,
   })
+  //ISBN
+  const [ISBN, setISBN] = useState()
+  //書評下方顯示欄資料
+  const [reply, setReply] = useState([])
+  const [reviewID, setReviewID] = useState(1)
+  let replyTxt
 
   useEffect(() => {
     bookList()
     reviewList()
+    replyText()
     if (JSON.parse(localStorage.getItem('user')) !== null) {
       let data = JSON.parse(localStorage.getItem('user'))
       setUser({
@@ -126,25 +130,28 @@ const List = () => {
       })
       setReview({ ...review, id: data.MR_number })
     }
-  }, [score, InsertReply])
-
+  }, [InsertReply])
+  //書評分頁資料ajax
   const bookList = async () => {
     await axios
       .get(`http://localhost:5555/reviews/book_reviews/${urlParams}`)
       .then(res => {
-        let s = res.data.data[0].sid
+        let data = res.data.data[0]
         setList(res.data.data)
+        setISBN(res.data.data[0].isbn)
+        // setReview({ ...review, isbn: data.isbn, pic: data.pic })
       })
       .catch(error => {
         console.log(error)
       })
   }
-  //書評分頁資料ajax
+  //書評資料
   const reviewList = async () => {
     await axios
       .get(`http://localhost:5555/reviews/memberReview/${urlParams}`)
       .then(res => {
         getMemberReview(res.data.reviews)
+
         console.log(res.data)
         // setReview({...review,sid:''})
       })
@@ -153,19 +160,31 @@ const List = () => {
       })
   }
 
+  const keypress = e => {
+    e.preventDefault()
+    if (e.which === 13) {
+      console.log('123')
+      submitHandler2(e)
+      // updateHandler(e)
+    }
+  }
+
   //輸入時更新資料
   const changeHandler = e => {
-    if (review.isEdit) {
-      setReview({
-        ...review,
-        [e.target.name]: e.target.value,
-      })
-    } else {
-      setReview({
-        ...review,
-        [e.target.name]: e.target.value,
-      })
+    setReview({
+      ...review,
+      [e.target.name]: e.target.value,
+    })
+  }
+  //輸入時更新資料下方回覆
+  const changeHandler2 = e => {
+    setReviewID(e.target.name)
+    replyTxt = {
+      name: e.target.value,
     }
+    console.log(replyTxt)
+    console.log(replyTxt.name)
+    console.log(reviewID)
   }
 
   //新增資料
@@ -182,14 +201,13 @@ const List = () => {
           star: review.star,
         })
         .then(res => {
-          swal('新增成功', '', 'success')
-          console.log(res)
+          swal('新增成功', '', 'success').then(value => {
+            setTimeout(() => {
+              window.location.reload()
+            }, 100)
+          })
         })
-        .then(
-          setTimeout(function() {
-            window.location.reload()
-          }, 1500)
-        )
+
         .catch(error => {
           setReview({
             error: true,
@@ -200,7 +218,37 @@ const List = () => {
       swal('書評內容為空')
     }
   }
+  //新增資料下方回覆
+  const submitHandler2 = e => {
+    e.preventDefault()
+    let api = `http://localhost:5555/reviews/reply/InsertData`
 
+    if (user.isLogin) {
+      axios
+        .post(api, {
+          id: review.id,
+          review_sid: reviewID,
+          reply: replyTxt.name,
+        })
+        .then(res => {
+          swal('新增成功', '', 'success').then(value => {
+            setTimeout(() => {
+              window.location.reload()
+            }, 100)
+          })
+        })
+
+        .catch(error => {
+          setReview({
+            error: true,
+            submitSuccess: false,
+          })
+        })
+    } else {
+      swal('書評內容為空')
+    }
+  }
+  //更新資料
   const updateHandler = e => {
     e.preventDefault()
     let api = `http://localhost:5555/reviews/editReview/data`
@@ -210,14 +258,13 @@ const List = () => {
         editReview: review.editReview,
       })
       .then(res => {
-        swal('修改成功!')
-        console.log(res)
+        swal('修改成功!').then(value => {
+          setTimeout(() => {
+            window.location.reload()
+          }, 100)
+        })
       })
-      .then(
-        setTimeout(function() {
-          window.location.reload()
-        }, 2000)
-      )
+
       .catch(error => {
         setReview({
           error: true,
@@ -237,53 +284,56 @@ const List = () => {
       dangerMode: true,
     }).then(willDelete => {
       if (willDelete) {
-        swal('刪除成功!', '1秒後跳轉頁面', {
+        swal('刪除成功!', '', {
           icon: 'success',
+        }).then(value => {
+          axios.delete(
+            `http://localhost:5555/reviews/deleteReview/${delete_data}`
+          )
+          setTimeout(() => {
+            window.location.reload()
+          }, 100)
         })
-        axios.delete(
-          `http://localhost:5555/reviews/deleteReview/${delete_data}`
-        )
-        setTimeout(() => {
-          window.location.reload()
-        }, 2000)
       } else {
         swal('已取消刪除!')
       }
     })
   }
 
+  // 跳至登入畫面
   const login = () => {
     let loginBtn = document.querySelector('.loginButton')
     loginBtn.click()
   }
 
-  //更新資料狀態
-  const EditReview = e => {
-    let sid = e
-    return (
-      <>
-        <FontAwesomeIcon className="reviews_member_icon" icon={faCheck} />
-        <FontAwesomeIcon
-          onClick={() => {
-            setReview({ ...review, isEdit: false, sid: sid })
-          }}
-          className="reviews_member_icon"
-          icon={faTimes}
-        />
-      </>
-    )
+  //加入書櫃
+  const addCase = e => {
+    e.preventDefault()
+    let api = `http://localhost:5555/reviews/bookcase`
+    if (user.isLogin) {
+      axios
+        .post(api, {
+          number: review.id,
+          isbn: ISBN,
+        })
+        .then(res => {
+          swal('新增成功', '', 'success')
+        })
+    } else {
+      swal('請登入會員').then(value => {
+        login()
+      })
+    }
   }
-  //未更新資料狀態
-  const NoEditReview = () => {
-    return (
-      <FontAwesomeIcon
-        onClick={() => {
-          setReview({ ...review, isEdit: true })
-        }}
-        className="reviews_member_icon"
-        icon={faPen}
-      />
-    )
+
+  // -----------------------------------------------------------------------
+
+  //書評下方顯示資料
+  const replyText = async () => {
+    await axios.get(`http://localhost:5555/reviews/reply/`).then(res => {
+      setReply(res.data.reply)
+      console.log(res.data)
+    })
   }
 
   return (
@@ -324,19 +374,21 @@ const List = () => {
             <BookRow>
               <BookScoreAndLine List={List} />
             </BookRow>
-            <button className="BookCase">加入書櫃</button>
+            <form onSubmit={addCase}>
+              <button type="submit" className="BookCase">
+                加入書櫃
+              </button>
+            </form>
           </BookColumnScore>
-          {/* {review.submitSuccess && <p>送出成功</p>}
-          {review.error && <p>送出失敗</p>} */}
         </div>
-        <InsertReply
+        {/* <InsertReply
           user={user}
           login={login}
           review={review}
           submitHandler={submitHandler}
           changeHandler={changeHandler}
-        />
-        {/* <h3 className="reviews_push">發表評論</h3>
+        /> */}
+        <h3 className="reviews_push">發表評論</h3>
         <Review>
           <BookColumnMember>
             <Member>
@@ -358,6 +410,7 @@ const List = () => {
                 name="reviewText"
                 value={review.reviewText}
                 onChange={changeHandler}
+                // onKeyPress={keypress}
                 placeholder="新增評論..."
               />
               <BookRow>
@@ -380,7 +433,7 @@ const List = () => {
               </h6>
             </form>
           )}
-        </Review> */}
+        </Review>
         {memberReview.map(data => (
           <Review key={data.sid}>
             <BookColumnMember>
@@ -418,6 +471,7 @@ const List = () => {
                     name="editReview"
                     value={review.editReview}
                     onChange={changeHandler}
+                    // onKeyPress={keypress}
                   />
                   <button type="submit" className="reviews_UpdateBtn">
                     修改評論
@@ -426,10 +480,34 @@ const List = () => {
               ) : (
                 <div className="reviews_text">{data.message}</div>
               )}
-              <textarea
-                className="reviews_reply"
-                placeholder="回覆此書評"
-              ></textarea>
+              {reply.map(item =>
+                item.review_sid == data.sid ? (
+                  <div key={item.review_sid} className="reviews_reply_view">
+                    {item.MR_nickname}
+                    &nbsp;
+                    {':'}
+                    &nbsp;
+                    {item.reply_text}
+                  </div>
+                ) : (
+                  ''
+                )
+              )}
+              {user.isLogin ? (
+                <form onSubmit={submitHandler2} key={data.book}>
+                  <textarea
+                    key={data.sid}
+                    value={replyTxt}
+                    onChange={changeHandler2}
+                    name={data.sid}
+                    placeholder="回覆此書評"
+                    className="reviews_reply_text"
+                    onKeyPress={keypress}
+                  />
+                </form>
+              ) : (
+                ''
+              )}
             </div>
             {review.id === data.member ? (
               <div>
