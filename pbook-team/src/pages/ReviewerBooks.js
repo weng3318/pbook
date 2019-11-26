@@ -81,6 +81,7 @@ class ReviewerBooks extends React.Component {
         // console.log('來自書評家',reviewerData.name,'的書籍isbn：',bookcaseData)
       }
     }
+
     // 熱門書籍數量
     let hotNum = 5
     return (
@@ -90,11 +91,12 @@ class ReviewerBooks extends React.Component {
         <section className="reviewerBooks borderLine">
           {/* 接應id的書評家個人介紹 */}
           <BR_ReviewerList
+            number={reviewerData.number}
             key={reviewerData.sid}
             sid={reviewerData.sid}
             title={reviewerData.title}
             img={reviewerData.img}
-            name={reviewerData.name}
+            br_name={reviewerData.br_name}
             job={reviewerData.job}
             intro={reviewerData.intro}
             tube={reviewerData.tube}
@@ -108,7 +110,7 @@ class ReviewerBooks extends React.Component {
                 {this.state.csData
                   .filter(({ number }) => reviewerData.number === number)
                   .filter((key, index) => index < hotNum)
-                  .map(({ pic, sid, name }) => (
+                  .map(({ pic, sid, name, likebook, readbook }) => (
                     <BR_BookcaseHot_books
                       onHandleOpen={this.handleOpened} //進去勒索
                       opened={opened}
@@ -116,6 +118,8 @@ class ReviewerBooks extends React.Component {
                       sid={sid}
                       pic={pic}
                       name={name}
+                      likebook={likebook}
+                      readbook={readbook}
                     ></BR_BookcaseHot_books>
                   ))}
               </div>
@@ -127,8 +131,11 @@ class ReviewerBooks extends React.Component {
           {/* 針對書評家 - 書櫃列表 */}
           {this.state.csData
             .filter(({ number }) => number === reviewerData.number)
-            .map(({ name, pic, author, sid, introduction, blog, tube }) => (
+            .map(({ name, pic, author, sid, introduction, blog, tube, likebook, readbook, number, isbn }) => (
               <BR_BookcaseList
+                id={sid} // 點擊熱門書名傳送至對應#id
+                isbn={isbn}
+                number={number}
                 sid={sid}
                 pic={pic}
                 name={name}
@@ -136,15 +143,17 @@ class ReviewerBooks extends React.Component {
                 blog={blog}
                 introduction={introduction}
                 tube={tube}
+                likebook={likebook}
+                readbook={readbook}
               ></BR_BookcaseList>
             ))}
 
           {/* try */}
-          {/* {this.state.brData.filter(({name}) => name ===
-           this.state.csData.filter(({number}) => number === reviewerData.number).map(({name})=> name))
-           .map(({sid, name, pic, author, introduction })=>((
+          {/* {this.state.brData.filter(({br_name}) => br_name ===
+           this.state.csData.filter(({number}) => number === reviewerData.number).map(({br_name})=> br_name))
+           .map(({sid, br_name, pic, author, introduction })=>((
             <BR_BookcaseList
-            name={name}
+            br_name={br_name}
             key={sid}
             sid={sid}
             ></BR_BookcaseList>
