@@ -39,7 +39,7 @@ var fileStoreOptions = {};
 // 設定session的middleware
 app.use(
   session({
-    store: new FileStore(fileStoreOptions),
+    // store: new FileStore(fileStoreOptions),
     //新用戶沒有使用到session物件時不會建立session和發送cookie
     saveUninitialized: true,
     resave: true,
@@ -78,7 +78,10 @@ app.use("/reviewer", require("./src/reviewer/brBookcase"));
 app.use("/reviewer", require("./src/reviewer/brBooks"));
 
 app.get("/", function(req, res) {
-  res.send("Home");
+  res.json({
+    loc: 'home',
+    session: req.session
+  });
 });
 
 //登出
@@ -88,6 +91,11 @@ app.get("/logout", (req, res) => {
   delete req.session.memberData;
   // delete req.session.cookie;
   // console.log("logout success2", req.session);
+  return res.redirect("/");
+});
+app.get("/clearCart", (req, res) => { 
+  delete req.session.cart;
+  delete req.session.totalCart;
   return res.redirect("/");
 });
 

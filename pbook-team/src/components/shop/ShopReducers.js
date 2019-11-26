@@ -5,6 +5,14 @@ import {
   SHOP_REQUEST,
   BOOKINFO_RECEIVE,
   BOOKINFO_REQUEST,
+  ADD_TO_FAV_RECEIVE,
+  ADD_TO_FAV_REQUEST,
+  ADD_TO_CART_RECEIVE,
+  ADD_TO_CART_REQUEST,
+  CART_RECEIVE,
+  CART_REQUEST,
+  DEL_CART_RECEIVE,
+  DEL_CART_REQUEST,
 } from './ShopActions'
 
 //--------categories------
@@ -132,7 +140,178 @@ function bookInfo(state = [], action) {
   }
 }
 //---------------------
+//------addToFav-------
+function af(
+  state = {
+    isFetching: false,
+    didInvalidate: false,
+  },
+  action
+) {
+  switch (action.type) {
+    case ADD_TO_FAV_RECEIVE:
+      return {
+        ...state,
+        isFetching: false,
+        didInvalidate: false,
+        payload: action.payload,
+        lastUpdated: action.receivedAt,
+      }
+    case ADD_TO_FAV_REQUEST:
+      return {
+        ...state,
+        isFetching: true,
+        didInvalidate: false,
+      }
+    default:
+      return state
+  }
+}
 
-const ShopReducers = { bookInfo, categories, shop }
+function addToFav(state = [], action) {
+  switch (action.type) {
+    case ADD_TO_FAV_RECEIVE:
+    case ADD_TO_FAV_REQUEST:
+      return {
+        ...state,
+        ...af(state[action], action),
+      }
+    default:
+      return state
+  }
+}
+//---------------------
+//------addToCart-------
+function atc(
+  state = {
+    isFetching: false,
+    didInvalidate: false,
+  },
+  action
+) {
+  switch (action.type) {
+    case ADD_TO_CART_RECEIVE:
+      return {
+        ...state,
+        isFetching: false,
+        didInvalidate: false,
+        payload: action.payload,
+        lastUpdated: action.receivedAt,
+      }
+    case ADD_TO_CART_REQUEST:
+      return {
+        ...state,
+        isFetching: true,
+        didInvalidate: false,
+      }
+    default:
+      return state
+  }
+}
+
+function addToCart(state = [], action) {
+  switch (action.type) {
+    case ADD_TO_CART_RECEIVE:
+    case ADD_TO_CART_REQUEST:
+      return {
+        ...state,
+        ...atc(state[action], action),
+      }
+    default:
+      return state
+  }
+}
+//---------------------
+//------delCart-------
+function dc(
+  state = {
+    isFetching: false,
+    didInvalidate: false,
+  },
+  action
+) {
+  switch (action.type) {
+    case DEL_CART_RECEIVE:
+      return {
+        ...state,
+        isFetching: false,
+        didInvalidate: false,
+        payload: action.payload,
+        lastUpdated: action.receivedAt,
+      }
+    case DEL_CART_REQUEST:
+      return {
+        ...state,
+        isFetching: true,
+        didInvalidate: false,
+      }
+    default:
+      return state
+  }
+}
+
+function delCart(state = [], action) {
+  switch (action.type) {
+    case DEL_CART_RECEIVE:
+    case DEL_CART_REQUEST:
+      return {
+        ...state,
+        ...dc(state[action], action),
+      }
+    default:
+      return state
+  }
+}
+//---------------------
+//------Cart-------
+function ct(
+  state = {
+    isFetching: false,
+    didInvalidate: false,
+  },
+  action
+) {
+  switch (action.type) {
+    case CART_RECEIVE:
+      return {
+        ...state,
+        isFetching: false,
+        didInvalidate: false,
+        payload: action.payload,
+        lastUpdated: action.receivedAt,
+      }
+    case CART_REQUEST:
+      return {
+        ...state,
+        isFetching: true,
+        didInvalidate: false,
+      }
+    default:
+      return state
+  }
+}
+
+function Cart(state = [], action) {
+  switch (action.type) {
+    case CART_RECEIVE:
+    case CART_REQUEST:
+      return {
+        ...state,
+        ...ct(state[action], action),
+      }
+    default:
+      return state
+  }
+}
+//---------------------
+const ShopReducers = {
+  addToFav,
+  addToCart,
+  Cart,
+  delCart,
+  bookInfo,
+  categories,
+  shop,
+}
 
 export default ShopReducers
