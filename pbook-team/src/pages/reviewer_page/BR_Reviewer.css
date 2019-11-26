@@ -15,7 +15,7 @@
 a:hover{
     text-decoration: none;
 }
-/* 超連結按鈕，hover (小小的動態效果) */
+/* 超連結按鈕，hover (動態效果) */
 .brMark_img{
     width: 30px;
     left: 15px;
@@ -26,6 +26,12 @@ a:hover{
     width: 32px;
     padding: 4px;
     border:1px solid #ffc408;
+}
+.brMark_img_noAni{
+    width: 30px;
+    left: 15px;
+    transform: translate(-50%);
+    transition: 0.2s;
 }
 /* 取得資料中... (文字) */
 .h1_br{
@@ -50,6 +56,7 @@ a:hover{
 }
 /* 麵包屑(Breadcrumbs) */
 .brNavbar{
+    
     display: flex;
     justify-content: space-between;
     width: 100%;

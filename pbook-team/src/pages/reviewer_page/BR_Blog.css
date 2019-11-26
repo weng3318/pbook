@@ -1,7 +1,32 @@
+/* 編輯內文，表單區域設定 */
+.Blog_textarea{
+    color: #2d3a3a;
+}
+/* 表單送出按鈕，自訂樣式 */
+.Blog_submit{
+    min-width: 88px;
+    min-height: 40px;
+    border-radius: 6px;
+    border: 2px solid #ffc408;
+    margin: 20px 0;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: bold;
+    color: #ffc408;
+    background: #2d3a3a;
+}
+.Blog_submit:hover{
+    border: 2px solid #cde2d0;
+    color: #cde2d0;
+}
+/* CKEditor編輯器控制 */
 .br_CKEditor{
-    background: #ccc;
-    min-height: 600px;
+    min-height: 260px;
     border-bottom: 2px solid #2d3a3a;
+    overflow: hidden;
+}
+.ck.ck-content table{
+	margin:0 auto;
 }
 /* 編輯模式，標題文字 */
 .h3_Red{
@@ -30,7 +55,7 @@
 .Blog_Edit:hover{
     border:2px solid #ffc408;
 }
-/* 編輯按鈕，按鈕變形，含外框線 (控制位置) */
+/* 編輯按鈕，按鈕變形，含外框線 (控制位置:Z) */
 .Animate_Edit_Box,.Animate_Close_Box{
     position: absolute;
     top: 20px;
@@ -40,6 +65,7 @@
     height: 50px;
     border-radius: 25px 0 0 25px;
     transition: 0.3s;
+    z-index: 1;
 }
 /* 編輯按鈕，反饋動畫 (長出) */
 .Animate_Edit_Box:hover{
