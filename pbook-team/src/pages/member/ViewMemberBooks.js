@@ -70,7 +70,11 @@ class ViewMemberBooks extends React.Component {
                     <div className="Book_title">配對書籍</div>
                       <div className="books_container flex-wrap">
               {
-                (data.length)?(
+                (!(data && data))?(
+                  <>
+                    <div className="nobook">快上架書籍，才可以參加配對</div>
+                  </>
+                ):(
                   <>
                   {(data && data).map(data => (
                           <div className="modal-content" style={{width:'450px'}} key={createId++}>
@@ -101,10 +105,6 @@ class ViewMemberBooks extends React.Component {
                             </div>
                         </div>
                       ))}
-                  </>
-                ):(
-                  <>
-                    <div className="nobook">快上架書籍，才可以參加配對</div>
                   </>
                 )
               }

@@ -201,7 +201,21 @@ class Login extends React.Component {
 
   //照片上傳
   onChangeHandler(e) {
-    // console.log(e.target.files[0])
+      
+      let fileField = document.querySelector("input[type='file']")
+      let uploadImg = document.querySelector('.uploadImg')
+      var file = fileField.files[0];
+      var reader = new FileReader;
+      reader.readAsDataURL(file);
+        reader.onload = function(e) {
+          let image = document.createElement('img')
+          image.setAttribute('src', e.target.result)
+          image.classList.add('imgBorder')
+          image.classList.add('brAvatarImg')
+          uploadImg.append(image)
+      }
+  
+    
     this.setState({
       selectedFile: e.target.files[0],
     })
@@ -320,7 +334,7 @@ class Login extends React.Component {
       this.setState({ err_password: '密碼格式不正確或輸入錯誤' })
       // return
     }
-    // console.log(3, isPass);
+    console.log(3, isPass);
     if (captcha1 !== captcha2) {
       let captcha2 = document.querySelector('#captcha2')
       let err_captcha = document.querySelector('#err_captcha')
@@ -332,12 +346,14 @@ class Login extends React.Component {
       isPass = true
     }
     // this.setState({name: "字數太少囉",password: "格式或密碼有誤", password2: "請再重新輸入"})
-    // console.log("isPass",isPass);
-
+    console.log("isPass",isPass);
+    
+    
     const formData = new FormData()
     let fileField = document.querySelector("input[type='file']")
     formData.append('avatar', fileField.files[0])
-    // console.log(4, isPass);
+    console.log(4, isPass, formData);
+
     if (isPass) {
       let imgFile = ''
       //目前想說新增完圖片再塞入修改資料
@@ -386,7 +402,7 @@ class Login extends React.Component {
                 //   window.location = window.location.href
                 //  }, 1000)
               } else {
-                window.location = '/'
+                this.fail(status, message)
               }
             })
             .catch(error => {
@@ -415,7 +431,7 @@ class Login extends React.Component {
 
   render() {
     // console.log(this.state.forgetPwd);
-    console.log(this.state.props)
+    // console.log(this.state.props)
 
     return (
       <>
@@ -492,6 +508,7 @@ class Login extends React.Component {
                   className="login_input"
                   type="file"
                   name="file"
+                  id="upload"
                   onChange={this.onChangeHandler}
                 />
                 <small className="tip">{this.state.picture}</small>
@@ -614,12 +631,12 @@ class Login extends React.Component {
                 <img
                   src={require('./品書logo.png')}
                   alt=""
-                  style={{ maxWidth: '120px', marginTop: '170px', cursor: 'pointer' }}
+                  style={{ maxWidth: '120px', marginTop: '175px', cursor: 'pointer' }}
                   onClick={() => {
                     window.location.href = '/'
                   }}
                 />
-                <h4 style={{ margin: '50px' }}>
+                <h4 style={{ margin: '80px' }}>
                   還沒有帳號就快來加入品書人行列
                 </h4>
                 <button className="login_btn" onClick={this.flipSingUp}>
@@ -644,6 +661,10 @@ class Login extends React.Component {
                 >
                   品書人登入
                 </button>
+                <div className="uploadImg">
+                 
+                </div>
+
               </div>
             </div>
           </div>
