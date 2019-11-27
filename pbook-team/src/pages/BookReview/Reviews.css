@@ -10,6 +10,23 @@
   margin: -15px 0 0px 0;
   transform: translate(5px, 20px);
 }
+
+/* 上方書籍分類欄 */
+.reviews_cate {
+  position: relative;
+}
+/* 書籍分類第一排 */
+.reviews_cate1 {
+  margin: 0 0 0 25px;
+}
+/* 書籍分類第二排 */
+.reviews_cate2 {
+  margin: 0 0 0 90px;
+}
+/* 書籍分類第三排 */
+.reviews_cate3 {
+  margin: 0 0 0 145px;
+}
 /* 分數文字 */
 .reviews_bol {
   font-size: 1.5rem;
@@ -22,12 +39,17 @@
   margin: 15px auto;
   transform: translate(0, 40px);
 }
+/* 排序bar */
+.reviews_array_bar {
+  position: relative;
+  right: 100px;
+}
 
 /* 搜尋欄 */
 .reviews_search {
   padding: 10px;
   height: 20px;
-  width: 500px;
+  width: 300px;
   border: 1px solid #eaeaea;
   outline: none;
 }
@@ -40,11 +62,13 @@
 
 /* 搜尋結果 */
 .reviews_search_result {
+  position: absolute;
   width: 500px;
   background: #fff;
   border: 1px solid #cde2d0;
   outline: none;
   transform: translate(0, -1px);
+  z-index: 99;
 }
 
 .reviews_search_result li {
@@ -58,10 +82,11 @@
   background: #ace;
 }
 
+/* 分類按鈕 */
 .reviews_btn {
   background: #fff;
-  width: 70px;
-  height: 25px;
+  width: 120px;
+  height: 32px;
   color: black;
   text-align: center;
   text-decoration: none;
@@ -84,13 +109,20 @@
   background: #2d3a3a;
   color: #ffc408;
   outline: none;
+  z-index: 99;
+}
+
+.focus_btn {
+  background: #2d3a3a;
+  color: #ffc408;
+  outline: none;
 }
 
 .reviews_pagination {
+  width: 600px;
   display: flex;
   justify-content: center;
-  margin: 0 0px 30px 0;
-  background-color: white !important;
+  margin: 0 0px 30px 180px;
   border-color: #dee2e6 !important;
   color: black !important;
   text-decoration: none;
@@ -196,18 +228,19 @@
   outline: none;
   position: absolute;
   right: 160px;
-  bottom: 100px;
+  bottom: 10px;
 }
 /* 推薦書籍文字 */
 .reviews_recommendText {
   font-size: 18px;
-  margin: 0 0 0 10px;
+  margin: 0 0 0 55px;
 }
 /* 書本推薦區 橫排*/
 .reviews_recommendBook {
   width: 700px;
   display: flex;
   justify-content: space-around;
+  margin: 0 0 0 25px;
 }
 /* 書本推薦區圖片 */
 .reviews_recommendBook_img {
@@ -215,16 +248,24 @@
   max-width: 100%;
   width: 120px;
   height: 120px;
-  margin: 0 5px;
+  margin: 0 25px;
   border: 1px solid #ccc;
 }
 /* 書本推薦區文字 */
 .reviews_recommendBookName {
-  margin: 0 auto;
+  margin: 0 25px;
   text-align: center;
   font-size: 13px;
   width: 120px;
   word-break: break-all;
+}
+/* 書本推薦區Link */
+.reviews_recommendBook_Link {
+  color: black;
+}
+
+.reviews_recommendBook_Link:hover {
+  color: #ffc408;
 }
 
 /* 書櫃按鈕 */

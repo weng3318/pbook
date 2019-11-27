@@ -13,7 +13,6 @@ import { faTimes, faPen, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import swal from '@sweetalert/with-react'
 import { BrowserRouter as Router, Route, Link, NavLink } from 'react-router-dom'
-import { LinkContainer } from 'react-router-bootstrap'
 
 //---------------------------------------------------------------------------------------------------------
 
@@ -44,7 +43,8 @@ const BookColumn = styled.div`
 //直排右側分數
 const BookColumnScore = styled.div`
   position: relative;
-  bottom: 130px;
+  bottom: 170px;
+  right: 20px;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -164,8 +164,6 @@ const List = () => {
       .get(`http://localhost:5555/reviews/memberReview/${urlParams}`)
       .then(res => {
         getMemberReview(res.data.reviews)
-        console.log(res.data)
-        // setReview({...review,sid:''})
       })
       .catch(error => {
         console.log(error)
@@ -174,10 +172,9 @@ const List = () => {
   //書籍推薦資料
   const recommend = async e => {
     await axios
-      .get(`http://localhost:5555/activities/recommend-books/${e}/5`)
+      .get(`http://localhost:5555/activities/recommend-books/${e}/4`)
       .then(res => {
         setRecommendBook(res.data)
-        console.log(res.data)
       })
   }
   //書評回覆 用ENTER 發送&修改
@@ -431,7 +428,10 @@ const List = () => {
         <div className="reviews_recommendText">推薦書籍</div>
         <div className="reviews_recommendBook">
           {recommendBook.map((book, index) => (
-            <Link to={'/book_reviews/' + book.sid}>
+            <Link
+              className="reviews_recommendBook_Link"
+              to={'/book_reviews/' + book.sid}
+            >
               <div key={index}>
                 <img
                   className="reviews_recommendBook_img"
@@ -444,7 +444,9 @@ const List = () => {
         </div>
 
         <BookColumnScore>
-          <button className="reviews_BookBuy">立即購買</button>
+          <Link to={`/books/information/${urlParams}`}>
+            <button className="reviews_BookBuy">立即購買</button>
+          </Link>
           <BookRow>
             <BookScoreAndLine List={List} />
           </BookRow>
@@ -454,14 +456,6 @@ const List = () => {
             </button>
           </form>
         </BookColumnScore>
-
-        {/* <InsertReply
-          user={user}
-          login={login}
-          review={review}
-          submitHandler={submitHandler}
-          changeHandler={changeHandler}
-        /> */}
         <h3 className="reviews_push">發表評論</h3>
         <Review>
           <BookColumnMember>

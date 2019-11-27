@@ -8,10 +8,8 @@ import { LinkContainer } from 'react-router-bootstrap'
 import axios from 'axios'
 import { Pagination } from 'react-bootstrap'
 import BookScore from './BookScore/BookScore'
-import BookLine from './BookLine/BookLine'
-import Category from './Category'
+import BookSearch from './components/Search'
 import './Reviews.css'
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import 'react-tabs/style/react-tabs.css'
 
 function Bookinfo() {
@@ -56,9 +54,7 @@ function Bookinfo() {
   //---------------------------------------------------------------------------
   const CategoryBar = styled.div`
     display: flex;
-    flex-wrap: wrap;
-    margin: 0 auto;
-    width: 1000px;
+    width: 700px;
   `
 
   //右上排列方式欄位
@@ -128,6 +124,7 @@ function Bookinfo() {
       .then(res => {
         setBookInformation(res.data.rows)
         getPage(Math.ceil(res.data.total / 10))
+        console.log(res.data)
       })
       .catch(error => {
         console.log(error)
@@ -137,9 +134,7 @@ function Bookinfo() {
   for (let i = 1; i <= page; i++) {
     pageNum.push(
       <LinkContainer key={i} to={'reviews?' + c + 'p=' + i}>
-        <Pagination.Item className="reviews_paginationNum" value={i}>
-          {i}
-        </Pagination.Item>
+        <Pagination.Item value={i}>{i}</Pagination.Item>
       </LinkContainer>
     )
   }
@@ -162,10 +157,14 @@ function Bookinfo() {
       setSearch({ getData: false })
     }
   }
+  // const focusBtn = e => {
+  //   let btn = document.querySelector('.reviews_btn')
+  //   console.log(e.target.value)
+  // }
 
   return (
     <>
-      {/* <CategoryBar>
+      {/* <CategoryBar c>
         {categorys
           .filter((key, index) => index < 20)
           .map(data => (
@@ -176,21 +175,48 @@ function Bookinfo() {
             </Link>
           ))}
       </CategoryBar> */}
-      <CategoryBar>
-        {categorys
-          .filter((key, index) => index < 20)
-          .map(data => (
-            <Tabs>
-              <TabList>
-                <Link key={data.sid} to={'reviews?c=' + data.sid + '&p=1'}>
-                  <Tab> {data.categoriesName}</Tab>
-                </Link>
-              </TabList>
-            </Tabs>
-          ))}
-      </CategoryBar>
 
-      <div>
+      <section>
+        <CategoryBar className="reviews_cate1">
+          {categorys
+            .filter((key, index) => index < 7)
+            .map(data => (
+              <Link key={data.sid} to={'reviews?c=' + data.sid + '&p=1'}>
+                <button value={data.sid} key={data.sid} className="reviews_btn">
+                  {data.categoriesName}
+                </button>
+              </Link>
+            ))}
+        </CategoryBar>
+        <CategoryBar className="reviews_cate2">
+          {categorys
+            .filter((key, index) => index > 6 && index < 14)
+            .map(data => (
+              <Link key={data.sid} to={'reviews?c=' + data.sid + '&p=1'}>
+                <button value={data.sid} key={data.sid} className="reviews_btn">
+                  {data.categoriesName}
+                </button>
+              </Link>
+            ))}
+        </CategoryBar>
+        <CategoryBar className="reviews_cate3">
+          {categorys
+            .filter((key, index) => index > 13)
+            .map(data => (
+              <Link key={data.sid} to={'reviews?c=' + data.sid + '&p=1'}>
+                <button value={data.sid} key={data.sid} className="reviews_btn">
+                  {data.categoriesName}
+                </button>
+              </Link>
+            ))}
+        </CategoryBar>
+      </section>
+      {/* <BookSearch
+        data={search}
+        changeHandler={changeHandler}
+        s_result={s_result}
+      /> */}
+      {/* <div>
         <input
           value={search.text}
           onChange={changeHandler}
@@ -198,7 +224,6 @@ function Bookinfo() {
           type="search"
           placeholder="搜尋書名"
         />
-
         {search.getData ? (
           <ul className="reviews_search_result">
             {s_result.map(res => (
@@ -215,7 +240,7 @@ function Bookinfo() {
         ) : (
           ''
         )}
-      </div>
+      </div> */}
 
       <OptionBar>
         <select

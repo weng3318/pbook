@@ -6,9 +6,9 @@ const bluebird = require("bluebird");
 const router = express.Router();
 const db = mysql.createConnection({
   // host: '192.168.27.186',
-  host: "localhost",
-  user: "opcp",
-  password: "opcp2428",
+  host: "192.168.27.186",
+  user: "root",
+  password: "root",
   database: "pbook"
 });
 db.connect();
@@ -29,7 +29,6 @@ router.get("/book_reviews/:sid?", (req, res) => {
     }
   });
 });
-
 
 //書本評分資料
 router.get("/book_ratings", (req, res) => {
@@ -112,8 +111,6 @@ router.put("/editReview/data", (req, res) => {
   });
 });
 
-
-
 //加入書櫃
 router.post("/bookcase", (req, res) => {
   let data = [];
@@ -123,8 +120,8 @@ router.post("/bookcase", (req, res) => {
   };
   //INSERT INTO br_bookcase(number, isbn, bookName,blog,created_time)VALUES('MR00166', '9789864777112','','', now())
   data.push(bookcase);
-  const sql = `INSERT INTO br_bookcase(number,isbn,bookName,blog,created_time) 
-            VALUES('${data[0].number}','${data[0].isbn}', '', '', now()) `;
+  const sql = `INSERT INTO br_bookcase(number,isbn,title,bookName,blog,created_time) 
+            VALUES('${data[0].number}','${data[0].isbn}','', '', '', now()) `;
   db.query(sql, (error, results) => {
     if (error) {
       return res.send(error);
