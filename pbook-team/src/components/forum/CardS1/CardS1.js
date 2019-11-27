@@ -1,7 +1,7 @@
 import React from 'react'
 import './CardS1.scss'
 import UserDetails from '../UserDetails/UserDetails'
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import { faCat } from '@fortawesome/free-solid-svg-icons'
 
@@ -31,9 +31,11 @@ class CardS1 extends React.PureComponent {
     if (!this.props.data || this.props.data.length === 0) {
       return (
         <>
-          <figure className="card-figure">
-            <img className="card-s1-img" alt="" src={require('./2.jpg')} />
-          </figure>
+          <div className="cards-frame">
+            <figure className="card-figure">
+              <img className="card-s1-img" alt="" src={require('./2.jpg')} />
+            </figure>
+          </div>
         </>
       )
     } else {

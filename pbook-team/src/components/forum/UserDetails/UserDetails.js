@@ -5,11 +5,6 @@ import { connect } from 'react-redux'
 //material UI
 import StarsIcon from '@material-ui/icons/Stars'
 import Button from '@material-ui/core/Button'
-import {
-  userHover,
-  categoryHover,
-  fmUserFetch,
-} from '../../../pages/Forum/fmAction'
 
 //props : memberId={fm_memberId} read={true}//閱讀人數是否顯示 article={article} //文章資料
 
@@ -21,6 +16,8 @@ class UserDetails extends React.Component {
       user: false,
       userHover: false,
       categoryHover: false,
+      data: false,
+      follow: 0,
       level: [
         '品書會員',
         '品書學徒',
@@ -34,11 +31,23 @@ class UserDetails extends React.Component {
 
   componentDidMount() {
     // 用props傳入的userID在fetch一次
-    if (!this.props.update) {
-      this.props.dispatch(
-        fmUserFetch(this.props.memberId, this.props.article.fm_category)
-      )
-    }
+
+    // this.props.dispatch(
+    //   fmUserFetch(this.props.memberId, this.props.article.fm_category)
+    // )
+    fetch(
+      `http://localhost:5555/forum/writer/${this.props.memberId}/${this.props.article.fm_category}`
+    )
+      .then(response => {
+        return response.json()
+      })
+      .then(result => {
+        this.setState({
+          data: result.writer,
+          update: true,
+          follow: result.follow,
+        })
+      })
   }
 
   handleCategoryClick = event => {
@@ -62,12 +71,11 @@ class UserDetails extends React.Component {
     })
   }
   render() {
-    if (!this.props.update) {
+    if (!this.state.update) {
       return <span>Loading</span>
     } else {
       let article = this.props.article
-      let user = this.props.data
-      let userImage = user.MR_pic
+      let user = this.state.data
 
       return (
         <>
@@ -126,7 +134,7 @@ class UserDetails extends React.Component {
                     <hr></hr>
                     <div>
                       <span className="followText">
-                        <span className="mr-3">{this.props.follow || 5}</span>
+                        <span className="mr-3">{this.state.follow || 5}</span>
                         <span className="mr-3">人追蹤中</span>
                         <Button variant="outlined" color="secondary">
                           追蹤作者
@@ -191,9 +199,9 @@ class UserDetails extends React.Component {
 
 // 綁定props.todos <=> store.todos
 const mapStateToProps = store => ({
-  update: store.UserDetails.update,
-  data: store.UserDetails.data,
-  follow: store.UserDetails.follow,
+  // update: store.UserDetails.update,
+  // data: store.UserDetails.data,
+  // follow: store.UserDetails.follow,
 })
 
 // redux(state)綁定到此元件的props、dispatch方法自動綁定到此元件的props

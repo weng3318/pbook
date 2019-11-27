@@ -7,8 +7,8 @@ import HotArticle from '../../components/forum/HotArticle/HotArticle'
 import './scss/Forum.scss'
 
 class Forum extends React.Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
       update: false,
       items: 20,
@@ -19,7 +19,7 @@ class Forum extends React.Component {
     }
   }
   componentDidMount() {
-    fetch('http://localhost:5555/forum/homepage', {
+    fetch('http://localhost:5555/forum/homepage/true', {
       method: 'GET',
     })
       .then(response => {
@@ -40,6 +40,7 @@ class Forum extends React.Component {
               articleList: result2,
               update: true,
             })
+            document.documentElement.scrollTop = 0
           })
       })
       .catch(error => {
@@ -54,7 +55,7 @@ class Forum extends React.Component {
     let scrollTop = document.documentElement.scrollTop
     let scrollHeight = document.documentElement.scrollHeight
     let reLoadValue = scrollHeight - contentTop - 100
-    let stopValue = scrollHeight - contentTop - 50
+    let stopValue = scrollHeight - contentTop + contentTop
     if (!this.state.outOfList) {
       if (scrollTop > reLoadValue) {
         let newNumber = this.state.number + 5
@@ -71,12 +72,15 @@ class Forum extends React.Component {
               number: newNumber,
             })
             document.documentElement.scrollTop = reLoadValue
+            if (
+              scrollTop + contentTop + 40 > stopValue ||
+              this.state.number > 100
+            ) {
+              console.log('list end')
+              window.removeEventListener('scroll', () => {})
+              this.setState({ outOfList: true })
+            }
           })
-      }
-      if (scrollTop === stopValue) {
-        console.log('list end')
-        window.removeEventListener('scroll', () => {})
-        this.setState({ outOfList: true })
       }
     }
   }
@@ -95,7 +99,10 @@ class Forum extends React.Component {
               <CardS1 data={this.state.data[2]} />
             </div>
             <div style={{ color: 'transparent' }}>更多精選</div>
-            <Link to="" className="more-featured position-a">
+            <Link
+              to="/forum/search/featured"
+              className="more-featured position-a"
+            >
               更多精選 +
             </Link>
           </div>

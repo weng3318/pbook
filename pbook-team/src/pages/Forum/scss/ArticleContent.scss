@@ -96,7 +96,6 @@
       min-width: 100px;
       margin-right: 16px;
       vertical-align: middle;
-      
     }
     //writer-details
     .massage-frame {
@@ -133,6 +132,9 @@
         font-size: 1.4rem;
         align-items: center;
         cursor: pointer;
+        &.active {
+          font-size: 1.6rem;
+        }
 
         .thumb-frame {
           margin: 0 16px 0 0;

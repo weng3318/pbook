@@ -8,7 +8,7 @@ import ArticleContent from './ArticleContent'
 import TopicPage from './TopicPage'
 import './scss/ForumNavBar.scss'
 import SerachList from './SearchList'
-
+import Input from './Input'
 // 2 3 1 7 10 11 21 13 4
 // vb_categories {
 // 1  文學小說
@@ -40,7 +40,7 @@ const ForumNavBar = props => {
       return false
     }
   }, [])
-  
+
   const handleSearch = () => {
     let keyWord = document.querySelector('#serachIuput').value
     if (keyWord !== '') {
@@ -156,6 +156,11 @@ const ForumNavBar = props => {
             exact
             path="/forum/search/:keyWord"
             render={props => <SerachList />}
+          ></Route>
+          <Route
+            exact
+            path="/forum/input"
+            render={props => <Input />}
           ></Route>
         </Switch>
       </div>

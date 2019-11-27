@@ -158,6 +158,7 @@ const ArticleContent = props => {
         return res.json()
       })
       .then(result => {
+        document.querySelector('.thumb').classList.add('active')
         setLike(like + 1)
       })
   }

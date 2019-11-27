@@ -63,7 +63,8 @@ function UserDetails(state = detailInitState, action) {
     // case 'FM_USER_REQUEST':
     //   return { ...state, data: action.data }
     case 'FM_USER_RECEIVE':
-      return {
+
+    return {
         ...state,
         data: action.data.writer,
         follow: action.data.follow,

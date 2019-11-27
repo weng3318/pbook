@@ -17,14 +17,16 @@ bluebird.promisifyAll(db);
 
 //精選文章 featured
 router
-  .route("/homepage/")
+  .route("/homepage/:limit?")
   .all((req, res, next) => {
     next();
   })
   .get((req, res) => {
+    let limit = req.params.limit ? "ORDER BY RAND() LIMIT 5" : "";
     let output = {};
     let sql =
-      "SELECT * FROM `fm_article` article JOIN `vb_categories` vb ON article.`fm_category` = vb.`sid` JOIN `mr_information` mr ON article.`fm_memberId`=mr.`MR_number` WHERE article.`fm_featured`=1 ORDER BY RAND() LIMIT 5";
+      "SELECT * FROM `fm_article` article JOIN `vb_categories` vb ON article.`fm_category` = vb.`sid` JOIN `mr_information` mr ON article.`fm_memberId`=mr.`MR_number` WHERE article.`fm_featured`=1  " +
+      limit;
     db.query(sql, (error, results, fields) => {
       if (error) throw error;
       output.featured = results;
@@ -53,7 +55,7 @@ router
 
 //userDetails 讀取作者資料 writer
 router
-  .route("/homepage/:memberId/:category")
+  .route("/writer/:memberId/:category")
   .all((req, res, next) => {
     next();
   })
@@ -62,16 +64,17 @@ router
     let category = req.params.category;
     let output = {};
     let sql = `SELECT * FROM mr_information JOIN vb_categories ON vb_categories.sid='${category}' WHERE MR_number= '${memberId}'`;
+    console.log(sql);
     // res.json(sql);
     db.queryAsync(sql)
       .then(results => {
-        output.writer = results[0]; 
+        output.writer = results[0];
         sql = `SELECT COUNT(1) FROM fm_favorite WHERE fm_lovewriter='${memberId}'`;
         return db.queryAsync(sql);
       })
       .then(results => {
-        console.log(results[0]['COUNT(1)']);
-        output.follow = results[0]['COUNT(1)'];
+        console.log(results[0]["COUNT(1)"]);
+        output.follow = results[0]["COUNT(1)"];
         res.json(output);
       });
   });
@@ -325,6 +328,33 @@ router
     });
   });
 
+//manage article 管理已發表文章
+router
+  .route("/manageArticle/posted/:memberId")
+  .all((req, res, next) => {
+    next();
+  })
+  .get((req, res) => {
+    let memberId = req.params.memberId;
+    let sql = `SELECT * FROM fm_article  JOIN vb_categories vb ON vb.sid= fm_article.fm_category WHERE fm_memberId='${memberId}'`;
+    db.queryAsync(sql).then(results => {
+      res.json(results);
+    });
+  });
+//delete 刪除文章
+router
+  .route("/manageArticle/delete/:articleId")
+  .all((req, res, next) => {
+    next();
+  })
+  .get((req, res) => {
+    let articleId = req.params.articleId;
+    let sql = `DELETE FROM fm_article WHERE fm_articleId ='${articleId}'`;
+    db.queryAsync(sql).then(results => {
+      res.json(results);
+    });
+  });
+
 //發表新文章
 router
   .route("/postNew")
@@ -415,8 +445,8 @@ router
         articleId + ".json",
         memberId,
         1,
-        1,
-        1,
+        Math.floor(Math.random() * 60 + 1),
+        Math.floor(Math.random() * 1380 + 1),
         time
       ],
       (error, results, fields) => {
@@ -427,6 +457,33 @@ router
           resData.message = false;
         }
         res.json(resData);
+      }
+    );
+  });
+
+//搜尋serach
+router
+  .route("/aaa/:articleId")
+  .all((req, res, next) => {
+    next();
+  })
+  .post(upload.array(), (req, res) => {
+    let articleId = req.params.articleId;
+    let aa = Math.floor(Math.random() * 20 + 1);
+    let fm_responseId = "";
+    if (aa <= 9) {
+      fm_responseId = "MR0000" + aa;
+    } else if (aa >= 10 && aa <= 20) {
+      fm_responseId = "MR000" + aa;
+    }
+    let fm_responseContent = req.body.text;
+    let like = Math.floor(Math.random() * 20) + 1;
+    let sql = `INSERT INTO fm_articleresponse(sid, fm_articleId, fm_responseId, fm_responseContent, fm_resLike, responseTime) VALUES (NULL,?,?,?,?,NOW())`;
+    db.query(
+      sql,
+      [articleId, fm_responseId, fm_responseContent, like],
+      (error, result, field) => {
+        res.json(result);
       }
     );
   });

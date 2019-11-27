@@ -2,7 +2,7 @@ import React from 'react'
 import './Listitem.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBookmark, faEllipsisH } from '@fortawesome/free-solid-svg-icons'
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 //material UI
 import StarsIcon from '@material-ui/icons/Stars'

@@ -41,7 +41,7 @@ export const fmUserFetch = (memberId, fm_category) => async dispatch => {
   dispatch(fmUserRequest())
   try {
     let response = await fetch(
-      'http://localhost:5555/forum/homepage/' + memberId + '/' + fm_category,
+      'http://localhost:5555/forum/writer/' + memberId + '/' + fm_category,
       {
         method: 'GET',
         headers: new Headers({
