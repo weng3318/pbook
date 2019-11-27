@@ -200,7 +200,66 @@ class AC {
         if (!memberId) memberId = req.sessionID
         let sql = 'SELECT * FROM `ac_sign` WHERE `memberId`="' + memberId + '"'
         let signedAc = await sqlQuery(sql)
+
+        sql = 'SELECT `sid`,`title` FROM `ac_pbook2` WHERE 0'
+        for (let i = 0; i < signedAc.length; i++) {
+            sql += ' OR `sid`=' + signedAc[i].acId
+        }
+        let acTitleArray = await sqlQuery(sql)
+        signedAc.forEach(v => {
+            v.title = acTitleArray.find(v2 => +v2.sid === +v.acId).title
+        })
+
         return signedAc
+    }
+    // 更改線下活動聯絡資料
+    static async updateSignedActivities(inputData) {
+        let result = {
+            type: 1,
+            description: '更改成功'
+        }
+        // 檢查是否曾經報名
+        let sql = 'SELECT COUNT(1) FROM `ac_sign` WHERE '
+        sql += '`sid`=' + inputData.sid + ' AND '
+        sql += '`acId`="' + inputData.acId + '" AND '
+        sql += '`memberId`="' + inputData.memberId + '"'
+        let isSign = await sqlQuery(sql)
+        if (!isSign[0]['COUNT(1)']) {
+            result = {
+                type: 0,
+                description: '找不到活動'
+            }
+            return result
+        }
+        sql = 'UPDATE `ac_sign` SET '
+        sql += '`name`="' + inputData.name + '", '
+        sql += '`phone`="' + inputData.phone + '", '
+        sql += '`email`="' + inputData.email + '"'
+        sql += 'WHERE '
+        sql += '`sid`=' + inputData.sid + ' AND '
+        sql += '`acId`="' + inputData.acId + '" AND '
+        sql += '`memberId`="' + inputData.memberId + '"'
+        await sqlQuery(sql)
+        return result
+    }
+    // 取消線下活動報名
+    static async deleteSignedActivities(inputData) {
+        let result = {
+            type: 0,
+            description: '找不到活動'
+        }
+        let sql = 'DELETE FROM `ac_sign` WHERE 1 AND'
+        sql += '`sid`=' + inputData.sid + ' AND '
+        sql += '`acId`="' + inputData.acId + '" AND '
+        sql += '`memberId`="' + inputData.memberId + '"'
+        let isDelete = await sqlQuery(sql)
+        if (isDelete.affectedRows) {
+            result = {
+                type: 1,
+                description: '成功取消',
+            }
+        }
+        return result
     }
 
 }

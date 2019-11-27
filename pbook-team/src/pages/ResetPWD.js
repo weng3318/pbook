@@ -48,6 +48,7 @@ class ResetPWD extends React.Component{
             return response.json()
           })
           .then(number=>{
+            console.log(11, number);
             
             let MR_number = number.number.MR_number
             this.setState({number: MR_number})
@@ -115,14 +116,26 @@ class ResetPWD extends React.Component{
     }
 
 
-    //驗證碼
-    captcha1(){
-        let captcha1 = new CaptchaMini();
+      //驗證碼
+      captcha1() {
+        let captcha1 = new CaptchaMini({
+          lineWidth: 1,   //线条宽度
+          lineNum: 0,       //线条数量
+          dotR: 2,          //点的半径
+          dotNum: 0,       //点的数量
+          preGroundColor: [10, 80],    //前景色区间
+          backGroundColor: [150, 250], //背景色区间
+          fontSize: 28,           //字体大小
+          fontFamily: ['Georgia', '微软雅黑', 'Helvetica', 'Arial'],  //字体类型
+          fontStyle: 'fill',      //字体绘制方法，有fill和stroke
+          content: 'abcdefghijklmnopqrstuvwxyz123456789',  //验证码内容
+          length: 4    //验证码长度
+      })
         captcha1.draw(document.querySelector('#captcha1'), r => {
-            // console.log(r, '验证码1');
-            this.setState({captcha1: r})
-        });
-    }
+          // console.log(r, '验证码1');
+          this.setState({ captcha1: r })
+        })
+      }
 
     changePassword(){
         // console.log("checkPassword");

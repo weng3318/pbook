@@ -376,8 +376,8 @@ router.get("/addToCart", (req, res) => {
 router.post("/addToCart", (req, res) => {
   let bookSid = req.body.sid;
   let sql = "SELECT * FROM `vb_books` WHERE `sid`= " + bookSid;
-  if (!req.session.cart) req.session.cart = [];
-  if (!req.session.totalCart) req.session.totalCart = 0;
+  // if (!req.session.cart) req.session.cart = [];
+  // if (!req.session.totalCart) req.session.totalCart = 0;
   db.queryAsync(sql)
     .then(results => {
       req.session.cart.push({
@@ -409,6 +409,70 @@ router.post("/delCart", (req, res) => {
       message: "刪除失敗"
     });
   }
+});
+
+router.get("/order/:member?", (req, res) => {
+  const output = {};
+  let member = req.params.member || "";
+  let where = " WHERE 1";
+  if (member) {
+    member = member.split("'").join("\\'"); // 避免 SQL injection
+    where += " AND `od_list`.`memberID` = '" + member + "'";
+    output.memberID = member; //可以在網址看keyword用
+  }
+  let sql = "SELECT COUNT(1) `total` FROM `od_list`" + where;
+  // console.log(sql);
+  db.queryAsync(sql)
+    .then(results => {
+      output.totalBooks = results[0]["total"]; //會員購買的書本數
+      return db.queryAsync("SELECT * FROM `od_list` " + where);
+    })
+    .then(results => {
+      output.rows = results;
+      res.json(output);
+      // return db.queryAsync(
+      //   "SELECT `od_list`.*,`od_detail`.`bookName`,`od_detail`.`bookAmount`,`od_detail`.`bookPrice` FROM `od_list` LEFT JOIN `od_detail` ON `od_list`.`memberID` = `od_detail`.`member`" +
+      //     where
+      // );
+    })
+    .catch(error => {
+      console.log(error);
+    });
+});
+
+router.post("/addOrder", (req, res) => {
+  let orderID = req.body.orderID;
+  let memberID = req.body.memberID;
+  let bookName = req.body.bookName;
+  let singlePrice = req.body.singlePrice;
+  let bookAmount = req.body.bookAmount;
+  let orderPrice = req.body.orderPrice;
+  let created_time = req.body.created_time;
+  let sql =
+    "INSERT INTO `od_list`(`orderID`, `memberID`, `bookName`, `singlePrice`, `bookAmount`, `orderPrice`, `created_time`) VALUES ('" +
+    orderID +
+    "','" +
+    memberID +
+    "','" +
+    bookName +
+    "','" +
+    singlePrice +
+    "','" +
+    bookAmount +
+    "','" +
+    orderPrice +
+    "','" +
+    created_time +
+    "')";
+  db.queryAsync(sql)
+    .then(results => {
+      res.json({
+        message: "新增訂單成功"
+      });
+    })
+    .catch(error => {
+      console.log(error);
+    });
 });
 
 module.exports = router;

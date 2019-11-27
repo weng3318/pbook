@@ -132,7 +132,7 @@ a:hover{
     min-width: 70px;
     font-size: 1rem;
     color: #2d3a3a;
-    margin: 10px;
+    margin: 10px 0 10px 5px;
 }
 .brReadBooks:hover{
     color:#ffc408;
@@ -140,7 +140,7 @@ a:hover{
 }
 /* 書評家簡介全區域 (縮放限制) */
 .brInfoBox{
-    min-width: 265px;
+    /* min-width: 260px; */
     max-width: 600px;
     min-height: 377px;
 }
