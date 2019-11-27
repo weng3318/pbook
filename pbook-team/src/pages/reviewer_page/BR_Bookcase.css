@@ -243,9 +243,9 @@
 /* 書籍簡介，狀態預設隱藏 (書名、作者) */
 .bookInfoRWD{
     display: none;
-    position: absolute;
-    top: 0;
-    left: 200px;
+    padding: 10px;
+    margin: 0 30px;
+    border-bottom:1px solid #979d9d;
 }
 @media (max-width: 786px) {
     .ReviewerListAllBox_Bookcase{
@@ -254,7 +254,7 @@
     }
     /* 頭書，單本書區域 (圖片區) */
     .brAvatarAllBox_Bookcase{
-        margin: 20px 20px 40px 20px;
+        margin: 20px auto 10px auto;
         border-right:3px solid transparent;
         border-bottom:3px solid transparent;
         height: 140px;
@@ -262,6 +262,7 @@
     /* 書櫃全區域，高度改變使字數呈現 (RWD) */
     .brInfoBox_Bookcase {
         min-height: 150px;
+        overflow: unset;
     }
     /* 書櫃簡介，(文字、限制行數) */
     .brInfoText_Bookcase{
@@ -287,9 +288,5 @@
     }
     .bookInfoRWD{
         display: block;
-    }
-    /* 特殊使用，因應<BR_Blog.css>的編輯按鈕，故此調整 (RWD) */
-    .brInfoBox_Bookcase{
-        overflow: unset;
     }
 }

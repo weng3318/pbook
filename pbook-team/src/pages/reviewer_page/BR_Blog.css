@@ -58,7 +58,7 @@
 /* 編輯按鈕，按鈕變形，含外框線 (控制位置:Z) */
 .Animate_Edit_Box,.Animate_Close_Box{
     position: absolute;
-    top: 20px;
+    top: 15px;
     right: 0;
     width: 50px;
     border: 2px 0 2px 2px solid transparent;
@@ -179,10 +179,10 @@
     }
     /* 編輯按鈕，RWD (位置調整) */
     .Animate_Edit_Box{
-        top: -100px;
+        top: -240px;
     }
     /* 關閉文章，RWD (位置調整) */
     .Animate_Close_Box{
-        top: 30px;
+        top: 10px;
     }
 }

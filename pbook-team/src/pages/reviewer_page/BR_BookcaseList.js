@@ -24,6 +24,7 @@ class BR_BookcaseList extends React.Component {
         const { number } = this.props;
         const { blog } = this.props;
         const { vb_book_sid } = this.props;
+        const { br_name } = this.props;
 
     (function(d, s, id) {
         var js, fjs = d.getElementsByTagName(s)[0];
@@ -37,6 +38,9 @@ class BR_BookcaseList extends React.Component {
     let Hash = `${vb_book_sid}`
         return (
             <>
+        <Link to={`/reviewer/reviewerBooks/reviewerBlog/ReviewerBlogEdit/${sid}`}>
+               <h1>編輯文章</h1>
+        </Link>
         {/* <ScrollToTop> */}
         <section className="ReviewerListAllBox_Bookcase">
             {/* 書籍圖片 */}
@@ -48,13 +52,10 @@ class BR_BookcaseList extends React.Component {
             {/* <img className="brBookInfoImg_Bookcase" src={`http://localhost/books/src/venderBooks_Management/vb_images/${this.props.pic}`} alt=""/> */}
             </div>
 
-        <div className="bookInfoRWD">
-                <div className="bookNameBox_Bookcase">
-                    <div className="bookName_Bookcase">書名：</div>
-                    <div className="bookNameText_Bookcase">{this.props.name}</div>
-                </div>
+             <div className="bookInfoRWD">
+                <div className="bookName_Bookcase">書名：{this.props.name}</div>
                 <div className="bookName_Bookcase">作者：{this.props.author}</div>
-        </div>
+            </div>
 
           <div className="brInfoBox_Bookcase borderLineUpDown">
           {/* <h4 className="h4_br">書籍簡介</h4> */}
@@ -107,9 +108,9 @@ class BR_BookcaseList extends React.Component {
             {/* 評分組件區塊 */}
     {/* <div className="brStarBox_Bookcase borderLine"></div> */}
     </section>
-    {/* 切換文章 與 編輯 */}                   {/* onHandleOpen 爺爺打孫女 brBlog brBlogList 9母湯 */}
+    {/* 切換文章 與 編輯 */}                   {/* onHandleOpen 爺爺打孫女 brBlog brBlogList */}
     {opened === 'blog' && <ReviewerBlog sid={sid} opened={opened} onHandleOpen={this.handleOpened}/>}
-    {opened === 'edit' && <ReviewerBlogEdit sid={sid} name={name} number={number} opened={opened} onHandleOpen={this.handleOpened} blog={blog}/>}
+    {opened === 'edit' && <ReviewerBlogEdit sid={sid} name={name} number={number} opened={opened} onHandleOpen={this.handleOpened} blog={blog} br_name={br_name}/>}
 
         {/* <div style={{height:'30px'}}></div> */}
         {/* </ScrollToTop> */}
