@@ -1,26 +1,67 @@
-import React from 'react'
+import React, { useState } from 'react'
+import axios from 'axios'
+import { faSearch } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export function Search(props) {
-  const { data, changeHandler, s_result } = props
+  const [s_result, outputResult] = useState([])
+  const [search, setSearch] = useState({
+    text: '',
+    getData: false,
+  })
+  const { search_result } = props
+  
+  const changeHandler = e => {
+    e.preventDefault()
+    setSearch({
+      [e.target.name]: e.target.value,
+    })
+    let search = e.target.value
+    if (search !== '') {
+      axios
+        .get(`http://localhost:5555/reviews/search_book/?${search}`)
+        .then(res => {
+          outputResult(res.data.data)
+          setSearch({ getData: true })
+          console.log(res.data)
+        })
+    } else {
+      setSearch({ getData: false })
+    }
+  }
+
+  const setName = e => {
+    let x = e.target.value
+    for (let i = 0; i < s_result.length; i++) {
+      if (s_result[i].sid == x) {
+        let data = s_result[i].name
+        setSearch({ text: data })
+      }
+    }
+  }
+
+  const keypress = (e)=>{
+    if (e.which === 13){
+      search_result(e.target.value)
+    }
+  }
+
   return (
     <div>
       <input
-        value={data.text}
+        value={search.text}
+        onKeyPress={keypress}
         onChange={changeHandler}
         className="reviews_search"
         type="search"
-        placeholder="搜尋書名"
+        placeholder="搜尋書名或作者"
       />
-      {data.getData ? (
+      <FontAwesomeIcon icon={faSearch}/>
+      {search.getData ? (
         <ul className="reviews_search_result">
-          {s_result.map(res => (
-            <li>
-              <a
-                target=" _blank "
-                href={`http://localhost:3000/book_reviews/${res.sid}`}
-              >
-                {res.name}
-              </a>
+          {s_result.map((res, index) => (
+            <li key={index} value={res.sid} onClick={setName}>
+              {res.name}
             </li>
           ))}
         </ul>

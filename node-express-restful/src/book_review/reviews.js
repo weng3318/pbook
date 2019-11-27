@@ -5,9 +5,9 @@ const bluebird = require("bluebird");
 const router = express.Router();
 const db = mysql.createConnection({
   // host: '192.168.27.186',
-  host: "192.168.27.186",
-  user: "root",
-  password: "root",
+  host: "localhost",
+  user: "opcp",
+  password: "opcp2428",
   database: "pbook"
 });
 db.connect();
@@ -28,7 +28,8 @@ router.post("/categoryBar", (req, res) => {
 });
 //書本內容
 router.get(`/?`, (req, res) => {
-  let c, a, page;
+  let c, a, page,s;
+  console.log(urlpart.query.s)
   const urlpart = url.parse(req.url, true);
   if (urlpart.query.c !== undefined) {
     c = "=" + urlpart.query.c;
