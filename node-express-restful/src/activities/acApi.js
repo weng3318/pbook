@@ -78,6 +78,12 @@ router.get('/ac-sign/:memberNum', async (req, res, next) => {
 router.post('/ac-sign', async (req, res, next) => {
     res.json(await AC.signUpActivity(req))
 })
+router.put('/ac-sign', async (req, res, next) => {
+    res.json(await AC.updateSignedActivities(req.body))
+})
+router.delete('/ac-sign', async (req, res, next) => {
+    res.json(await AC.deleteSignedActivities(req.body))
+})
 
 
 // router.post('/add', (req, res, next) => {

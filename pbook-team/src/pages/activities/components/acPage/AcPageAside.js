@@ -55,6 +55,7 @@ const AcPageAside = props => {
                     show={show}
                     handleClose={handleClose}
                     match={props.match}
+                    title={props.title}
                   />
                 </div>
               </>

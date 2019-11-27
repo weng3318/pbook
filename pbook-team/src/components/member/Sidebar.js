@@ -9,13 +9,13 @@ import BooksFavorite from '../../pages/member/BooksFavorite'
 import ViewMemberBooks from '../../pages/member/ViewMemberBooks'
 import QueryOrder from '../../pages/member/QueryOrder'
 import FavoriteReviwer from '../../pages/member/FavoriteReviwer'
+import AcRU from '../../pages/activities/components/acRU/AcRU'
 // import ResetPWD from '../../pages/ResetPWD'
-import {withRouter} from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 
 import '../../pages/member/lukeStyle.scss'
 
-const Sidebar = (props) => {
-
+const Sidebar = props => {
   return (
     <>
      { (JSON.parse(localStorage.getItem('user')).MR_personLevel !== 6)

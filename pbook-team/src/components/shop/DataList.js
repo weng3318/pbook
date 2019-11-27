@@ -62,7 +62,11 @@ const DataList = props => {
             <div className="d-flex justify-content-between my-5" key={data.sid}>
               <BookInfoLeft data={data}></BookInfoLeft>
               {/*書籍資訊左半*/}
-              <BookInfoRight data={data}></BookInfoRight>
+              <BookInfoRight
+                data={data}
+                cartPayload={props.cartPayload}
+                history={props.history}
+              ></BookInfoRight>
               {/*書籍資訊右半*/}
             </div>
           ))}

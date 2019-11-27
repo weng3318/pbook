@@ -1,24 +1,35 @@
 import React from 'react'
 import { Modal, Button } from 'react-bootstrap'
 import swal from 'sweetalert'
-import './acSign.scss'
+import './acUpdateForm.scss'
+import { connect } from 'react-redux'
 
-function AcSign(props) {
-  let user = localStorage.user ? JSON.parse(localStorage.user) : false
+function AcUpdateForm(props) {
   const [inputData, setInputData] = React.useState({
-    acId: props.match.params.acId,
-    memberNum: user ? user.MR_number : 'not login',
-    name: user ? user.MR_name : '',
+    sid: -1,
+    acId: -1,
+    memberId: -1,
+    name: '',
     phone: '',
     email: '',
   })
+  React.useEffect(() => {
+    setInputData({
+      sid: props.acSignItem ? props.acSignItem.sid : -1,
+      acId: props.acSignItem ? props.acSignItem.acId : -1,
+      memberId: props.acSignItem ? props.acSignItem.memberId : '',
+      name: props.acSignItem ? props.acSignItem.name : '',
+      phone: props.acSignItem ? props.acSignItem.phone : '',
+      email: props.acSignItem ? props.acSignItem.email : '',
+    })
+  }, [props.acId, props.acSignItem])
   const [result, setResult] = React.useState({
     type: 1,
     description: '報名成功',
   })
   function handleSubmit() {
     fetch('http://localhost:5555/activities/ac-sign', {
-      method: 'POST',
+      method: 'PUT',
       body: JSON.stringify(inputData),
       headers: {
         'content-type': 'application/json',
@@ -26,12 +37,14 @@ function AcSign(props) {
     })
       .then(res => res.json())
       .then(response => {
-        props.handleClose()
         setResult(response)
+        props.handleClose(response.type === 1)
         swal(
-          +result.type ? '報名成功' : '報名失敗',
+          +result.type ? '更新成功' : '更新失敗',
           +result.type
-            ? '活動 ' + props.title + ' 報名成功'
+            ? '活動\n' +
+                (props.acSignItem && props.acSignItem.title) +
+                ' \n聯絡資料更新成功'
             : result.description,
           +result.type ? 'success' : 'error'
         )
@@ -45,7 +58,11 @@ function AcSign(props) {
     <>
       <Modal className="acSign" show={props.show} onHide={props.handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>活動報名</Modal.Title>
+          <Modal.Title>
+            編輯聯絡資訊
+            <br />
+            {props.acSignItem && props.acSignItem.title}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form>
@@ -108,4 +125,7 @@ function AcSign(props) {
     </>
   )
 }
-export default AcSign
+const mapStateToProps = state => ({
+  acTable: state.acTable,
+})
+export default connect(mapStateToProps)(AcUpdateForm)

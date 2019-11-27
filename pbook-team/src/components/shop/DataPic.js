@@ -5,8 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGripHorizontal, faList } from '@fortawesome/free-solid-svg-icons'
 import Page1 from './Page1'
 import Page2 from './Page2'
-import './Shop.scss'
 import BookInfoPic from './BookInfoPic'
+import './Shop.scss'
 
 const DataPic = props => {
   function setMode() {
@@ -59,7 +59,11 @@ const DataPic = props => {
                 className="d-flex flex-column align-items-center data_each m-3"
                 key={data.sid}
               >
-                <BookInfoPic data={data}></BookInfoPic>
+                <BookInfoPic
+                  data={data}
+                  cartPayload={props.cartPayload}
+                  history={props.history}
+                ></BookInfoPic>
               </div>
             ))}
         </div>
