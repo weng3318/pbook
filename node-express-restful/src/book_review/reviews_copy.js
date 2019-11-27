@@ -1,11 +1,8 @@
 const express = require("express");
 const url = require("url");
 const mysql = require("mysql");
-const cors = require("cors");
-const body_parser = require("body-parser");
 const bluebird = require("bluebird");
 const router = express.Router();
-const app = express();
 const db = mysql.createConnection({
   // host: "192.168.27.186",
   host: "192.168.27.186",
@@ -30,10 +27,10 @@ router.post("/categoryBar", (req, res) => {
   });
 });
 //書本內容
-router.get(`/`, (req, res) => {
+router.get(`/ratings`, (req, res) => {
   let c,
     a,
-    pageNum,
+    page,
     fiveStars = [],
     fourStars = [],
     threeStars = [],
@@ -42,6 +39,7 @@ router.get(`/`, (req, res) => {
     max = [],
     min = [],
     avg = [],
+    totalStars = [],
     sql;
   const urlpart = url.parse(req.url, true);
   if (urlpart.query.c !== undefined) {
@@ -57,10 +55,10 @@ router.get(`/`, (req, res) => {
   } else {
     a = "fixed_price";
   }
-  pageNum = urlpart.query.p || 1;
+  page = urlpart.query.p || 1;
   let perPage = 10;
   let output = {};
-  output.perPage = perPage
+  output.perPage = perPage;
   sql = `SELECT COUNT(1) total FROM vb_ratings WHERE 1 `;
   db.queryAsync(sql)
     .then(results => {
@@ -73,7 +71,7 @@ router.get(`/`, (req, res) => {
       output.totalRows = results[0]["total"]; //總筆數
       output.totalPage = Math.ceil(output.totalRows / perPage); //總頁數
       return db.queryAsync(
-        `SELECT * FROM vb_books WHERE categories ${c} ORDER BY ${a} DESC LIMIT ${(pageNum -
+        `SELECT * FROM vb_books WHERE categories ${c} ORDER BY ${a} DESC LIMIT ${(page -
           1) *
           perPage},${perPage}`
       );
@@ -92,6 +90,7 @@ router.get(`/`, (req, res) => {
           threeStars[j] = 0;
           twoStars[j] = 0;
           oneStars[j] = 0;
+          totalStars[j] = 0;
           for (let i = 0; i < output.total; i++) {
             if (output.rows[j].sid == results[i].sid) {
               switch (results[i].star) {
@@ -117,18 +116,20 @@ router.get(`/`, (req, res) => {
           }
         }
         for (let j = 0; j < output.perPage; j++) {
-          avg[j] = (
-            (fiveStars[j] * 5 +
-              fourStars[j] * 4 +
-              threeStars[j] * 3 +
-              twoStars[j] * 2 +
-              oneStars[j]) /
-            (fiveStars[j] +
-              fourStars[j] +
-              threeStars[j] +
-              twoStars[j] +
-              oneStars[j])
-          ).toFixed(1);
+          totalStars[j] =
+          fiveStars[j] +
+          fourStars[j] +
+          threeStars[j] +
+          twoStars[j] +
+          oneStars[j];
+        avg[j] = +(
+          (fiveStars[j] * 5 +
+            fourStars[j] * 4 +
+            threeStars[j] * 3 +
+            twoStars[j] * 2 +
+            oneStars[j]) /
+          totalStars[j]
+        ).toFixed(1);
           max[j] = fiveStars[j];
           min[j] = fiveStars[j];
           if (fourStars[j] > max[j]) max[j] = fourStars[j];
@@ -146,6 +147,7 @@ router.get(`/`, (req, res) => {
           output.rows[j].threeStars = threeStars[j];
           output.rows[j].twoStars = twoStars[j];
           output.rows[j].oneStars = oneStars[j];
+          output.rows[j].totalStars = totalStars[j];
           output.rows[j].max = max[j];
           output.rows[j].avg = avg[j];
         }
@@ -156,6 +158,7 @@ router.get(`/`, (req, res) => {
           threeStars[j] = 0;
           twoStars[j] = 0;
           oneStars[j] = 0;
+          totalStars[j] = 0;
           for (let i = 0; i < output.total; i++) {
             if (output.rows[j].sid == results[i].sid) {
               switch (results[i].star) {
@@ -180,18 +183,20 @@ router.get(`/`, (req, res) => {
             }
           }
         }
-        for (let j = 0; j < output.totalRows % output.perPage; j++) {
-          avg[j] = (
+        for (let j = 0; j < output.total; j++) {
+          totalStars[j] =
+            fiveStars[j] +
+            fourStars[j] +
+            threeStars[j] +
+            twoStars[j] +
+            oneStars[j];
+          avg[j] = +(
             (fiveStars[j] * 5 +
               fourStars[j] * 4 +
               threeStars[j] * 3 +
               twoStars[j] * 2 +
               oneStars[j]) /
-            (fiveStars[j] +
-              fourStars[j] +
-              threeStars[j] +
-              twoStars[j] +
-              oneStars[j])
+            totalStars[j]
           ).toFixed(1);
           max[j] = fiveStars[j];
           min[j] = fiveStars[j];
@@ -204,17 +209,20 @@ router.get(`/`, (req, res) => {
           if (oneStars[j] > max[j]) max[j] = oneStars[j];
           else if (oneStars[j] < min[j]) min[j] = oneStars[j];
         }
-        for (let j = 0; j < output.totalRows % output.perPage; j++) {
+        for (let j = 0; j < output.total; j++) {
           output.rows[j].fiveStars = fiveStars[j];
           output.rows[j].fourStars = fourStars[j];
           output.rows[j].threeStars = threeStars[j];
           output.rows[j].twoStars = twoStars[j];
           output.rows[j].oneStars = oneStars[j];
+          output.rows[j].totalStars = totalStars[j];
           output.rows[j].max = max[j];
           output.rows[j].avg = avg[j];
         }
+  
       }
       res.json(output);
+      return db.queryAsync(``);
     })
     .catch(error => {
       console.log(error);
