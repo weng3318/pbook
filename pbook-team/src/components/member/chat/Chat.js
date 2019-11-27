@@ -6,6 +6,9 @@ import {
   Col,
   OverlayTrigger,
   Popover,
+  Tabs,
+  Modal,
+  Button,
 } from 'react-bootstrap'
 import './chat.css'
 
@@ -43,6 +46,17 @@ class Chat extends React.Component {
       mySearch: '',
       people: 0,
       chosenSticker: '',
+      key: 'chat',
+      oldDataMemo: [],
+      modalShow: false,
+      modalData: {
+        myFrom: '',
+        myPic: '',
+        content: '',
+        created_at: '',
+        sid: '',
+      },
+      memoValue: '',
     }
     if (localStorage.getItem('user') !== null) {
       if (this.props.location.pathname === '/chat') {
@@ -57,24 +71,36 @@ class Chat extends React.Component {
     }
     socket.on('SeverToClientMsg', this.onMsg)
     socket.on('SeverToClientDelete', this.onMsgDelete)
+    socket.on('SeverToClientInsertMemo', this.onInsertMemo)
   }
 
+  // 控制左邊的搜尋欄位
   handleSearch = () => {
     // 取得搜尋的字串
     var mySearch = this.mySearch.value
     this.setState({ mySearch: mySearch })
   }
 
+  // 點擊左邊的私聊列表
   handleMessage = async () => {
+    var firstOldDataMessage
     this.myDiv.classList.add('hide')
-    // this.messageSearch.classList.add('show-inline-flex')
     console.log('點擊左邊那欄第一次拿chatMessage')
     await axios
       .post(`http://localhost:5555/nana_use/chatMessage2`, {
         memberId: JSON.parse(localStorage.getItem('user')).MR_number,
       })
       .then(res => {
-        this.setState({ oldDataMessage: res.data })
+        firstOldDataMessage = res.data
+        return axios.post(`http://localhost:5555/nana_use/chatMemo`, {
+          memberId: JSON.parse(localStorage.getItem('user')).MR_number,
+        })
+      })
+      .then(res => {
+        this.setState({
+          oldDataMessage: firstOldDataMessage,
+          oldDataMemo: res.data,
+        })
       })
       .catch(error => {
         console.log('點擊左邊那欄第一次拿chatMessage有錯誤', error)
@@ -158,6 +184,11 @@ class Chat extends React.Component {
     }
   }
 
+  onInsertMemo = data => {
+    this.setState({ oldDataMemo: data })
+  }
+
+  // 下方的聊天input(滑鼠點擊)
   handleSubmit = () => {
     // 利用網址列取得chat_id
     var chat_id_index = window.location.href.indexOf('#') // console.log(chat_id_index,"26")
@@ -202,6 +233,7 @@ class Chat extends React.Component {
     this.textInput.value = ''
   }
 
+  // 下方的聊天input(鍵盤enter事件)
   handleSubmit2 = e => {
     if (e.key === 'Enter') {
       // 利用網址列取得chat_id
@@ -248,6 +280,7 @@ class Chat extends React.Component {
     }
   }
 
+  // 私聊的收回訊息
   handleMessageDelete = e => {
     let MessageSid = e.target.getAttribute('data-value')
     console.log('handleMessageDelete MessageSid1', MessageSid)
@@ -294,10 +327,12 @@ class Chat extends React.Component {
     })
   }
 
+  // 回到聊天廣場按鈕
   goBackToSquare = () => {
     window.location.href = 'http://localhost:3000/chat'
   }
 
+  // 下方input的品書貼圖
   handleSticker = e => {
     let chosenSticker = e.target.getAttribute('data-sticker')
     console.log('handleSticker chosenSticker', chosenSticker)
@@ -341,6 +376,7 @@ class Chat extends React.Component {
     })
   }
 
+  // 下方input的圖片上傳
   handleUpload = async e => {
     var uploadImg
     const formData = new FormData()
@@ -407,6 +443,180 @@ class Chat extends React.Component {
     })
   }
 
+  // 私聊選擇聊天室或記事本的tabs
+  handleKey = key => {
+    console.log(key)
+
+    switch (key) {
+      case 'chat':
+        this.messageSearch.classList.remove('hide')
+        this.messageMemo.classList.remove('show-inline-flex')
+        this.setState({ key: 'chat' })
+        break
+      case 'memo':
+        this.messageSearch.classList.add('hide')
+        this.messageMemo.classList.add('show-inline-flex')
+        this.setState({ key: 'memo' })
+        break
+      case 'memoInsert':
+        this.messageSearch.classList.add('hide')
+        this.messageMemo.classList.add('show-inline-flex')
+        this.setState({ key: 'memoInsert' })
+        break
+      default:
+        break
+    }
+
+    // if (this.state.key === 'chat') {
+    //   this.messageSearch.classList.add('hide')
+    //   this.messageMemo.classList.add('show-inline-flex')
+    //   this.setState({ key: 'memo' })
+    // } else {
+    //   this.messageSearch.classList.remove('hide')
+    //   this.messageMemo.classList.remove('show-inline-flex')
+    //   this.setState({ key: 'chat' })
+    // }
+  }
+
+  // 私聊記事本將TEXTAREA內容存到this.state.memoValue
+  handleChangeMemo = event => {
+    this.setState({ memoValue: event.target.value })
+  }
+
+  //私聊記事本新增送出按鈕
+  handleSubmitMemo = () => {
+    // 取得貼文內容
+    var memoValue = this.state.memoValue
+    // 利用網址列取得chat_id
+    var chat_id_index = window.location.href.indexOf('#') // console.log(chat_id_index,"26")
+    var chat_id = window.location.href.slice(chat_id_index + 1)
+    // 利用localStorage取得發文者(myFrom)
+    var myFrom = JSON.parse(localStorage.getItem('user')).MR_number
+    // 利用網址取得myTo
+    var chat_id_array = chat_id.split('MR')
+    var myFrom_array = myFrom.split('MR')
+
+    var myTo = []
+    for (var i = 1; i < chat_id_array.length; i++) {
+      for (var k = 1; k < myFrom_array.length; k++) {
+        if (chat_id_array[i] !== myFrom_array[k]) {
+          myTo.push(chat_id_array[i])
+        }
+      }
+    }
+    console.log(myTo[0])
+    swal({
+      title: '您確定要送出嗎?',
+      icon: 'warning',
+      buttons: true,
+      dangerMode: true,
+      buttons: ['取消', '確定'],
+    }).then(willSubmit => {
+      if (willSubmit) {
+        swal('您已新增貼文至記事本!', {
+          icon: 'success',
+        })
+        socket.emit(`clientToSeverInsertMemo`, {
+          chat_id: chat_id,
+          myFrom: myFrom,
+          myTo: 'MR' + myTo[0],
+          content: memoValue,
+          created_at: new Date(),
+          myDelete: 0,
+        })
+        this.setState({ memoValue: '', key: 'memo' })
+      }
+    })
+  }
+
+  //私聊記事本修改送出按鈕
+  handleSubmitMemoEdit = memoSid => {
+    // 取得貼文內容
+    var memoValue = this.state.memoValue
+    console.log('memoSid', memoSid)
+
+    swal({
+      title: '您確定要修改嗎?',
+      icon: 'warning',
+      buttons: true,
+      dangerMode: true,
+      buttons: ['取消', '確定'],
+    }).then(willSubmitEdit => {
+      if (willSubmitEdit) {
+        swal('您已修改此筆貼文!', {
+          icon: 'success',
+        })
+        socket.emit(`clientToSeverEditMemo`, {
+          myFrom: JSON.parse(localStorage.getItem('user')).MR_number,
+          memoSid: memoSid,
+          content: memoValue,
+        })
+        let memoSidForm = document.querySelector('#memoSidForm' + memoSid)
+        let memoSidSpan = document.querySelector('#memoSidSpan' + memoSid)
+        console.log('memoSidForm', memoSidForm)
+        console.log('memoSidSpan', memoSidSpan)
+        memoSidForm.classList.toggle('hide')
+        memoSidSpan.classList.toggle('hide')
+        this.setState({ memoValue: '' })
+      }
+    })
+  }
+
+  // 私聊記事本的光箱控制鈕
+  handleModalShow = modalData => {
+    console.log('modalData', modalData)
+    this.setState({
+      modalData: {
+        myFrom: modalData.myFrom,
+        myPic: modalData.myPic,
+        content: modalData.content,
+        created_at: modalData.created_at,
+        sid: modalData.sid,
+      },
+      modalShow: true,
+    })
+  }
+  handleModalHide = () => {
+    this.setState({ modalShow: false })
+  }
+
+  // 私聊記事本刪除按鈕
+  handleMemoDelete = event => {
+    var memosid = event.target.getAttribute('data-memosid')
+    console.log('memosid', memosid)
+
+    swal({
+      title: '您確定要刪除這則貼文嗎?',
+      text: '一旦刪除,將會沒辦法復原喔!',
+      icon: 'warning',
+      buttons: true,
+      dangerMode: true,
+      buttons: ['取消', '確定'],
+    }).then(willDelete => {
+      if (willDelete) {
+        swal('您的訊息已經被刪除!', {
+          icon: 'success',
+        })
+        socket.emit(`clientToSeverMemoDelete`, {
+          memoSid: memosid,
+          myFrom: JSON.parse(localStorage.getItem('user')).MR_number,
+        })
+      }
+      this.setState({ modalShow: false })
+    })
+  }
+
+  // 私聊記事本編輯按鈕
+  handleMemoEdit = memoSid => {
+    console.log('memoSid', memoSid)
+    let memoSidForm = document.querySelector('#memoSidForm' + memoSid)
+    let memoSidSpan = document.querySelector('#memoSidSpan' + memoSid)
+    console.log('memoSidForm', memoSidForm)
+    console.log('memoSidSpan', memoSidSpan)
+    memoSidForm.classList.toggle('hide')
+    memoSidSpan.classList.toggle('hide')
+  }
+
   componentDidMount() {
     axios
       .post(`http://localhost:5555/nana_use/chatList2`, {
@@ -439,6 +649,9 @@ class Chat extends React.Component {
     console.log('render', this.state.oldDataList)
     console.log('render', this.state.squareData)
     console.log('render uploadImg', this.state.uploadImg)
+    console.log('render oldDataMemo', this.state.oldDataMemo)
+    console.log('render modalData', this.state.modalData)
+    console.log('render memoValue', this.state.memoValue)
 
     let myId = JSON.parse(localStorage.getItem('user')).MR_number
     let myPic = JSON.parse(localStorage.getItem('user')).MR_pic
@@ -695,188 +908,394 @@ class Chat extends React.Component {
                           <i className="far fa-comment-dots mx-2"></i>
                           {'您正在和[' + value.MR_name + ']聊天'}
                         </div>
-                        <div className="chatMessageScroll">
-                          {/* eslint-disable-next-line array-callback-return */}
-                          {this.state.oldDataMessage.map((value2, index2) => {
-                            if (value.chat_id === value2.chat_id) {
-                              return (
-                                <div key={index2}>
-                                  {(() => {
-                                    if (
-                                      value2.myFrom !== myId &&
-                                      value2.myDelete === 0 &&
-                                      value2.myUpload === 0
-                                    ) {
-                                      return (
-                                        <div className="myContainer">
+                        <Tabs
+                          id="controlled-tab-example"
+                          activeKey={this.state.key}
+                          onSelect={key => this.handleKey(key)}
+                        >
+                          <Tab eventKey="chat" title="聊天室">
+                            <div className="chatMessageScroll">
+                              {/* eslint-disable-next-line array-callback-return */}
+                              {this.state.oldDataMessage.map(
+                                (value2, index2) => {
+                                  if (value.chat_id === value2.chat_id) {
+                                    return (
+                                      <div key={index2}>
+                                        {(() => {
+                                          if (
+                                            value2.myFrom !== myId &&
+                                            value2.myDelete === 0 &&
+                                            value2.myUpload === 0
+                                          ) {
+                                            return (
+                                              <div className="myContainer">
+                                                <img
+                                                  className="memberImg"
+                                                  src={
+                                                    'http://localhost:5555/images/member/' +
+                                                    value.MR_pic
+                                                  }
+                                                  alt="Avatar"
+                                                />
+                                                <p
+                                                  className="d-flex"
+                                                  dangerouslySetInnerHTML={{
+                                                    __html: value2.content,
+                                                  }}
+                                                ></p>
+                                                <span className="time-right">
+                                                  {moment(
+                                                    value2.created_at
+                                                  ).format(
+                                                    'YYYY-MM-DD HH:mm:ss'
+                                                  )}
+                                                </span>
+                                              </div>
+                                            )
+                                          } else if (
+                                            value2.myFrom === myId &&
+                                            value2.myDelete === 0 &&
+                                            value2.myUpload === 0
+                                          ) {
+                                            return (
+                                              <div className="myContainer darker">
+                                                <img
+                                                  src={
+                                                    'http://localhost:5555/images/member/' +
+                                                    myPic
+                                                  }
+                                                  alt="Avatar"
+                                                  className="memberImg right"
+                                                />
+                                                <p
+                                                  className="d-flex"
+                                                  dangerouslySetInnerHTML={{
+                                                    __html: value2.content,
+                                                  }}
+                                                ></p>
+                                                <span className="time-left">
+                                                  {moment(
+                                                    value2.created_at
+                                                  ).format(
+                                                    'YYYY-MM-DD HH:mm:ss'
+                                                  )}
+                                                </span>
+                                                <i
+                                                  className="fas fa-undo-alt messageDelete"
+                                                  data-value={value2.sid}
+                                                  onClick={
+                                                    this.handleMessageDelete
+                                                  }
+                                                >
+                                                  收回
+                                                </i>
+                                              </div>
+                                            )
+                                          } else if (
+                                            value2.myFrom === myId &&
+                                            value2.myDelete === 0 &&
+                                            value2.myUpload === 1
+                                          ) {
+                                            return (
+                                              <div className="myContainer darker">
+                                                <img
+                                                  src={
+                                                    'http://localhost:5555/images/member/' +
+                                                    myPic
+                                                  }
+                                                  alt="Avatar"
+                                                  className="memberImg right"
+                                                />
+                                                <p className="d-flex">
+                                                  {JSON.parse(
+                                                    value2.content
+                                                  ).map((value, index) => {
+                                                    return (
+                                                      <p key={index}>
+                                                        <img
+                                                          className="upLoadImg"
+                                                          src={
+                                                            'http://localhost:5555/images/chatFile/' +
+                                                            value
+                                                          }
+                                                          alt="Avatar"
+                                                        />
+                                                      </p>
+                                                    )
+                                                  })}
+                                                </p>
+                                                <span className="time-left">
+                                                  {moment(
+                                                    value2.created_at
+                                                  ).format(
+                                                    'YYYY-MM-DD HH:mm:ss'
+                                                  )}
+                                                </span>
+                                                <i
+                                                  className="fas fa-undo-alt messageDelete"
+                                                  data-value={value2.sid}
+                                                  onClick={
+                                                    this.handleMessageDelete
+                                                  }
+                                                >
+                                                  收回
+                                                </i>
+                                              </div>
+                                            )
+                                          } else if (
+                                            value2.myFrom !== myId &&
+                                            value2.myDelete === 0 &&
+                                            value2.myUpload === 1
+                                          ) {
+                                            return (
+                                              <div className="myContainer">
+                                                <img
+                                                  className="memberImg"
+                                                  src={
+                                                    'http://localhost:5555/images/member/' +
+                                                    value.MR_pic
+                                                  }
+                                                  alt="Avatar"
+                                                />
+                                                <p className="d-flex">
+                                                  {JSON.parse(
+                                                    value2.content
+                                                  ).map((value, index) => {
+                                                    return (
+                                                      <p key={index}>
+                                                        <img
+                                                          className="upLoadImg"
+                                                          src={
+                                                            'http://localhost:5555/images/chatFile/' +
+                                                            value
+                                                          }
+                                                          alt="Avatar"
+                                                        />
+                                                      </p>
+                                                    )
+                                                  })}
+                                                </p>
+                                                <span className="time-right">
+                                                  {moment(
+                                                    value2.created_at
+                                                  ).format(
+                                                    'YYYY-MM-DD HH:mm:ss'
+                                                  )}
+                                                </span>
+                                              </div>
+                                            )
+                                          } else if (
+                                            value2.myFrom !== myId &&
+                                            value2.myDelete === 1
+                                          ) {
+                                            return (
+                                              <span className="chatDeleteMessage">
+                                                {value.MR_name + '已收回訊息'}
+                                              </span>
+                                            )
+                                          } else if (
+                                            value2.myFrom === myId &&
+                                            value2.myDelete === 1
+                                          ) {
+                                            return (
+                                              <span className="chatDeleteMessage">
+                                                您已收回訊息
+                                              </span>
+                                            )
+                                          }
+                                        })()}
+                                      </div>
+                                    )
+                                  }
+                                }
+                              )}
+                            </div>
+                          </Tab>
+                          <Tab eventKey="memo" title="記事本">
+                            <div className="chatMessageScroll">
+                              {this.state.oldDataMemo.map((value2, index2) => {
+                                if (value.chat_id === value2.chat_id) {
+                                  return (
+                                    <div className="card my-3" key={index2}>
+                                      <h5 className="card-header d-flex align-content-center justify-content-between">
+                                        <div>
                                           <img
-                                            className="memberImg"
+                                            className="memoImg"
                                             src={
                                               'http://localhost:5555/images/member/' +
-                                              value.MR_pic
+                                              value2.MR_pic
                                             }
                                             alt="Avatar"
                                           />
-                                          <p
-                                            className="d-flex"
-                                            dangerouslySetInnerHTML={{
-                                              __html: value2.content,
-                                            }}
-                                          ></p>
-                                          <span className="time-right">
-                                            {moment(value2.created_at).format(
-                                              'YYYY-MM-DD HH:mm:ss'
-                                            )}
+                                          <span style={{ lineHeight: '60px' }}>
+                                            {value2.MR_name}
                                           </span>
                                         </div>
-                                      )
-                                    } else if (
-                                      value2.myFrom === myId &&
-                                      value2.myDelete === 0 &&
-                                      value2.myUpload === 0
-                                    ) {
-                                      return (
-                                        <div className="myContainer darker">
-                                          <img
-                                            src={
-                                              'http://localhost:5555/images/member/' +
-                                              myPic
-                                            }
-                                            alt="Avatar"
-                                            className="memberImg right"
-                                          />
-                                          <p
-                                            className="d-flex"
-                                            dangerouslySetInnerHTML={{
-                                              __html: value2.content,
-                                            }}
-                                          ></p>
-                                          <span className="time-left">
-                                            {moment(value2.created_at).format(
-                                              'YYYY-MM-DD HH:mm:ss'
-                                            )}
-                                          </span>
+                                        <div>
                                           <i
-                                            className="fas fa-undo-alt messageDelete"
-                                            data-value={value2.sid}
-                                            onClick={this.handleMessageDelete}
-                                          >
-                                            收回
-                                          </i>
-                                        </div>
-                                      )
-                                    } else if (
-                                      value2.myFrom === myId &&
-                                      value2.myDelete === 0 &&
-                                      value2.myUpload === 1
-                                    ) {
-                                      return (
-                                        <div className="myContainer darker">
-                                          <img
-                                            src={
-                                              'http://localhost:5555/images/member/' +
-                                              myPic
-                                            }
-                                            alt="Avatar"
-                                            className="memberImg right"
-                                          />
-                                          <p className="d-flex">
-                                            {JSON.parse(value2.content).map(
-                                              (value, index) => {
-                                                return (
-                                                  <p key={index}>
-                                                    <img
-                                                      className="upLoadImg"
-                                                      src={
-                                                        'http://localhost:5555/images/chatFile/' +
-                                                        value
-                                                      }
-                                                      alt="Avatar"
-                                                    />
-                                                  </p>
-                                                )
-                                              }
-                                            )}
-                                          </p>
-                                          <span className="time-left">
-                                            {moment(value2.created_at).format(
-                                              'YYYY-MM-DD HH:mm:ss'
-                                            )}
-                                          </span>
+                                            className="far fa-edit memoIcon"
+                                            onClick={() => {
+                                              this.handleMemoEdit(value2.sid)
+                                            }}
+                                          ></i>
                                           <i
-                                            className="fas fa-undo-alt messageDelete"
-                                            data-value={value2.sid}
-                                            onClick={this.handleMessageDelete}
-                                          >
-                                            收回
-                                          </i>
+                                            className="far fa-trash-alt memoIcon"
+                                            data-memosid={value2.sid}
+                                            onClick={this.handleMemoDelete}
+                                          ></i>
                                         </div>
-                                      )
-                                    } else if (
-                                      value2.myFrom !== myId &&
-                                      value2.myDelete === 0 &&
-                                      value2.myUpload === 1
-                                    ) {
-                                      return (
-                                        <div className="myContainer">
-                                          <img
-                                            className="memberImg"
-                                            src={
-                                              'http://localhost:5555/images/member/' +
-                                              value.MR_pic
-                                            }
-                                            alt="Avatar"
+                                      </h5>
+                                      <div className="card-body">
+                                        <div
+                                          className="hide"
+                                          id={'memoSidForm' + value2.sid}
+                                        >
+                                          <textarea
+                                            className="insertMemoTextarea"
+                                            placeholder={value2.content}
+                                            value={this.state.memoValue}
+                                            onChange={this.handleChangeMemo}
                                           />
-                                          <p className="d-flex">
-                                            {JSON.parse(value2.content).map(
-                                              (value, index) => {
-                                                return (
-                                                  <p key={index}>
-                                                    <img
-                                                      className="upLoadImg"
-                                                      src={
-                                                        'http://localhost:5555/images/chatFile/' +
-                                                        value
-                                                      }
-                                                      alt="Avatar"
-                                                    />
-                                                  </p>
+                                          <div className="d-flex justify-content-center pt-3">
+                                            <input
+                                              type="button"
+                                              value="送出"
+                                              className="btn btn-outline-warning"
+                                              onClick={() => {
+                                                this.handleSubmitMemoEdit(
+                                                  value2.sid
                                                 )
-                                              }
-                                            )}
-                                          </p>
-                                          <span className="time-right">
-                                            {moment(value2.created_at).format(
-                                              'YYYY-MM-DD HH:mm:ss'
-                                            )}
-                                          </span>
+                                              }}
+                                            />
+                                          </div>
                                         </div>
-                                      )
-                                    } else if (
-                                      value2.myFrom !== myId &&
-                                      value2.myDelete === 1
-                                    ) {
-                                      return (
-                                        <span className="chatDeleteMessage">
-                                          {value.MR_name + '已收回訊息'}
+
+                                        <span
+                                          className="block"
+                                          id={'memoSidSpan' + value2.sid}
+                                        >
+                                          <p className="card-text memoText">
+                                            {value2.content}
+                                          </p>
+                                          <button
+                                            type="button"
+                                            className="btn btn-outline-secondary"
+                                            onClick={() =>
+                                              this.handleModalShow({
+                                                myFrom: value2.MR_name,
+                                                myPic: value2.MR_pic,
+                                                content: value2.content,
+                                                created_at: value2.created_at,
+                                                sid: value2.sid,
+                                              })
+                                            }
+                                          >
+                                            全部顯示
+                                          </button>
                                         </span>
-                                      )
-                                    } else if (
-                                      value2.myFrom === myId &&
-                                      value2.myDelete === 1
-                                    ) {
-                                      return (
-                                        <span className="chatDeleteMessage">
-                                          您已收回訊息
-                                        </span>
-                                      )
-                                    }
-                                  })()}
+                                      </div>
+                                      <div className="card-footer text-muted">
+                                        {moment(value2.created_at).format(
+                                          'YYYY-MM-DD HH:mm:ss'
+                                        )}
+                                      </div>
+                                    </div>
+                                  )
+                                }
+                              })}
+
+                              <Modal
+                                show={this.state.modalShow}
+                                onHide={this.handleModalHide}
+                                size="lg"
+                                aria-labelledby="myModal"
+                                centered
+                              >
+                                <Modal.Header>
+                                  <Modal.Title
+                                    id="myModal"
+                                    className="d-flex align-content-center justify-content-between"
+                                    style={{ width: '100%' }}
+                                  >
+                                    <div>
+                                      <img
+                                        className="memoImg"
+                                        src={
+                                          'http://localhost:5555/images/member/' +
+                                          this.state.modalData.myPic
+                                        }
+                                        alt="Avatar"
+                                      />
+                                      <span style={{ lineHeight: '60px' }}>
+                                        {this.state.modalData.myFrom}
+                                      </span>
+                                    </div>
+                                    <div>
+                                      <i
+                                        className="far fa-trash-alt memoIcon"
+                                        data-memosid={this.state.modalData.sid}
+                                        onClick={this.handleMemoDelete}
+                                      ></i>
+                                    </div>
+                                  </Modal.Title>
+                                </Modal.Header>
+                                <Modal.Body>
+                                  {this.state.modalData.content}
+                                  <div>
+                                    {'【此貼文發布於：' +
+                                      moment(
+                                        this.state.modalData.created_at
+                                      ).format('YYYY-MM-DD HH:mm:ss') +
+                                      '】'}
+                                  </div>
+                                </Modal.Body>
+                                <Modal.Footer>
+                                  <Button onClick={this.handleModalHide}>
+                                    關閉
+                                  </Button>
+                                </Modal.Footer>
+                              </Modal>
+                            </div>
+                          </Tab>
+                          <Tab eventKey="memoInsert" title="新增貼文">
+                            <div className="chatMessageScroll">
+                              <div className="card my-3">
+                                <div className="card-header">
+                                  <div>
+                                    <img
+                                      className="memoImg"
+                                      src={
+                                        'http://localhost:5555/images/member/' +
+                                        myPic
+                                      }
+                                      alt="Avatar"
+                                    />
+                                    <span style={{ lineHeight: '60px' }}>
+                                      {myName}
+                                    </span>
+                                  </div>
                                 </div>
-                              )
-                            }
-                          })}
-                        </div>
+                                <div className="card-body">
+                                  <div>
+                                    <textarea
+                                      className="insertMemoTextarea"
+                                      value={this.state.memoValue}
+                                      onChange={this.handleChangeMemo}
+                                    />
+                                    <div className="d-flex justify-content-center pt-3">
+                                      <input
+                                        onClick={this.handleSubmitMemo}
+                                        type="button"
+                                        value="送出"
+                                        className="btn btn-outline-warning"
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </Tab>
+                        </Tabs>
                       </Tab.Pane>
                     )
                   })}
@@ -962,6 +1381,15 @@ class Chat extends React.Component {
                         送出
                       </span>
                     </div>
+                  </div>
+
+                  <div
+                    className="input-group md-form form-sm form-2 my-3 hide d-flex justify-content-center"
+                    ref={messageMemo => (this.messageMemo = messageMemo)}
+                  >
+                    <h5 style={{ color: 'transparent' }}>
+                      品書來找碴!隱藏文字在這裡!
+                    </h5>
                   </div>
                 </Tab.Content>
               </Col>
