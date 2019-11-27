@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import ReviewerBlog from '../ReviewerBlog'
 import ReviewerBlogEdit from '../ReviewerBlogEdit'
+import ScrollToTop from '../../pages/activities/components/ScrollToTop'
 
 class BR_BookcaseList extends React.Component {
     constructor(props) {
@@ -22,6 +23,8 @@ class BR_BookcaseList extends React.Component {
         const { name } = this.props;
         const { number } = this.props;
         const { blog } = this.props;
+        const { vb_book_sid } = this.props;
+        const { br_name } = this.props;
 
     (function(d, s, id) {
         var js, fjs = d.getElementsByTagName(s)[0];
@@ -31,26 +34,25 @@ class BR_BookcaseList extends React.Component {
         fjs.parentNode.insertBefore(js, fjs);
       }(document, 'script', 'facebook-jssdk'))
 
-    // 點擊收藏圖示導向
-    let Hash = `${this.props.sid}`
+    // 點擊more圖示導向書籍詳細列
+    let Hash = `${vb_book_sid}`
         return (
             <>
-    <section className="ReviewerListAllBox_Bookcase">
+        {/* <ScrollToTop> */}
+        <section className="ReviewerListAllBox_Bookcase">
             {/* 書籍圖片 */}
           <div className="brAvatarAllBox_Bookcase" id={this.props.sid} onClick={() => this.handleOpened(this.state.opened === 'blog' ? null : 'blog')}>
             {/* <img className="brBookInfoImg_Bookcase" src={require(`./images_books/vb_9789578587823.jpg`)}/> */}
             {/* <img className="brBookInfoImg_Bookcase" src={require(`./images/${this.props.pic}`)}/> */}
             <img className="brBookInfoImg_Bookcase" src={`http://localhost:5555/images/books/${this.props.pic}`} alt=""/>
+            
             {/* <img className="brBookInfoImg_Bookcase" src={`http://localhost/books/src/venderBooks_Management/vb_images/${this.props.pic}`} alt=""/> */}
             </div>
 
-        <div className="bookInfoRWD">
-                <div className="bookNameBox_Bookcase">
-                    <div className="bookName_Bookcase">書名：</div>
-                    <div className="bookNameText_Bookcase">{this.props.name}</div>
-                </div>
-                <div className="beAuthorText">作者：{this.props.author}</div>
-        </div>
+             <div className="bookInfoRWD">
+                <div className="bookName_Bookcase">書名：{this.props.name}</div>
+                <div className="bookName_Bookcase">作者：{this.props.author}</div>
+            </div>
 
           <div className="brInfoBox_Bookcase borderLineUpDown">
           {/* <h4 className="h4_br">書籍簡介</h4> */}
@@ -64,7 +66,7 @@ class BR_BookcaseList extends React.Component {
                         <div className="brAuthorText">作者：{this.props.author}</div>
                     </div>
                     {/* 書櫃區的簡介內文 */}
-                    <h5 className="brInfoText_Bookcase" dangerouslySetInnerHTML={{__html:this.props.introduction? this.props.introduction:this.props.blog}}></h5>　
+                    <h5 className="brInfoText_Bookcase" dangerouslySetInnerHTML={{__html:this.props.blog? this.props.blog:this.props.introduction}}></h5>　
                     {/* 看更多 more (圖示) */}
                         <Link to={`/books/information/${Hash}`} className="brIconMore_Bookcase">
                                 <img className="brMore_img" src={require('../reviewer_page/images/icon_more.png')}/>
@@ -88,7 +90,7 @@ class BR_BookcaseList extends React.Component {
                         <div className="brLikeBox">
                            <img className="brMark_img" src={require('../reviewer_page/images/icon_likebook.png')}/>
                                 <span className="brMark_p">{this.props.likebook}</span>
-                           <img className="brMark_img_noAni" src={require('../reviewer_page/images/icon_readbook.png')}/>
+                           <img onClick={() => this.handleOpened(opened === 'blog' ? null : 'blog')} className="brMark_img_noAni" src={require('../reviewer_page/images/icon_readbook.png')}/>
                                 <span className="brMark_p">{this.props.readbook}</span>
                         </div>
             {/* 分享功能 */}
@@ -103,11 +105,12 @@ class BR_BookcaseList extends React.Component {
             {/* 評分組件區塊 */}
     {/* <div className="brStarBox_Bookcase borderLine"></div> */}
     </section>
-    {/* 切換文章 與 編輯 */}                   {/* onHandleOpen 爺爺打孫女 brBlog brBlogList 9母湯 */}
+    {/* 切換文章 與 編輯 */}                   {/* onHandleOpen 爺爺打孫女 brBlog brBlogList */}
     {opened === 'blog' && <ReviewerBlog sid={sid} opened={opened} onHandleOpen={this.handleOpened}/>}
-    {opened === 'edit' && <ReviewerBlogEdit sid={sid} name={name} number={number} opened={opened} onHandleOpen={this.handleOpened} blog={blog}/>}
+    {opened === 'edit' && <ReviewerBlogEdit sid={sid} name={name} number={number} opened={opened} onHandleOpen={this.handleOpened} blog={blog} br_name={br_name}/>}
 
         {/* <div style={{height:'30px'}}></div> */}
+        {/* </ScrollToTop> */}
         </>
         )
     }

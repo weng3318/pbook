@@ -22,7 +22,7 @@ class ReviewerBooks extends React.Component {
   componentDidMount() {
     let newbrData
     let newcsData
-
+    
     axios
       .get('http://localhost:5555/reviewer/brReviewerList')
       .then(res => {
@@ -39,52 +39,86 @@ class ReviewerBooks extends React.Component {
       .catch(function(error) {
         console.log('前端沒有取得資料', error)
       })
+
+    // window.addEventListener('scroll', this.handleScroll.bind(this)) //監聽滾動
+    // window.addEventListener('resize', this.handleResize.bind(this)) //監聽視窗
+  }
+  //移除監聽，防組件錯亂
+  // componentWillUnmount() {
+  //   window.removeEventListener('scroll', this.handleScroll.bind(this)) 
+  //   window.removeEventListener('resize', this.handleResize.bind(this))
+  // }
+
+  handleScroll = e => {
+    let MaxHeight = e.srcElement.scrollingElement.scrollHeight
+    let FromTop = e.srcElement.scrollingElement.scrollTop
+    // console.log(
+    //   '滾動吧!',
+    //   '距離頂部',FromTop,
+    //   '可滾限度',MaxHeight
+    //   // '左右距離',e.srcElement.scrollingElement.scrollWidth,
+    // )
+    // 頂部高度  e.srcElement.scrollingElement.scrollTop
+    // 文件高度  e.srcElement.scrollingElement.scrollHeight
+  }
+  handleResize = e => {
+    let WinHeight = e.target.innerHeight
+    let WinWidth = e.target.innerWidth
+    // console.log(
+    //   '視窗改變了!',
+    //   '寬度', WinWidth,
+    //   '高度', WinHeight)
   }
 
-    // 裝填
+  // 裝填
   handleOpened = (opened, openedSid) => {
     this.setState({ opened, openedSid })
   }
-
-  render() {
+  handleNewBook=()=>{
     
+  }
+  render() {
     // 進去撈 sid#state
     const { opened, openedSid } = this.state
-
+    
     // console.log('render brData 書評家',this.state.brData);
     // console.log('render csData 看看書櫃',this.state.csData);
-
+    
     // if (!this.state.brData.length) return <></>
     if (this.state.brData.length === 0)
-      return (
-        <>
+    return (
+      <>
           <h1 className="h1_br">取得資料中...</h1>
         </>
       )
-
-    let brData = this.state.brData //書評家
-    let csData = this.state.csData //看看書櫃
-
-    let reviewerData = null;
-    for (let i = 0; i < brData.length; i++) {
-      if (brData[i].sid == this.props.match.params.sid) {
-        reviewerData = brData[i]
-        console.log('書評家編號', reviewerData.number, '為對象。')
+      
+      let brData = this.state.brData //書評家
+      let csData = this.state.csData //看看書櫃
+      
+      let reviewerData = null;
+      for (let i = 0; i < brData.length; i++) {
+        if (brData[i].sid == this.props.match.params.sid) {
+          reviewerData = brData[i]
+          console.log('書評家編號', reviewerData.number, '為對象。')
+        }
       }
-    }
-
-    // 指定會員的書櫃，收藏的書籍
-    let bookcaseData = null
-    for (let i = 0; i < csData.length; i++) {
-      if (csData[i].number == reviewerData.number) {
-        bookcaseData = csData[i].isbn
-    // console.log('來自書評家',reviewerData.name,'的書籍isbn：',bookcaseData)
+      
+      // 指定會員的書櫃，收藏的書籍
+      let bookcaseData = null
+      for (let i = 0; i < csData.length; i++) {
+        if (csData[i].number == reviewerData.number) {
+          bookcaseData = csData[i].isbn
+          // console.log('來自書評家',reviewerData.name,'的書籍isbn：',bookcaseData)
+        }
       }
-    }
-
-    // 熱門書籍數量
-    let hotNum = 5
-    return (
+      
+      // 熱門書籍數量
+      let hotNum = 5
+      // if(FromTop == MaxHeight-WinHeight){
+        //   hotNum = hotNum*2
+        // }
+        
+        return (
       <>
         <BR_Navbar />
         <h1>看看書櫃</h1>
@@ -101,7 +135,7 @@ class ReviewerBooks extends React.Component {
             intro={reviewerData.intro}
             tube={reviewerData.tube}
           ></BR_ReviewerList>
-
+          
           {/* 熱門書評列表 */}
           <div className="HotBookBoxAll_Light">
             <div className="blackBG">
@@ -131,11 +165,13 @@ class ReviewerBooks extends React.Component {
           {/* 針對書評家 - 書櫃列表 */}
           {this.state.csData
             .filter(({ number }) => number === reviewerData.number)
-            .map(({ br_name,name, pic, author, sid, introduction, blog, tube, likebook, readbook, number, isbn }) => (
+            .map(({ vb_book_sid,name, pic, author, sid, introduction, blog, tube, likebook, readbook, isbn }) => (
               <BR_BookcaseList
+                key={sid}
                 id={sid} // 點擊熱門書名傳送至對應#id
                 isbn={isbn}
-                number={number}
+                br_name={reviewerData.br_name}
+                vb_book_sid={vb_book_sid}
                 sid={sid}
                 pic={pic}
                 name={name}
