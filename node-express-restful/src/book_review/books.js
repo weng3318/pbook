@@ -6,9 +6,9 @@ const bluebird = require("bluebird");
 const router = express.Router();
 const db = mysql.createConnection({
   // host: '192.168.27.186',
-  host: "192.168.27.186",
-  user: "root",
-  password: "root",
+  host: "localhost",
+  user: "opcp",
+  password: "opcp2428",
   database: "pbook"
 });
 db.connect();
@@ -29,6 +29,7 @@ router.get("/book_reviews/:sid?", (req, res) => {
     }
   });
 });
+
 
 //書本評分資料
 router.get("/book_ratings", (req, res) => {
@@ -83,7 +84,6 @@ router.get("/memberReview/:book?", (req, res) => {
 //刪除書評API
 router.delete("/deleteReview/:sid?", (req, res) => {
   let sid = req.params.sid;
-  console.log(sid);
   const sql = `DELETE FROM vb_ratings WHERE vb_ratings.sid = ${sid}`;
   db.query(sql, (error, results) => {
     if (error) {
@@ -110,22 +110,9 @@ router.put("/editReview/data", (req, res) => {
       return res.send("更新成功");
     }
   });
-  console.log(data);
 });
 
-//書評下方回復增加API
-router.get("/reply", (req, res) => {
-  const sql = `SELECT mr_information.MR_nickname,vb_reply.* FROM mr_information,vb_reply WHERE mr_information.MR_number = vb_reply.member ORDER BY vb_reply.create_time ASC`;
-  db.query(sql, (error, results) => {
-    if (error) {
-      return res.send(error);
-    } else {
-      return res.json({
-        reply: results
-      });
-    }
-  });
-});
+
 
 //加入書櫃
 router.post("/bookcase", (req, res) => {
@@ -145,7 +132,6 @@ router.post("/bookcase", (req, res) => {
       return res.send("新增成功");
     }
   });
-  console.log(data);
 });
 
 module.exports = router;

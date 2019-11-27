@@ -9,14 +9,11 @@ import BookScoreAndLine from './BookScore/BookScoreAndLine'
 import BookStar from './BookScore/BookScoreForBR'
 import BookScoreForMember from './BookScore/BookScoreForMember'
 import InsertReply from './components/InsertReply'
-import {
-  faTimes,
-  faPen,
-  faTrashAlt,
-  faCheck,
-} from '@fortawesome/free-solid-svg-icons'
+import { faTimes, faPen, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import swal from '@sweetalert/with-react'
+import { BrowserRouter as Router, Route, Link, NavLink } from 'react-router-dom'
+import { LinkContainer } from 'react-router-bootstrap'
 
 //---------------------------------------------------------------------------------------------------------
 
@@ -46,6 +43,8 @@ const BookColumn = styled.div`
 
 //直排右側分數
 const BookColumnScore = styled.div`
+  position: relative;
+  bottom: 130px;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -91,8 +90,13 @@ const List = () => {
   const urlParams = window.location.pathname.replace('/book_reviews/', '')
 
   //變數
-  const [List, setList] = useState([]) //上方書本資料
-  const [memberReview, getMemberReview] = useState([]) //會員書評
+
+  //上方書本資料
+  const [List, setList] = useState([])
+  //推薦書本資料
+  const [recommendBook, setRecommendBook] = useState([])
+  //會員書評
+  const [memberReview, getMemberReview] = useState([])
   //會員個人資料設定
   const [user, setUser] = useState({
     isLogin: false,
@@ -114,13 +118,21 @@ const List = () => {
   const [ISBN, setISBN] = useState()
   //書評下方顯示欄資料
   const [reply, setReply] = useState([])
+  //書評回覆用對照ID
   const [reviewID, setReviewID] = useState(1)
+  //書評回覆內容更新
   let replyTxt
-
+  //書評回覆CRUD狀態
+  const [replyMode, setReplyMode] = useState({
+    isEdit: false,
+    sid: '',
+    editReply: '',
+  })
   useEffect(() => {
     bookList()
     reviewList()
     replyText()
+
     if (JSON.parse(localStorage.getItem('user')) !== null) {
       let data = JSON.parse(localStorage.getItem('user'))
       setUser({
@@ -129,8 +141,9 @@ const List = () => {
         nickname: data.MR_nickname,
       })
       setReview({ ...review, id: data.MR_number })
+      recommend(data.MR_number)
     }
-  }, [InsertReply])
+  }, [])
   //書評分頁資料ajax
   const bookList = async () => {
     await axios
@@ -138,7 +151,7 @@ const List = () => {
       .then(res => {
         let data = res.data.data[0]
         setList(res.data.data)
-        setISBN(res.data.data[0].isbn)
+        setISBN(data.isbn)
         // setReview({ ...review, isbn: data.isbn, pic: data.pic })
       })
       .catch(error => {
@@ -151,7 +164,6 @@ const List = () => {
       .get(`http://localhost:5555/reviews/memberReview/${urlParams}`)
       .then(res => {
         getMemberReview(res.data.reviews)
-
         console.log(res.data)
         // setReview({...review,sid:''})
       })
@@ -159,13 +171,24 @@ const List = () => {
         console.log(error)
       })
   }
-
+  //書籍推薦資料
+  const recommend = async e => {
+    await axios
+      .get(`http://localhost:5555/activities/recommend-books/${e}/5`)
+      .then(res => {
+        setRecommendBook(res.data)
+        console.log(res.data)
+      })
+  }
+  //書評回覆 用ENTER 發送&修改
   const keypress = e => {
-    e.preventDefault()
     if (e.which === 13) {
-      console.log('123')
-      submitHandler2(e)
-      // updateHandler(e)
+      if (replyMode.editReply !== '' && replyMode.editReply !== undefined) {
+        submitHandler2(e)
+        updateHandler(e)
+      } else {
+        swal('內容為空', '', 'warning')
+      }
     }
   }
 
@@ -175,22 +198,20 @@ const List = () => {
       ...review,
       [e.target.name]: e.target.value,
     })
-  }
-  //輸入時更新資料下方回覆
-  const changeHandler2 = e => {
     setReviewID(e.target.name)
     replyTxt = {
       name: e.target.value,
     }
     console.log(replyTxt)
-    console.log(replyTxt.name)
-    console.log(reviewID)
+    setReplyMode({ ...replyMode, editReply: e.target.value })
+    console.log(replyMode.editReply)
   }
 
   //新增資料
   const submitHandler = e => {
     e.preventDefault()
-    let api = `http://localhost:5555/reviews/book_reviews/${urlParams}/data`
+    let api
+    api = `http://localhost:5555/reviews/book_reviews/${urlParams}/data`
 
     if (review.reviewText !== '') {
       axios
@@ -228,7 +249,7 @@ const List = () => {
         .post(api, {
           id: review.id,
           review_sid: reviewID,
-          reply: replyTxt.name,
+          reply: replyMode.editReply,
         })
         .then(res => {
           swal('新增成功', '', 'success').then(value => {
@@ -248,14 +269,21 @@ const List = () => {
       swal('書評內容為空')
     }
   }
-  //更新資料
+  //更新書評&回覆資料
   const updateHandler = e => {
     e.preventDefault()
-    let api = `http://localhost:5555/reviews/editReview/data`
+    let api
+    if (replyMode.isEdit) {
+      api = `http://localhost:5555/reviews/reply/EditData`
+    } else {
+      api = `http://localhost:5555/reviews/editReview/data`
+    }
     axios
       .put(api, {
         sid: review.sid,
+        replySid: replyMode.sid,
         editReview: review.editReview,
+        editReply: replyMode.editReply,
       })
       .then(res => {
         swal('修改成功!').then(value => {
@@ -273,9 +301,15 @@ const List = () => {
       })
   }
 
-  //刪除資料
+  //刪除書評資料
   const deleteHandler = e => {
     let delete_data = e
+    let api
+    if (replyMode.isEdit) {
+      api = `http://localhost:5555/reviews/reply/DeleteData/${delete_data}`
+    } else {
+      api = `http://localhost:5555/reviews/deleteReview/${delete_data}`
+    }
     console.log(delete_data)
     swal({
       title: '確定刪除嗎?',
@@ -287,9 +321,35 @@ const List = () => {
         swal('刪除成功!', '', {
           icon: 'success',
         }).then(value => {
-          axios.delete(
-            `http://localhost:5555/reviews/deleteReview/${delete_data}`
-          )
+          axios.delete(api)
+          setTimeout(() => {
+            window.location.reload()
+          }, 100)
+        })
+      } else {
+        swal('已取消刪除!')
+      }
+    })
+  }
+
+  //刪除書評回覆資料
+  const deleteHandler2 = e => {
+    let delete_data = e
+    let api
+    api = `http://localhost:5555/reviews/reply/DeleteData/${delete_data}`
+
+    console.log(delete_data)
+    swal({
+      title: '確定刪除嗎?',
+      icon: 'warning',
+      buttons: true,
+      dangerMode: true,
+    }).then(willDelete => {
+      if (willDelete) {
+        swal('刪除成功!', '', {
+          icon: 'success',
+        }).then(value => {
+          axios.delete(api)
           setTimeout(() => {
             window.location.reload()
           }, 100)
@@ -350,7 +410,7 @@ const List = () => {
             </BookColumn>
             <BookColumn>
               <BookInfo>
-                <h4>{data.name}</h4>
+                <h3>{data.name}</h3>
                 {'作者:'}
                 {data.author}
                 <br />
@@ -368,19 +428,33 @@ const List = () => {
             </BookColumn>
           </Book>
         ))}
-        <div>
-          <BookColumnScore>
-            <button className="BookBuy">立即購買</button>
-            <BookRow>
-              <BookScoreAndLine List={List} />
-            </BookRow>
-            <form onSubmit={addCase}>
-              <button type="submit" className="BookCase">
-                加入書櫃
-              </button>
-            </form>
-          </BookColumnScore>
+        <div className="reviews_recommendText">推薦書籍</div>
+        <div className="reviews_recommendBook">
+          {recommendBook.map((book, index) => (
+            <Link to={'/book_reviews/' + book.sid}>
+              <div key={index}>
+                <img
+                  className="reviews_recommendBook_img"
+                  src={require('./images/' + book.pic)}
+                />
+                <div className="reviews_recommendBookName">{book.name}</div>
+              </div>
+            </Link>
+          ))}
         </div>
+
+        <BookColumnScore>
+          <button className="reviews_BookBuy">立即購買</button>
+          <BookRow>
+            <BookScoreAndLine List={List} />
+          </BookRow>
+          <form onSubmit={addCase}>
+            <button type="submit" className="reviews_BookCase">
+              加入書櫃
+            </button>
+          </form>
+        </BookColumnScore>
+
         {/* <InsertReply
           user={user}
           login={login}
@@ -410,7 +484,7 @@ const List = () => {
                 name="reviewText"
                 value={review.reviewText}
                 onChange={changeHandler}
-                // onKeyPress={keypress}
+                onKeyPress={keypress}
                 placeholder="新增評論..."
               />
               <BookRow>
@@ -434,8 +508,8 @@ const List = () => {
             </form>
           )}
         </Review>
-        {memberReview.map(data => (
-          <Review key={data.sid}>
+        {memberReview.map((data, index) => (
+          <Review key={index}>
             <BookColumnMember>
               <Member>
                 <img
@@ -480,25 +554,95 @@ const List = () => {
               ) : (
                 <div className="reviews_text">{data.message}</div>
               )}
-              {reply.map(item =>
+              {reply.map((item, index) =>
                 item.review_sid == data.sid ? (
-                  <div key={item.review_sid} className="reviews_reply_view">
-                    {item.MR_nickname}
-                    &nbsp;
-                    {':'}
-                    &nbsp;
-                    {item.reply_text}
+                  <div key={index} className="reviews_reply_view">
+                    <img
+                      className="reviews_memberReply_img"
+                      src={`http://localhost:5555/images/member/${item.MR_pic}`}
+                    />
+                    {replyMode.isEdit && replyMode.sid === item.reply_sid ? (
+                      <form
+                        className="reviews_reply_form"
+                        onSubmit={updateHandler}
+                      >
+                        {item.MR_nickname}
+                        &nbsp;
+                        {':'}
+                        &nbsp;
+                        <input
+                          className="reviews_reply_editText"
+                          name="editReply"
+                          onChange={changeHandler}
+                          value={replyMode.editReply}
+                        ></input>
+                      </form>
+                    ) : (
+                      <div className="reviews_reply_form">
+                        {item.MR_nickname}
+                        &nbsp;
+                        {':'}
+                        &nbsp;
+                        {item.reply_text}
+                      </div>
+                    )}
+                    {item.member == review.id ? (
+                      <>
+                        {replyMode.isEdit &&
+                        replyMode.sid === item.reply_sid ? (
+                          <FontAwesomeIcon
+                            className="reviews_reply_cancel"
+                            onClick={() => {
+                              setReplyMode({
+                                ...replyMode,
+                                isEdit: false,
+                                sid: item.reply_sid,
+                                editReply: item.reply_text,
+                              })
+                            }}
+                            icon={faTimes}
+                          />
+                        ) : (
+                          <FontAwesomeIcon
+                            className="reviews_reply_edit"
+                            onClick={() => {
+                              setReplyMode({
+                                ...replyMode,
+                                isEdit: true,
+                                sid: item.reply_sid,
+                                editReply: item.reply_text,
+                              })
+                            }}
+                            icon={faPen}
+                          />
+                        )}
+                        {replyMode.isEdit &&
+                        replyMode.sid === item.reply_sid ? (
+                          ''
+                        ) : (
+                          <FontAwesomeIcon
+                            className="reviews_reply_delete"
+                            value={item.reply_sid}
+                            onClick={() => {
+                              deleteHandler2(item.reply_sid)
+                            }}
+                            icon={faTrashAlt}
+                          />
+                        )}
+                      </>
+                    ) : (
+                      ''
+                    )}
                   </div>
                 ) : (
                   ''
                 )
               )}
               {user.isLogin ? (
-                <form onSubmit={submitHandler2} key={data.book}>
+                <form onSubmit={submitHandler2} key={index}>
                   <textarea
-                    key={data.sid}
                     value={replyTxt}
-                    onChange={changeHandler2}
+                    onChange={changeHandler}
                     name={data.sid}
                     placeholder="回覆此書評"
                     className="reviews_reply_text"
@@ -522,7 +666,7 @@ const List = () => {
                           sid: data.sid,
                         })
                       }}
-                      className="reviews_member_icon"
+                      className="reviews_member_icon_times"
                       icon={faTimes}
                     />
                   </>
@@ -541,12 +685,16 @@ const List = () => {
                   />
                 )}
                 <br />
-                <FontAwesomeIcon
-                  onClick={() => deleteHandler(data.sid)}
-                  value={data.sid}
-                  className="reviews_member_icon"
-                  icon={faTrashAlt}
-                />
+                {review.isEdit && data.sid === review.sid ? (
+                  ''
+                ) : (
+                  <FontAwesomeIcon
+                    onClick={() => deleteHandler(data.sid)}
+                    value={data.sid}
+                    className="reviews_member_icon"
+                    icon={faTrashAlt}
+                  />
+                )}
               </div>
             ) : (
               ''
