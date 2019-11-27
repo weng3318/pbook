@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 // import Test from './test'
 import AcList from './components/acList/AcList'
 import AcPageOffline from './components/acPage/AcPageOffline'
