@@ -19,10 +19,25 @@ const BookInfoRight = props => {
       })
     } else if (index === -1) {
       props.dispatch(addToCartFetch(sid))
+      localStorage.setItem(sid, 1)
+      if (!localStorage.getItem('totalAmount')) {
+        localStorage.setItem('totalAmount', 1)
+      } else {
+        localStorage.setItem(
+          'totalAmount',
+          +localStorage.getItem('totalAmount') + 1
+        )
+        localStorage.setItem(
+          'totalPrice',
+          +localStorage.getItem('totalPrice') + props.data.fixed_price
+        )
+      }
       swal({
         text: '加入購物車成功',
         icon: 'success',
         button: 'OK',
+      }).then(() => {
+        props.history.go(0)
       })
     }
   }

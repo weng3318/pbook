@@ -8,38 +8,53 @@ import { delCartFetch } from '../shop/ShopActions'
 import './Cart.scss'
 
 const StepOne = props => {
-  // let bookAmount = []
-  // let a = 0
-  // if (props.totalAmount == (props.cartPayload && props.cartPayload.totalCart)) {
-  //   props.setTotalAmount(props.cartPayload && props.cartPayload.totalCart)
-  // }
+  let bookAmount = []
+  let totalAmount, totalPrice
+  function changeAmount() {
+    totalAmount = 0
+    totalPrice = 0
+    for (
+      let i = 0;
+      i < (props.cartPayload && props.cartPayload.totalCart);
+      i++
+    ) {
+      if (
+        +document.querySelector(
+          '.bookAmount' + (props.cartPayload && props.cartPayload.cart[i].sid)
+        ).value === 0
+      ) {
+        bookAmount[i] = 1
+      } else {
+        bookAmount[i] = document.querySelector(
+          '.bookAmount' + (props.cartPayload && props.cartPayload.cart[i].sid)
+        ).value
+      }
 
-  // function getAmount() {
-  //   for (
-  //     let i = 0;
-  //     i < (props.cartPayload && props.cartPayload.totalCart);
-  //     i++
-  //   ) {
-  //     props.setTotalAmount(0)
-  //     a = 0
-  //     bookAmount[i] = document.querySelector(
-  //       '.bookAmount' + (props.cartPayload && props.cartPayload.cart[i].sid)
-  //     ).value
-  //     for (
-  //       let i = 0;
-  //       i < (props.cartPayload && props.cartPayload.totalCart);
-  //       i++
-  //     ) {
-  //       a += +bookAmount[i]
-  //       props.setTotalAmount(a)
-  //     }
-  //   }
-  //   console.log('a', a)
-  // }
-  // console.log('totalAmount', props.totalAmount)
-
-  function delCart(sid) {
+      localStorage.setItem(
+        props.cartPayload && props.cartPayload.cart[i].sid,
+        +bookAmount[i]
+      )
+      totalPrice += +(
+        (props.cartPayload && props.cartPayload.cart[i].fixed_price) *
+        localStorage.getItem(props.cartPayload && props.cartPayload.cart[i].sid)
+      )
+      totalAmount += +bookAmount[i]
+    }
+    localStorage.setItem('totalAmount', totalAmount)
+    props.setTotalAmount(totalAmount)
+    localStorage.setItem('totalPrice', totalPrice)
+    props.setTotalPrice(totalPrice)
+    // props.history.go(0)
+  }
+  function delCart(sid, fixed_price) {
     props.dispatch(delCartFetch(sid))
+    let a = localStorage.getItem('totalAmount') - localStorage.getItem(sid)
+    let b =
+      localStorage.getItem('totalPrice') -
+      localStorage.getItem(sid) * fixed_price
+    localStorage.setItem('totalAmount', a)
+    localStorage.setItem('totalPrice', b)
+    localStorage.removeItem(sid)
     props.history.go(0)
   }
   console.log(props.cartPayload)
@@ -83,10 +98,10 @@ const StepOne = props => {
                   <input
                     type="number"
                     className={'bookAmount' + cartData.sid}
-                    // onChange={() => getAmount()}
+                    onChange={() => changeAmount()}
                     min="1"
                     max="99"
-                    defaultValue="1"
+                    defaultValue={localStorage.getItem(cartData.sid)}
                   />
                 </div>
                 <div>
@@ -96,7 +111,7 @@ const StepOne = props => {
                   <button
                     type="button"
                     className="delete"
-                    onClick={() => delCart(cartData.sid)}
+                    onClick={() => delCart(cartData.sid, cartData.fixed_price)}
                   >
                     <FontAwesomeIcon icon={faTimes} />
                   </button>
@@ -118,12 +133,17 @@ const StepOne = props => {
           </div>
           <div className="d-flex justify-content-between mt-3 mx-5">
             <span>商品數量</span>
-            <span className="color-red">{props.totalAmount}</span>
+            <span className="color-red">
+              {localStorage.getItem('totalAmount')}
+            </span>
           </div>
           <div className="d-flex justify-content-between mt-3 mx-5">
             <span>商品總計</span>
             <span>
-              NT$ <span className="color-red">520</span>
+              NT${' '}
+              <span className="color-red">
+                {localStorage.getItem('totalPrice')}
+              </span>
             </span>
           </div>
           <button
@@ -140,5 +160,6 @@ const StepOne = props => {
 
 const mapStateToProps = state => ({
   delCart: state.delCart,
+  Cart: state.Cart,
 })
 export default connect(mapStateToProps)(StepOne)

@@ -28,10 +28,22 @@ const BookBuy = props => {
       })
     } else if (index === -1) {
       props.dispatch(addToCartFetch(sid))
+      localStorage.setItem(sid, 1)
+      localStorage.setItem(
+        'totalAmount',
+        +localStorage.getItem('totalAmount') + 1
+      )
+      localStorage.setItem(
+        'totalPrice',
+        +localStorage.getItem('totalPrice') + (data && data.fixed_price)
+      )
+
       swal({
         text: '加入購物車成功',
         icon: 'success',
         button: 'OK',
+      }).then(() => {
+        props.history.go(0)
       })
     }
   }
@@ -40,11 +52,11 @@ const BookBuy = props => {
     let isbn = data && data.isbn
     props.dispatch(addToFavFetch(memberID, isbn))
     // console.log(props.addToFav.payload && props.addToFav.payload.message)
-    // swal({
-    //   text: '加入收藏成功',
-    //   icon: 'success',
-    //   button: 'OK',
-    // })
+    swal({
+      text: '加入收藏成功',
+      icon: 'success',
+      button: 'OK',
+    })
     // props.history.go(0)
   }
   function delFav() {
