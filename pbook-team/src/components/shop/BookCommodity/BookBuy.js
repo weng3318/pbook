@@ -16,18 +16,24 @@ const BookBuy = props => {
     props.bookInfoPayload &&
     props.bookInfoPayload.rows &&
     props.bookInfoPayload.rows[0]
-  // console.log(props.cartPayload)
   function addCart() {
+    let cart = props.cartPayload && props.cartPayload.cart
     let sid = data && data.sid
-    props.dispatch(addToCartFetch(sid))
-    // for(let i=0;i<10;i++){
-    //   if(props.cartPayload[i])
-    // }
-    swal({
-      text: '加入購物車成功',
-      icon: 'success',
-      button: 'OK',
-    })
+    let index = cart.findIndex(carts => carts.sid === sid)
+    if (index !== -1) {
+      swal({
+        text: '購物車已有此商品',
+        icon: 'warning',
+        button: 'OK',
+      })
+    } else if (index === -1) {
+      props.dispatch(addToCartFetch(sid))
+      swal({
+        text: '加入購物車成功',
+        icon: 'success',
+        button: 'OK',
+      })
+    }
   }
   function addFav() {
     let memberID = JSON.parse(localStorage.getItem('user')).MR_number

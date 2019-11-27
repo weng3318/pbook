@@ -12,12 +12,12 @@ import './Cart.scss'
 
 const Buy = props => {
   let [current, setSteps] = useState(0)
+  let [totalAmount, setTotalAmount] = useState(0)
   useEffect(() => {
     props.dispatch(cartFetch())
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-  let cartPayload = props.Cart.payload && props.Cart.payload.cart
-
+  let cartPayload = props.Cart.payload
   function changeSteps(e) {
     if (localStorage.user !== undefined) {
       //有登入
@@ -54,6 +54,9 @@ const Buy = props => {
               changeSteps={changeSteps}
               toHome={toHome}
               cartPayload={cartPayload}
+              history={props.history}
+              totalAmount={totalAmount}
+              setTotalAmount={setTotalAmount}
             ></Steps>
           </Row>
         </Container>

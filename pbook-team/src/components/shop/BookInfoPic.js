@@ -1,8 +1,30 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { addToCartFetch } from './ShopActions'
+import swal from '@sweetalert/with-react'
 import './Shop.scss'
 
 const BookInfoPic = props => {
+  function addCart() {
+    let cart = props.cartPayload && props.cartPayload.cart
+    let sid = props.data.sid
+    let index = cart.findIndex(carts => carts.sid === sid)
+    if (index !== -1) {
+      swal({
+        text: '購物車已有此商品',
+        icon: 'warning',
+        button: 'OK',
+      })
+    } else if (index === -1) {
+      props.dispatch(addToCartFetch(sid))
+      swal({
+        text: '加入購物車成功',
+        icon: 'success',
+        button: 'OK',
+      })
+    }
+  }
   return (
     <>
       <div className="book_pic mr-3">
@@ -20,9 +42,14 @@ const BookInfoPic = props => {
         優惠價 : <span className="price">79</span> 折{' '}
         <span className="price">{props.data.fixed_price}</span> 元
       </span>
-      <button className="addCart mb-2">放入購物車</button>
+      <button className="addCart mb-2" onClick={() => addCart()}>
+        放入購物車
+      </button>
     </>
   )
 }
 
-export default BookInfoPic
+const mapStateToProps = state => ({
+  Cart: state.Cart,
+})
+export default connect(mapStateToProps)(BookInfoPic)

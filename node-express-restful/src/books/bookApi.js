@@ -376,8 +376,8 @@ router.get("/addToCart", (req, res) => {
 router.post("/addToCart", (req, res) => {
   let bookSid = req.body.sid;
   let sql = "SELECT * FROM `vb_books` WHERE `sid`= " + bookSid;
-  if (!req.session.cart) req.session.cart = [];
-  if (!req.session.totalCart) req.session.totalCart = 0;
+  // if (!req.session.cart) req.session.cart = [];
+  // if (!req.session.totalCart) req.session.totalCart = 0;
   db.queryAsync(sql)
     .then(results => {
       req.session.cart.push({
