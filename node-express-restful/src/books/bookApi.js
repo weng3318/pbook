@@ -366,8 +366,113 @@ router.get("/book_categories/:keyword?", (req, res) => {
     });
 });
 
-router.post("/addToCart",(req,res)=>{
-  
-})
+router.get("/addToCart", (req, res) => {
+  const output = {};
+  output.cart = req.session.cart;
+  output.totalCart = req.session.totalCart;
+  res.json(output);
+});
+
+router.post("/addToCart", (req, res) => {
+  let bookSid = req.body.sid;
+  let sql = "SELECT * FROM `vb_books` WHERE `sid`= " + bookSid;
+  // if (!req.session.cart) req.session.cart = [];
+  // if (!req.session.totalCart) req.session.totalCart = 0;
+  db.queryAsync(sql)
+    .then(results => {
+      req.session.cart.push({
+        sid: results[0].sid,
+        pic: results[0].pic,
+        name: results[0].name,
+        fixed_price: results[0].fixed_price
+      });
+      req.session.totalCart++;
+      // results.length=1
+      res.json(req.session.cart);
+    })
+    .catch(error => {
+      console.log(error);
+    });
+});
+
+router.post("/delCart", (req, res) => {
+  let bookSid = req.body.sid;
+  let index = req.session.cart.findIndex(carts => carts.sid === bookSid);
+  if (index !== -1) {
+    req.session.cart.splice(index, 1);
+    req.session.totalCart--;
+    res.json({
+      message: "刪除成功"
+    });
+  } else if (index == -1) {
+    res.json({
+      message: "刪除失敗"
+    });
+  }
+});
+
+router.get("/order/:member?", (req, res) => {
+  const output = {};
+  let member = req.params.member || "";
+  let where = " WHERE 1";
+  if (member) {
+    member = member.split("'").join("\\'"); // 避免 SQL injection
+    where += " AND `od_list`.`memberID` = '" + member + "'";
+    output.memberID = member; //可以在網址看keyword用
+  }
+  let sql = "SELECT COUNT(1) `total` FROM `od_list`" + where;
+  // console.log(sql);
+  db.queryAsync(sql)
+    .then(results => {
+      output.totalBooks = results[0]["total"]; //會員購買的書本數
+      return db.queryAsync("SELECT * FROM `od_list` " + where);
+    })
+    .then(results => {
+      output.rows = results;
+      res.json(output);
+      // return db.queryAsync(
+      //   "SELECT `od_list`.*,`od_detail`.`bookName`,`od_detail`.`bookAmount`,`od_detail`.`bookPrice` FROM `od_list` LEFT JOIN `od_detail` ON `od_list`.`memberID` = `od_detail`.`member`" +
+      //     where
+      // );
+    })
+    .catch(error => {
+      console.log(error);
+    });
+});
+
+router.post("/addOrder", (req, res) => {
+  let orderID = req.body.orderID;
+  let memberID = req.body.memberID;
+  let bookName = req.body.bookName;
+  let singlePrice = req.body.singlePrice;
+  let bookAmount = req.body.bookAmount;
+  let orderPrice = req.body.orderPrice;
+  let created_time = req.body.created_time;
+  let sql =
+    "INSERT INTO `od_list`(`orderID`, `memberID`, `bookName`, `singlePrice`, `bookAmount`, `orderPrice`, `created_time`) VALUES ('" +
+    orderID +
+    "','" +
+    memberID +
+    "','" +
+    bookName +
+    "','" +
+    singlePrice +
+    "','" +
+    bookAmount +
+    "','" +
+    orderPrice +
+    "','" +
+    created_time +
+    "')";
+  db.queryAsync(sql)
+    .then(results => {
+      res.json({
+        message: "新增訂單成功"
+      });
+    })
+    .catch(error => {
+      console.log(error);
+    });
+});
 
 module.exports = router;

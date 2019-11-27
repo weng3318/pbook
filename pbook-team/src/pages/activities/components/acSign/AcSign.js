@@ -1,5 +1,6 @@
 import React from 'react'
 import { Modal, Button } from 'react-bootstrap'
+import swal from 'sweetalert'
 import './acSign.scss'
 
 function AcSign(props) {
@@ -11,6 +12,10 @@ function AcSign(props) {
     phone: '',
     email: '',
   })
+  const [result, setResult] = React.useState({
+    type: 1,
+    description: '報名成功',
+  })
   function handleSubmit() {
     fetch('http://localhost:5555/activities/ac-sign', {
       method: 'POST',
@@ -19,10 +24,17 @@ function AcSign(props) {
         'content-type': 'application/json',
       },
     })
-      .then(response => response.json())
-      .then(result => {
-        console.log(result)
+      .then(res => res.json())
+      .then(response => {
         props.handleClose()
+        setResult(response)
+        swal(
+          +result.type ? '報名成功' : '報名失敗',
+          +result.type
+            ? '活動 ' + props.title + ' 報名成功'
+            : result.description,
+          +result.type ? 'success' : 'error'
+        )
       })
       .catch(err => console.log(err))
   }

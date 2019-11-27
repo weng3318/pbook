@@ -51,6 +51,21 @@ $content: 24px;
   color: #ff525b;
 }
 
+//查看訂單
+.queryOrder {
+  @extend .contentWrap;
+  // border: 1px solid rgb(109, 34, 34);
+  .nobook{
+    @extend .nobook;
+  }
+
+  .Book_title {
+    @extend .MB_title;
+  }
+
+}
+
+
 //查看二手書書籍
 .viewMemberBooks {
   position: absolute;
@@ -106,7 +121,7 @@ $content: 24px;
         color: $black;
         &:focus {
           z-index: 2;
-          box-shadow: 0 0 0 0.2rem $main_color;
+          box-shadow: 0 0 0 .5px $main_color;
         }
       }
     }

@@ -29,13 +29,19 @@ class BR_ReviewerList extends React.Component {
               <h5 className="h5_br">{this.props.br_name}</h5>
 
               <div className="brIconBox">
-                  <div className="AvatarInfo">{this.props.job}</div>
+                <div className="AvatarInfo">{this.props.job}</div>
               </div>
 
-              <Link to={"/reviewer/reviewerBooks/"+this.props.sid} className="d-flex justify-content-center borderLineTop">
-              <div className="brIconBox">
-                <img className="brMark_img" src={require('../reviewer_page/images/P_logo.png')}/>
-              </div>
+              <Link
+                to={'/reviewer/reviewerBooks/' + this.props.sid}
+                className="d-flex justify-content-center borderLineTop"
+              >
+                <div className="brIconBox">
+                  <img
+                    className="brMark_img"
+                    src={require('../reviewer_page/images/P_logo.png')}
+                  />
+                </div>
                 <div className="brReadBooks">看看書櫃</div>
               </Link>
               
@@ -47,25 +53,51 @@ class BR_ReviewerList extends React.Component {
               </Link>
 
               <div className="brIconBox borderLineTop">
-              <a className="brIconShare" href={this.props.youtube} target="black">
-                    <img className="brMark_img" src={require('../reviewer_page/images/icon_youtube.png')}/>
-              </a>
-              <a className="brIconShare" href={this.props.facebook} target="black">
-                    <img className="brMark_img" src={require('../reviewer_page/images/icon_facebook.png')}/>
-              </a>
-              <a className="brIconShare" href={this.props.twitter} target="black">
-                    <img className="brMark_img" src={require('../reviewer_page/images/icon_twitter.png')}/>
-              </a>
+                <a
+                  className="brIconShare"
+                  href={this.props.youtube}
+                  target="black"
+                >
+                  <img
+                    className="brMark_img"
+                    src={require('../reviewer_page/images/icon_youtube.png')}
+                  />
+                </a>
+                <a
+                  className="brIconShare"
+                  href={this.props.facebook}
+                  target="black"
+                >
+                  <img
+                    className="brMark_img"
+                    src={require('../reviewer_page/images/icon_facebook.png')}
+                  />
+                </a>
+                <a
+                  className="brIconShare"
+                  href={this.props.twitter}
+                  target="black"
+                >
+                  <img
+                    className="brMark_img"
+                    src={require('../reviewer_page/images/icon_twitter.png')}
+                  />
+                </a>
               </div>
-          </div>
+            </div>
 
-          <div className="brInfoBox borderLine"><h5 className="h5_br">書評家簡介</h5>
-                <div className="brInfoText ">{this.props.intro}</div>
-                    <div className="fbBox">
-                        <div className="fb-share-button"data-href={this.props.tube} data-layout="button_count"></div>
-                    </div>
+            <div className="brInfoBox borderLine">
+              <h5 className="h5_br">書評家簡介</h5>
+              <div className="brInfoText ">{this.props.intro}</div>
+              <div className="fbBox">
+                <div
+                  className="fb-share-button"
+                  data-href={this.props.tube}
+                  data-layout="button_count"
+                ></div>
+              </div>
+            </div>
           </div>
-    </div>
         <iframe className="brYouTubeRWD borderLine" width="50%" height="auto" src={this.props.tube} frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
 </section>
         <div style={{height:'30px'}}></div>

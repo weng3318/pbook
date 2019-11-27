@@ -7,14 +7,15 @@ import AddMemberBook from '../../pages/member/AddMemberBook'
 import PasswordModify from '../../pages/member/PasswordModify'
 import BooksFavorite from '../../pages/member/BooksFavorite'
 import ViewMemberBooks from '../../pages/member/ViewMemberBooks'
+import QueryOrder from '../../pages/member/QueryOrder'
 import FavoriteReviwer from '../../pages/member/FavoriteReviwer'
+import AcRU from '../../pages/activities/components/acRU/AcRU'
 // import ResetPWD from '../../pages/ResetPWD'
-import {withRouter} from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 
 import '../../pages/member/lukeStyle.scss'
 
-const Sidebar = (props) => {
-
+const Sidebar = props => {
   return (
     <>
      { (JSON.parse(localStorage.getItem('user')).MR_personLevel !== 6)
@@ -58,7 +59,9 @@ const Sidebar = (props) => {
                   訂單管理
                 </Accordion.Toggle>
                 <Accordion.Collapse eventKey="0" className="sidebar_item">
-                  <div style={{cursor: 'pointer'}}>訂單查詢</div>
+                  <Link to='/member/QueryOrder'>
+                    <div style={{cursor: 'pointer'}}>訂單查詢</div>
+                  </Link>
                 </Accordion.Collapse>
               </div>
             </Accordion>
@@ -169,7 +172,9 @@ const Sidebar = (props) => {
                   訂單管理
                 </Accordion.Toggle>
                 <Accordion.Collapse eventKey="0" className="sidebar_item">
-                  <div style={{cursor: 'pointer'}}>訂單查詢</div>
+                  <Link to='/member/QueryOrder'>
+                      <div style={{cursor: 'pointer'}}>訂單查詢</div>
+                  </Link>
                 </Accordion.Collapse>
               </div>
             </Accordion>
@@ -268,8 +273,8 @@ const Sidebar = (props) => {
           <Route exact path="/member/PasswordModify" component={PasswordModify} />
           <Route path="/member/BooksFavorite/:page?" component={BooksFavorite} />
           <Route path="/member/ViewMemberBooks" component={ViewMemberBooks} />
+          <Route path="/member/QueryOrder" component={QueryOrder} />
           <Route path="/member/FavoriteReviwer/:page?" component={FavoriteReviwer} />
-          
         </Switch>
      
     </>

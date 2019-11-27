@@ -125,3 +125,23 @@ export function getRecommendBooks(memberNum, limit = 8) {
     payload: { memberNum, limit },
   }
 }
+
+export const GET_AC_TABLE_BASIC_NAME = 'AC_TABLE'
+export function getAcTable(memberNum) {
+  return {
+    types: ['AC_TABLE_REQUEST', 'AC_TABLE_SUCCESS', 'AC_TABLE_FAILURE'],
+    // 檢查快取：
+    shouldCallAPI: state => true,
+    // 執行抓取資料：
+    callAPI: () =>
+      fetch('http://localhost:5555/activities/ac-sign/' + memberNum, {
+        method: 'GET',
+        headers: new Headers({
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        }),
+      }),
+    // 要在開始/結束 action 注入的參數
+    payload: { memberNum },
+  }
+}

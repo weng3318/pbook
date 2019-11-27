@@ -13,6 +13,8 @@ router.post('/register', (req, res, next) => {
     const crypto = require('crypto')
     let sha1 = crypto.createHash('sha1')
     let hash = sha1.update(req.body.email).digest('hex')
+    // console.log(hash);
+    
     let nickname = req.body.nickname
     // console.log(hash);
     // return
@@ -42,8 +44,12 @@ router.post('/register', (req, res, next) => {
                 }else{
                     db.query(`SELECT MAX(sid) FROM mr_information`,(err, data)=>{
                        new_number = number_blank.slice(0, -3)+ (data[0]['MAX(sid)']+1)
-                    //    res.json(new_number)
+                        console.log(new_number, hash, nickname);
+                        
                        db.query(Member.getAddMemberSql(new_number, hash, nickname), (err, data) => {
+                           console.log(1, data);
+                           console.log(2, err);
+                           
                            if(err){
                                res.json({
                                    status: "伺服器錯誤，請稍後在試",
@@ -51,6 +57,7 @@ router.post('/register', (req, res, next) => {
                                 })
                                return;
                            }
+
                            // 若寫入資料庫成功，則回傳給clinet端下：
                            res.json({
                                status: "註冊成功",
@@ -79,7 +86,7 @@ router.post('/sendPwd', (req, res)=>{
                 message: '這個信箱還未註冊過'
             })
         }
-        console.log(123);
+        // console.log(123);
         let token = row[0].tokenId;
         let transporter = nodemailer.createTransport({
             service: 'Gmail',
@@ -188,15 +195,90 @@ router.post('/queryReviewer/:page', (req, res)=>{
 
 
 
+    //書評家加入個人書櫃
+    router.post('/addBookcase_Review', (req, res)=>{
+        let number = req.body.number
+        let number_reviewer = req.body.number_reviewer
+        let sql = `SELECT COUNT(1) total FROM br_reviewermark WHERE number = '${number}' && number_reviewer = '${number_reviewer}'`
+        db.queryAsync(sql)
+            .then( row => {
+                console.log(row[0].total);
+                if(row[0].total >= 1 ){
+                    res.json({
+                        message: "此書評家已加入過收藏"
+                    })
+                    return
+                }else{
+                    //新增書評家到書櫃
+                    let sql = `INSERT INTO br_reviewermark(number, number_reviewer, created_time) 
+                                VALUES ('${number}','${number_reviewer}', now())`
+                    return db.queryAsync(sql)
+                    }
+                })
+                .then(result=>{
+                    if(result)
+                        res.json({
+                            status: "新增到書櫃",
+                            message: "加入到書櫃成功"
+                        })
+                })            
+            })
+
+    //書評家取消追蹤
+    router.post('/removeBookcase_Review', (req, res) => {
+        let number = req.body.number
+        let number_reviewer = req.body.number_reviewer
+        // console.log(number, isbn);
+
+        db.query(Member.removeBookcase_Review(number, number_reviewer), (err, result)=>{
+            // console.log(result);
+            res.json({
+                message: '取消追蹤成功'
+            })
+        })
+    })
+
+
+
 //書籍加入個人書櫃
 router.post('/addBookcase', (req, res)=>{
     let number = req.body.number
     let isbn = req.body.isbn
-    db.query(Member.addToBookcase(number, isbn), (err, result)=>{
-        // console.log("addBookcase",result);
+    let sql = `SELECT COUNT(1) total FROM br_bookcase WHERE number = '${number}' && isbn = '${isbn}'`
+    db.queryAsync(sql)
+        .then( row => {
+            // console.log(row[0].total);
+            if(row[0].total >= 1 ){
+                res.json({
+                    message: "本書已加入過收藏"
+                })
+                return
+            }else{
+                //新增書籍到書櫃
+                let sql = `INSERT INTO br_bookcase(number, isbn, title, bookName, blog, created_time) 
+                            VALUES('${number}', '${isbn}', '', '', '',now()) `
+                return db.queryAsync(sql)
+                }
+            })
+            .then(result=>{
+                if(result)
+                    res.json({
+                        status: "新增到書櫃",
+                        message: "加入到書櫃成功"
+                    })
+            })            
+        })
+
+//書籍取消追蹤
+router.post('/removeBookcase', (req, res) => {
+    let number = req.body.number
+    let isbn = req.body.isbn
+    // console.log(number, isbn);
+
+    db.query(Member.removeBookcase(number, isbn), (err, result)=>{
+        // console.log(result);
         res.json({
-            status: "新增到書櫃",
-            message: "加入到書櫃成功"
+            message: '取消追蹤成功'
         })
     })
 })

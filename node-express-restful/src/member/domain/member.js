@@ -59,14 +59,6 @@ class Member{
         return sql
     }
 
-    //新增書籍到書櫃
-    addToBookcase(number, isbn){
-         //把書籍加入最愛的sql
-        let sql = `INSERT INTO br_bookcase(number, isbn, bookName, blog, likebook, readbook, created_time) 
-            VALUES('${number}', '${isbn}', '', '', 66,188, now()) `
-        return sql
-    }
-
     //查詢二手書櫃
     queryMemberBook(number){
         let sql = `SELECT * FROM mb_books WHERE mb_shelveMember = '${number}'`
@@ -82,6 +74,17 @@ class Member{
     //刪除二手書上架書籍
     deleteBook(sid){
         let sql = `DELETE FROM mb_books WHERE mb_sid = '${sid}'`
+        return sql
+    }
+
+    //刪除書籍追蹤
+    removeBookcase(number, isbn){
+        let sql = `DELETE FROM br_bookcase WHERE number = '${number}' && isbn = ${isbn}`
+        return sql
+    }
+    //刪除書評家追蹤
+    removeBookcase_Review(number, number_reviewer){
+        let sql = `DELETE FROM br_reviewermark WHERE number = '${number}' && number_reviewer = '${number_reviewer}'`
         return sql
     }
 

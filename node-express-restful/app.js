@@ -39,7 +39,7 @@ var fileStoreOptions = {};
 // 設定session的middleware
 app.use(
   session({
-    store: new FileStore(fileStoreOptions),
+    // store: new FileStore(fileStoreOptions),
     //新用戶沒有使用到session物件時不會建立session和發送cookie
     saveUninitialized: true,
     resave: true,
@@ -52,10 +52,11 @@ app.use(
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(express.static("public"));
-// app.use((req, res, next) => {
-//   req.session.cart = {};
-//   next();
-// });
+app.use((req, res, next) => {
+  if (!req.session.cart) req.session.cart = [];
+  if (!req.session.totalCart) req.session.totalCart = 0;
+  next();
+});
 
 app.use("/member", require("./src/member/member"));
 app.use("/forum", require("./src/forum/homepage"));
@@ -64,6 +65,7 @@ app.use("/books", require("./src/books/bookApi"));
 
 app.use("/nana_use", require("./src/nana_use/chat"));
 app.use("/nana_use", require("./src/nana_use/game"));
+app.use("/nana_use", require("./src/nana_use/index"));
 
 
 app.use("/activities", require("./src/activities/acApi"));
@@ -79,7 +81,10 @@ app.use("/reviewer", require("./src/reviewer/brBooks"));
 app.use("/reviewer", require("./src/reviewer/brBlogEdit"));
 
 app.get("/", function(req, res) {
-  res.send("Home");
+  res.json({
+    loc: 'home',
+    session: req.session
+  });
 });
 
 //登出
@@ -89,6 +94,11 @@ app.get("/logout", (req, res) => {
   delete req.session.memberData;
   // delete req.session.cookie;
   // console.log("logout success2", req.session);
+  return res.redirect("/");
+});
+app.get("/clearCart", (req, res) => { 
+  delete req.session.cart;
+  delete req.session.totalCart;
   return res.redirect("/");
 });
 

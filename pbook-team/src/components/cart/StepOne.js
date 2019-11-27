@@ -1,14 +1,63 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { Col } from 'react-bootstrap'
+import { connect } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
+import { delCartFetch } from '../shop/ShopActions'
 import './Cart.scss'
 
 const StepOne = props => {
-  function getAmount() {
-    console.log(document.querySelector('.bookAmount').value)
+  let bookAmount = []
+  let totalAmount, totalPrice
+  function changeAmount() {
+    totalAmount = 0
+    totalPrice = 0
+    for (
+      let i = 0;
+      i < (props.cartPayload && props.cartPayload.totalCart);
+      i++
+    ) {
+      if (
+        +document.querySelector(
+          '.bookAmount' + (props.cartPayload && props.cartPayload.cart[i].sid)
+        ).value === 0
+      ) {
+        bookAmount[i] = 1
+      } else {
+        bookAmount[i] = document.querySelector(
+          '.bookAmount' + (props.cartPayload && props.cartPayload.cart[i].sid)
+        ).value
+      }
+
+      localStorage.setItem(
+        props.cartPayload && props.cartPayload.cart[i].sid,
+        +bookAmount[i]
+      )
+      totalPrice += +(
+        (props.cartPayload && props.cartPayload.cart[i].fixed_price) *
+        localStorage.getItem(props.cartPayload && props.cartPayload.cart[i].sid)
+      )
+      totalAmount += +bookAmount[i]
+    }
+    localStorage.setItem('totalAmount', totalAmount)
+    props.setTotalAmount(totalAmount)
+    localStorage.setItem('totalPrice', totalPrice)
+    props.setTotalPrice(totalPrice)
+    // props.history.go(0)
   }
+  function delCart(sid, fixed_price) {
+    props.dispatch(delCartFetch(sid))
+    let a = localStorage.getItem('totalAmount') - localStorage.getItem(sid)
+    let b =
+      localStorage.getItem('totalPrice') -
+      localStorage.getItem(sid) * fixed_price
+    localStorage.setItem('totalAmount', a)
+    localStorage.setItem('totalPrice', b)
+    localStorage.removeItem(sid)
+    props.history.go(0)
+  }
+  console.log(props.cartPayload)
   return (
     <>
       <Col md={7}>
@@ -18,41 +67,57 @@ const StepOne = props => {
             <div className="bookAmount">數量</div>
             <div className="bookPrice">價格</div>
           </div>
-          <div className="m-4 d-flex justify-content-between align-items-center eachDetail">
-            <div className="picture">
-              <Link to={'/books/information/123'} target="_blank">
-                <img
-                  src={
-                    'http://localhost:5555/images/books/5479510f15038363abee10df642bcf669c77200f.jpg'
-                  }
-                  alt=""
-                />
-              </Link>
-            </div>
-            <div className="bookName">
-              <Link to={'/books/information/123'} target="_blank">
-                <span>一見峮心 峮峮個人寫真書</span>
-              </Link>
-            </div>
-            <div>
-              <input
-                type="number"
-                className="bookAmount"
-                onChange={() => getAmount()}
-                min="1"
-                max="99"
-                defaultValue="1"
-              />
-            </div>
-            <div>
-              <span className="bookPrice">NT$ 520</span>
-            </div>
-            <div>
-              <button type="button" className="delete">
-                <FontAwesomeIcon icon={faTimes} />
-              </button>
-            </div>
-          </div>
+
+          {props.cartPayload &&
+            props.cartPayload &&
+            props.cartPayload.cart.map(cartData => (
+              <div
+                className="m-4 d-flex justify-content-between align-items-center eachDetail"
+                key={cartData.sid}
+              >
+                <div className="picture">
+                  <Link
+                    to={'/books/information/' + cartData.sid}
+                    target="_blank"
+                  >
+                    <img
+                      src={'http://localhost:5555/images/books/' + cartData.pic}
+                      alt=""
+                    />
+                  </Link>
+                </div>
+                <div className="bookName">
+                  <Link
+                    to={'/books/information/' + cartData.sid}
+                    target="_blank"
+                  >
+                    <span>{cartData.name}</span>
+                  </Link>
+                </div>
+                <div>
+                  <input
+                    type="number"
+                    className={'bookAmount' + cartData.sid}
+                    onChange={() => changeAmount()}
+                    min="1"
+                    max="99"
+                    defaultValue={localStorage.getItem(cartData.sid)}
+                  />
+                </div>
+                <div>
+                  <span className="bookPrice">NT$ {cartData.fixed_price}</span>
+                </div>
+                <div>
+                  <button
+                    type="button"
+                    className="delete"
+                    onClick={() => delCart(cartData.sid, cartData.fixed_price)}
+                  >
+                    <FontAwesomeIcon icon={faTimes} />
+                  </button>
+                </div>
+              </div>
+            ))}
         </div>
       </Col>
       <Col md={5}>
@@ -60,22 +125,29 @@ const StepOne = props => {
           <div className="orderSummary d-flex align-items-center justify-content-center">
             訂單摘要
           </div>
-          <div className="d-flex justify-content-between my-2 mx-5">
+          <div className="d-flex justify-content-between mt-3 mx-5">
             <span>商品項數</span>
-            <span className="color-red">1</span>
+            <span className="color-red">
+              {props.cartPayload && props.cartPayload.totalCart}
+            </span>
           </div>
-          <div className="d-flex justify-content-between my-2 mx-5">
+          <div className="d-flex justify-content-between mt-3 mx-5">
             <span>商品數量</span>
-            <span className="color-red">1</span>
+            <span className="color-red">
+              {localStorage.getItem('totalAmount')}
+            </span>
           </div>
-          <div className="d-flex justify-content-between my-2 mx-5">
+          <div className="d-flex justify-content-between mt-3 mx-5">
             <span>商品總計</span>
             <span>
-              NT$ <span className="color-red">520</span>
+              NT${' '}
+              <span className="color-red">
+                {localStorage.getItem('totalPrice')}
+              </span>
             </span>
           </div>
           <button
-            className="goCheckout ml-auto m-3"
+            className="goCheckout ml-auto m-4"
             onClick={() => props.changeSteps(1)}
           >
             前往結帳
@@ -86,4 +158,8 @@ const StepOne = props => {
   )
 }
 
-export default StepOne
+const mapStateToProps = state => ({
+  delCart: state.delCart,
+  Cart: state.Cart,
+})
+export default connect(mapStateToProps)(StepOne)
