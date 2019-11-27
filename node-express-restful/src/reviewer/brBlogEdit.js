@@ -4,7 +4,7 @@ const bluebird = require('bluebird');
 const router = express.Router();
 
 const db = mysql.createConnection({
-    host: "localhost",
+    host: "192.168.27.186",
     user: "root",
     password: "root",
     database: "pbook"
@@ -78,12 +78,13 @@ bluebird.promisifyAll(db)
 //編輯部落格資料
 router.post('/brBlogEdit', (req, res, next)=>{
     let blog = req.body.blog
-    
-    db.query(`UPDATE br_bookcase SET likebook = '555' WHERE number = 'MR00001'`,(err, result)=>{
+    let sid = req.body.sid
+console.log('發送來的blog',blog,'發送來的sid',sid)
+    db.query(`UPDATE br_bookcase SET blog = '${blog}' WHERE br_bookcase.sid = '${sid}'`,(err, result)=>{
         if(err){ res.json(err) }
         res.json({
             status: "編輯成功",
-            message: "編輯文章已發佈"
+            message: "文章已經發佈了"
         })
     })
 })

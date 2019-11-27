@@ -38,9 +38,6 @@ class BR_BookcaseList extends React.Component {
     let Hash = `${vb_book_sid}`
         return (
             <>
-        <Link to={`/reviewer/reviewerBooks/reviewerBlog/ReviewerBlogEdit/${sid}`}>
-               <h1>編輯文章</h1>
-        </Link>
         {/* <ScrollToTop> */}
         <section className="ReviewerListAllBox_Bookcase">
             {/* 書籍圖片 */}
@@ -69,7 +66,7 @@ class BR_BookcaseList extends React.Component {
                         <div className="brAuthorText">作者：{this.props.author}</div>
                     </div>
                     {/* 書櫃區的簡介內文 */}
-                    <h5 className="brInfoText_Bookcase" dangerouslySetInnerHTML={{__html:this.props.introduction? this.props.introduction:this.props.blog}}></h5>　
+                    <h5 className="brInfoText_Bookcase" dangerouslySetInnerHTML={{__html:this.props.blog? this.props.blog:this.props.introduction}}></h5>　
                     {/* 看更多 more (圖示) */}
                         <Link to={`/books/information/${Hash}`} className="brIconMore_Bookcase">
                                 <img className="brMore_img" src={require('../reviewer_page/images/icon_more.png')}/>
@@ -93,7 +90,7 @@ class BR_BookcaseList extends React.Component {
                         <div className="brLikeBox">
                            <img className="brMark_img" src={require('../reviewer_page/images/icon_likebook.png')}/>
                                 <span className="brMark_p">{this.props.likebook}</span>
-                           <img className="brMark_img_noAni" src={require('../reviewer_page/images/icon_readbook.png')}/>
+                           <img onClick={() => this.handleOpened(opened === 'blog' ? null : 'blog')} className="brMark_img_noAni" src={require('../reviewer_page/images/icon_readbook.png')}/>
                                 <span className="brMark_p">{this.props.readbook}</span>
                         </div>
             {/* 分享功能 */}
