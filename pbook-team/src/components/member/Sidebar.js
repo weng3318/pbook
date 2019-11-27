@@ -10,6 +10,7 @@ import ViewMemberBooks from '../../pages/member/ViewMemberBooks'
 import QueryOrder from '../../pages/member/QueryOrder'
 import FavoriteReviwer from '../../pages/member/FavoriteReviwer'
 import MemberArticleList from '../../pages/Forum/MemberArticleList'
+import MemberArticleMark from '../../pages/Forum/MemberArticleMark'
 import AcRU from '../../pages/activities/components/acRU/AcRU'
 // import ResetPWD from '../../pages/ResetPWD'
 import { withRouter } from 'react-router-dom'
@@ -55,7 +56,7 @@ const Sidebar = props => {
                   </Accordion.Collapse>
                 </div>
               </Accordion>
-              <Accordion >
+              <Accordion>
                 <div className="sidebar_card">
                   <Accordion.Toggle
                     className="sidebar_title"
@@ -75,7 +76,7 @@ const Sidebar = props => {
                   </Accordion.Collapse>
                 </div>
               </Accordion>
-              <Accordion >
+              <Accordion>
                 <div className="sidebar_card">
                   <Accordion.Toggle
                     className="sidebar_title"
@@ -102,7 +103,7 @@ const Sidebar = props => {
                   </Accordion.Collapse>
                 </div>
               </Accordion>
-              <Accordion >
+              <Accordion>
                 <div className="sidebar_card">
                   <Accordion.Toggle
                     className="sidebar_title"
@@ -129,7 +130,7 @@ const Sidebar = props => {
                   </Accordion.Collapse>
                 </div>
               </Accordion>
-              <Accordion >
+              <Accordion>
                 <div className="sidebar_card">
                   <Accordion.Toggle
                     className="sidebar_title"
@@ -169,7 +170,12 @@ const Sidebar = props => {
                   </Accordion.Toggle>
                   <Accordion.Collapse eventKey="0" className="sidebar_item">
                     <Link to="/member/forum/memberArticleList">
-                      <div style={{ cursor: 'pointer' }}>已發佈文章</div>
+                      <div style={{ cursor: 'pointer' }}>發佈文章</div>
+                    </Link>
+                  </Accordion.Collapse>
+                  <Accordion.Collapse eventKey="0" className="sidebar_item">
+                    <Link to="/member/forum/memberArticleMark/">
+                      <div style={{ cursor: 'pointer' }}>收藏書籤</div>
                     </Link>
                   </Accordion.Collapse>
                 </div>
@@ -310,7 +316,7 @@ const Sidebar = props => {
                 </div>
               </Accordion>
               {/* forum */}
-              <Accordion defaultActiveKey="0">
+              <Accordion>
                 <div className="sidebar_card">
                   <Accordion.Toggle
                     className="sidebar_title"
@@ -326,8 +332,13 @@ const Sidebar = props => {
                     討論區管理
                   </Accordion.Toggle>
                   <Accordion.Collapse eventKey="0" className="sidebar_item">
-                    <Link to="/member/forum/articleList">
+                    <Link to="/member/forum/memberArticleList">
                       <div style={{ cursor: 'pointer' }}>已發佈文章</div>
+                    </Link>
+                  </Accordion.Collapse>
+                  <Accordion.Collapse eventKey="1" className="sidebar_item">
+                    <Link to="/member/forum/memberArticleMark/">
+                      <div style={{ cursor: 'pointer' }}>收藏書籤</div>
                     </Link>
                   </Accordion.Collapse>
                 </div>
@@ -369,6 +380,10 @@ const Sidebar = props => {
         <Route
           path="/member/forum/memberArticleList"
           component={MemberArticleList}
+        />
+        <Route
+          path="/member/forum/memberArticleMark/"
+          component={MemberArticleMark}
         />
         <Route
           path="/member/FavoriteReviwer/:page?"

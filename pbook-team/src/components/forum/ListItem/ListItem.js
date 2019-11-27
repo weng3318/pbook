@@ -37,7 +37,7 @@ class Listitem extends React.Component {
   componentDidMount() {}
   handleIconClick = value => event => {
     if (value === 1) {
-      this.setState({ faBookmark: !this.state.faBookmark })
+      this.handleBookmarkClick()
     }
     if (value === 2) {
       this.setState({ like: !this.state.like })
@@ -49,6 +49,28 @@ class Listitem extends React.Component {
       userHover: !this.state.userHover,
     })
   }
+
+  handleBookmarkClick = () => {
+    if (localStorage.user !== undefined) {
+      let user = JSON.parse(localStorage.user)
+      let article = this.props.article
+
+      if (!faBookmark) {
+        fetch(
+          `http://localhost:5555/forum/article/bookmark/delete/${article.fm_articleId}/${user.MR_number}`
+        ).then(res => {
+          this.setState({ faBookmark: !this.state.faBookmark })
+        })
+      } else {
+        fetch(
+          `http://localhost:5555/forum/article/bookmark/add/${article.fm_articleId}/${user.MR_number}`
+        ).then(res => {
+          this.setState({ faBookmark: !this.state.faBookmark })
+        })
+      }
+    }
+  }
+
   render() {
     let article = this.props.article
     if (!this.props.empty) {

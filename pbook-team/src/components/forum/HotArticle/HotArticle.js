@@ -14,7 +14,7 @@ class HotArticle extends React.Component {
     }
   }
   componentDidMount() {
-    fetch('http://localhost:5555/forum/homepage/true', {
+    fetch('http://localhost:5555/forum/hotArticle', {
       method: 'GET',
     })
       .then(response => {

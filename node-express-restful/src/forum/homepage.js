@@ -33,6 +33,21 @@ router
       res.json(output);
     });
   });
+//熱門文章 hotArticle
+router
+  .route("/hotArticle")
+  .all((req, res, next) => {
+    next();
+  })
+  .get((req, res) => {
+    let output = {};
+    let sql = `SELECT * FROM fm_article article JOIN vb_categories vb ON article.fm_category = vb.sid JOIN mr_information mr ON article.fm_memberId=mr.MR_number WHERE article.fm_featured=1 ORDER BY fm_read DESC LIMIT 5`;
+    db.query(sql, (error, results, fields) => {
+      if (error) throw error;
+      output.featured = results;
+      res.json(output);
+    });
+  });
 
 //文章列表 article list
 router
@@ -341,7 +356,7 @@ router
       res.json(results);
     });
   });
-//delete 刪除文章
+// manage article delete 刪除文章
 router
   .route("/manageArticle/delete/:articleId")
   .all((req, res, next) => {
@@ -350,6 +365,20 @@ router
   .get((req, res) => {
     let articleId = req.params.articleId;
     let sql = `DELETE FROM fm_article WHERE fm_articleId ='${articleId}'`;
+    db.queryAsync(sql).then(results => {
+      res.json(results);
+    });
+  });
+
+// manage bookmark 管理書籤
+router
+  .route("/manageArticleMark/list/:memberId")
+  .all((req, res, next) => {
+    next();
+  })
+  .get((req, res) => {
+    let memberId = req.params.memberId;
+    let sql = `SELECT * FROM fm_bookmark JOIN fm_article ON fm_article.fm_articleId=fm_bookmark.fm_articleId JOIN vb_categories ON vb_categories.sid=fm_article.fm_category WHERE fm_bookmark.fm_memberId='${memberId}'`;
     db.queryAsync(sql).then(results => {
       res.json(results);
     });
@@ -461,7 +490,7 @@ router
     );
   });
 
-//搜尋serach
+//新增假留言API =>Input
 router
   .route("/aaa/:articleId")
   .all((req, res, next) => {
@@ -488,6 +517,43 @@ router
     );
   });
 
+//新增假書籤
+router
+  .route("/bookmark")
+  .all((req, res, next) => {
+    next();
+  })
+  .get((req, res) => {
+    let sql = `SELECT fm_articleId FROM fm_article ORDER BY RAND() LIMIT 1`;
+    db.queryAsync(sql).then(results => {
+      let fm_articleId = results[0].fm_articleId;
+      let fm_responseId = null;
+      let fm_memberId = fakeMember(20);
+      sql = `INSERT INTO fm_bookmark(fm_bookmarkSid, fm_articleId, fm_responseId, fm_memberId) VALUES (NULL,?,?,?)`;
+      db.query(
+        sql,
+        [fm_articleId, fm_responseId, fm_memberId],
+        (error, result, field) => {
+          res.json(result);
+        }
+      );
+    });
+  });
+
+function randomNumber(num) {
+  return Math.floor(Math.random() * num) + 1;
+}
+
+function fakeMember(num) {
+  let fm_responseId;
+  let aa = Math.floor(Math.random() * num) + 1;
+  if (aa <= 9) {
+    fm_responseId = "MR0000" + aa;
+  } else if (aa >= 10 && aa <= 20) {
+    fm_responseId = "MR000" + aa;
+  }
+  return fm_responseId;
+}
 // router.route("/homepage/:id?").get((req, res) => {
 //   let output = {};
 //   let sql = "SELECT * FROM `fm_article` WHERE `fm_featured`= 1";

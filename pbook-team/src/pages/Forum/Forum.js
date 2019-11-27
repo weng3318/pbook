@@ -110,6 +110,7 @@ class Forum extends React.Component {
           <div className="position-r">
             <div className="forum-list-wrapper card-module">
               <div className="articleList-title">文章列表</div>
+              <hr></hr>
               {this.state.articleList.map(value => {
                 return (
                   <Listitem
