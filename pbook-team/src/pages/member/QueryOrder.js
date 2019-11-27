@@ -11,6 +11,20 @@ class QueryOrder extends React.Component {
             orderData: [],
         }
       }
+    
+    componentDidMount(){
+        this.queryOrder()
+    }
+
+    queryOrder = () =>{
+        let number = JSON.parse(localStorage.getItem('user')).MR_number
+
+        axios.get('http://localhost:5555/books/order/MR00173')
+            .then( rows =>{
+                console.log(rows);
+                
+            })
+    }
 
 
     render() {
@@ -28,12 +42,16 @@ class QueryOrder extends React.Component {
                     </>
                     ):(
                     <>
-                    <Table striped bordered hover size="sm">
+                    <div className="order_title">您目前的訂單有1筆</div>
+                    <Table striped bordered hover size="sm"
+                        style={{marginLeft: '80px', marginTop: '30px'}}
+                    >
                         <thead>
                             <tr>
-                            <th>#</th>
+                            <th>訂單編號</th>
                             <th>First Name</th>
                             <th>Last Name</th>
+                            <th>Username</th>
                             <th>Username</th>
                             </tr>
                         </thead>
@@ -43,16 +61,19 @@ class QueryOrder extends React.Component {
                             <td>Mark</td>
                             <td>Otto</td>
                             <td>@mdo</td>
+                            <td>@mdo</td>
                             </tr>
                             <tr>
                             <td>2</td>
                             <td>Jacob</td>
                             <td>Thornton</td>
                             <td>@fat</td>
+                            <td>@fat</td>
                             </tr>
                             <tr>
                             <td>3</td>
                             <td colSpan="2">Larry the Bird</td>
+                            <td>@twitter</td>
                             <td>@twitter</td>
                             </tr>
                         </tbody>

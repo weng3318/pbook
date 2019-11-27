@@ -62,6 +62,16 @@ $content: 24px;
   .Book_title {
     @extend .MB_title;
   }
+  .order_title{
+    margin: 50px 0 0 80px;
+    font-size: $title;
+  }
+  th{
+    font-size: $content;
+  }
+  td{
+    font-size: 18px;
+  }
 
 }
 
