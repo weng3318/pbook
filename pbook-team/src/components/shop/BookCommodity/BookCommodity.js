@@ -20,6 +20,7 @@ const BookCommodity = props => {
 
   let bookInfoPayload = props.bookInfo.payload
   let cartPayload = props.Cart.payload
+  console.log(cartPayload)
   return (
     <>
       <Container className="px-0 detail_wrapper" fluid={true}>

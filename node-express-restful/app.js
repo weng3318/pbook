@@ -52,10 +52,11 @@ app.use(
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(express.static("public"));
-// app.use((req, res, next) => {
-//   req.session.cart = {};
-//   next();
-// });
+app.use((req, res, next) => {
+  if (!req.session.cart) req.session.cart = [];
+  if (!req.session.totalCart) req.session.totalCart = 0;
+  next();
+});
 
 app.use("/member", require("./src/member/member"));
 app.use("/forum", require("./src/forum/homepage"));

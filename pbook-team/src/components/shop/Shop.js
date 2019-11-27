@@ -5,7 +5,7 @@ import Breadcrumb from './Breadcrumb'
 import Categories from './Categories'
 import DataList from './DataList'
 import DataPic from './DataPic'
-import { shopFetch, cgFetch } from './ShopActions'
+import { shopFetch, cgFetch, cartFetch } from './ShopActions'
 import './Shop.scss'
 
 const Shop = props => {
@@ -15,6 +15,7 @@ const Shop = props => {
     : 'list'
   useEffect(() => {
     props.dispatch(cgFetch())
+    props.dispatch(cartFetch())
     props.dispatch(
       shopFetch(props.match.params.page, props.match.params.categories)
     )
@@ -29,6 +30,7 @@ const Shop = props => {
   }
   let categoriesPayload = props.categories.payload
   let shopPayload = props.shop.payload
+  let cartPayload = props.Cart.payload
   let Data
   if (mode === 'list') {
     Data = DataList
@@ -50,6 +52,7 @@ const Shop = props => {
             <Categories categoriesPayload={categoriesPayload}></Categories>
             <Data
               shopPayload={shopPayload}
+              cartPayload={cartPayload}
               nowCategories={props.match.params.categories}
               nowPage={props.match.params.page}
             ></Data>
@@ -63,5 +66,6 @@ const Shop = props => {
 const mapStateToProps = state => ({
   shop: state.shop,
   categories: state.categories,
+  Cart: state.Cart,
 })
 export default connect(mapStateToProps)(Shop)

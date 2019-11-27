@@ -8,11 +8,39 @@ import { delCartFetch } from '../shop/ShopActions'
 import './Cart.scss'
 
 const StepOne = props => {
-  function getAmount() {
-    console.log(document.querySelector('.bookAmount').value)
-  }
+  // let bookAmount = []
+  // let a = 0
+  // if (props.totalAmount == (props.cartPayload && props.cartPayload.totalCart)) {
+  //   props.setTotalAmount(props.cartPayload && props.cartPayload.totalCart)
+  // }
+
+  // function getAmount() {
+  //   for (
+  //     let i = 0;
+  //     i < (props.cartPayload && props.cartPayload.totalCart);
+  //     i++
+  //   ) {
+  //     props.setTotalAmount(0)
+  //     a = 0
+  //     bookAmount[i] = document.querySelector(
+  //       '.bookAmount' + (props.cartPayload && props.cartPayload.cart[i].sid)
+  //     ).value
+  //     for (
+  //       let i = 0;
+  //       i < (props.cartPayload && props.cartPayload.totalCart);
+  //       i++
+  //     ) {
+  //       a += +bookAmount[i]
+  //       props.setTotalAmount(a)
+  //     }
+  //   }
+  //   console.log('a', a)
+  // }
+  // console.log('totalAmount', props.totalAmount)
+
   function delCart(sid) {
     props.dispatch(delCartFetch(sid))
+    props.history.go(0)
   }
   console.log(props.cartPayload)
   return (
@@ -27,7 +55,7 @@ const StepOne = props => {
 
           {props.cartPayload &&
             props.cartPayload &&
-            props.cartPayload.map(cartData => (
+            props.cartPayload.cart.map(cartData => (
               <div
                 className="m-4 d-flex justify-content-between align-items-center eachDetail"
                 key={cartData.sid}
@@ -54,8 +82,8 @@ const StepOne = props => {
                 <div>
                   <input
                     type="number"
-                    className="bookAmount"
-                    onChange={() => getAmount()}
+                    className={'bookAmount' + cartData.sid}
+                    // onChange={() => getAmount()}
                     min="1"
                     max="99"
                     defaultValue="1"
@@ -82,22 +110,24 @@ const StepOne = props => {
           <div className="orderSummary d-flex align-items-center justify-content-center">
             訂單摘要
           </div>
-          <div className="d-flex justify-content-between my-2 mx-5">
+          <div className="d-flex justify-content-between mt-3 mx-5">
             <span>商品項數</span>
-            <span className="color-red">1</span>
+            <span className="color-red">
+              {props.cartPayload && props.cartPayload.totalCart}
+            </span>
           </div>
-          <div className="d-flex justify-content-between my-2 mx-5">
+          <div className="d-flex justify-content-between mt-3 mx-5">
             <span>商品數量</span>
-            <span className="color-red">1</span>
+            <span className="color-red">{props.totalAmount}</span>
           </div>
-          <div className="d-flex justify-content-between my-2 mx-5">
+          <div className="d-flex justify-content-between mt-3 mx-5">
             <span>商品總計</span>
             <span>
               NT$ <span className="color-red">520</span>
             </span>
           </div>
           <button
-            className="goCheckout ml-auto m-3"
+            className="goCheckout ml-auto m-4"
             onClick={() => props.changeSteps(1)}
           >
             前往結帳
