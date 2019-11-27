@@ -1,14 +1,20 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { Col } from 'react-bootstrap'
+import { connect } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
+import { delCartFetch } from '../shop/ShopActions'
 import './Cart.scss'
 
 const StepOne = props => {
   function getAmount() {
     console.log(document.querySelector('.bookAmount').value)
   }
+  function delCart(sid) {
+    props.dispatch(delCartFetch(sid))
+  }
+  console.log(props.cartPayload)
   return (
     <>
       <Col md={7}>
@@ -18,41 +24,57 @@ const StepOne = props => {
             <div className="bookAmount">數量</div>
             <div className="bookPrice">價格</div>
           </div>
-          <div className="m-4 d-flex justify-content-between align-items-center eachDetail">
-            <div className="picture">
-              <Link to={'/books/information/123'} target="_blank">
-                <img
-                  src={
-                    'http://localhost:5555/images/books/5479510f15038363abee10df642bcf669c77200f.jpg'
-                  }
-                  alt=""
-                />
-              </Link>
-            </div>
-            <div className="bookName">
-              <Link to={'/books/information/123'} target="_blank">
-                <span>一見峮心 峮峮個人寫真書</span>
-              </Link>
-            </div>
-            <div>
-              <input
-                type="number"
-                className="bookAmount"
-                onChange={() => getAmount()}
-                min="1"
-                max="99"
-                defaultValue="1"
-              />
-            </div>
-            <div>
-              <span className="bookPrice">NT$ 520</span>
-            </div>
-            <div>
-              <button type="button" className="delete">
-                <FontAwesomeIcon icon={faTimes} />
-              </button>
-            </div>
-          </div>
+
+          {props.cartPayload &&
+            props.cartPayload &&
+            props.cartPayload.map(cartData => (
+              <div
+                className="m-4 d-flex justify-content-between align-items-center eachDetail"
+                key={cartData.sid}
+              >
+                <div className="picture">
+                  <Link
+                    to={'/books/information/' + cartData.sid}
+                    target="_blank"
+                  >
+                    <img
+                      src={'http://localhost:5555/images/books/' + cartData.pic}
+                      alt=""
+                    />
+                  </Link>
+                </div>
+                <div className="bookName">
+                  <Link
+                    to={'/books/information/' + cartData.sid}
+                    target="_blank"
+                  >
+                    <span>{cartData.name}</span>
+                  </Link>
+                </div>
+                <div>
+                  <input
+                    type="number"
+                    className="bookAmount"
+                    onChange={() => getAmount()}
+                    min="1"
+                    max="99"
+                    defaultValue="1"
+                  />
+                </div>
+                <div>
+                  <span className="bookPrice">NT$ {cartData.fixed_price}</span>
+                </div>
+                <div>
+                  <button
+                    type="button"
+                    className="delete"
+                    onClick={() => delCart(cartData.sid)}
+                  >
+                    <FontAwesomeIcon icon={faTimes} />
+                  </button>
+                </div>
+              </div>
+            ))}
         </div>
       </Col>
       <Col md={5}>
@@ -86,4 +108,7 @@ const StepOne = props => {
   )
 }
 
-export default StepOne
+const mapStateToProps = state => ({
+  delCart: state.delCart,
+})
+export default connect(mapStateToProps)(StepOne)

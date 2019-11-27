@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Container, Row, Col } from 'react-bootstrap'
-import { bookInfoFetch } from '../ShopActions'
+import { bookInfoFetch, cartFetch } from '../ShopActions'
 import Breadcrumb from './Breadcrumb'
 import BookDetail from './BookDetail'
 import BookPic from './BookPic'
@@ -11,13 +11,15 @@ import BookComment from './BookComment'
 import './BookCommodity.scss'
 
 const BookCommodity = props => {
+  // let favState = JSON.parse(localStorage.getItem('favState'))
   useEffect(() => {
     props.dispatch(bookInfoFetch(props.match.params.sid))
+    props.dispatch(cartFetch())
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   let bookInfoPayload = props.bookInfo.payload
-
+  let cartPayload = props.Cart.payload
   return (
     <>
       <Container className="px-0 detail_wrapper" fluid={true}>
@@ -29,6 +31,7 @@ const BookCommodity = props => {
             <BookBuy
               bookInfoPayload={bookInfoPayload}
               history={props.history}
+              cartPayload={cartPayload}
             ></BookBuy>
           </Row>
         </Container>
@@ -47,5 +50,6 @@ const BookCommodity = props => {
 
 const mapStateToProps = state => ({
   bookInfo: state.bookInfo,
+  Cart: state.Cart,
 })
 export default connect(mapStateToProps)(BookCommodity)

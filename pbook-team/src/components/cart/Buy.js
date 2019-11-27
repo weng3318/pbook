@@ -1,21 +1,35 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { connect } from 'react-redux'
 import { Container, Row, Col } from 'react-bootstrap'
 import StepLine from './StepLine'
 import StepOne from './StepOne'
 import StepTwo from './StepTwo'
 import StepThree from './StepThree'
 import Breadcrumb from './Breadcrumb'
+import { cartFetch } from '../shop/ShopActions'
+import { letMeLogin } from '../../pages/Forum/fmAction'
 import './Cart.scss'
 
 const Buy = props => {
   let [current, setSteps] = useState(0)
-  let Steps
+  useEffect(() => {
+    props.dispatch(cartFetch())
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+  let cartPayload = props.Cart.payload && props.Cart.payload.cart
+
   function changeSteps(e) {
-    setSteps(e)
+    if (localStorage.user !== undefined) {
+      //有登入
+      setSteps(e)
+    } else {
+      props.dispatch(letMeLogin())
+    }
   }
   function toHome() {
     props.history.push(`/`)
   }
+  let Steps
   if (current === 0) {
     Steps = StepOne
   } else if (current === 1) {
@@ -36,7 +50,11 @@ const Buy = props => {
         </Container>
         <Container>
           <Row>
-            <Steps changeSteps={changeSteps} toHome={toHome}></Steps>
+            <Steps
+              changeSteps={changeSteps}
+              toHome={toHome}
+              cartPayload={cartPayload}
+            ></Steps>
           </Row>
         </Container>
       </Container>
@@ -44,4 +62,10 @@ const Buy = props => {
   )
 }
 
-export default Buy
+// 綁定props.todos <=> store.todos
+const mapStateToProps = state => ({
+  loginOrNot: state.letMeLogin.loginOrNot,
+  Cart: state.Cart,
+})
+// redux(state)綁定到此元件的props、dispatch方法自動綁定到此元件的props
+export default connect(mapStateToProps)(Buy)
