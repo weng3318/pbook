@@ -6,17 +6,21 @@ import StepOne from './StepOne'
 import StepTwo from './StepTwo'
 import StepThree from './StepThree'
 import Breadcrumb from './Breadcrumb'
-import { cartFetch } from '../shop/ShopActions'
+import { cartFetch, orderFetch } from '../shop/ShopActions'
 import { letMeLogin } from '../../pages/Forum/fmAction'
 import './Cart.scss'
 
 const Buy = props => {
   let [current, setSteps] = useState(0)
   let [totalAmount, setTotalAmount] = useState(0)
+  let [totalPrice, setTotalPrice] = useState(0)
+  let member = JSON.parse(localStorage.getItem('user')).MR_number
   useEffect(() => {
     props.dispatch(cartFetch())
+    props.dispatch(orderFetch(member))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+  let orderPayload = props.order.payload
   let cartPayload = props.Cart.payload
   function changeSteps(e) {
     if (localStorage.user !== undefined) {
@@ -54,9 +58,12 @@ const Buy = props => {
               changeSteps={changeSteps}
               toHome={toHome}
               cartPayload={cartPayload}
+              orderPayload={orderPayload}
               history={props.history}
               totalAmount={totalAmount}
               setTotalAmount={setTotalAmount}
+              totalPrice={totalPrice}
+              setTotalPrice={setTotalPrice}
             ></Steps>
           </Row>
         </Container>
@@ -69,6 +76,7 @@ const Buy = props => {
 const mapStateToProps = state => ({
   loginOrNot: state.letMeLogin.loginOrNot,
   Cart: state.Cart,
+  order: state.order,
 })
 // redux(state)綁定到此元件的props、dispatch方法自動綁定到此元件的props
 export default connect(mapStateToProps)(Buy)

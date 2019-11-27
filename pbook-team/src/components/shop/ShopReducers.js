@@ -13,6 +13,8 @@ import {
   CART_REQUEST,
   DEL_CART_RECEIVE,
   DEL_CART_REQUEST,
+  ORDER_RECEIVE,
+  ORDER_REQUEST,
 } from './ShopActions'
 
 //--------categories------
@@ -304,6 +306,46 @@ function Cart(state = [], action) {
   }
 }
 //---------------------
+//-----ORDER-----------
+function od(
+  state = {
+    isFetching: false,
+    didInvalidate: false,
+  },
+  action
+) {
+  switch (action.type) {
+    case ORDER_RECEIVE:
+      return {
+        ...state,
+        isFetching: false,
+        didInvalidate: false,
+        payload: action.payload,
+        lastUpdated: action.receivedAt,
+      }
+    case ORDER_REQUEST:
+      return {
+        ...state,
+        isFetching: true,
+        didInvalidate: false,
+      }
+    default:
+      return state
+  }
+}
+function order(state = [], action) {
+  switch (action.type) {
+    case ORDER_RECEIVE:
+    case ORDER_REQUEST:
+      return {
+        ...state,
+        ...od(state[action], action),
+      }
+    default:
+      return state
+  }
+}
+//----------------------
 const ShopReducers = {
   addToFav,
   addToCart,
@@ -312,6 +354,7 @@ const ShopReducers = {
   bookInfo,
   categories,
   shop,
+  order,
 }
 
 export default ShopReducers
