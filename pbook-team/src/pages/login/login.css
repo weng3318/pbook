@@ -235,6 +235,40 @@
     border: 1px solid rgb(230, 222, 222);
     z-index: 2;
   }
+  /* 頭像區域 (縮放限制) */
+  .uploadImg{
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin: 0 auto;
+    background-size: contain ;
+    overflow: hidden;
+    transition: 0.3s;
+  }
+  /* 頭像反饋 */
+  .brAvatarBox:hover{
+    border: 5px solid #fff;
+  }
+  /* 頭圖 (縮放比例、置中位置) */
+  .brAvatarImg{
+    height: 100%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+  }
+  .imgBorder{
+    /* position: absolute; */
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 2px solid #ffc408;
+    height: 100%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+  }
+
+
   @media (max-width: 999.98px) {
     .container_login {
       background-color: #ffffff;

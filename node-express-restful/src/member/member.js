@@ -13,6 +13,8 @@ router.post('/register', (req, res, next) => {
     const crypto = require('crypto')
     let sha1 = crypto.createHash('sha1')
     let hash = sha1.update(req.body.email).digest('hex')
+    // console.log(hash);
+    
     let nickname = req.body.nickname
     // console.log(hash);
     // return
@@ -42,8 +44,12 @@ router.post('/register', (req, res, next) => {
                 }else{
                     db.query(`SELECT MAX(sid) FROM mr_information`,(err, data)=>{
                        new_number = number_blank.slice(0, -3)+ (data[0]['MAX(sid)']+1)
-                    //    res.json(new_number)
+                        console.log(new_number, hash, nickname);
+                        
                        db.query(Member.getAddMemberSql(new_number, hash, nickname), (err, data) => {
+                           console.log(1, data);
+                           console.log(2, err);
+                           
                            if(err){
                                res.json({
                                    status: "伺服器錯誤，請稍後在試",
@@ -51,6 +57,7 @@ router.post('/register', (req, res, next) => {
                                 })
                                return;
                            }
+
                            // 若寫入資料庫成功，則回傳給clinet端下：
                            res.json({
                                status: "註冊成功",
@@ -79,7 +86,7 @@ router.post('/sendPwd', (req, res)=>{
                 message: '這個信箱還未註冊過'
             })
         }
-        console.log(123);
+        // console.log(123);
         let token = row[0].tokenId;
         let transporter = nodemailer.createTransport({
             service: 'Gmail',

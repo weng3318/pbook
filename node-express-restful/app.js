@@ -78,6 +78,7 @@ app.use("/reviews", require("./src/book_review/reply"));
 app.use("/reviewer", require("./src/reviewer/brReviewerList"));
 app.use("/reviewer", require("./src/reviewer/brBookcase"));
 app.use("/reviewer", require("./src/reviewer/brBooks"));
+app.use("/reviewer", require("./src/reviewer/brBlogEdit"));
 
 app.get("/", function(req, res) {
   res.json({

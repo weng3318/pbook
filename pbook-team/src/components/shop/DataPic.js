@@ -62,6 +62,7 @@ const DataPic = props => {
                 <BookInfoPic
                   data={data}
                   cartPayload={props.cartPayload}
+                  history={props.history}
                 ></BookInfoPic>
               </div>
             ))}

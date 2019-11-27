@@ -4,6 +4,7 @@ import BR_DateTime from './BR_DateTime'
 import { withRouter } from 'react-router-dom'
 
 export class Navbar extends React.Component {
+
   render() {
     return (
       <>
@@ -17,6 +18,18 @@ export class Navbar extends React.Component {
       </>
     )
   }
+
+//     render() {
+//         return (
+//             <>
+//                 <nav className="brNavbar">
+//                 <BR_PathNow />
+//                 {/* <BR_DateTime /> */}
+//                 <button onClick={()=> this.props.history.push('/reviewer')}>回到書評列表</button>
+//                 </nav>
+//             </>
+//         )
+//     }
 }
 
 export default withRouter(Navbar)

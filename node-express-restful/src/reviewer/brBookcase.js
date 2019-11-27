@@ -29,7 +29,7 @@ router.get('/brBookcase/:page?/:keyword?', (req,res)=>{
     }
     // let t_sql = 'SELECT COUNT(1) `total` FROM `br_bookcase`' + where
     // let w_sql = 'SELECT `br_bookcase`.* ,`vb_books`.`name`,`vb_books`.`author`,`vb_books`.`pic`,`vb_books`.`introduction`,`vb_books`.`detailData` FROM `br_bookcase`LEFT JOIN `vb_books` ON `vb_books`.`isbn`=`br_bookcase`.`isbn`' + where
-    let w_sql = 'SELECT `br_bookcase`.* ,`br_reviewerlist`.`tube`,`vb_books`.`name`,`vb_books`.`author`,`vb_books`.`pic`,`vb_books`.`introduction`,`vb_books`.`detailData` FROM `br_bookcase`LEFT JOIN `vb_books` ON `vb_books`.`isbn`=`br_bookcase`.`isbn` LEFT JOIN `br_reviewerlist` ON `br_reviewerlist`.`number`=`br_bookcase`.`number`' + where
+    let w_sql = 'SELECT `br_bookcase`.* ,`br_reviewerlist`.`tube`,`vb_books`.`name`,`vb_books`.`author`,`vb_books`.`pic`,`vb_books`.`introduction`,`vb_books`.`detailData`,`vb_books`.`sid` vb_book_sid FROM `br_bookcase`LEFT JOIN `vb_books` ON `vb_books`.`isbn`=`br_bookcase`.`isbn` LEFT JOIN `br_reviewerlist` ON `br_reviewerlist`.`number`=`br_bookcase`.`number`' + where
 
     db.queryAsync(w_sql)
 
@@ -42,7 +42,7 @@ router.get('/brBookcase/:page?/:keyword?', (req,res)=>{
             if (page > output.totalRows) page = output.totalRows
             output.page = page
 
-            return db.queryAsync('SELECT `br_bookcase`.* ,`vb_books`.`author`,`vb_books`.`pic`,`vb_books`.`introduction`,`vb_books`.`detailData`,`vb_books`.`name` FROM `br_bookcase`LEFT JOIN `vb_books` ON `vb_books`.`isbn`=`br_bookcase`.`isbn`' + where + ' LIMIT ' + (page - 1) * perPage + ',' + (perPage))
+            return db.queryAsync('SELECT `br_bookcase`.* ,`vb_books`.`author`,`vb_books`.`pic`,`vb_books`.`introduction`,`vb_books`.`detailData`,`vb_books`.`name`,`vb_books`.`sid` vb_book_sid FROM `br_bookcase`LEFT JOIN `vb_books` ON `vb_books`.`isbn`=`br_bookcase`.`isbn`' + where + ' LIMIT ' + (page - 1) * perPage + ',' + (perPage))
 
                 .then((results) => {
                     output.rows = results

@@ -65,6 +65,7 @@ const DataList = props => {
               <BookInfoRight
                 data={data}
                 cartPayload={props.cartPayload}
+                history={props.history}
               ></BookInfoRight>
               {/*書籍資訊右半*/}
             </div>

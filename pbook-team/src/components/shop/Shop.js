@@ -55,6 +55,7 @@ const Shop = props => {
               cartPayload={cartPayload}
               nowCategories={props.match.params.categories}
               nowPage={props.match.params.page}
+              history={props.history}
             ></Data>
           </Row>
         </Container>

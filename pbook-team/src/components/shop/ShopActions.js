@@ -253,3 +253,39 @@ export const cartFetch = () => async dispatch => {
   }
 }
 //------------------------
+//-------CART--------
+export const ORDER_RECEIVE = 'ORDER_RECEIVE'
+export const ORDER_REQUEST = 'ORDER_REQUEST'
+function odReceive(memberID, json) {
+  return {
+    type: ORDER_RECEIVE,
+    memberID,
+    payload: json,
+    receivedAt: Date.now(),
+  }
+}
+function odRequest(memberID) {
+  return {
+    type: ORDER_REQUEST,
+    memberID,
+  }
+}
+export const orderFetch = memberID => async dispatch => {
+  dispatch(odRequest(memberID))
+  try {
+    let response = await fetch(
+      'http://localhost:5555/books/order/' + memberID,
+      {
+        method: 'GET',
+        headers: new Headers({
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        }),
+      }
+    )
+    dispatch(odReceive(memberID, await response.json()))
+  } catch (error) {
+    console.log('error ', error)
+  }
+}
+//------------------------
