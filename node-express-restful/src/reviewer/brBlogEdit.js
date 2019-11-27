@@ -1,71 +1,91 @@
-import express from 'express'
-import db from './db/database'
+const express = require('express');
+const mysql = require('mysql');
+const bluebird = require('bluebird');
+const router = express.Router();
 
-const router = express.Router()
-const bluebird = require("bluebird");
-bluebird.promisifyAll(db);
-
-// like路徑參考
-// app.use("/member", require("./src/member/member"));
-//寄發EMAIL #POSTMAN測試
-import nodemailer from 'nodemailer'
-router.post('/sendPwd', (req, res)=>{
-    let email = req.body.email
-    // console.log(email);
-    let sql = `SELECT * FROM mr_information WHERE MR_email = '${email}'`
-    db.query(sql, (err, row)=>{
-        console.log(row);
-        
-        if(! row.length){
-            return res.json({
-                status: '寄送失敗',
-                message: '這個信箱還未註冊過'
-            })
-        }
-        console.log(123);
-        let token = row[0].tokenId;
-        let transporter = nodemailer.createTransport({
-            service: 'Gmail',
-            auth:{
-                user: 'dragonqoo1988@gmail.com',
-                pass: '29894199',
-            
-            }
-        })
-        let mailOptions = {
-            form: '"品書網"<dragonqoo1988@gmail.com>',
-            to: `${email}`,
-            subject: '重設密碼',
-            html: `<h1>親愛的品書會員您好:</h1><br><h3>請點擊下方進行重新設定密碼</h3><br><a href="http://localhost:3000/ResetPWD/${token}"><h2>重設密碼頁</h2></a>`
-        }
-        transporter.sendMail(mailOptions, (err, info)=>{
-            // console.log(info);
-            res.json({
-                status: '傳送成功',
-                message: '請到信箱修改密碼'
-                })
-            })
-    })
+const db = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "root",
+    database: "pbook"
 })
+db.connect()
+bluebird.promisifyAll(db)
 
+// const express = require('express');
+// const app = express();
+// const bluebird = require('bluebird');
+// const router = express.Router();
+// const bodyParser = require("body-parser");
+// const multer = require("multer");
+// const upload = multer({ dest: "tmp_upload/" });
+// const fs = require("fs");
+// const session = require('express-session')
+// const mysql = require('mysql');
+// bluebird.promisifyAll(db);
+// const db = mysql.createConnection({
+//     host: "localhost",
+//     user: "root",
+//     password: "root",
+//     database: "pbook"
+// })
+// db.connect()
+// app.use(bodyParser.urlencoded({ extended: false }));
+// app.use(bodyParser.json());
+// bluebird.promisifyAll(db)
+// app.use(session({
+//     saveUninitialized: false,
+//     resave: false,
+//     secret: 'fsdfdsfdsfdsf',
+//     cookie: {
+//         maxAge: 120000,
+//     }
+// }))
+// Postman 測試
+// app.post('/brBlogEdit/:id?', (req, res) => {
+//     res.json(req.body);
+// })
+// app.put('/brBlogEdit/:id?', (req, res) => {
+//     res.send('put:reviewerBooks')
+// })
+// Postman 測試結束
 
-//修改會員資料 #接過來的資料
-router.post('/edit', (req, res, next)=>{
-    let number = req.body.number
-    let email = req.body.email
-    let name = req.body.name
-    let nickname = req.body.nickname
-    let birthday = req.body.birthday
-    let mobile = req.body.mobile
-    let address = req.body.address
-    let filename = req.body.filename
+// ------------------------------------------------------------------
+// 上傳檔案範例 設定middleware → upload.single('avatar')
+// 單一個檔案用single('前端給這欄位，後端接受欄位')，查看的話用file不用加s
+// app.post("/BlogUpload", upload.single("avatar"), (req, res) => {
+//     if (req.file && req.file.originalname) {
+//       console.log(req.file);
+//       switch (req.file.mimetype) {
+//         case "image/png":
+//         case "image/jpeg":
+//           // 讀取上傳檔案的名字、連同路徑的來源
+//           fs.createReadStream(req.file.path).pipe(
+//             // 拷貝檔案至 指定位置
+//             fs.createWriteStream("public/img/" + req.file.originalname)
+//           );
+//           res.send("上傳成功");
+//           break;
+//         default:
+//           return res.send("圖檔錯誤");
+//       }
+//     } else {
+//       res.send("沒有上傳！");
+//     }
+//   });
+// ------------------------------------------------------------------
 
+//編輯部落格資料
+router.post('/brBlogEdit', (req, res, next)=>{
+    let blog = req.body.blog
     
-    db.query(Member.modifyMemberInfoSql(number, email, name, nickname, birthday, mobile, address, filename), (err, result)=>{
+    db.query(`UPDATE br_bookcase SET likebook = '555' WHERE number = 'MR00001'`,(err, result)=>{
         if(err){ res.json(err) }
         res.json({
-            status: "修改成功",
-            message: "完成資料的更新"
+            status: "編輯成功",
+            message: "編輯文章已發佈"
         })
     })
 })
+
+module.exports = router;
