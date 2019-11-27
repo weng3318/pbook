@@ -28,8 +28,7 @@ router.post("/categoryBar", (req, res) => {
 });
 //書本內容
 router.get(`/?`, (req, res) => {
-  let c, a, page,s;
-  console.log(urlpart.query.s)
+  let c, a, page, s;
   const urlpart = url.parse(req.url, true);
   if (urlpart.query.c !== undefined) {
     c = "=" + urlpart.query.c;
@@ -44,6 +43,8 @@ router.get(`/?`, (req, res) => {
   } else {
     a = "fixed_price";
   }
+  s = urlpart.query.s || "";
+
   page = urlpart.query.p || 1;
   let perPage = 10;
   let output = {};
@@ -51,9 +52,9 @@ router.get(`/?`, (req, res) => {
     .then(results => {
       output.total = results[0].total;
       return db.queryAsync(
-        `SELECT * FROM vb_books WHERE categories ${c} ORDER BY ${a} DESC LIMIT ${(page -
+        `SELECT * FROM vb_books WHERE categories ${c} AND name LIKE '%${s}%' ORDER BY ${a} DESC LIMIT ${(page -
           1) *
-        perPage},${perPage}`
+          perPage},${perPage}`
       );
     })
     .then(results => {
@@ -64,24 +65,23 @@ router.get(`/?`, (req, res) => {
       console.log(error);
       res.send(error);
     });
+  console.log(s);
 });
 //搜尋內容
 router.get("/search_book/?", (req, res) => {
   let search;
   const urlpart = url.parse(req.url, true);
   search = decodeURI(urlpart.search.replace("?", ""));
-  console.log(search);
   const sql = `SELECT sid,name,author FROM vb_books WHERE name LIKE '%${search}%' OR author LIKE '%${search}%'`;
-    db.query(sql, (error, results) => {
-      if (error) {
-        return res.send(error);
-      } else {
-        return res.json({
-          data: results
-        });
-      }
-    });
-  
+  db.query(sql, (error, results) => {
+    if (error) {
+      return res.send(error);
+    } else {
+      return res.json({
+        data: results
+      });
+    }
+  });
 });
 
 //書本各分類數量

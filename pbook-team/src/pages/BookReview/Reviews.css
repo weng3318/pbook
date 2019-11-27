@@ -54,6 +54,7 @@
 
 /* 搜尋欄 */
 .reviews_search {
+  margin: 0 5px 0 0;
   padding: 10px;
   height: 20px;
   width: 320px;
@@ -69,7 +70,6 @@
 
 /* 搜尋按鍵 */
 .reviews_spush {
-  padding: 10px;
   height: 20px;
   outline: none;
 }

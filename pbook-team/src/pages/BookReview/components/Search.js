@@ -5,17 +5,19 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export function Search(props) {
   const [s_result, outputResult] = useState([])
-  const [search, setSearch] = useState({
+  const [searchText, setSearch] = useState({
     text: '',
     getData: false,
   })
   const { search_result } = props
-  
+
   const changeHandler = e => {
     e.preventDefault()
     setSearch({
+      ...searchText,
       [e.target.name]: e.target.value,
     })
+    search_result(e.target.value)
     let search = e.target.value
     if (search !== '') {
       axios
@@ -23,7 +25,7 @@ export function Search(props) {
         .then(res => {
           outputResult(res.data.data)
           setSearch({ getData: true })
-          console.log(res.data)
+          console.log(res.data.data.length)
         })
     } else {
       setSearch({ getData: false })
@@ -36,28 +38,34 @@ export function Search(props) {
       if (s_result[i].sid == x) {
         let data = s_result[i].name
         setSearch({ text: data })
+        search_result(data)
       }
     }
   }
 
-  const keypress = (e)=>{
-    if (e.which === 13){
-      search_result(e.target.value)
-    }
-  }
+  // const keypress = e => {
+  //   if (e.which === 13) {
+  //     search_result(e.target.value)
+  //   }
+  // }
 
   return (
     <div>
       <input
-        value={search.text}
-        onKeyPress={keypress}
+        name="text"
+        value={searchText.text}
         onChange={changeHandler}
         className="reviews_search"
         type="search"
         placeholder="搜尋書名或作者"
       />
-      <FontAwesomeIcon icon={faSearch}/>
-      {search.getData ? (
+      {/* <FontAwesomeIcon
+        onClick={() => {
+          search_result(searchText.text)
+        }}
+        icon={faSearch}
+      /> */}
+      {searchText.getData ? (
         <ul className="reviews_search_result">
           {s_result.map((res, index) => (
             <li key={index} value={res.sid} onClick={setName}>

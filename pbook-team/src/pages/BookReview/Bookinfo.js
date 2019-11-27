@@ -17,7 +17,9 @@ function Bookinfo() {
   const [array, setArray] = useState(1) //排序方式
   const [categorys, setCategorys] = useState([])
   const [page, getPage] = useState()
-
+  const [sb, setSb] = useState({
+    isSearch: false,
+  })
   //---------------------------------------------------------------------------
   //分頁功能
 
@@ -63,6 +65,7 @@ function Bookinfo() {
   const OptionBar = styled.div`
     display: flex;
     flex-direction: row-reverse;
+    margin: 10px 50px 0 0;
   `
 
   // 書本外框
@@ -128,9 +131,12 @@ function Bookinfo() {
       })
   }
 
-  const bookInfo = () => {
+  const bookInfo = e => {
+    if (e == undefined) {
+      e = ''
+    }
     axios
-      .get(`http://localhost:5555/reviews/?${c}a=${array}&p=${p}&s=${s}`)
+      .get(`http://localhost:5555/reviews/?${c}a=${array}&p=${p}&s=${e}`)
       .then(res => {
         setBookInformation(res.data.rows)
         getPage(Math.ceil(res.data.total / 10))
@@ -158,8 +164,21 @@ function Bookinfo() {
   }, [bs])
 
   const search_result = e => {
-    s = e
-    console.log(s)
+    if (e !== '' && e !== undefined) {
+      setSb({ isSearch: true })
+      axios
+        .get(`http://localhost:5555/reviews/?${c}a=${array}&p=${p}&s=${e}`)
+        .then(res => {
+          setBookInformation(res.data.rows)
+        
+          console.log(bookInformation)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    }else if(e.length == 0){
+      bookInfo()
+    }
   }
 
   return (
@@ -229,7 +248,7 @@ function Bookinfo() {
           </select>
         </OptionBar>
 
-        <Book>
+        {(<Book>
           <BookColumn>
             {bookInformation.map(data => (
               <BookImage key={data.sid}>
@@ -273,31 +292,35 @@ function Bookinfo() {
           <BookColumn>
             <BookScore callback={callback} callback2={callback2} />
           </BookColumn>
-        </Book>
+        </Book>)}
 
-        <Pagination className="reviews_pagination">
-          {p >= 2 && (
-            <LinkContainer to={'/reviews?' + c + 'p=1'}>
-              <Pagination.First className="pageNum" />
-            </LinkContainer>
-          )}
-          {p >= 2 && (
-            <LinkContainer to={'/reviews?' + c + 'p=' + Number(p - 1)}>
-              <Pagination.Prev className="pageNum" />
-            </LinkContainer>
-          )}
-          {pageNum}
-          {p < page && (
-            <LinkContainer to={'/reviews?' + c + 'p=' + (Number(p) + 1)}>
-              <Pagination.Next className="pageNum" />
-            </LinkContainer>
-          )}
-          {p < page && (
-            <LinkContainer to={'/reviews?' + c + 'p=' + page}>
-              <Pagination.Last className="pageNum" />
-            </LinkContainer>
-          )}
-        </Pagination>
+        {!sb.isSearch ? (
+          <Pagination className="reviews_pagination">
+            {p >= 2 && (
+              <LinkContainer to={'/reviews?' + c + 'p=1'}>
+                <Pagination.First className="pageNum" />
+              </LinkContainer>
+            )}
+            {p >= 2 && (
+              <LinkContainer to={'/reviews?' + c + 'p=' + Number(p - 1)}>
+                <Pagination.Prev className="pageNum" />
+              </LinkContainer>
+            )}
+            {pageNum}
+            {p < page && (
+              <LinkContainer to={'/reviews?' + c + 'p=' + (Number(p) + 1)}>
+                <Pagination.Next className="pageNum" />
+              </LinkContainer>
+            )}
+            {p < page && (
+              <LinkContainer to={'/reviews?' + c + 'p=' + page}>
+                <Pagination.Last className="pageNum" />
+              </LinkContainer>
+            )}
+          </Pagination>
+        ) : (
+          ''
+        )}
       </Main>
     </>
   )
