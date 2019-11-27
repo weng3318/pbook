@@ -31,7 +31,8 @@ export class ReviewerBlogEdit extends Component {
   }
 
   // 編輯用API-------------------------------------------------------------------------
-  handleBlogEdit = () => {
+  handleBlogEdit = (e) => {
+    e.preventDefault()
     fetch('http://localhost:5555/reviewer/brBlogEdit', {
       method: 'POST',
       headers: {
@@ -46,45 +47,52 @@ export class ReviewerBlogEdit extends Component {
         if (!response) throw new Error(response.statusText)
         return response.json()
       })
-      .then(data => {
-        console.log('Fetch進來的資料', JSON.stringify(data))
-        let status = data.status
-        let message = data.message
-        if (status === '修改成功') {
-          this.success(status, message)
-        }
-        if (status === '修改失敗') {
-          this.fail(status, message)
-        }
+      .then(data=>{
+        swal('編輯完成','','success').then(value=>{
+          setTimeout(()=>{
+            window.location.reload()
+          },100)
+        })
       })
+      // .then(data => {
+      //   console.log('Fetch進來的資料', JSON.stringify(data))
+      //   let status = data.status
+      //   let message = data.message
+      //   if (status === '修改成功') {
+      //     this.success(status, message)
+      //   }
+      //   if (status === '修改失敗') {
+      //     this.fail(status, message)
+      //   }
+      // })
   }
 
   // Sweet動畫---------------------------------------------------------------------
-  // success = (status, message) => {
-  //   swal({
-  //     title: status,
-  //     text: message,
-  //     icon: 'success',
-  //     button: 'OK',
-  //   }).then(title => {
-  //     if (title === '編輯完成') {
-  //       swal('文章已經發佈了!', {
-  //         icon: 'success',
-  //       })
-  //     }
-  //     setTimeout(()=>{
-  //       window.location = '/member'
-  //     }, 1000)
-  //   })
-  // }
-  // fail = (status, message) => {
-  //   swal({
-  //     title: status,
-  //     text: message,
-  //     icon: 'error',
-  //     button: 'OK',
-  //   })
-  // }
+  success = (status, message) => {
+    swal({
+      title: status,
+      text: message,
+      icon: 'success',
+      button: 'OK',
+    }).then(title => {
+      if (title === '編輯完成') {
+        swal('文章已經發佈了!', {
+          icon: 'success',
+        })
+      }
+      setTimeout(()=>{
+        window.location = '/member'
+      }, 1000)
+    })
+  }
+  fail = (status, message) => {
+    swal({
+      title: status,
+      text: message,
+      icon: 'error',
+      button: 'OK',
+    })
+  }
   // Sweet動畫---------------------------------------------------------------------
 
   render() {
