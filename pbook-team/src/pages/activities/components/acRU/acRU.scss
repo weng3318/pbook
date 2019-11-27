@@ -1,0 +1,20 @@
+@import '../../color.scss';
+.acTable {
+  .icon {
+    color: $color-black;
+    cursor: pointer;
+    &:hover {
+      color: lighten($color-black, 30%);
+    }
+  }
+
+  .table-striped tbody tr:nth-of-type(odd) {
+    background-color: lighten($color-green, 12%);
+  }
+}
+.swal-button--acDYes {
+  background: $color-red;
+}
+.swal-button.swal-button--acDYes:not([disabled]):hover {
+  background-color: darken($color-red, 20%);
+}

@@ -5,6 +5,7 @@ import './acPageOffline.scss'
 import { connect } from 'react-redux'
 import { fetchAcList } from '../../AcActions'
 import AcPageAside from './AcPageAside'
+import AcPageFoot from './AcPageFoot'
 import ScrollToTop from '../ScrollToTop'
 
 // import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
@@ -59,40 +60,7 @@ const AcPageOffline = props => {
             </main>
             <AcPageAside {...item} />
           </div>
-
-          <section className="recommend py-5">
-            <h4 className="text-center pb-2 my-3">其他推薦</h4>
-            <div className="row">
-              <figure className="col-md-3">
-                <h6 className="text-center">其他活動</h6>
-                <a
-                  style={{ backgroundImage: "url('images/test.jpg')" }}
-                  alt=""
-                ></a>
-              </figure>
-              <figure className="col-md-3">
-                <h6 className="text-center">其他活動</h6>
-                <a
-                  style={{ backgroundImage: "url('images/test.jpg')" }}
-                  alt=""
-                ></a>
-              </figure>
-              <figure className="col-md-3">
-                <h6 className="text-center">其他活動</h6>
-                <a
-                  style={{ backgroundImage: "url('images/test.jpg')" }}
-                  alt=""
-                ></a>
-              </figure>
-              <figure className="col-md-3">
-                <h6 className="text-center">其他活動</h6>
-                <a
-                  style={{ backgroundImage: "url('images/test.jpg')" }}
-                  alt=""
-                ></a>
-              </figure>
-            </div>
-          </section>
+          <AcPageFoot />
         </div>
       </ScrollToTop>
     </>
