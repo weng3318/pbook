@@ -1,5 +1,7 @@
 import React from 'react'
 import { useEffect } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowUp } from '@fortawesome/free-solid-svg-icons'
 
 function GoTop() {
   useEffect(() => {
@@ -32,7 +34,6 @@ function GoTop() {
   return (
     <>
       <div
-        className="fas fa-arrow-up"
         id="goTop"
         onClick={goToTop}
         style={{
@@ -44,11 +45,16 @@ function GoTop() {
           padding: '8px 10px',
           cursor: 'pointer',
           borderRadius: '50%',
-          fontSize: '30px',
+          fontSize: '1.5rem',
           zIndex: '999',
           display: 'none',
+          width: '3rem',
+          height: '3rem',
+          textAlign: 'center',
         }}
-      ></div>
+      >
+        <FontAwesomeIcon icon={faArrowUp} />
+      </div>
     </>
   )
 }

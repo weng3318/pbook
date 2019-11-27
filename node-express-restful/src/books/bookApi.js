@@ -366,8 +366,49 @@ router.get("/book_categories/:keyword?", (req, res) => {
     });
 });
 
-router.post("/addToCart",(req,res)=>{
-  
-})
+router.get("/addToCart", (req, res) => {
+  const output = {};
+  output.cart = req.session.cart;
+  output.totalCart = req.session.totalCart;
+  res.json(output);
+});
+
+router.post("/addToCart", (req, res) => {
+  let bookSid = req.body.sid;
+  let sql = "SELECT * FROM `vb_books` WHERE `sid`= " + bookSid;
+  if (!req.session.cart) req.session.cart = [];
+  if (!req.session.totalCart) req.session.totalCart = 0;
+  db.queryAsync(sql)
+    .then(results => {
+      req.session.cart.push({
+        sid: results[0].sid,
+        pic: results[0].pic,
+        name: results[0].name,
+        fixed_price: results[0].fixed_price
+      });
+      req.session.totalCart++;
+      // results.length=1
+      res.json(req.session.cart);
+    })
+    .catch(error => {
+      console.log(error);
+    });
+});
+
+router.post("/delCart", (req, res) => {
+  let bookSid = req.body.sid;
+  let index = req.session.cart.findIndex(carts => carts.sid === bookSid);
+  if (index !== -1) {
+    req.session.cart.splice(index, 1);
+    req.session.totalCart--;
+    res.json({
+      message: "刪除成功"
+    });
+  } else if (index == -1) {
+    res.json({
+      message: "刪除失敗"
+    });
+  }
+});
 
 module.exports = router;

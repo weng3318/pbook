@@ -106,7 +106,7 @@ $content: 24px;
         color: $black;
         &:focus {
           z-index: 2;
-          box-shadow: 0 0 0 0.2rem $main_color;
+          box-shadow: 0 0 0 .5px $main_color;
         }
       }
     }

@@ -33,7 +33,6 @@ class Header extends React.Component {
     this.state = {
       loginImg: '',
       nickname: '',
-      cart: '',
       member: {},
       login: false,
       visible: false,
@@ -45,16 +44,6 @@ class Header extends React.Component {
 
   //   this.setState({hasData:true,id:memberData.MR_number,name:memberData.MR_name,level:memberData.MR_personLevel})
   // }
-
-  goCart = e => {
-    if (localStorage.user !== undefined) {
-      this.setState.cart = '/cart'
-      console.log(this.props)
-      window.location.href = '/cart'
-    } else {
-      this.props.dispatch(letMeLogin())
-    }
-  }
 
   handleLoginButton = event => {
     let loginButton = event.currentTarget
@@ -245,11 +234,7 @@ class Header extends React.Component {
             <div className="mwt_border"></div>
 
             <div className="cartButton position-absolute d-flex flex-column justify-content-center align-items-center pointer">
-              <Link
-                to={this.state.cart}
-                onClick={this.goCart}
-                className="titleZh-white"
-              >
+              <Link to="/cart" className="titleZh-white">
                 購物車
               </Link>
               <span className="titleEn">CART</span>

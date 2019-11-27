@@ -11,9 +11,9 @@ export class Reviewer extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-        brData: [],
+      brData: [],
     }
-}
+  }
   componentDidMount() {
     axios
       .get('http://localhost:5555/reviewer/brReviewerList')
@@ -22,16 +22,17 @@ export class Reviewer extends React.Component {
         // console.log('前端取得資料' , res.data.rows)
       })
       .catch(function(error) {
-            console.log('前端沒有取得資料' , error)
-        })
-    }
-    render() {
-     if (this.state.brData.length === 0) return <h1 className="h1_br">取得資料中...</h1>
-      console.log('所有的書評家',this.state.brData)
+        console.log('前端沒有取得資料', error)
+      })
+  }
+  render() {
+    if (this.state.brData.length === 0)
+      return <h1 className="h1_br">取得資料中...</h1>
+    console.log('所有的書評家', this.state.brData)
 
-        return (
-          <>
-            <BR_Navbar />
+    return (
+      <>
+        <BR_Navbar />
         <h1>書評家</h1>
           {/* {Data */}
       <div className="bg_pic">

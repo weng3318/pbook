@@ -188,6 +188,51 @@ router.post('/queryReviewer/:page', (req, res)=>{
 
 
 
+    //書評家加入個人書櫃
+    router.post('/addBookcase_Review', (req, res)=>{
+        let number = req.body.number
+        let number_reviewer = req.body.number_reviewer
+        let sql = `SELECT COUNT(1) total FROM br_reviewermark WHERE number = '${number}' && number_reviewer = '${number_reviewer}'`
+        db.queryAsync(sql)
+            .then( row => {
+                console.log(row[0].total);
+                if(row[0].total >= 1 ){
+                    res.json({
+                        message: "此書評家已加入過收藏"
+                    })
+                    return
+                }else{
+                    //新增書評家到書櫃
+                    let sql = `INSERT INTO br_reviewermark(number, number_reviewer, created_time) 
+                                VALUES ('${number}','${number_reviewer}', now())`
+                    return db.queryAsync(sql)
+                    }
+                })
+                .then(result=>{
+                    if(result)
+                        res.json({
+                            status: "新增到書櫃",
+                            message: "加入到書櫃成功"
+                        })
+                })            
+            })
+
+    //書評家取消追蹤
+    router.post('/removeBookcase_Review', (req, res) => {
+        let number = req.body.number
+        let number_reviewer = req.body.number_reviewer
+        // console.log(number, isbn);
+
+        db.query(Member.removeBookcase_Review(number, number_reviewer), (err, result)=>{
+            // console.log(result);
+            res.json({
+                message: '取消追蹤成功'
+            })
+        })
+    })
+
+
+
 //書籍加入個人書櫃
 router.post('/addBookcase', (req, res)=>{
     let number = req.body.number
@@ -195,10 +240,8 @@ router.post('/addBookcase', (req, res)=>{
     let sql = `SELECT COUNT(1) total FROM br_bookcase WHERE number = '${number}' && isbn = '${isbn}'`
     db.queryAsync(sql)
         .then( row => {
-            console.log(row[0].total);
+            // console.log(row[0].total);
             if(row[0].total >= 1 ){
-                // console.log(456);
-            
                 res.json({
                     message: "本書已加入過收藏"
                 })
@@ -211,7 +254,6 @@ router.post('/addBookcase', (req, res)=>{
                 }
             })
             .then(result=>{
-                // console.log(result);
                 if(result)
                     res.json({
                         status: "新增到書櫃",
@@ -219,6 +261,20 @@ router.post('/addBookcase', (req, res)=>{
                     })
             })            
         })
+
+//書籍取消追蹤
+router.post('/removeBookcase', (req, res) => {
+    let number = req.body.number
+    let isbn = req.body.isbn
+    // console.log(number, isbn);
+
+    db.query(Member.removeBookcase(number, isbn), (err, result)=>{
+        // console.log(result);
+        res.json({
+            message: '取消追蹤成功'
+        })
+    })
+})
 
 //查詢二手書籍
 router.post('/queryMemberBooks', (req, res)=>{
