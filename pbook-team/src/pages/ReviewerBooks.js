@@ -165,11 +165,12 @@ class ReviewerBooks extends React.Component {
           {/* 針對書評家 - 書櫃列表 */}
           {this.state.csData
             .filter(({ number }) => number === reviewerData.number)
-            .map(({ vb_book_sid,name, pic, author, sid, introduction, blog, tube, likebook, readbook, isbn }) => (
+            .map(({ title, vb_book_sid,name, pic, author, sid, introduction, blog, tube, likebook, readbook, isbn }) => (
               <BR_BookcaseList
                 key={sid}
                 id={sid} // 點擊熱門書名傳送至對應#id
                 isbn={isbn}
+                title={title}
                 br_name={reviewerData.br_name}
                 vb_book_sid={vb_book_sid}
                 sid={sid}

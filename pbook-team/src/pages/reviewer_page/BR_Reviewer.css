@@ -27,6 +27,7 @@ a:hover{
     padding: 4px;
     border:1px solid #ffc408;
 }
+/* 不做動態版 */
 .brMark_img_noAni{
     width: 30px;
     left: 15px;
@@ -44,7 +45,34 @@ a:hover{
     text-align: center;
     font-weight: 800;
     color: #2d3a3a;
-    margin: 10px 0 5px 0;
+    margin: 10px 0;
+}
+/* 標題，主要文字 */
+.h5_Edit{
+    background: #2d3a3a;
+    text-align: center;
+    font-weight: 800;
+    font-size: 1.2rem;
+    color: #979d9d;
+}
+/* 書評文章內文title (文字)*/
+.h5_title{
+    font-weight: 550;
+    color: #2d3a3a;
+    max-width: 360px;
+    font-size: 1.5rem;
+    text-shadow: 0.2rem 0rem 0.06rem #cde2d0;
+    left: 0;
+    transition: 0.5s;
+    z-index: 1;
+}
+/* 書評文章內文title (黃字版)*/
+.h5_title{
+    font-size: 1.6rem;
+    font-weight: 550;
+    color: #ff525b;
+    /* color: #ffc408; */
+    text-shadow: 0.05rem 0rem 0rem rgba(45, 58, 58, 0.4);
 }
 /* 邊框顏色，參照用 */
 .borderLine {

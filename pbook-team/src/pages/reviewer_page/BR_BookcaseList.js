@@ -9,14 +9,20 @@ class BR_BookcaseList extends React.Component {
         super(props);
         this.state = {
          opened: null,
+         total:this.props.likebook,
         }
         this.handleOpened.bind(this)
+     }
+     // 讚數
+     count = value => {
+         this.setState({
+           total: this.state.total + value
+         })
      }
     //  裝填
      handleOpened = (opened) => {
          this.setState({ opened })
     }
- 
      render() {
         const { opened } = this.state;
         const { sid } = this.props;
@@ -56,6 +62,7 @@ class BR_BookcaseList extends React.Component {
 
           <div className="brInfoBox_Bookcase borderLineUpDown">
           {/* <h4 className="h4_br">書籍簡介</h4> */}
+                    <div className="blurBar"></div>
                 <div className="brInfoTextBox_Bookcase">
 
                     <div className="bookInfo">
@@ -66,12 +73,14 @@ class BR_BookcaseList extends React.Component {
                         <div className="brAuthorText">作者：{this.props.author}</div>
                     </div>
                     {/* 書櫃區的簡介內文 */}
-                    <h5 className="brInfoText_Bookcase" dangerouslySetInnerHTML={{__html:this.props.blog? this.props.blog:this.props.introduction}}></h5>　
+                    <h5 className="h5_title">{this.props.title}</h5>
+                       <div className="brInfoText_Bookcase" dangerouslySetInnerHTML={{__html:this.props.blog? this.props.blog:this.props.introduction}}></div>
+                </div>
+                        
                     {/* 看更多 more (圖示) */}
                         <Link to={`/books/information/${Hash}`} className="brIconMore_Bookcase">
-                                <img className="brMore_img" src={require('../reviewer_page/images/icon_more.png')}/>
+                                <img className="brMore_img" src={require('../reviewer_page/images/icon_Store.png')}/>
                         </Link>
-                </div>
 
             {/* 編輯模式按鈕 */}
                     <div className="Animate_Edit_Box">
@@ -81,15 +90,17 @@ class BR_BookcaseList extends React.Component {
                         </div>
                     </div>
 
-            <div className="brIconBox_Bookcase">
             {/* 收藏書籍 (圖示) */}
+            <div className="brIconBox_Bookcase">
                 <Link to={`/books/information/${Hash}`} className="brIconShare_Bookcase">
                         <img className="brMark_img" src={require('../reviewer_page/images/icon_shaer.png')}/>
                 </Link>
-            {/* 讚數、閱讀數 */}
+                
                         <div className="brLikeBox">
-                           <img className="brMark_img" src={require('../reviewer_page/images/icon_likebook.png')}/>
-                                <span className="brMark_p">{this.props.likebook}</span>
+            {/* 讚數、閱讀數 */}
+                           <img className="brMark_img" onClick={()=>this.count(1)} src={require('../reviewer_page/images/icon_likebook.png')}/>
+                                <span className="brMark_p">{this.state.total}</span>
+                                {/* <span className="brMark_p">{this.props.likebook}</span> */}
                            <img onClick={() => this.handleOpened(opened === 'blog' ? null : 'blog')} className="brMark_img_noAni" src={require('../reviewer_page/images/icon_readbook.png')}/>
                                 <span className="brMark_p">{this.props.readbook}</span>
                         </div>

@@ -90,7 +90,7 @@ export class ReviewerBlogEdit extends Component {
       title: status,
       text: message,
       icon: 'error',
-      button: 'OK',
+      button: '編輯完成',
     })
   }
   // Sweet動畫---------------------------------------------------------------------
@@ -122,9 +122,10 @@ export class ReviewerBlogEdit extends Component {
     console.log('編輯模式進來的sid', this.props.sid)
     return (
       <>
-        <h3 className="h3_br">書評家{br_name} - 編輯模式</h3>
-        <section className="br_CKEditor">
-        <h5 className="h5_br">你正在編輯<div className="h3_Red">{name}</div></h5>
+        <h3 className="h3_br">書評家 {br_name}</h3>
+    <section className="br_CKEditor">
+        {/* <div className="h5_br">你正在編輯<div className="h3_Red">{name}</div></div> */}
+        <div className="h5_Edit">正在編輯..<div className="h3_Red">{name}</div></div>
           <div className="Animate_Close_Box">
             <div
               className="Animate_Close_btn"
@@ -141,7 +142,6 @@ export class ReviewerBlogEdit extends Component {
           </div>
           
           <section className="Blog_textarea">
-          </section>
 
             <form onSubmit={this.handleBlogEdit}>
               <button
@@ -198,6 +198,7 @@ export class ReviewerBlogEdit extends Component {
           {/* ---------------------------------------------------------------- */}
             </form>
         </section>
+    </section>
       </>
     )
   }
