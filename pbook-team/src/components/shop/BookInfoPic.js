@@ -1,11 +1,13 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { addToCartFetch } from './ShopActions'
+import { addToCartFetch, addCartToOrder, cartFetch } from './ShopActions'
 import swal from '@sweetalert/with-react'
 import './Shop.scss'
 
 const BookInfoPic = props => {
+  let totalAmount = props.cartToOrder.totalAmount
+  let totalPrice = props.cartToOrder.totalPrice
   function addCart() {
     let cart = props.cartPayload && props.cartPayload.cart
     let sid = props.data.sid
@@ -22,13 +24,9 @@ const BookInfoPic = props => {
       if (!localStorage.getItem('totalAmount')) {
         localStorage.setItem('totalAmount', 1)
       } else {
-        localStorage.setItem(
-          'totalAmount',
-          +localStorage.getItem('totalAmount') + 1
-        )
-        localStorage.setItem(
-          'totalPrice',
-          +localStorage.getItem('totalPrice') + props.data.fixed_price
+        localStorage.setItem(sid, 1)
+        props.dispatch(
+          addCartToOrder(totalAmount + 1, totalPrice + props.data.fixed_price)
         )
       }
       swal({
@@ -36,7 +34,7 @@ const BookInfoPic = props => {
         icon: 'success',
         button: 'OK',
       }).then(() => {
-        props.history.go(0)
+        props.dispatch(cartFetch())
       })
     }
   }
@@ -66,5 +64,6 @@ const BookInfoPic = props => {
 
 const mapStateToProps = state => ({
   Cart: state.Cart,
+  cartToOrder: state.cartToOrder,
 })
 export default connect(mapStateToProps)(BookInfoPic)

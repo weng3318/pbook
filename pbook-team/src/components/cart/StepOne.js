@@ -4,7 +4,7 @@ import { Col } from 'react-bootstrap'
 import { connect } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
-import { delCartFetch } from '../shop/ShopActions'
+import { delCartFetch, addCartToOrder, cartFetch } from '../shop/ShopActions'
 import './Cart.scss'
 
 const StepOne = props => {
@@ -40,24 +40,20 @@ const StepOne = props => {
       )
       totalAmount += +bookAmount[i]
     }
-    localStorage.setItem('totalAmount', totalAmount)
     props.setTotalAmount(totalAmount)
-    localStorage.setItem('totalPrice', totalPrice)
     props.setTotalPrice(totalPrice)
-    // props.history.go(0)
+    props.dispatch(addCartToOrder(totalAmount, totalPrice))
   }
   function delCart(sid, fixed_price) {
     props.dispatch(delCartFetch(sid))
-    let a = localStorage.getItem('totalAmount') - localStorage.getItem(sid)
+    let a = props.cartToOrder.totalAmount - localStorage.getItem(sid)
     let b =
-      localStorage.getItem('totalPrice') -
-      localStorage.getItem(sid) * fixed_price
-    localStorage.setItem('totalAmount', a)
-    localStorage.setItem('totalPrice', b)
+      props.cartToOrder.totalPrice - localStorage.getItem(sid) * fixed_price
+    props.dispatch(addCartToOrder(a, b))
     localStorage.removeItem(sid)
-    props.history.go(0)
+    props.dispatch(cartFetch())
   }
-  console.log(props.cartPayload)
+  // console.log(props.cartPayload)
   return (
     <>
       <Col md={7}>
@@ -133,17 +129,13 @@ const StepOne = props => {
           </div>
           <div className="d-flex justify-content-between mt-3 mx-5">
             <span>商品數量</span>
-            <span className="color-red">
-              {localStorage.getItem('totalAmount')}
-            </span>
+            <span className="color-red">{props.cartToOrder.totalAmount}</span>
           </div>
           <div className="d-flex justify-content-between mt-3 mx-5">
             <span>商品總計</span>
             <span>
               NT${' '}
-              <span className="color-red">
-                {localStorage.getItem('totalPrice')}
-              </span>
+              <span className="color-red">{props.cartToOrder.totalPrice}</span>
             </span>
           </div>
           <button
@@ -161,5 +153,6 @@ const StepOne = props => {
 const mapStateToProps = state => ({
   delCart: state.delCart,
   Cart: state.Cart,
+  cartToOrder: state.cartToOrder,
 })
 export default connect(mapStateToProps)(StepOne)

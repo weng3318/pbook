@@ -8,7 +8,12 @@ import Box from '@material-ui/core/Box'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faShoppingCart, faBookmark } from '@fortawesome/free-solid-svg-icons'
 import { letMeLogin } from '../../../pages/Forum/fmAction'
-import { addToFavFetch, addToCartFetch } from '../ShopActions'
+import {
+  addToFavFetch,
+  addToCartFetch,
+  addCartToOrder,
+  cartFetch,
+} from '../ShopActions'
 import './BookCommodity.scss'
 
 const BookBuy = props => {
@@ -16,6 +21,9 @@ const BookBuy = props => {
     props.bookInfoPayload &&
     props.bookInfoPayload.rows &&
     props.bookInfoPayload.rows[0]
+
+  let totalAmount = props.cartToOrder.totalAmount
+  let totalPrice = props.cartToOrder.totalPrice
   function addCart() {
     let cart = props.cartPayload && props.cartPayload.cart
     let sid = data && data.sid
@@ -29,21 +37,15 @@ const BookBuy = props => {
     } else if (index === -1) {
       props.dispatch(addToCartFetch(sid))
       localStorage.setItem(sid, 1)
-      localStorage.setItem(
-        'totalAmount',
-        +localStorage.getItem('totalAmount') + 1
+      props.dispatch(
+        addCartToOrder(totalAmount + 1, totalPrice + (data && data.fixed_price))
       )
-      localStorage.setItem(
-        'totalPrice',
-        +localStorage.getItem('totalPrice') + (data && data.fixed_price)
-      )
-
       swal({
         text: '加入購物車成功',
         icon: 'success',
         button: 'OK',
       }).then(() => {
-        props.history.go(0)
+        props.dispatch(cartFetch())
       })
     }
   }
@@ -57,20 +59,18 @@ const BookBuy = props => {
       icon: 'success',
       button: 'OK',
     })
-    // props.history.go(0)
   }
-  function delFav() {
-    let memberID = JSON.parse(localStorage.getItem('user')).MR_number
-    let isbn = data && data.isbn
-    props.dispatch(addToFavFetch(memberID, isbn))
-    // localStorage.setItem('favState', JSON.stringify({ isbn: isbn, state: 0 }))
-    // swal({
-    //   text: '取消收藏成功',
-    //   icon: 'success',
-    //   button: 'OK',
-    // })
-    // props.history.go(0)
-  }
+  // function delFav() {
+  //   let memberID = JSON.parse(localStorage.getItem('user')).MR_number
+  //   let isbn = data && data.isbn
+  //   props.dispatch(addToFavFetch(memberID, isbn))
+  // localStorage.setItem('favState', JSON.stringify({ isbn: isbn, state: 0 }))
+  // swal({
+  //   text: '取消收藏成功',
+  //   icon: 'success',
+  //   button: 'OK',
+  // })
+  // }
   function goCart() {
     if (localStorage.user !== undefined) {
       props.history.push(`/cart`)
@@ -128,6 +128,8 @@ const mapStateToProps = state => ({
   loginOrNot: state.letMeLogin.loginOrNot,
   addToFav: state.addToFav,
   addToCart: state.addToCart,
+  cartToOrder: state.cartToOrder,
+  Cart: state.Cart,
 })
 
 // redux(state)綁定到此元件的props、dispatch方法自動綁定到此元件的props

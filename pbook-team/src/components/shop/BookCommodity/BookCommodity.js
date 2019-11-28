@@ -31,8 +31,9 @@ const BookCommodity = props => {
             <BookDetail bookInfoPayload={bookInfoPayload}></BookDetail>
             <BookBuy
               bookInfoPayload={bookInfoPayload}
-              history={props.history}
               cartPayload={cartPayload}
+              history={props.history}
+              match={props.match}
             ></BookBuy>
           </Row>
         </Container>

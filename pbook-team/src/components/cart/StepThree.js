@@ -1,8 +1,23 @@
 import React from 'react'
 import { Col } from 'react-bootstrap'
+import moment from 'moment'
 import './Cart.scss'
 
-const StepOne = props => {
+const StepThree = props => {
+  let orderID
+  let sid =
+    props.orderPayload &&
+    props.orderPayload.rows &&
+    props.orderPayload.rows[0].sid
+  console.log(sid)
+
+  if (sid < 10) {
+    orderID = 'OD0000' + sid
+  } else if (sid < 100) {
+    orderID = 'OD000' + sid
+  } else if (sid < 1000) {
+    orderID = 'OD00' + sid
+  }
   return (
     <>
       <Col md={12}>
@@ -11,17 +26,14 @@ const StepOne = props => {
             <div className="finish d-flex align-items-center justify-content-center">
               訂單完成
             </div>
-            <div className="m-3 orderNumber">
-              訂單編號：{' '}
-              {props.orderPayload &&
-                props.orderPayload.rows &&
-                props.orderPayload.rows[0].orderID}
-            </div>
+            <div className="m-3 orderNumber">訂單編號： {orderID}</div>
             <div className="m-3 orderTime">
               訂購時間：
-              {props.orderPayload &&
-                props.orderPayload.rows &&
-                props.orderPayload.rows[0].created_time}
+              {moment(
+                props.orderPayload &&
+                  props.orderPayload.rows &&
+                  props.orderPayload.rows[0].created_time
+              ).format('YYYY-MM-DD HH:mm:ss')}
             </div>
             <div className="m-3 detail">
               <span className="title">購物明細</span>
@@ -65,4 +77,4 @@ const StepOne = props => {
   )
 }
 
-export default StepOne
+export default StepThree
