@@ -8,13 +8,16 @@ import styled from '@emotion/styled'
 import BookScoreAndLine from './BookScore/BookScoreAndLine'
 import BookStar from './BookScore/BookScoreForBR'
 import BookScoreForMember from './BookScore/BookScoreForMember'
-import InsertReply from './components/InsertReply'
 import { faTimes, faPen, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import swal from '@sweetalert/with-react'
 import { BrowserRouter as Router, Route, Link, NavLink } from 'react-router-dom'
+import Nav from './components/BR_Navbar'
 
 //---------------------------------------------------------------------------------------------------------
+const All = styled.section`
+  background-image: url('../../images/bg.png');
+`
 
 //主要內容外框
 const Main = styled.section`
@@ -50,19 +53,18 @@ const BookColumnScore = styled.div`
   align-items: flex-end;
 `
 
+//未登入直排右側分數
+const BookColumnScore2 = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+
 //直排下方會員
 const BookColumnMember = styled.div`
   display: flex;
   margin: 0 0 0 20px;
   align-items: center;
   flex-direction: column;
-`
-
-//評分條外框
-const BookLine = styled.div`
-  display: flex;
-  flex-direction: row-reverse;
-  outline: none;
 `
 
 //書本資訊
@@ -143,8 +145,6 @@ const List = () => {
       recommend(data.MR_number)
     }
   }, [])
-
-  
 
   //書評分頁資料ajax
   const bookList = async () => {
@@ -397,307 +397,332 @@ const List = () => {
 
   return (
     <>
-      <Main>
-        {List.map(data => (
-          <Book key={data.sid}>
-            <BookColumn>
-              <img
-                className="reviews_list_img"
-                key={data.sid}
-                src={require('./images/' + data.pic)}
-              />
-            </BookColumn>
-            <BookColumn>
-              <BookInfo>
-                <h3>{data.name}</h3>
-                {'作者:'}
-                {data.author}
-                <br />
-                <br />
-                <br />
-                {'內容簡介:'}
-                <div>
-                  {data.introduction
-                    .replace(/<[^>]*>/g, '')
-                    .replace(/&nbsp;/g, '')
-                    .replace(/&hellip;/g, '')
-                    .replace(/&bull;/g, '')}
-                </div>
-              </BookInfo>
-            </BookColumn>
-          </Book>
-        ))}
-        <div className="reviews_recommendText">推薦書籍</div>
-        <div className="reviews_recommendBook">
-          {recommendBook.map((book, index) => (
-            <Link
-              className="reviews_recommendBook_Link"
-              to={'/book_reviews/' + book.sid}
-            >
-              <div key={index}>
+      <All>
+        <Nav />
+        <Main>
+          {List.map(data => (
+            <Book key={data.sid}>
+              <BookColumn>
                 <img
-                  className="reviews_recommendBook_img"
-                  src={require('./images/' + book.pic)}
+                  className="reviews_list_img"
+                  key={data.sid}
+                  src={require('./images/' + data.pic)}
                 />
-                <div className="reviews_recommendBookName">{book.name}</div>
-              </div>
-            </Link>
+              </BookColumn>
+              <BookColumn>
+                <BookInfo>
+                  <h3>{data.name}</h3>
+                  {'作者:'}
+                  {data.author}
+                  <br />
+                  <br />
+                  <br />
+                  {'內容簡介:'}
+                  <div>
+                    {data.introduction
+                      .replace(/<[^>]*>/g, '')
+                      .replace(/&nbsp;/g, '')
+                      .replace(/&hellip;/g, '')
+                      .replace(/&bull;/g, '')}
+                  </div>
+                </BookInfo>
+              </BookColumn>
+            </Book>
           ))}
-        </div>
-
-        <BookColumnScore>
-          <Link to={`/books/information/${urlParams}`}>
-            <button className="reviews_BookBuy">立即購買</button>
-          </Link>
-          <BookRow>
-            <BookScoreAndLine List={List} />
-          </BookRow>
-          <form onSubmit={addCase}>
-            <button type="submit" className="reviews_BookCase">
-              加入書櫃
-            </button>
-          </form>
-        </BookColumnScore>
-        <h3 className="reviews_push">發表評論</h3>
-        <Review>
-          <BookColumnMember>
-            <Member>
-              {user.isLogin ? (
-                <img
-                  className="reviews_member_img"
-                  src={`http://localhost:5555/images/member/${user.pic}`}
-                />
-              ) : (
-                ''
-              )}
-              <h6 className="reviews_member_nickname">{user.MR_nickname}</h6>
-            </Member>
-          </BookColumnMember>
           {user.isLogin ? (
-            <form className="reviews_form" onSubmit={submitHandler}>
-              <textarea
-                className="reviews_textarea"
-                name="reviewText"
-                value={review.reviewText}
-                onChange={changeHandler}
-                onKeyPress={keypress}
-                placeholder="新增評論..."
-              />
-              <BookRow>
-                <p style={{ width: '80px' }}>幫書籍評分</p>
-                <BookStar
-                  score_star={review.star}
-                  setScore_star={changeHandler}
-                />
-                <button type="submit" className="reviews_submitBtn">
-                  送出評論
-                </button>
-              </BookRow>
-            </form>
+            <div className="reviews_recommendText">推薦書籍</div>
           ) : (
-            <form className="reviews_form">
-              <h6 className="reviews_Login">
-                <a onClick={login} href="#">
-                  請登入會員填寫評論
-                </a>
-              </h6>
-            </form>
+            ''
           )}
-        </Review>
-        {memberReview.map((data, index) => (
-          <Review key={index}>
+          <div className="reviews_recommendBook">
+            {recommendBook.map((book, index) => (
+              <Link
+                className="reviews_recommendBook_Link"
+                to={'/book_reviews/' + book.sid}
+              >
+                <div key={index}>
+                  <img
+                    className="reviews_recommendBook_img"
+                    src={require('./images/' + book.pic)}
+                  />
+                  <div className="reviews_recommendBookName">{book.name}</div>
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          {user.isLogin ? (
+            <BookColumnScore>
+              <Link to={`/books/information/${urlParams}`}>
+                <button className="reviews_BookBuy">立即購買</button>
+              </Link>
+              <BookRow>
+                <BookScoreAndLine List={List} />
+              </BookRow>
+              <form onSubmit={addCase}>
+                <button type="submit" className="reviews_BookCase">
+                  加入書櫃
+                </button>
+              </form>
+            </BookColumnScore>
+          ) : (
+            <BookColumnScore2>
+              <Link to={`/books/information/${urlParams}`}>
+                <button className="reviews_BookBuy">立即購買</button>
+              </Link>
+              <BookRow>
+                <BookScoreAndLine List={List} />
+              </BookRow>
+              <form onSubmit={addCase}>
+                <button type="submit" className="reviews_BookCase">
+                  加入書櫃
+                </button>
+              </form>
+            </BookColumnScore2>
+          )}
+          <h3 className="reviews_push">發表評論</h3>
+          <Review>
             <BookColumnMember>
               <Member>
-                <img
-                  className="reviews_memberReview_img"
-                  src={`http://localhost:5555/images/member/${data.MR_pic}`}
-                />
-              </Member>
-            </BookColumnMember>
-            <div className="reviews_member_text">
-              <BookRow>
-                <BookScoreForMember score_star={data.star} />
-                {data.MR_levelName}
-              </BookRow>
-              <BookRow>
-                <h6 className="reviews_member_nickname">{data.MR_nickname}</h6>
-                &nbsp;&nbsp;&nbsp;&nbsp;
-                <div className="reviews_time">
-                  {new Intl.DateTimeFormat('zh-TW', {
-                    year: 'numeric',
-                    month: 'numeric',
-                    day: 'numeric',
-                    hour12: false,
-                  })
-                    .format(new Date(data.create_time))
-                    .replace(/\//g, '-')}
-                </div>
-              </BookRow>
-              <br />
-              {review.isEdit && data.sid === review.sid ? (
-                <form onSubmit={updateHandler}>
-                  <textarea
-                    className="reviews_textarea"
-                    name="editReview"
-                    value={review.editReview}
-                    onChange={changeHandler}
-                    // onKeyPress={keypress}
+                {user.isLogin ? (
+                  <img
+                    className="reviews_member_img"
+                    src={`http://localhost:5555/images/member/${user.pic}`}
                   />
-                  <button type="submit" className="reviews_UpdateBtn">
-                    修改評論
-                  </button>
-                </form>
-              ) : (
-                <div className="reviews_text">{data.message}</div>
-              )}
-              {reply.map((item, index) =>
-                item.review_sid == data.sid ? (
-                  <div key={index} className="reviews_reply_view">
-                    <img
-                      className="reviews_memberReply_img"
-                      src={`http://localhost:5555/images/member/${item.MR_pic}`}
-                    />
-                    {replyMode.isEdit && replyMode.sid === item.reply_sid ? (
-                      <form
-                        className="reviews_reply_form"
-                        onSubmit={updateHandler}
-                      >
-                        {item.MR_nickname}
-                        &nbsp;
-                        {':'}
-                        &nbsp;
-                        <input
-                          className="reviews_reply_editText"
-                          name="editReply"
-                          onChange={changeHandler}
-                          value={replyMode.editReply}
-                        ></input>
-                      </form>
-                    ) : (
-                      <div className="reviews_reply_form">
-                        {item.MR_nickname}
-                        &nbsp;
-                        {':'}
-                        &nbsp;
-                        {item.reply_text}
-                      </div>
-                    )}
-                    {item.member == review.id ? (
-                      <>
-                        {replyMode.isEdit &&
-                        replyMode.sid === item.reply_sid ? (
-                          <FontAwesomeIcon
-                            className="reviews_reply_cancel"
-                            onClick={() => {
-                              setReplyMode({
-                                ...replyMode,
-                                isEdit: false,
-                                sid: item.reply_sid,
-                                editReply: item.reply_text,
-                              })
-                            }}
-                            icon={faTimes}
-                          />
-                        ) : (
-                          <FontAwesomeIcon
-                            className="reviews_reply_edit"
-                            onClick={() => {
-                              setReplyMode({
-                                ...replyMode,
-                                isEdit: true,
-                                sid: item.reply_sid,
-                                editReply: item.reply_text,
-                              })
-                            }}
-                            icon={faPen}
-                          />
-                        )}
-                        {replyMode.isEdit &&
-                        replyMode.sid === item.reply_sid ? (
-                          ''
-                        ) : (
-                          <FontAwesomeIcon
-                            className="reviews_reply_delete"
-                            value={item.reply_sid}
-                            onClick={() => {
-                              deleteHandler2(item.reply_sid)
-                            }}
-                            icon={faTrashAlt}
-                          />
-                        )}
-                      </>
-                    ) : (
-                      ''
-                    )}
-                  </div>
                 ) : (
                   ''
-                )
-              )}
-              {user.isLogin ? (
-                <form onSubmit={submitHandler2} key={index}>
-                  <textarea
-                    value={replyTxt}
-                    onChange={changeHandler}
-                    name={data.sid}
-                    placeholder="回覆此書評"
-                    className="reviews_reply_text"
-                    onKeyPress={keypress}
+                )}
+                <h6 className="reviews_member_nickname">{user.MR_nickname}</h6>
+              </Member>
+            </BookColumnMember>
+            {user.isLogin ? (
+              <form className="reviews_form" onSubmit={submitHandler}>
+                <textarea
+                  className="reviews_textarea"
+                  name="reviewText"
+                  value={review.reviewText}
+                  onChange={changeHandler}
+                  onKeyPress={keypress}
+                  placeholder="新增評論..."
+                />
+                <BookRow>
+                  <p style={{ width: '80px' }}>幫書籍評分</p>
+                  <BookStar
+                    score_star={review.star}
+                    setScore_star={changeHandler}
                   />
-                </form>
-              ) : (
-                ''
-              )}
-            </div>
-            {review.id === data.member ? (
-              <div>
+                  <button type="submit" className="reviews_submitBtn">
+                    送出評論
+                  </button>
+                </BookRow>
+              </form>
+            ) : (
+              <form className="reviews_form">
+                <h6 className="reviews_Login">
+                  <a onClick={login} href="#">
+                    請登入會員填寫評論
+                  </a>
+                </h6>
+              </form>
+            )}
+          </Review>
+          {memberReview.map((data, index) => (
+            <Review key={index}>
+              <BookColumnMember>
+                <Member>
+                  <img
+                    className="reviews_memberReview_img"
+                    src={`http://localhost:5555/images/member/${data.MR_pic}`}
+                  />
+                </Member>
+              </BookColumnMember>
+              <div className="reviews_member_text">
+                <BookRow>
+                  <BookScoreForMember score_star={data.star} />
+                  {data.MR_levelName}
+                </BookRow>
+                <BookRow>
+                  <h6 className="reviews_member_nickname">
+                    {data.MR_nickname}
+                  </h6>
+                  &nbsp;&nbsp;&nbsp;&nbsp;
+                  <div className="reviews_time">
+                    {new Intl.DateTimeFormat('zh-TW', {
+                      year: 'numeric',
+                      month: 'numeric',
+                      day: 'numeric',
+                      hour12: false,
+                    })
+                      .format(new Date(data.create_time))
+                      .replace(/\//g, '-')}
+                  </div>
+                </BookRow>
+                <br />
                 {review.isEdit && data.sid === review.sid ? (
-                  <>
+                  <form onSubmit={updateHandler}>
+                    <textarea
+                      className="reviews_textarea"
+                      name="editReview"
+                      value={review.editReview}
+                      onChange={changeHandler}
+                      // onKeyPress={keypress}
+                    />
+                    <button type="submit" className="reviews_UpdateBtn">
+                      修改評論
+                    </button>
+                  </form>
+                ) : (
+                  <div className="reviews_text">{data.message}</div>
+                )}
+                {reply.map((item, index) =>
+                  item.review_sid == data.sid ? (
+                    <div key={index} className="reviews_reply_view">
+                      <img
+                        className="reviews_memberReply_img"
+                        src={`http://localhost:5555/images/member/${item.MR_pic}`}
+                      />
+                      {replyMode.isEdit && replyMode.sid === item.reply_sid ? (
+                        <form
+                          className="reviews_reply_form"
+                          onSubmit={updateHandler}
+                        >
+                          {item.MR_nickname}
+                          &nbsp;
+                          {':'}
+                          &nbsp;
+                          <input
+                            className="reviews_reply_editText"
+                            name="editReply"
+                            onChange={changeHandler}
+                            value={replyMode.editReply}
+                          ></input>
+                        </form>
+                      ) : (
+                        <div className="reviews_reply_form">
+                          {item.MR_nickname}
+                          &nbsp;
+                          {':'}
+                          &nbsp;
+                          {item.reply_text}
+                        </div>
+                      )}
+                      {item.member == review.id ? (
+                        <>
+                          {replyMode.isEdit &&
+                          replyMode.sid === item.reply_sid ? (
+                            <FontAwesomeIcon
+                              className="reviews_reply_cancel"
+                              onClick={() => {
+                                setReplyMode({
+                                  ...replyMode,
+                                  isEdit: false,
+                                  sid: item.reply_sid,
+                                  editReply: item.reply_text,
+                                })
+                              }}
+                              icon={faTimes}
+                            />
+                          ) : (
+                            <FontAwesomeIcon
+                              className="reviews_reply_edit"
+                              onClick={() => {
+                                setReplyMode({
+                                  ...replyMode,
+                                  isEdit: true,
+                                  sid: item.reply_sid,
+                                  editReply: item.reply_text,
+                                })
+                              }}
+                              icon={faPen}
+                            />
+                          )}
+                          {replyMode.isEdit &&
+                          replyMode.sid === item.reply_sid ? (
+                            ''
+                          ) : (
+                            <FontAwesomeIcon
+                              className="reviews_reply_delete"
+                              value={item.reply_sid}
+                              onClick={() => {
+                                deleteHandler2(item.reply_sid)
+                              }}
+                              icon={faTrashAlt}
+                            />
+                          )}
+                        </>
+                      ) : (
+                        ''
+                      )}
+                    </div>
+                  ) : (
+                    ''
+                  )
+                )}
+                {user.isLogin ? (
+                  <form onSubmit={submitHandler2} key={index}>
+                    <textarea
+                      value={replyTxt}
+                      onChange={changeHandler}
+                      name={data.sid}
+                      placeholder="回覆此書評"
+                      className="reviews_reply_text"
+                      onKeyPress={keypress}
+                    />
+                  </form>
+                ) : (
+                  ''
+                )}
+              </div>
+              {review.id === data.member ? (
+                <div>
+                  {review.isEdit && data.sid === review.sid ? (
+                    <>
+                      <FontAwesomeIcon
+                        onClick={() => {
+                          setReview({
+                            ...review,
+                            isEdit: false,
+                            editReview: data.message,
+                            sid: data.sid,
+                          })
+                        }}
+                        className="reviews_member_icon_times"
+                        icon={faTimes}
+                      />
+                    </>
+                  ) : (
                     <FontAwesomeIcon
                       onClick={() => {
                         setReview({
                           ...review,
-                          isEdit: false,
-                          editReview: data.message,
+                          isEdit: true,
                           sid: data.sid,
+                          editReview: data.message,
                         })
                       }}
-                      className="reviews_member_icon_times"
-                      icon={faTimes}
+                      className="reviews_member_icon"
+                      icon={faPen}
                     />
-                  </>
-                ) : (
-                  <FontAwesomeIcon
-                    onClick={() => {
-                      setReview({
-                        ...review,
-                        isEdit: true,
-                        sid: data.sid,
-                        editReview: data.message,
-                      })
-                    }}
-                    className="reviews_member_icon"
-                    icon={faPen}
-                  />
-                )}
-                <br />
-                {review.isEdit && data.sid === review.sid ? (
-                  ''
-                ) : (
-                  <FontAwesomeIcon
-                    onClick={() => deleteHandler(data.sid)}
-                    value={data.sid}
-                    className="reviews_member_icon"
-                    icon={faTrashAlt}
-                  />
-                )}
-              </div>
-            ) : (
-              ''
-            )}
-          </Review>
-        ))}
-      </Main>
+                  )}
+                  <br />
+                  {review.isEdit && data.sid === review.sid ? (
+                    ''
+                  ) : (
+                    <FontAwesomeIcon
+                      onClick={() => deleteHandler(data.sid)}
+                      value={data.sid}
+                      className="reviews_member_icon"
+                      icon={faTrashAlt}
+                    />
+                  )}
+                </div>
+              ) : (
+                ''
+              )}
+            </Review>
+          ))}
+        </Main>
+      </All>
     </>
   )
 }

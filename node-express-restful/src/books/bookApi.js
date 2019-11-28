@@ -3,7 +3,7 @@ const mysql = require("mysql");
 const bluebird = require("bluebird");
 const router = express.Router();
 const db = mysql.createConnection({
-  host:"192.168.27.186",
+  host: "192.168.27.186",
   user: "root",
   password: "root",
   database: "pbook"
@@ -370,6 +370,8 @@ router.get("/addToCart", (req, res) => {
   const output = {};
   output.cart = req.session.cart;
   output.totalCart = req.session.totalCart;
+  output.totalAmount = req.session.totalAmount;
+  output.totalPrice = req.session.totalPrice;
   res.json(output);
 });
 
@@ -384,8 +386,13 @@ router.post("/addToCart", (req, res) => {
         sid: results[0].sid,
         pic: results[0].pic,
         name: results[0].name,
+        amount: 1,
         fixed_price: results[0].fixed_price
       });
+      let index = req.session.cart.findIndex(carts => carts.sid === bookSid);
+      req.session.totalAmount += req.session.cart[index].amount;
+      req.session.totalPrice +=
+        req.session.cart[index].fixed_price * req.session.cart[index].amount;
       req.session.totalCart++;
       // results.length=1
       res.json(req.session.cart);
@@ -395,12 +402,47 @@ router.post("/addToCart", (req, res) => {
     });
 });
 
+router.post("/editCart", (req, res) => {
+  let amount = req.body.amount;
+  let bookSid = req.body.sid;
+  let index = req.session.cart.findIndex(carts => carts.sid === bookSid);
+  if (index !== -1) {
+    //有找到
+    req.session.cart[index].amount = amount;
+    if (req.session.cart[index].amount <= 1) req.session.cart[index].amount = 1;
+    else if (req.session.cart[index].amount > 99)
+      req.session.cart[index].amount = 99;
+    req.session.totalAmount = 0;
+    req.session.totalPrice = 0;
+    for (let i = 0; i < req.session.totalCart; i++) {
+      req.session.totalAmount += req.session.cart[i].amount;
+      req.session.totalPrice +=
+        req.session.cart[i].fixed_price * req.session.cart[i].amount;
+    }
+    res.json({
+      message: "修改成功"
+    });
+  } else if (index == -1) {
+    res.json({
+      message: "修改失敗"
+    });
+  }
+  req.session.cart;
+});
+
 router.post("/delCart", (req, res) => {
   let bookSid = req.body.sid;
   let index = req.session.cart.findIndex(carts => carts.sid === bookSid);
   if (index !== -1) {
     req.session.cart.splice(index, 1);
     req.session.totalCart--;
+    req.session.totalAmount = 0;
+    req.session.totalPrice = 0;
+    for (let i = 0; i < req.session.totalCart; i++) {
+      req.session.totalAmount += req.session.cart[i].amount;
+      req.session.totalPrice +=
+        req.session.cart[i].fixed_price * req.session.cart[i].amount;
+    }
     res.json({
       message: "刪除成功"
     });
@@ -449,7 +491,7 @@ router.post("/addOrder", (req, res) => {
   let orderPrice = req.body.orderPrice;
   let created_time = req.body.created_time;
   console.log(req.body);
-  
+
   let sql =
     "INSERT INTO `od_list`(`memberID`, `bookName`, `singlePrice`, `bookAmount`, `orderPrice`, `created_time`) VALUES ('" +
     memberID +
