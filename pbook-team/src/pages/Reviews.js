@@ -10,21 +10,11 @@ import NavBar from './BookReview/components/BR_Navbar'
 
 import Bookinfo from './BookReview/Bookinfo'
 
-// ------------------------------------------------------------------------------------
-//主要內容外框
-const Main = styled.section`
-  margin: 0 auto;
-  width: 1200px;
-`
-// ------------------------------------------------------------------------------------
-
 const Reviewer = () => {
   return (
     <>
       <NavBar />
-      <Main>
-        <Bookinfo />
-      </Main>
+      <Bookinfo />
     </>
   )
 }

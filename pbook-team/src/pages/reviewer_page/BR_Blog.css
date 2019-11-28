@@ -1,28 +1,34 @@
 /* 編輯內文，表單區域設定 */
 .Blog_textarea{
     color: #2d3a3a;
+    border: 2px solid #2d3a3a;
+    background: #2d3a3a;
+    padding: 0 100px 50px 100px;
 }
 /* 表單送出按鈕，自訂樣式 */
 .Blog_submit{
-    min-width: 88px;
+    min-width: 150px;
     min-height: 40px;
     border-radius: 6px;
-    border: 2px solid #ffc408;
-    margin: 20px 0;
+    border: 1px solid #ffc408;
+    margin: 10px 0 20px 0;
     left: 50%;
     transform: translateX(-50%);
     font-weight: bold;
     color: #ffc408;
     background: #2d3a3a;
+    transition: 0.2s;
 }
 .Blog_submit:hover{
+    min-width: 146px;
     border: 2px solid #cde2d0;
     color: #cde2d0;
+    font-size: 1.2em;
 }
 /* CKEditor編輯器控制 */
 .br_CKEditor{
     min-height: 260px;
-    border-bottom: 2px solid #2d3a3a;
+    border-bottom: 5px solid #2d3a3a;
     overflow: hidden;
 }
 .ck.ck-content table{
@@ -34,7 +40,6 @@
     text-align: center;
     font-weight: 800;
     color: #ff525b;
-    margin: 10px 0 5px 0;
 }
 .h3_gray{
     text-align: center;
@@ -59,7 +64,7 @@
 /* 編輯按鈕，按鈕變形，含外框線 (控制位置:Z) */
 .Animate_Edit_Box,.Animate_Close_Box{
     position: absolute;
-    top: 15px;
+    top: 20px;
     right: 0;
     width: 50px;
     border: 2px 0 2px 2px solid transparent;
@@ -168,22 +173,29 @@
 /* 品書雞 */
 .pbookChick{
     position: absolute;
-    width: 50px;
-    right: 1rem;
-    bottom: 1rem;
+    width: 42px;
+    right: 0.8rem;
+    bottom: 0.8rem;
 }
 /* todo.. UX按鈕 */
 @media (max-width: 786px) {
     /* 部落格內文，RWD (閱讀性調整) */
     .reviewerBlog {
-        padding: 20px 50px 20px 50px;
+        padding: 12px 24px 42px 24px;
     }
     /* 編輯按鈕，RWD (位置調整) */
     .Animate_Edit_Box{
-        top: -240px;
+        top: -180px;
     }
     /* 關閉文章，RWD (位置調整) */
     .Animate_Close_Box{
         top: 10px;
+    }
+    /* 編輯內文，表單區域設定 (RWD編輯區塊調整)*/
+    .Blog_textarea{
+    padding: 0 24px 50px 24px;
+    }
+    .h3_Red{
+        font-size: 1.2rem;
     }
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Nav, Navbar, Form, FormControl, Button } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
@@ -7,7 +7,8 @@ import PostArticle from './PostArticle'
 import ArticleContent from './ArticleContent'
 import TopicPage from './TopicPage'
 import './scss/ForumNavBar.scss'
-
+import SerachList from './SearchList'
+import Input from './Input'
 // 2 3 1 7 10 11 21 13 4
 // vb_categories {
 // 1  文學小說
@@ -32,7 +33,21 @@ import './scss/ForumNavBar.scss'
 // 20 專業/教科書/政府出版品
 // 21 數位科技
 // }
-const ForumNavBar = () => {
+const ForumNavBar = props => {
+  useEffect(() => {
+    document.querySelector('#form1').onsubmit = () => {
+      handleSearch()
+      return false
+    }
+  }, [])
+
+  const handleSearch = () => {
+    let keyWord = document.querySelector('#serachIuput').value
+    if (keyWord !== '') {
+      document.querySelector('#serachIuput').value = ''
+      props.history.push(`/forum/search/${keyWord}`)
+    }
+  }
   return (
     <>
       <div className="forumPage">
@@ -70,13 +85,16 @@ const ForumNavBar = () => {
                 <Nav.Link className="F-nav-link">人文史地</Nav.Link>
               </LinkContainer>
             </Nav>
-            <Form inline>
+            <Form inline id="form1">
               <FormControl
                 type="text"
                 placeholder="Search"
                 className="mr-sm-2"
+                id="serachIuput"
               />
-              <Button variant="outline-primary">Search</Button>
+              <Button variant="outline-primary" onClick={handleSearch}>
+                搜尋
+              </Button>
             </Form>
           </nav>
         </Navbar>
@@ -133,6 +151,16 @@ const ForumNavBar = () => {
             exact
             path="/forum/article/:articleId"
             render={props => <ArticleContent />}
+          ></Route>
+          <Route
+            exact
+            path="/forum/search/:keyWord"
+            render={props => <SerachList />}
+          ></Route>
+          <Route
+            exact
+            path="/forum/input"
+            render={props => <Input />}
           ></Route>
         </Switch>
       </div>

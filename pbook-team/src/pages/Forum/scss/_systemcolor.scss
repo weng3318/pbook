@@ -30,6 +30,12 @@ $deepsea: #58b2dc;
   color: $grey-grey;
   //@extend %card-subtitle-font;
 }
+.cards-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin-top: 24px;
+}
 
 .displayBlock {
   display: block;
@@ -49,12 +55,18 @@ $deepsea: #58b2dc;
 .dis-flex {
   display: flex;
 }
-.dis-flex-flex-between{
+.dis-flex-between {
   justify-content: space-between;
+}
+.flex-align-center {
+  align-items: center;
 }
 .container {
   max-width: 1200px;
 }
 .container-m {
   max-width: 900px;
+}
+.cursor-pointer {
+  cursor: pointer;
 }

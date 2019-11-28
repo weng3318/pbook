@@ -7,8 +7,8 @@ import HotArticle from '../../components/forum/HotArticle/HotArticle'
 import './scss/Forum.scss'
 
 class Forum extends React.Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
       update: false,
       items: 20,
@@ -19,7 +19,7 @@ class Forum extends React.Component {
     }
   }
   componentDidMount() {
-    fetch('http://localhost:5555/forum/homepage', {
+    fetch('http://localhost:5555/forum/homepage/true', {
       method: 'GET',
     })
       .then(response => {
@@ -40,47 +40,54 @@ class Forum extends React.Component {
               articleList: result2,
               update: true,
             })
+            document.documentElement.scrollTop = 0
           })
       })
       .catch(error => {
         //這裡可以顯示一些訊息
         console.error(error)
       })
-    window.addEventListener('scroll', () => {
-      let contentTop = document.documentElement.clientHeight
-      let scrollTop = document.documentElement.scrollTop
-      let scrollHeight = document.documentElement.scrollHeight
-      let reLoadValue = scrollHeight - contentTop - 100
-      let stopValue = scrollHeight - contentTop - 50
-      if (!this.state.outOfList) {
-        if (scrollTop > reLoadValue) {
-          let newNumber = this.state.number + 5
-          fetch(`http://localhost:5555/forum/articleList/${newNumber}`, {
-            method: 'GET',
+    window.addEventListener('scroll', this.scrollEvent)
+  }
+
+  scrollEvent = () => {
+    let contentTop = document.documentElement.clientHeight
+    let scrollTop = document.documentElement.scrollTop
+    let scrollHeight = document.documentElement.scrollHeight
+    let reLoadValue = scrollHeight - contentTop - 100
+    let stopValue = scrollHeight - contentTop + contentTop
+    if (!this.state.outOfList) {
+      if (scrollTop > reLoadValue) {
+        let newNumber = this.state.number + 5
+        fetch(`http://localhost:5555/forum/articleList/${newNumber}`, {
+          method: 'GET',
+        })
+          .then(res => {
+            if (!res.ok) throw new Error(res.statusText)
+            return res.json()
           })
-            .then(res => {
-              if (!res.ok) throw new Error(res.statusText)
-              return res.json()
+          .then(result2 => {
+            this.setState({
+              articleList: result2,
+              number: newNumber,
             })
-            .then(result2 => {
-              this.setState({
-                articleList: result2,
-                number: newNumber,
-              })
-              document.documentElement.scrollTop = reLoadValue
-            })
-        }
-        if (scrollTop === stopValue) {
-          this.setState({ outOfList: true })
-        }
+            document.documentElement.scrollTop = reLoadValue
+            if (
+              scrollTop + contentTop + 40 > stopValue ||
+              this.state.number > 100
+            ) {
+              console.log('list end')
+              window.removeEventListener('scroll', () => {})
+              this.setState({ outOfList: true })
+            }
+          })
       }
-    })
+    }
   }
   componentWillUnmount() {
-    window.removeEventListener('scroll', () => {})
+    window.removeEventListener('scroll', this.scrollEvent)
   }
   render() {
-   
     return (
       <>
         <div className="container">
@@ -92,7 +99,10 @@ class Forum extends React.Component {
               <CardS1 data={this.state.data[2]} />
             </div>
             <div style={{ color: 'transparent' }}>更多精選</div>
-            <Link to="" className="more-featured position-a">
+            <Link
+              to="/forum/search/featured"
+              className="more-featured position-a"
+            >
               更多精選 +
             </Link>
           </div>
@@ -100,6 +110,7 @@ class Forum extends React.Component {
           <div className="position-r">
             <div className="forum-list-wrapper card-module">
               <div className="articleList-title">文章列表</div>
+              <hr></hr>
               {this.state.articleList.map(value => {
                 return (
                   <Listitem

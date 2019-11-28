@@ -1,32 +1,29 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, createRef } from 'react'
 import { BrowserRouter as Link, useParams } from 'react-router-dom'
 import { connect } from 'react-redux'
 import './scss/ArticleContent.scss'
 //action
-import { letMeLogin } from './fmAction'
+import { letMeLogin, readMoreResponse } from './fmAction'
 //Material Icons
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder'
 import BookmarkIcon from '@material-ui/icons/Bookmark'
-import Button from '@material-ui/core/Button'
 import ThumbUpIcon from '@material-ui/icons/ThumbUp'
-import { makeStyles } from '@material-ui/core/styles'
+import FacebookIcon from '@material-ui/icons/Facebook'
+import Chip from '@material-ui/core/Chip'
+
 import CircularProgress from '@material-ui/core/CircularProgress'
+import {
+  createMuiTheme,
+  withStyles,
+  makeStyles,
+  ThemeProvider,
+} from '@material-ui/core/styles'
+import Button from '@material-ui/core/Button'
 
+//component
+import Message from '../../components/forum/Messgae/Message'
 import avatar from './2.jpg'
-import TextareaAutosize from 'react-textarea-autosize'
-
-const useStyles = makeStyles(theme => ({
-  button: {
-    width: '100%',
-    margin: '8px 8px',
-  },
-  root: {
-    display: 'flex',
-    '& > * + *': {
-      marginLeft: theme.spacing(2),
-    },
-  },
-}))
+import { FacebookProvider, Share, ShareButton } from 'react-facebook'
 
 const ArticleContent = props => {
   const classes = useStyles()
@@ -37,13 +34,19 @@ const ArticleContent = props => {
   const [data, setData] = useState('')
   const [contentUpdated, setContentUpdated] = useState(false) //讀取內容json
   const [addElement, setAddElement] = useState(0) //render element
+  const [textareaValue, setTextareaValue] = useState('')
+  const [like, setLike] = useState(0)
+  const [bookmark, setBookmark] = useState(false)
+  const [favorite, setFavorite] = useState(false)
 
   useEffect(() => {
+    let mark = 0
     if (localStorage.user !== undefined) {
       let user = JSON.parse(localStorage.user)
-      setLogin(true)
+      mark = user.MR_number
+      setLogin(user)
     }
-    fetch('http://localhost:5555/forum/article/' + articleId, {
+    fetch(`http://localhost:5555/forum/article/content/${articleId}/${mark}`, {
       method: 'GET',
     })
       .then(response => {
@@ -53,6 +56,13 @@ const ArticleContent = props => {
       })
       .then(result => {
         setData(result)
+        setLike(result.article.fm_like)
+        if (result.bookmark['COUNT(1)'] !== 0) {
+          setBookmark(true)
+        }
+        if (result.favorite['COUNT(1)'] !== 0) {
+          setFavorite(true)
+        }
       })
   }, [])
 
@@ -63,7 +73,6 @@ const ArticleContent = props => {
   }, [data])
 
   const handleContentUpdated = () => {
-    console.log('update')
     fetch(
       'http://localhost:5555/forum/content/' +
         data.article.fm_articleId +
@@ -74,7 +83,6 @@ const ArticleContent = props => {
         return res.json()
       })
       .then(result => {
-        console.log(result)
         let imgCount = 0
         let textAreaCount = 0
         let type = data.article.fm_demoImage.split('.')[1]
@@ -83,9 +91,9 @@ const ArticleContent = props => {
             case 'textarea':
               let uni = `textarea${textAreaCount}`
               let textareaElement = (
-                <div id={uni} className="contentDiv" key={uni}>
+                <pre id={uni} className="contentPre" key={uni}>
                   {result.textareaValue[textAreaCount]}
-                </div>
+                </pre>
               )
               textAreaCount++
               return textareaElement
@@ -106,31 +114,112 @@ const ArticleContent = props => {
               return 'nothing'
           }
         })
+        setTextareaValue(result.textareaValue)
         setAddElement([...body])
       })
   }
-  const handleFollow = () => {}
-  const wantToResponse = () => {
-    document.documentElement.scrollTop = 0
-    props.dispatch(letMeLogin())
+  const handleFollow = () => {
+    if (favorite) {
+      fetch(
+        `http://localhost:5555/forum/article/follow/delete/${data.member.MR_number}/${login.MR_number}`
+      ).then(res => {
+        setFavorite(false)
+        res.json()
+      })
+    } else {
+      fetch(
+        `http://localhost:5555/forum/article/follow/add/${data.member.MR_number}/${login.MR_number}`
+      ).then(res => {
+        setFavorite(true)
+        res.json()
+      })
+    }
+  }
+  const handleBookmarkClick = () => {
+    if (bookmark) {
+      fetch(
+        `http://localhost:5555/forum/article/bookmark/delete/${articleId}/${login.MR_number}`
+      ).then(res => {
+        setBookmark(false)
+        res.json()
+      })
+    } else {
+      fetch(
+        `http://localhost:5555/forum/article/bookmark/add/${articleId}/${login.MR_number}`
+      ).then(res => {
+        setBookmark(true)
+        res.json()
+      })
+    }
+  }
+  const handleClickArticleLike = () => {
+    fetch(`http://localhost:5555/forum/article/like/${articleId}/${like}`)
+      .then(res => {
+        return res.json()
+      })
+      .then(result => {
+        document.querySelector('.thumb').classList.add('active')
+        setLike(like + 1)
+      })
+  }
+  const youNeedToLogin = () => {
+    if (!login) {
+      document.documentElement.scrollTop = 0
+      props.dispatch(letMeLogin())
+    }
+  }
+  const handleReadMore = () => {
+    props.dispatch(readMoreResponse(5))
   }
   // if (!contentUpdated) {
   if (!data) {
     return <CircularIndeterminate />
   } else {
+    let countRes = data.responseNO['COUNT(1)'] - props.showResponse
+
     return (
       <div className="container">
-        <div>path</div>
         <div className="article-content-warpper">
+          <span className="cateText">
+            <ThemeProvider theme={theme}>
+              <Chip
+                label={data.article.categoriesName}
+                // clickable
+                color="primary"
+                variant="outlined"
+                style={{ fontSize: 24 }}
+              />
+              <Chip
+                className="ml-2"
+                label={data.article.subname}
+                // clickable
+                color="primary"
+                variant="outlined"
+                style={{ fontSize: 24 }}
+              />
+            </ThemeProvider>
+            <span className="ml-4"></span>
+          </span>
           <div className="dis-flex dis-flex-flex-between">
             <div className="title">{data.article.fm_title}</div>
-            <div className="bookmarkIcon">
-              <BookmarkBorderIcon fontSize="large" />
+            <div className="bookmarkIcon icon">
+              {bookmark ? (
+                <BookmarkIcon
+                  style={{ fontSize: 40 }}
+                  onClick={handleBookmarkClick}
+                />
+              ) : (
+                <BookmarkBorderIcon
+                  style={{ fontSize: 40 }}
+                  onClick={handleBookmarkClick}
+                />
+              )}
             </div>
           </div>
           <div className="writer-details dis-flex">
             <figure>
               <img
+                alt=""
                 className="avater"
                 src={
                   'http://localhost:5555/images/member/' + data.member.MR_pic
@@ -141,40 +230,57 @@ const ArticleContent = props => {
               <div className="writer-item ">
                 <span className="name1">{data.member.MR_nickname}</span>
                 <Button
+                  className={favorite ? 'follow-active' : ''}
                   variant="outlined"
                   color="secondary"
-                  onClick={handleContentUpdated}
+                  onClick={handleFollow}
                 >
                   追蹤作者
                 </Button>
               </div>
               <div className="writer-item">
                 <span className="name">{data.article.fm_publishTime}</span>
-                <span>publishTime</span>
+                <span className="name">{data.article.fm_read}人已閱讀</span>
               </div>
             </div>
           </div>
-          <hr></hr>
+          <div className="separation-line"></div>
           <section>{addElement}</section>
           <div className="social-area">
-            <div className="dis-flex thumb">
+            <div className="dis-flex thumb" onClick={handleClickArticleLike}>
               <div className="thumb-frame">
                 <ThumbUpIcon style={{ fontSize: 50 }} />
               </div>
-              <span>{data.article.fm_like}</span>
+              <span>{like}</span>
             </div>
             <div className="social-icons">
-              <ThumbUpIcon></ThumbUpIcon>
-              <ThumbUpIcon></ThumbUpIcon>
-              <ThumbUpIcon></ThumbUpIcon>
-              <ThumbUpIcon></ThumbUpIcon>
-              <BookmarkBorderIcon></BookmarkBorderIcon>
+              <FacebookProvider appId="2545805135652577">
+                <ShareButton href="https://www.google.com.tw/">
+                  <div title="分享到臉書">
+                    <FacebookIcon style={{ fontSize: 40, color: '#3b5998' }} />
+                  </div>
+                </ShareButton>
+              </FacebookProvider>
+              <span className="icon">
+                {bookmark ? (
+                  <BookmarkIcon
+                    style={{ fontSize: 40 }}
+                    onClick={handleBookmarkClick}
+                  />
+                ) : (
+                  <BookmarkBorderIcon
+                    style={{ fontSize: 40 }}
+                    onClick={handleBookmarkClick}
+                  />
+                )}
+              </span>
             </div>
           </div>
           <hr></hr>
           <div className="writer-details dis-flex">
             <figure>
               <img
+                alt=""
                 className="avater"
                 src={
                   'http://localhost:5555/images/member/' + data.member.MR_pic
@@ -182,40 +288,40 @@ const ArticleContent = props => {
               ></img>
             </figure>
             <div>
-              <span className="name">WRITTEN BY</span>
-              <div className="writer-item name">
-                <span className="name">writer-name</span>
-                <Button variant="outlined" color="secondary">
+              <div className="name">WRITTEN BY</div>
+              <div className="writer-item">
+                <span className="name1">{data.member.MR_nickname}</span>
+                <Button
+                  className={favorite ? 'follow-active' : ''}
+                  variant="outlined"
+                  color="secondary"
+                  onClick={handleFollow}
+                >
                   追蹤作者
                 </Button>
               </div>
               <div className="writer-item">
-                <span className="name">introduction</span>
+                <div className="name">{data.member.MR_introduction}</div>
               </div>
             </div>
           </div>
           <hr></hr>
-          <div className="massage-frame dis-flex">
-            <div className="avatar-md">
-              <img src={avatar}></img>
-            </div>
-            <TextareaAutosize placeholder="寫個留言吧......" />
-          </div>
-          <Massage></Massage>
-          <div className="button">
+
+          <Message articleId={articleId} member={data.member}></Message>
+          <div className="button" onClick={handleReadMore}>
             <Button
               variant="outlined"
               color="primary"
               className={classes.button}
             >
-              看更多回應(16)
+              看更多回應({countRes < 0 ? 0 : countRes})
             </Button>
           </div>
           {!login ? (
             <div className="need-login">
               <span>
                 請先登入會員，才可回應。
-                <button className="login-button" onClick={wantToResponse}>
+                <button className="login-button" onClick={youNeedToLogin}>
                   登入
                 </button>
               </span>
@@ -228,33 +334,17 @@ const ArticleContent = props => {
     )
   }
 }
-const Massage = props => {
-  return (
-    <div>
-      <div className="massage-frame">
-        <div className="avatar-sm">
-          <img src={avatar}></img>
-        </div>
-        <div>kasjflkdsjfldksjfaklsjfkldfjlsajfdls</div>
-        <div className="social-area2">
-          <div className="dis-flex thumb-sm">
-            <div className="thumb-frame">
-              <ThumbUpIcon style={{ fontSize: 20 }} />
-            </div>
-            <span>4566</span>
-          </div>
-          <div className="social-icons">
-            <ThumbUpIcon></ThumbUpIcon>
-            <ThumbUpIcon></ThumbUpIcon>
-            <ThumbUpIcon></ThumbUpIcon>
-            <ThumbUpIcon></ThumbUpIcon>
-            <BookmarkBorderIcon></BookmarkBorderIcon>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
+
+// 綁定props.todos <=> store.todos
+const mapStateToProps = store => ({
+  showResponse: store.readMoreResponse.number,
+})
+// redux(state)綁定到此元件的props、dispatch方法自動綁定到此元件的props
+
+export default connect(mapStateToProps)(ArticleContent)
+
+//components
+
 function CircularIndeterminate() {
   const classes = useStyles()
   return (
@@ -265,8 +355,23 @@ function CircularIndeterminate() {
   )
 }
 
-// 綁定props.todos <=> store.todos
-const mapStateToProps = store => ({})
-
-// redux(state)綁定到此元件的props、dispatch方法自動綁定到此元件的props
-export default connect(mapStateToProps)(ArticleContent)
+//Material UI style
+const useStyles = makeStyles(theme => ({
+  button: {
+    width: '100%',
+    margin: '8px 8px',
+  },
+  root: {
+    display: 'flex',
+    '& > * + *': {
+      marginLeft: theme.spacing(2),
+    },
+  },
+}))
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#58b2dc',
+    },
+  },
+})
