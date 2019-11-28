@@ -240,6 +240,10 @@
   width: 60px !important;
 }
 
+.chatWrap .stickerImg {
+  width: 100px !important;
+}
+
 .upLoadImg {
   width: 150px;
   height: 150px;
