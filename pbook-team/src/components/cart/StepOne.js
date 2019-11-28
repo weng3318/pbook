@@ -51,9 +51,9 @@ const StepOne = props => {
       props.cartToOrder.totalPrice - localStorage.getItem(sid) * fixed_price
     props.dispatch(addCartToOrder(a, b))
     localStorage.removeItem(sid)
-    props.setOrder(2)
+    props.dispatch(cartFetch())
   }
-  console.log(props.cartPayload)
+  // console.log(props.cartPayload)
   return (
     <>
       <Col md={7}>

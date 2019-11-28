@@ -20,7 +20,7 @@ const Buy = props => {
     props.dispatch(cartFetch())
     props.dispatch(orderFetch(member))
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [order])
+  }, [props.Cart.payload, order])
   let orderPayload = props.order.payload
   let cartPayload = props.Cart.payload
   function changeSteps(e) {

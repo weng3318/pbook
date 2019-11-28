@@ -205,10 +205,6 @@ class Header extends React.Component {
     // if (JSON.parse(localStorage.getItem('user')).MR_number !== '') phoneMemberStatus = 'block'
     // let phoneVisitorStatus = 'block'
     // if (JSON.parse(localStorage.getItem('user')).MR_number !== '') phoneVisitorStatus = 'none'
-    if (!localStorage.getItem('totalAmount'))
-      localStorage.setItem('totalAmount', 0)
-    if (!localStorage.getItem('totalPrice'))
-      localStorage.setItem('totalPrice', 0)
     let level = [
       '',
       '品書會員',
