@@ -256,7 +256,7 @@ function Bookinfo() {
                   <img
                     key={data.sid}
                     className="reviews_img"
-                    src={require('./images/' + data.pic)}
+                    src={`http://localhost:5555/images/books/${data.pic}`}
                   />
                 </Link>
               </BookImage>
