@@ -1,10 +1,10 @@
 const mysql = require('mysql')
 const bluebird = require('bluebird')
 const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'root',
-    database: 'pbook',
+    host: "192.168.27.186",
+  user: "root",
+  password: "root",
+  database: "pbook"
 })
 db.connect();
 bluebird.promisifyAll(db)

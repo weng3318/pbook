@@ -13,12 +13,11 @@ const db = mysql.createConnection({
 });
 db.connect();
 bluebird.promisifyAll(db);
-
 //書本單筆資料
 router.get("/book_reviews/:sid?", (req, res) => {
   let sid = req.params.sid;
   console.log(req.query.id);
-  const sql = `SELECT * FROM vb_books WHERE sid=${sid}`;
+  const sql = `SELECT vb_books.*,cp_data_list.cp_name FROM vb_books LEFT JOIN cp_data_list ON vb_books.publishing = cp_data_list.sid WHERE vb_books.sid = ${sid}`;
   db.query(sql, (error, results) => {
     if (error) {
       return res.send(error);

@@ -170,13 +170,13 @@ function Bookinfo() {
         .get(`http://localhost:5555/reviews/?${c}a=${array}&p=${p}&s=${e}`)
         .then(res => {
           setBookInformation(res.data.rows)
-        
+
           console.log(bookInformation)
         })
         .catch(error => {
           console.log(error)
         })
-    }else if(e.length == 0){
+    } else if (e.length == 0) {
       bookInfo()
     }
   }
@@ -248,51 +248,53 @@ function Bookinfo() {
           </select>
         </OptionBar>
 
-        {(<Book>
-          <BookColumn>
-            {bookInformation.map(data => (
-              <BookImage key={data.sid}>
-                <Link to={'/book_reviews/' + data.sid}>
-                  <img
-                    key={data.sid}
-                    className="reviews_img"
-                    src={require('./images/' + data.pic)}
-                  />
-                </Link>
-              </BookImage>
-            ))}
-          </BookColumn>
-          <BookColumn>
-            {bookInformation.map(data => (
-              <BookInfo key={data.sid}>
-                <Link
-                  style={{ textDecoration: 'none' }}
-                  className="reviews_list_sid"
-                  to={'/book_reviews/' + data.sid}
-                >
-                  <h4> {data.name}</h4>
-                </Link>
-                {'作者:'}
-                {data.author}
-                {/* {'出版社:'}
+        {
+          <Book>
+            <BookColumn>
+              {bookInformation.map(data => (
+                <BookImage key={data.sid}>
+                  <Link to={'/book_reviews/' + data.sid}>
+                    <img
+                      key={data.sid}
+                      className="reviews_img"
+                      src={`http://localhost:5555/images/books/${data.pic}`}
+                    />
+                  </Link>
+                </BookImage>
+              ))}
+            </BookColumn>
+            <BookColumn>
+              {bookInformation.map(data => (
+                <BookInfo key={data.sid}>
+                  <Link
+                    style={{ textDecoration: 'none' }}
+                    className="reviews_list_sid"
+                    to={'/book_reviews/' + data.sid}
+                  >
+                    <h4> {data.name}</h4>
+                  </Link>
+                  {'作者:'}
+                  {data.author}
+                  {/* {'出版社:'}
                   {data.publish_date} */}
-                <div />
-                <br />
-                {'內容簡介:'}
-                <div>
-                  {data.introduction
-                    .replace(/<[^>]*>/g, '')
-                    .replace(/&nbsp;/g, '')
-                    .replace(/&hellip;/g, '')
-                    .replace(/&bull;/g, '')}
-                </div>
-              </BookInfo>
-            ))}
-          </BookColumn>
-          <BookColumn>
-            <BookScore callback={callback} callback2={callback2} />
-          </BookColumn>
-        </Book>)}
+                  <div />
+                  <br />
+                  {'內容簡介:'}
+                  <div>
+                    {data.introduction
+                      .replace(/<[^>]*>/g, '')
+                      .replace(/&nbsp;/g, '')
+                      .replace(/&hellip;/g, '')
+                      .replace(/&bull;/g, '')}
+                  </div>
+                </BookInfo>
+              ))}
+            </BookColumn>
+            <BookColumn>
+              <BookScore callback={callback} callback2={callback2} />
+            </BookColumn>
+          </Book>
+        }
 
         {!sb.isSearch ? (
           <Pagination className="reviews_pagination">
