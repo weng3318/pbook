@@ -201,13 +201,15 @@ class AC {
         let sql = 'SELECT * FROM `ac_sign` WHERE `memberId`="' + memberId + '"'
         let signedAc = await sqlQuery(sql)
 
-        sql = 'SELECT `sid`,`title` FROM `ac_pbook2` WHERE 0'
+        sql = 'SELECT `sid`,`title`, `date` FROM `ac_pbook2` WHERE 0'
         for (let i = 0; i < signedAc.length; i++) {
             sql += ' OR `sid`=' + signedAc[i].acId
         }
         let acTitleArray = await sqlQuery(sql)
         signedAc.forEach(v => {
-            v.title = acTitleArray.find(v2 => +v2.sid === +v.acId).title
+            let ac = acTitleArray.find(v2 => +v2.sid === +v.acId)
+            v.title = ac.title
+            v.date = ac.date
         })
 
         return signedAc
