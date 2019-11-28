@@ -13,6 +13,8 @@ import {
   CART_REQUEST,
   DEL_CART_RECEIVE,
   DEL_CART_REQUEST,
+  EDIT_CART_RECEIVE,
+  EDIT_CART_REQUEST,
   ORDER_RECEIVE,
   ORDER_REQUEST,
   ADD_ORDER_RECEIVE,
@@ -268,6 +270,47 @@ function delCart(state = [], action) {
   }
 }
 //---------------------
+//------delCart-------
+function ec(
+  state = {
+    isFetching: false,
+    didInvalidate: false,
+  },
+  action
+) {
+  switch (action.type) {
+    case EDIT_CART_RECEIVE:
+      return {
+        ...state,
+        isFetching: false,
+        didInvalidate: false,
+        payload: action.payload,
+        lastUpdated: action.receivedAt,
+      }
+    case EDIT_CART_REQUEST:
+      return {
+        ...state,
+        isFetching: true,
+        didInvalidate: false,
+      }
+    default:
+      return state
+  }
+}
+
+function editCart(state = [], action) {
+  switch (action.type) {
+    case EDIT_CART_RECEIVE:
+    case EDIT_CART_REQUEST:
+      return {
+        ...state,
+        ...ec(state[action], action),
+      }
+    default:
+      return state
+  }
+}
+//---------------------
 //------Cart-------
 function ct(
   state = {
@@ -415,6 +458,7 @@ const ShopReducers = {
   addToCart,
   Cart,
   delCart,
+  editCart,
   bookInfo,
   categories,
   shop,

@@ -57,6 +57,8 @@ app.use(express.static("public"));
 app.use((req, res, next) => {
   if (!req.session.cart) req.session.cart = [];
   if (!req.session.totalCart) req.session.totalCart = 0;
+  if (!req.session.totalAmount) req.session.totalAmount = 0;
+  if (!req.session.totalPrice) req.session.totalPrice = 0;
   next();
 });
 
