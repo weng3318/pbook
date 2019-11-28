@@ -10,6 +10,7 @@ class BR_BookcaseList extends React.Component {
         this.state = {
          opened: null,
          total:this.props.likebook,
+         total:this.props.readbook,
         }
         this.handleOpened.bind(this)
      }
@@ -19,6 +20,12 @@ class BR_BookcaseList extends React.Component {
            total: this.state.total + value
          })
      }
+    //  閱讀數
+        count = value => {
+            this.setState({
+            total: this.state.total + value
+            })
+        }
     //  裝填
      handleOpened = (opened) => {
          this.setState({ opened })
@@ -101,7 +108,7 @@ class BR_BookcaseList extends React.Component {
                            <img className="brMark_img" onClick={()=>this.count(1)} src={require('../reviewer_page/images/icon_likebook.png')}/>
                                 <span className="brMark_p">{this.state.total}</span>
                                 {/* <span className="brMark_p">{this.props.likebook}</span> */}
-                           <img onClick={() => this.handleOpened(opened === 'blog' ? null : 'blog')} className="brMark_img_noAni" src={require('../reviewer_page/images/icon_readbook.png')}/>
+                           <img onClick={() => (this.handleOpened(opened === 'blog' ? null : 'blog'))} onMouseDown={()=>this.count(1)} className="brMark_img_noAni" src={require('../reviewer_page/images/icon_readbook.png')}/>
                                 <span className="brMark_p">{this.props.readbook}</span>
                         </div>
             {/* 分享功能 */}
