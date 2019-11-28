@@ -17,6 +17,7 @@ import {
   ORDER_REQUEST,
   ADD_ORDER_RECEIVE,
   ADD_ORDER_REQUEST,
+  ADD_CART_TO_ORDER,
 } from './ShopActions'
 
 //--------categories------
@@ -389,6 +390,24 @@ function addOrder(state = [], action) {
       return state
   }
 }
+//---------------
+const ap = {
+  totalAmount: 0,
+  totalPrice: 0,
+}
+function cartToOrder(state = ap, action) {
+  switch (action.type) {
+    case ADD_CART_TO_ORDER:
+      return {
+        ...state,
+        totalAmount: action.totalAmount,
+        totalPrice: action.totalPrice,
+        lastUpdated: action.receivedAt,
+      }
+    default:
+      return state
+  }
+}
 //---------------------
 
 const ShopReducers = {
@@ -401,6 +420,7 @@ const ShopReducers = {
   shop,
   order,
   addOrder,
+  cartToOrder,
 }
 
 export default ShopReducers

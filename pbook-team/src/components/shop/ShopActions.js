@@ -382,3 +382,12 @@ export const addOrderFetch = (
   }
 }
 //------------------------
+export const ADD_CART_TO_ORDER = 'ADD_CART_TO_ORDER'
+export const addCartToOrder = (totalAmount, totalPrice) => {
+  return {
+    type: ADD_CART_TO_ORDER,
+    totalAmount: totalAmount,
+    totalPrice: totalPrice,
+    receivedAt: Date.now(),
+  }
+}

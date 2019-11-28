@@ -81,6 +81,7 @@ const mapStateToProps = state => ({
   loginOrNot: state.letMeLogin.loginOrNot,
   Cart: state.Cart,
   order: state.order,
+  cartToOrder: state.cartToOrder,
 })
 // redux(state)綁定到此元件的props、dispatch方法自動綁定到此元件的props
 export default connect(mapStateToProps)(Buy)
