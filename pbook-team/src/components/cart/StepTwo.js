@@ -1,13 +1,70 @@
 import React from 'react'
+import { connect } from 'react-redux'
+import { Col } from 'react-bootstrap'
+import moment from 'moment'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons'
-import { Col } from 'react-bootstrap'
+import swal from '@sweetalert/with-react'
+import { addOrderFetch } from '../shop/ShopActions'
 import './Cart.scss'
 
 const StepTwo = props => {
-  //   let b = document.querySelector('input[name="delivery"]:checked')
+  //let b = document.querySelector('input[name="delivery"]:checked')
+  let memberID = JSON.parse(localStorage.getItem('user')).MR_number
+  let orderPrice = localStorage.getItem('totalPrice')
+  let created_time = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')
+  let bookName = [],
+    singlePrice = [],
+    bookAmount = []
+  for (let i = 0; i < (props.cartPayload && props.cartPayload.totalCart); i++) {
+    bookName[i] =
+      props.cartPayload &&
+      props.cartPayload.cart &&
+      props.cartPayload.cart[i].name
+    singlePrice[i] =
+      props.cartPayload &&
+      props.cartPayload.cart &&
+      props.cartPayload.cart[i].fixed_price
+    bookAmount[i] = localStorage.getItem(
+      props.cartPayload &&
+        props.cartPayload.cart &&
+        props.cartPayload.cart[i].sid
+    )
+  }
   function pay() {
-    props.changeSteps(2)
+    swal({
+      title: '確認送出訂單?',
+      icon: 'warning',
+      buttons: true,
+      dangerMode: true,
+    }).then(sure => {
+      if (sure) {
+        for (
+          let i = 0;
+          i < (props.cartPayload && props.cartPayload.totalCart);
+          i++
+        ) {
+          props.dispatch(
+            addOrderFetch(
+              memberID,
+              bookName[i],
+              singlePrice[i],
+              bookAmount[i],
+              orderPrice,
+              created_time
+            )
+          )
+        }
+        props.setOrder(1)
+        swal('送出訂單成功', {
+          icon: 'success',
+        }).then(() => {
+          props.changeSteps(2)
+        })
+      } else {
+        swal('送出訂單失敗')
+      }
+    })
   }
   return (
     <>
@@ -108,7 +165,7 @@ const StepTwo = props => {
           </div>
           <div className="nextStep d-flex justify-content-end">
             <button className="last m-3" onClick={() => pay()}>
-              確認付款
+              確認送出訂單
             </button>
           </div>
         </div>
@@ -117,4 +174,8 @@ const StepTwo = props => {
   )
 }
 
-export default StepTwo
+const mapStateToProps = state => ({
+  addOrder: state.addOrder,
+})
+
+export default connect(mapStateToProps)(StepTwo)

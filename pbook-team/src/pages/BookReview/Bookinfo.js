@@ -248,6 +248,7 @@ function Bookinfo() {
           </select>
         </OptionBar>
 
+
         {
           <Book>
             <BookColumn>
@@ -276,6 +277,35 @@ function Bookinfo() {
                   {'作者:'}
                   {data.author}
                   {/* {'出版社:'}
+
+//         {(<Book>
+//           <BookColumn>
+//             {bookInformation.map(data => (
+//               <BookImage key={data.sid}>
+//                 <Link to={'/book_reviews/' + data.sid}>
+//                   <img
+//                     key={data.sid}
+//                     className="reviews_img"
+//                     src={`http://localhost:5555/images/books/${data.pic}`}
+//                   />
+//                 </Link>
+//               </BookImage>
+//             ))}
+//           </BookColumn>
+//           <BookColumn>
+//             {bookInformation.map(data => (
+//               <BookInfo key={data.sid}>
+//                 <Link
+//                   style={{ textDecoration: 'none' }}
+//                   className="reviews_list_sid"
+//                   to={'/book_reviews/' + data.sid}
+//                 >
+//                   <h4> {data.name}</h4>
+//                 </Link>
+//                 {'作者:'}
+//                 {data.author}
+//                 {/* {'出版社:'}
+          
                   {data.publish_date} */}
                   <div />
                   <br />

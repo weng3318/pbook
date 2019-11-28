@@ -6,6 +6,7 @@ import './acRU.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPencilAlt, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import swal from 'sweetalert'
+import AcCalendar from './AcCalendar'
 
 function AcRU(props) {
   let user = localStorage.user ? JSON.parse(localStorage.user) : false
@@ -58,53 +59,69 @@ function AcRU(props) {
     })
   }
 
+  function handleClick(sid) {
+    props.history.push('/activities/offline/' + sid)
+  }
+
   return (
     <>
-      <div className="container my-5 acTable">
-        <h2>已報名活動</h2>
-        <table className="table table-striped table-bordered my-3">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">活動名稱</th>
-              <th scope="col">姓名</th>
-              <th scope="col">電話</th>
-              <th scope="col">電子郵件</th>
-              <th scope="col">編輯</th>
-              <th scope="col">取消</th>
-            </tr>
-          </thead>
-          <tbody>
-            {props.acTable.data &&
-              props.acTable.data.map(function(v, i) {
-                return (
-                  <tr key={v.sid}>
-                    <th scope="row">{i + 1}</th>
-                    <td>{v.title}</td>
-                    <td>{v.name}</td>
-                    <td>{v.phone}</td>
-                    <td>{v.email}</td>
-                    <td
-                      className="icon text-center"
-                      onClick={() => {
-                        handleEdit(v.sid)
-                      }}
-                    >
-                      <FontAwesomeIcon icon={faPencilAlt} />
-                    </td>
-                    <td
-                      className="icon text-center"
-                      onClick={() => {
-                        handleDelete(v.sid)
-                      }}
-                    >
-                      <FontAwesomeIcon icon={faTrashAlt} />
-                    </td>
-                  </tr>
-                )
-              })}
-          </tbody>
-        </table>
+      <div className="container my-5">
+        <section className="acTable">
+          <h2>已報名活動</h2>
+          <table className="table table-striped table-bordered my-3">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">活動名稱</th>
+                <th scope="col">姓名</th>
+                <th scope="col">電話</th>
+                <th scope="col">電子郵件</th>
+                <th scope="col">編輯</th>
+                <th scope="col">取消</th>
+              </tr>
+            </thead>
+            <tbody>
+              {props.acTable.data &&
+                props.acTable.data.map(function(v, i) {
+                  return (
+                    <tr key={v.sid}>
+                      <th scope="row">{i + 1}</th>
+                      <td
+                        className="acTitle"
+                        onClick={() => {
+                          handleClick(v.acId)
+                        }}
+                      >
+                        {v.title}
+                      </td>
+                      <td>{v.name}</td>
+                      <td>{v.phone}</td>
+                      <td>{v.email}</td>
+                      <td
+                        className="icon text-center"
+                        onClick={e => {
+                          e.stopPropagation()
+                          handleEdit(v.sid)
+                        }}
+                      >
+                        <FontAwesomeIcon icon={faPencilAlt} />
+                      </td>
+                      <td
+                        className="icon text-center"
+                        onClick={e => {
+                          e.stopPropagation()
+                          handleDelete(v.sid)
+                        }}
+                      >
+                        <FontAwesomeIcon icon={faTrashAlt} />
+                      </td>
+                    </tr>
+                  )
+                })}
+            </tbody>
+          </table>
+        </section>
+        <AcCalendar eventData={props.acTable.data} />
       </div>
       <AcUpdateForm {...showForm} handleClose={handleClose} />
     </>

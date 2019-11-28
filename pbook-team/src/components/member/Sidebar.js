@@ -72,7 +72,9 @@ const Sidebar = props => {
                     訂單管理
                   </Accordion.Toggle>
                   <Accordion.Collapse eventKey="0" className="sidebar_item">
-                    <div style={{ cursor: 'pointer' }}>訂單查詢</div>
+                  <Link to='/member/QueryOrder'>
+                      <div style={{cursor: 'pointer'}}>訂單查詢</div>
+                  </Link>
                   </Accordion.Collapse>
                 </div>
               </Accordion>
@@ -235,7 +237,9 @@ const Sidebar = props => {
                     訂單管理
                   </Accordion.Toggle>
                   <Accordion.Collapse eventKey="0" className="sidebar_item">
-                    <div style={{ cursor: 'pointer' }}>訂單查詢</div>
+                    <Link to='/member/QueryOrder'>
+                        <div style={{cursor: 'pointer'}}>訂單查詢</div>
+                    </Link>
                   </Accordion.Collapse>
                 </div>
               </Accordion>
@@ -377,6 +381,7 @@ const Sidebar = props => {
         <Route exact path="/member/PasswordModify" component={PasswordModify} />
         <Route path="/member/BooksFavorite/:page?" component={BooksFavorite} />
         <Route path="/member/ViewMemberBooks" component={ViewMemberBooks} />
+        <Route path="/member/QueryOrder" component={QueryOrder} />
         <Route
           path="/member/forum/memberArticleList"
           component={MemberArticleList}

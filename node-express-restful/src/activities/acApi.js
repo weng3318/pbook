@@ -57,6 +57,28 @@ router.get('/book-discount/:bookId/:memberLevel?', async (req, res, next) => {
     let memberLevel = req.params.memberLevel || 1
     res.json(await AC.getBookDiscount(req.params.bookId, memberLevel))
 })
+// 取得一陣列的書籍折價資訊
+router.post('/books-discount/:memberLevel?', async (req, res, next) => {
+    let bookArray = req.body
+    console.log(bookArray)
+    let memberLevel = req.params.memberLevel || 1
+    let key = "__express__/activities/book-discount-for-member-level/" + memberLevel
+    let cacheContent = cache.getKey(key)
+    if (!cacheContent) {
+        var body = await AC.getBooksDiscountForMemberLevel(memberLevel)
+        let currentDate = (new Date()).toLocaleDateString()
+        cache.setKey(key, { body, saveDate: currentDate })
+        cache.save(true /* noPrune */)
+    } else {
+        var body = JSON.parse(cacheContent.body)
+    }
+    let discountArray = []
+    for (let i = 0; i < bookArray.length; i++) {
+        let discount = body.find(v => +v.sid === +bookArray[i])
+        if (discount) discountArray.push(discount)
+    }
+    res.json(discountArray)
+})
 // 對某階級的會員，取得所有書籍折價資訊
 router.get('/book-discount-for-member-level/:memberLevel', flatCacheMiddleware, async (req, res, next) => {
     res.json(await AC.getBooksDiscountForMemberLevel(req.params.memberLevel))

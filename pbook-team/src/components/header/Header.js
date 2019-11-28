@@ -26,6 +26,7 @@ import './header.css'
 import { connect } from 'react-redux'
 //action
 import { letMeLogin } from '../../pages/Forum/fmAction'
+import { addCartToOrder } from '../shop/ShopActions'
 
 class Header extends React.Component {
   constructor() {
@@ -37,6 +38,7 @@ class Header extends React.Component {
       login: false,
       visible: false,
     }
+    // this.props.dispatch(addCartToOrder(0, 0))
   }
   // 'http://localhost:5555/images/member/yoko.jpg'
   // loginSuccess(memberData){
@@ -44,7 +46,6 @@ class Header extends React.Component {
 
   //   this.setState({hasData:true,id:memberData.MR_number,name:memberData.MR_name,level:memberData.MR_personLevel})
   // }
-
   handleLoginButton = event => {
     let loginButton = event.currentTarget
     let loginImg = loginButton.querySelector('.loginImg')
@@ -129,6 +130,7 @@ class Header extends React.Component {
   }
 
   componentDidMount() {
+    console.log(this.props.cartToOrder)
     let pic = JSON.parse(localStorage.getItem('user'))
     if (pic !== null) {
       this.queryMember()
@@ -203,10 +205,6 @@ class Header extends React.Component {
     // if (JSON.parse(localStorage.getItem('user')).MR_number !== '') phoneMemberStatus = 'block'
     // let phoneVisitorStatus = 'block'
     // if (JSON.parse(localStorage.getItem('user')).MR_number !== '') phoneVisitorStatus = 'none'
-    if (!localStorage.getItem('totalAmount'))
-      localStorage.setItem('totalAmount', 0)
-    if (!localStorage.getItem('totalPrice'))
-      localStorage.setItem('totalPrice', 0)
     let level = [
       '',
       '品書會員',
@@ -547,6 +545,7 @@ class Header extends React.Component {
 // 綁定props.todos <=> store.todos
 const mapStateToProps = store => ({
   loginOrNot: store.letMeLogin.loginOrNot,
+  cartToOrder: store.cartToOrder,
 })
 
 // redux(state)綁定到此元件的props、dispatch方法自動綁定到此元件的props
