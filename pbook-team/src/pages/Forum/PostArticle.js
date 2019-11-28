@@ -115,13 +115,17 @@ const PostAritcle = props => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [canIPost])
 
+  useEffect(() => {
+    console.log(props.addElement)
+  }, [props.addElement])
+
   const confirmPost = () => {
     let formData = new FormData()
     for (let i = 0; i < mainImg; i++) {
       let file = document.querySelector(`#file${i}`).files[0]
+      console.log(file)
       if (file) {
-        console.log('22')
-        formData.append('imgFile[]', file)
+      formData.append('imgFile[]', file)
       }
     }
     let subcate1 = document.querySelector('#grouped-select').value
@@ -205,13 +209,14 @@ const PostAritcle = props => {
 
   const cancelImg = (event, removeNo) => {
     // event.persist()
-    console.log(props.addElement)
+    // console.log(props.addElement)
     // let element = props.addElement.filter(item => {
     //   return item.props.id !== `img${removeNo}`
     // })
     // let removeIuput = document.querySelector(`file${removeNo}`)
     // removeIuput.parentNode.removeChild(removeIuput)
-    // props.dispatch(removeImg(element))
+    console.log(removeNo)
+    props.dispatch(removeImg(removeNo))
   }
   // 檢查標題及子類
   const handleTitleCheck = () => {

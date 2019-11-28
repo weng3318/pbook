@@ -13,9 +13,9 @@ export const AppendTextarea = addElement => ({
   type: 'APPEND_TEXTAREA',
   content: addElement,
 })
-export const removeImg = leaveElement => ({
+export const removeImg = removeNO => ({
   type: 'REMOVE_IMG',
-  content: leaveElement,
+  removeNO: removeNO,
 })
 export const clearPostAritcleState = () => ({
   type: 'CLEAR_POST_DATA',

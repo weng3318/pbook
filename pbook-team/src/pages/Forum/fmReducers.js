@@ -27,9 +27,20 @@ function postArticle(state = postArticleState, action) {
         addElement: [...state.addElement, action.content],
       }
     case 'REMOVE_IMG':
+      let newContent = state.addElement.filter(item => {
+        let imgId = `img${action.removeNO}`
+        let fileId = `file${action.removeNO}`
+        if (item.props.id !== imgId) {
+          if (item.props.id !== fileId) {
+            return item
+          }
+        }
+        console.log(item.props.id, imgId, fileId)
+      })
+      console.log('re', newContent)
       return {
         ...state,
-        addElement: [...action.content],
+        addElement: [...newContent],
       }
     case 'CLEAR_POST_DATA':
       return {

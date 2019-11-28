@@ -65,6 +65,8 @@
       max-width: 900px;
       @extend %card-module;
       min-height: 1000px;
+      margin-bottom: 36px;
+      padding-bottom: 36px;
       .title-line {
         background: $grass-yellow;
         margin-bottom: 8px;
@@ -128,6 +130,7 @@
     }
   }
   .insertImg {
+    margin: 16px 0;
     max-width: 784px;
     position: relative;
     .img-demo {
