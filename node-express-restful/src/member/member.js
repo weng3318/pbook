@@ -490,8 +490,8 @@ router.post('/upload', upload.single('avatar'),(req, res) =>{
 //前端上傳圖片多張
 //API用POSTMAN測試可以
 router.post('/imgFiles', upload.array('avatar', 5 ),(req, res, next) =>{
-        // console.log("avatar",  req.body);
-        // console.log("Files", req.files.length); 
+        console.log("avatar",  req.body);
+        console.log("Files", req.files); 
         
         let images = []
         for(let i=0; i<req.files.length;i++){

@@ -36,7 +36,7 @@ const MyPagination = props => {
 
     return(
         <>
-            <div className="pageWrap pt-5">
+            <div className="pageWrap pt-5" >
                 <Pagination className="d-flex"
                     style={{marginLeft: '500px'}}
                 >

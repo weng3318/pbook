@@ -148,6 +148,7 @@ $content: 24px;
 //收藏書評家
 .reviewerContent{
   position: absolute;
+  // background: #f24;
   right: 0;
   left: 320px;
   height: 100%;
@@ -167,6 +168,9 @@ $content: 24px;
     top: 0;
     bottom: 0;
     width: 100%;
+  }
+  .test1{
+    // background: #000;
   }
   .nobook{
     @extend .nobook;
@@ -199,7 +203,8 @@ $content: 24px;
     /* background: #fff; */
     /* background: url(../reviewer_page/images/01_書評家.png) center center; */
     max-width: 1200px;
-    margin: 20px 20px 10px 20px;
+    margin: 10px 0px 0 30px;
+    // padding-bottom: 30px;
     background-size:cover;
   }
   /* 書評列表 (參照偽元素) */
@@ -651,7 +656,7 @@ $content: 24px;
 //sidebar內樣式
 .side-menu {
   width: 320px;
-  height: 80vw;
+  min-height: 85vw;;
   padding: 30px 0;
   box-sizing: border-box;
   background-color: #cde2d0;

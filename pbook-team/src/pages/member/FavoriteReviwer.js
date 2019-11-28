@@ -63,7 +63,7 @@ class FavoriteReviwer extends React.Component {
       <ScrollToTop>
         <div className="reviewerContent">
           <div className="title">收藏書評家</div>
-          <div className="wrap flex-wrap">
+          <div className="test1">
             {
               (!reviewerData && !reviewerData) ? (
                 <>
