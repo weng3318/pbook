@@ -5,9 +5,9 @@ const bluebird = require("bluebird");
 const router = express.Router();
 const db = mysql.createConnection({
   // host: '192.168.27.186',
-  host: "192.168.27.186",
-  user: "root",
-  password: "root",
+  host: "localhost",
+  user: "opcp",
+  password: "opcp2428",
   database: "pbook"
 });
 db.connect();
@@ -52,7 +52,7 @@ router.get(`/?`, (req, res) => {
     .then(results => {
       output.total = results[0].total;
       return db.queryAsync(
-        `SELECT * FROM vb_books WHERE categories ${c} AND name LIKE '%${s}%' ORDER BY ${a} DESC LIMIT ${(page -
+        `SELECT vb_books.*,cp_data_list.cp_name FROM vb_books,cp_data_list WHERE categories ${c} AND name LIKE '%${s}%' AND vb_books.publishing = cp_data_list.sid ORDER BY ${a} DESC LIMIT ${(page -
           1) *
           perPage},${perPage}`
       );
@@ -73,6 +73,20 @@ router.get("/search_book/?", (req, res) => {
   const urlpart = url.parse(req.url, true);
   search = decodeURI(urlpart.search.replace("?", ""));
   const sql = `SELECT sid,name,author FROM vb_books WHERE name LIKE '%${search}%' OR author LIKE '%${search}%'`;
+  db.query(sql, (error, results) => {
+    if (error) {
+      return res.send(error);
+    } else {
+      return res.json({
+        data: results
+      });
+    }
+  });
+});
+
+// Nav
+router.get("/nav", (req, res) => {
+  const sql = `SELECT vb_books.sid,vb_books.name,vb_books.categories,vb_categories.categoriesName FROM vb_books,vb_categories WHERE vb_books.categories = vb_categories.sid`;
   db.query(sql, (error, results) => {
     if (error) {
       return res.send(error);

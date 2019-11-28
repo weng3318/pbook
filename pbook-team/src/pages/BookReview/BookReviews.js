@@ -12,11 +12,12 @@ import { faTimes, faPen, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import swal from '@sweetalert/with-react'
 import { BrowserRouter as Router, Route, Link, NavLink } from 'react-router-dom'
-import Nav from './components/BR_Navbar'
+import Nav from './components/Navbar'
 
 //---------------------------------------------------------------------------------------------------------
 const All = styled.section`
   background-image: url('../../images/bg.png');
+  background-repeat: repeat;
 `
 
 //主要內容外框
@@ -35,6 +36,11 @@ const Book = styled.div`
 const BookRow = styled.div`
   display: flex;
   flex-direction: row;
+`
+//未登入會員橫排
+const BookRow2 = styled.div`
+  display: flex;
+  flex-direction: row-reverse;
 `
 
 //直排
@@ -412,9 +418,23 @@ const List = () => {
               <BookColumn>
                 <BookInfo>
                   <h3>{data.name}</h3>
-                  {'作者:'}
-                  {data.author}
-                  <br />
+                  {'作者:'}&nbsp;
+                  <span style={{ opacity: 0.6 }}>{data.author}</span>
+                  &nbsp;&nbsp;&nbsp;
+                  {'出版社:'}&nbsp;
+                  <span style={{ opacity: 0.6 }}>{data.cp_name}</span>
+                  &nbsp;&nbsp;&nbsp;
+                  {'出版日期:'} &nbsp;
+                  <span style={{ opacity: 0.6 }}>
+                    {new Intl.DateTimeFormat('zh-TW', {
+                      year: 'numeric',
+                      month: 'numeric',
+                      day: 'numeric',
+                      hour12: false,
+                    })
+                      .format(new Date(data.publish_date))
+                      .replace(/\//g, '-')}
+                  </span>
                   <br />
                   <br />
                   {'內容簡介:'}
@@ -454,7 +474,9 @@ const List = () => {
           {user.isLogin ? (
             <BookColumnScore>
               <Link to={`/books/information/${urlParams}`}>
-                <button className="reviews_BookBuy">立即購買</button>
+                <button style={{ outline: 0 }} className="reviews_BookBuy">
+                  立即購買
+                </button>
               </Link>
               <BookRow>
                 <BookScoreAndLine List={List} />
@@ -468,11 +490,13 @@ const List = () => {
           ) : (
             <BookColumnScore2>
               <Link to={`/books/information/${urlParams}`}>
-                <button className="reviews_BookBuy">立即購買</button>
+                <button style={{ outline: 0 }} className="reviews_BookBuy">
+                  立即購買
+                </button>
               </Link>
-              <BookRow>
+              <BookRow2>
                 <BookScoreAndLine List={List} />
-              </BookRow>
+              </BookRow2>
               <form onSubmit={addCase}>
                 <button type="submit" className="reviews_BookCase">
                   加入書櫃
@@ -511,7 +535,11 @@ const List = () => {
                     score_star={review.star}
                     setScore_star={changeHandler}
                   />
-                  <button type="submit" className="reviews_submitBtn">
+                  <button
+                    style={{ outline: 0 }}
+                    type="submit"
+                    className="reviews_submitBtn"
+                  >
                     送出評論
                   </button>
                 </BookRow>
@@ -547,14 +575,14 @@ const List = () => {
                   </h6>
                   &nbsp;&nbsp;&nbsp;&nbsp;
                   <div className="reviews_time">
-                    {new Intl.DateTimeFormat('zh-TW', {
+                    {/* {new Intl.DateTimeFormat('zh-TW', {
                       year: 'numeric',
                       month: 'numeric',
                       day: 'numeric',
                       hour12: false,
                     })
                       .format(new Date(data.create_time))
-                      .replace(/\//g, '-')}
+                      .replace(/\//g, '-')} */}
                   </div>
                 </BookRow>
                 <br />
@@ -567,7 +595,11 @@ const List = () => {
                       onChange={changeHandler}
                       // onKeyPress={keypress}
                     />
-                    <button type="submit" className="reviews_UpdateBtn">
+                    <button
+                      style={{ outline: 0 }}
+                      type="submit"
+                      className="reviews_UpdateBtn"
+                    >
                       修改評論
                     </button>
                   </form>

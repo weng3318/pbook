@@ -1,6 +1,6 @@
 /* /reviews  書評首頁 */
-* {
-  outline: none;
+#root {
+  background-image: url('../../images/bg.png');
 }
 /* 右側愛心區塊 */
 .reviews_col {
@@ -258,6 +258,9 @@
   right: 160px;
   bottom: 10px;
 }
+.reviews_BookBuy :focus {
+  outline: 0;
+}
 /* 推薦書籍文字 */
 .reviews_recommendText {
   font-size: 25px;
@@ -309,6 +312,9 @@
   right: 160px;
   top: 10px;
 }
+.reviews_BookCase:focus {
+  outline: 0;
+}
 
 /* 書評輸入欄 */
 .reviews_textarea {
@@ -354,7 +360,7 @@
 
 /* 未登入會員連結 */
 .reviews_Login {
-  margin: 50px auto 80px 400px;
+  margin: 50px auto 80px 300px;
 }
 /* 下方其他會員書評 */
 .reviews_text {
