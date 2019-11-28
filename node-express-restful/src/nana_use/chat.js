@@ -94,6 +94,23 @@ chat.post("/chatMessage2", function (req, res) {
         });
 });
 
+chat.post("/chatMemo", function (req, res) {
+    console.log('chatMemo', req.body.memberId);
+
+    db.queryAsync(
+        `SELECT mb_chatmemo.*,mr_information.MR_name,mr_information.MR_pic FROM mb_chatmemo LEFT JOIN mr_information ON mb_chatmemo.myFrom = mr_information.MR_number WHERE (myFrom = "${req.body.memberId}" OR myTo = "${req.body.memberId}") AND myDelete = 0 ORDER BY created_at DESC`
+    )
+        .then(results => {
+            console.log('chatMemo final', results);
+
+            res.json(results);
+        })
+        .catch(error => {
+            res.send("chatMemo 404-找不到資料");
+            console.log("chatMemo錯誤", error);
+        });
+});
+
 chat.post("/myDataList2", function (req, res) {
     console.log('chatMessage2', req.body.memberId);
     db.queryAsync(

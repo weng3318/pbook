@@ -111,7 +111,7 @@ io.sockets.on("connection", function (socket) {
         myFrom: data.myFrom,
         myTo: users,
         content: data.content,
-        myUpload:data.myUpload,
+        myUpload: data.myUpload,
         created_at: data.created_at
       });
     }
@@ -181,6 +181,45 @@ io.sockets.on("connection", function (socket) {
       oldDataList: mapResult
     });
   });
+
+  socket.on("clientToSeverInsertMemo", async function (data) {
+    console.log("clientToSeverInsertMemo 服務器端收到客戶端資料", data);
+    await db.queryAsync(
+      `INSERT INTO mb_chatmemo( chat_id, myFrom, myTo, content, created_at, myDelete) VALUES ("${data.chat_id}","${data.myFrom}","${data.myTo}","${data.content}","${data.created_at}","${data.myDelete}")`
+    );
+
+    const oldDataMemo = await db.queryAsync(
+      `SELECT mb_chatmemo.*,mr_information.MR_name,mr_information.MR_pic FROM mb_chatmemo LEFT JOIN mr_information ON mb_chatmemo.myFrom = mr_information.MR_number WHERE (myFrom = "${data.myFrom}" OR myTo = "${data.myFrom}") AND myDelete = 0 ORDER BY created_at DESC`
+    );
+
+    io.sockets.emit("SeverToClientInsertMemo", oldDataMemo);
+  })
+
+  socket.on("clientToSeverMemoDelete", async function (data) {
+    console.log("clientToSeverMemoDelete 服務器端收到客戶端資料", data);
+    await db.queryAsync(
+      `UPDATE mb_chatmemo SET myDelete = 1 WHERE sid = "${data.memoSid}"`
+    );
+
+    const oldDataMemo = await db.queryAsync(
+      `SELECT mb_chatmemo.*,mr_information.MR_name,mr_information.MR_pic FROM mb_chatmemo LEFT JOIN mr_information ON mb_chatmemo.myFrom = mr_information.MR_number WHERE (myFrom = "${data.myFrom}" OR myTo = "${data.myFrom}") AND myDelete = 0 ORDER BY created_at DESC`
+    );
+
+    io.sockets.emit("SeverToClientInsertMemo", oldDataMemo);
+  })
+
+  socket.on("clientToSeverEditMemo", async function (data) {
+    console.log("clientToSeverEditMemo 服務器端收到客戶端資料", data);
+    await db.queryAsync(
+      `UPDATE mb_chatmemo SET content = "${data.content}" WHERE sid = "${data.memoSid}"`
+    );
+
+    const oldDataMemo = await db.queryAsync(
+      `SELECT mb_chatmemo.*,mr_information.MR_name,mr_information.MR_pic FROM mb_chatmemo LEFT JOIN mr_information ON mb_chatmemo.myFrom = mr_information.MR_number WHERE (myFrom = "${data.myFrom}" OR myTo = "${data.myFrom}") AND myDelete = 0 ORDER BY created_at DESC`
+    );
+
+    io.sockets.emit("SeverToClientInsertMemo", oldDataMemo);
+  })
 
   socket.on("disconnect", function (data) {
     socket.disconnect();

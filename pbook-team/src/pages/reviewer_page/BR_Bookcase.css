@@ -1,3 +1,13 @@
+/* 模糊吧條 */
+.blurBar{
+    position: absolute;
+    width: 100%;
+    height: 24px;
+    bottom: 77px;
+    background: #fff;
+    z-index: 1;
+    filter: blur(8px);
+}
 /* 按讚、閱讀，區塊控制 */
 .brLikeBox{
     position: absolute;
@@ -11,7 +21,7 @@
     margin: 0 10px;
     padding: 0 16px 0 0;
 }
-/* 書櫃簡介，文字 (書評簡介) */
+/* 書櫃簡介，文字 (書評家簡介) */
 .h4_br{
     text-align: center;
     font-weight: 800;
@@ -148,27 +158,28 @@
 .brInfoBox_Bookcase{
     width: 100%;
     min-height: 240px;
-    padding: 0 30px 0 30px;
+    padding: 0 0 56px 0;
     overflow: hidden;
 }
-/* 書名與作者整區，書名、作者 (區塊控制) */
+/* 書名與作者整區，書名、作者 (間距控制) */
 .bookInfo{
-    margin: 20px 0 10px 0;
-    padding: 5px 0 ;
+    padding: 10px 0;
+    border-bottom:1px solid #cde2d0;
+    margin: 10px 0 20px 0;
 }
 /* 書櫃簡介，(書籍內容區塊) */
 .brInfoTextBox_Bookcase{
-    margin: 0px 0 50px 0;
-    top: -20px;
+    min-height: 240px;
+    max-height: 340px;
+    overflow: hidden;
+    margin: 0 30px 30px 30px;
 }
 /* 書櫃簡介，(顯示內文、限制行數) */
-.brInfoText_Bookcase{
+.brInfoText_Bookcase p{
     color: #2d3a3a;
-    line-height: 28px;
-    font-size: 1.2rem;
     overflow : hidden;
     display: -webkit-box;
-    -webkit-line-clamp: 5;
+    -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
 }
 /* 書籍內容，書名 (區塊) */
@@ -214,10 +225,11 @@
 /* 書櫃簡介區，看更多，more圖示 (區塊設定) */
 .brIconMore_Bookcase{
     position: absolute;
-    bottom: 0;
-    right: 0;
+    bottom: 60px;
+    right: 0px;
     width: 68px;
     height: 28px;
+    z-index: 2;
 }
 /* 書櫃簡介區，超連結，hover (動態效果) */
 .brMore_img{
@@ -243,7 +255,7 @@
 /* 書籍簡介，狀態預設隱藏 (書名、作者) */
 .bookInfoRWD{
     display: none;
-    padding: 10px;
+    padding: 10px 0 16px 0;
     margin: 0 30px;
     border-bottom:1px solid #979d9d;
 }
@@ -254,7 +266,7 @@
     }
     /* 頭書，單本書區域 (圖片區) */
     .brAvatarAllBox_Bookcase{
-        margin: 20px auto 10px auto;
+        margin: 28px auto 12px auto;
         border-right:3px solid transparent;
         border-bottom:3px solid transparent;
         height: 140px;
@@ -266,12 +278,13 @@
     }
     /* 書櫃簡介，(文字、限制行數) */
     .brInfoText_Bookcase{
-        margin: 30px 0 0 0;
-        -webkit-line-clamp: 8;
+        margin: 20px 0 0 0;
+        -webkit-line-clamp: 6;
     }
     /* 書籍內容，書名(變小) */
     .bookName_Bookcase{
         font-size: 1rem;
+        padding: 0 0 6px 0;
     }
     /* 書名：{變數} (變小) */
     .bookNameText_Bookcase{
