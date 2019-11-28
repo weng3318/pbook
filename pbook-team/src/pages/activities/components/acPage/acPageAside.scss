@@ -2,7 +2,11 @@
 
 .acPageAside {
   .share {
-    button {
+    button,
+    a {
+      display: block;
+      color:black;
+      text-align: center;
       border: none;
       background: none;
       border-radius: 5px;

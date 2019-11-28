@@ -26,9 +26,13 @@ const AcPageAside = props => {
           <button className="py-2" title="收藏活動">
             <FavoriteBorderIcon />
           </button>
-          <button className="py-2" title="聯絡主辦方">
+          <a
+            className="py-2"
+            title="聯絡主辦方"
+            href="mailto:abc1230429@gmail.com"
+          >
             <MailOutlineIcon />
-          </button>
+          </a>
           <FacebookProvider appId="468465107359578">
             <ShareButton className="py-2" href="http://www.facebook.com">
               <div title="分享到臉書">
@@ -57,6 +61,22 @@ const AcPageAside = props => {
                     match={props.match}
                     title={props.title}
                   />
+                </div>
+                <div className="googleMap px-3 mt-3">
+                  <iframe
+                    title="map"
+                    width="100%"
+                    height="200"
+                    frameborder="0"
+                    scrolling="no"
+                    marginheight="0"
+                    marginwidth="0"
+                    src={
+                      'https://maps.google.com.tw/maps?f=q&hl=zh-TW&geocode=&q=' +
+                      props.acLocation +
+                      '&z=16&output=embed&t='
+                    }
+                  ></iframe>
                 </div>
               </>
             )

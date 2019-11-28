@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-has-content */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import './acPageDiscount.scss'
 import { connect } from 'react-redux'
 import {
@@ -11,11 +11,14 @@ import {
 } from '../../AcActions'
 import BookInfo from './BookInfo'
 import AcPageAside from './AcPageAside'
+import AcPageFoot from './AcPageFoot'
 import ScrollToTop from '../ScrollToTop'
+import { cartFetch } from '../../../../components/shop/ShopActions'
 
 // import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 
 const AcPageDiscount = props => {
+  const [getDiscountOfSid, setGetDiscountOfSid] = useState([])
   let acId = props.match.params.acId.toString()
   let allBooksDiscount = false
   let memberNum = 'MR00001'
@@ -33,13 +36,17 @@ const AcPageDiscount = props => {
     // 獲取折價書籍
     props.dispatch(getDiscountBooks(acId))
     // 獲取折價比例
-    props.dispatch(getDiscountAmount(memberLevel))
+    if (getDiscountOfSid.length !== 0)
+      props.dispatch(getDiscountAmount(memberLevel, getDiscountOfSid))
 
     // 獲取推薦書籍
     props.dispatch(getRecommendBooks(memberNum, 12))
 
+    // 取得購物車
+    if (!props.Cart) props.dispatch(cartFetch())
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [props.match.params.acId, getDiscountOfSid[0]])
   if (!props.discountBooks[acId] || !props.discountBooks[acId].data)
     return <></>
   // 獲取活動資訊
@@ -55,6 +62,16 @@ const AcPageDiscount = props => {
     discountBook.books = props.recommendBooks.data
   } else {
     discountBook = props.discountBooks[acId].data
+  }
+
+  if (
+    discountBook.books &&
+    discountBook.books.length !== 0 &&
+    getDiscountOfSid.length === 0
+  ) {
+    setGetDiscountOfSid(
+      discountBook.books ? discountBook.books.map(v => v.sid) : []
+    )
   }
 
   acInfo = acInfo[0]
@@ -106,40 +123,7 @@ const AcPageDiscount = props => {
             </main>
             <AcPageAside />
           </div>
-
-          <section className="recommend py-4 my-5">
-            <h4 className="text-center pb-2 my-3">其他推薦</h4>
-            <div className="row">
-              <figure className="col-md-3">
-                <h6 className="text-center">其他活動</h6>
-                <a
-                  style={{ backgroundImage: "url('images/test.jpg')" }}
-                  alt=""
-                ></a>
-              </figure>
-              <figure className="col-md-3">
-                <h6 className="text-center">其他活動</h6>
-                <a
-                  style={{ backgroundImage: "url('images/test.jpg')" }}
-                  alt=""
-                ></a>
-              </figure>
-              <figure className="col-md-3">
-                <h6 className="text-center">其他活動</h6>
-                <a
-                  style={{ backgroundImage: "url('images/test.jpg')" }}
-                  alt=""
-                ></a>
-              </figure>
-              <figure className="col-md-3">
-                <h6 className="text-center">其他活動</h6>
-                <a
-                  style={{ backgroundImage: "url('images/test.jpg')" }}
-                  alt=""
-                ></a>
-              </figure>
-            </div>
-          </section>
+          <AcPageFoot sid={acInfo.sid} />
         </div>
       </ScrollToTop>
     </>

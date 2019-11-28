@@ -58,9 +58,9 @@ const AcPageOffline = props => {
                 dangerouslySetInnerHTML={{ __html: item.intro }}
               ></article>
             </main>
-            <AcPageAside {...item} />
+            <AcPageAside {...item} acLocation={item.location} />
           </div>
-          <AcPageFoot />
+          <AcPageFoot sid={item.sid} />
         </div>
       </ScrollToTop>
     </>

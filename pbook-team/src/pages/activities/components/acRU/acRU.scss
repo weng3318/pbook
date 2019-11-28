@@ -1,10 +1,19 @@
 @import '../../color.scss';
 .acTable {
+  .acTitle {
+    cursor: pointer;
+    &:hover {
+      color: darken($color-yellow, 30%);
+      font-weight: 600;
+      background-color: lighten($color-green, 5%);
+    }
+  }
   .icon {
     color: $color-black;
     cursor: pointer;
     &:hover {
       color: lighten($color-black, 30%);
+      background-color: lighten($color-green, 5%);
     }
   }
 

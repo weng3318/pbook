@@ -3,7 +3,7 @@
   a {
     color: $color-black;
     &:hover {
-      color: $color-yellow;
+      color: darken($color-yellow, 30%);
       text-shadow: 0 0 1px;
     }
   }
