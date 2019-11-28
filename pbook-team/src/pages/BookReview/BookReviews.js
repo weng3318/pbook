@@ -43,7 +43,7 @@ const BookColumn = styled.div`
 //直排右側分數
 const BookColumnScore = styled.div`
   position: relative;
-  bottom: 170px;
+  bottom: 140px;
   right: 20px;
   display: flex;
   flex-direction: column;
@@ -132,7 +132,6 @@ const List = () => {
     bookList()
     reviewList()
     replyText()
-
     if (JSON.parse(localStorage.getItem('user')) !== null) {
       let data = JSON.parse(localStorage.getItem('user'))
       setUser({
@@ -144,6 +143,9 @@ const List = () => {
       recommend(data.MR_number)
     }
   }, [])
+
+  
+
   //書評分頁資料ajax
   const bookList = async () => {
     await axios

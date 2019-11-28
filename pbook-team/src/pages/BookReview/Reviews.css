@@ -45,11 +45,19 @@
   right: 100px;
 }
 
+/* 搜尋欄外框 */
+.reviews_searchBar {
+  display: flex;
+  flex-direction: row-reverse;
+  transform: translate(-30px, -35px);
+}
+
 /* 搜尋欄 */
 .reviews_search {
+  margin: 0 5px 0 0;
   padding: 10px;
   height: 20px;
-  width: 300px;
+  width: 320px;
   border: 1px solid #eaeaea;
   outline: none;
 }
@@ -60,19 +68,39 @@
   border-color: #cde2d0;
 }
 
+/* 搜尋按鍵 */
+.reviews_spush {
+  height: 20px;
+  outline: none;
+}
+
+/* 麵包屑 */
+.reviews_crumb {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin: 0 0 1px 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 6px;
+  background: #cde2d0;
+  color: #2d3a3a;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
 /* 搜尋結果 */
 .reviews_search_result {
-  position: absolute;
-  width: 500px;
+  width: 200px;
   background: #fff;
   border: 1px solid #cde2d0;
   outline: none;
-  transform: translate(0, -1px);
+  position: absolute;
   z-index: 99;
 }
 
 .reviews_search_result li {
-  width: 498px;
+  width: 318px;
   padding: 0 0 0 10px;
   background: #fff;
   outline: none;
@@ -232,15 +260,15 @@
 }
 /* 推薦書籍文字 */
 .reviews_recommendText {
-  font-size: 18px;
-  margin: 0 0 0 55px;
+  font-size: 25px;
+  margin: 0 0 0 190px;
 }
 /* 書本推薦區 橫排*/
 .reviews_recommendBook {
   width: 700px;
   display: flex;
   justify-content: space-around;
-  margin: 0 0 0 25px;
+  margin: 0 0 0 140px;
 }
 /* 書本推薦區圖片 */
 .reviews_recommendBook_img {
@@ -248,12 +276,12 @@
   max-width: 100%;
   width: 120px;
   height: 120px;
-  margin: 0 25px;
+  margin: 0 0 0 50px;
   border: 1px solid #ccc;
 }
 /* 書本推薦區文字 */
 .reviews_recommendBookName {
-  margin: 0 25px;
+  margin: 0 0 0 50px;
   text-align: center;
   font-size: 13px;
   width: 120px;

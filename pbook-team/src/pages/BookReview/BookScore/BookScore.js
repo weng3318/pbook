@@ -37,19 +37,21 @@ const StyledRating = withStyles({
   },
 })(Rating)
 
-const BookScore = props => {
-  const [bs, setBs] = useState([])
-  const { bookInformation } = props
+const BookScore = ({ callback ,callback2}) => {
+  const [bs, setBs] = useState(() => callback2())
+  const [bookinfo, setBookinfo] = useState(() => callback())
+  // const { callback } = props
   useEffect(() => {
-    star()
-  }, [])
+    setBs(callback2())
+    setBookinfo(callback())
+  }, [callback, callback2])
 
   //資料ajax
-  const star = () => {
-    axios.get('http://localhost:5555/reviews/book_ratings').then(res => {
-      setBs(res.data.data)
-    }, [])
-  }
+  // const star = () => {
+  //   axios.get('http://localhost:5555/reviews/book_ratings').then(res => {
+  //     setBs(res.data.data)
+  //   }, [])
+  // }
 
   let fiveStars = [],
     fourStars = [],
@@ -124,7 +126,7 @@ const BookScore = props => {
 
   return (
     <div className="reviews_right">
-      {bookInformation.map(data => (
+      {bookinfo.map(data => (
         <section key={data.sid} className="reviews_sec">
           <div className="d-flex book_star mb-2">
             <div className={classes.root}>
