@@ -53,19 +53,18 @@ const BookColumnScore = styled.div`
   align-items: flex-end;
 `
 
+//未登入直排右側分數
+const BookColumnScore2 = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+
 //直排下方會員
 const BookColumnMember = styled.div`
   display: flex;
   margin: 0 0 0 20px;
   align-items: center;
   flex-direction: column;
-`
-
-//評分條外框
-const BookLine = styled.div`
-  display: flex;
-  flex-direction: row-reverse;
-  outline: none;
 `
 
 //書本資訊
@@ -430,7 +429,11 @@ const List = () => {
               </BookColumn>
             </Book>
           ))}
-          <div className="reviews_recommendText">推薦書籍</div>
+          {user.isLogin ? (
+            <div className="reviews_recommendText">推薦書籍</div>
+          ) : (
+            ''
+          )}
           <div className="reviews_recommendBook">
             {recommendBook.map((book, index) => (
               <Link
@@ -448,19 +451,35 @@ const List = () => {
             ))}
           </div>
 
-          <BookColumnScore>
-            <Link to={`/books/information/${urlParams}`}>
-              <button className="reviews_BookBuy">立即購買</button>
-            </Link>
-            <BookRow>
-              <BookScoreAndLine List={List} />
-            </BookRow>
-            <form onSubmit={addCase}>
-              <button type="submit" className="reviews_BookCase">
-                加入書櫃
-              </button>
-            </form>
-          </BookColumnScore>
+          {user.isLogin ? (
+            <BookColumnScore>
+              <Link to={`/books/information/${urlParams}`}>
+                <button className="reviews_BookBuy">立即購買</button>
+              </Link>
+              <BookRow>
+                <BookScoreAndLine List={List} />
+              </BookRow>
+              <form onSubmit={addCase}>
+                <button type="submit" className="reviews_BookCase">
+                  加入書櫃
+                </button>
+              </form>
+            </BookColumnScore>
+          ) : (
+            <BookColumnScore2>
+              <Link to={`/books/information/${urlParams}`}>
+                <button className="reviews_BookBuy">立即購買</button>
+              </Link>
+              <BookRow>
+                <BookScoreAndLine List={List} />
+              </BookRow>
+              <form onSubmit={addCase}>
+                <button type="submit" className="reviews_BookCase">
+                  加入書櫃
+                </button>
+              </form>
+            </BookColumnScore2>
+          )}
           <h3 className="reviews_push">發表評論</h3>
           <Review>
             <BookColumnMember>
