@@ -15,6 +15,8 @@ import {
   DEL_CART_REQUEST,
   ORDER_RECEIVE,
   ORDER_REQUEST,
+  ADD_ORDER_RECEIVE,
+  ADD_ORDER_REQUEST,
 } from './ShopActions'
 
 //--------categories------
@@ -346,6 +348,49 @@ function order(state = [], action) {
   }
 }
 //----------------------
+//------addOrder-------
+function ao(
+  state = {
+    isFetching: false,
+    didInvalidate: false,
+    payload: [],
+  },
+  action
+) {
+  switch (action.type) {
+    case ADD_ORDER_RECEIVE:
+      return {
+        ...state,
+        isFetching: false,
+        didInvalidate: false,
+        payload: action.payload,
+        lastUpdated: action.receivedAt,
+      }
+    case ADD_ORDER_REQUEST:
+      return {
+        ...state,
+        isFetching: true,
+        didInvalidate: false,
+      }
+    default:
+      return state
+  }
+}
+
+function addOrder(state = [], action) {
+  switch (action.type) {
+    case ADD_ORDER_RECEIVE:
+    case ADD_ORDER_REQUEST:
+      return {
+        ...state,
+        ...ao(state[action], action),
+      }
+    default:
+      return state
+  }
+}
+//---------------------
+
 const ShopReducers = {
   addToFav,
   addToCart,
@@ -355,6 +400,7 @@ const ShopReducers = {
   categories,
   shop,
   order,
+  addOrder,
 }
 
 export default ShopReducers

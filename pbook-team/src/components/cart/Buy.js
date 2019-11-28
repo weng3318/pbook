@@ -12,6 +12,7 @@ import './Cart.scss'
 
 const Buy = props => {
   let [current, setSteps] = useState(0)
+  let [order, setOrder] = useState(0)
   let [totalAmount, setTotalAmount] = useState(0)
   let [totalPrice, setTotalPrice] = useState(0)
   let member = JSON.parse(localStorage.getItem('user')).MR_number
@@ -19,7 +20,7 @@ const Buy = props => {
     props.dispatch(cartFetch())
     props.dispatch(orderFetch(member))
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [order])
   let orderPayload = props.order.payload
   let cartPayload = props.Cart.payload
   function changeSteps(e) {
@@ -41,6 +42,7 @@ const Buy = props => {
   } else if (current === 2) {
     Steps = StepThree
   }
+
   return (
     <>
       <Container className="px-0 cart_wrap" fluid={true}>
@@ -64,6 +66,8 @@ const Buy = props => {
               setTotalAmount={setTotalAmount}
               totalPrice={totalPrice}
               setTotalPrice={setTotalPrice}
+              order={order}
+              setOrder={setOrder}
             ></Steps>
           </Row>
         </Container>

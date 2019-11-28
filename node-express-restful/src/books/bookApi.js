@@ -448,10 +448,10 @@ router.post("/addOrder", (req, res) => {
   let bookAmount = req.body.bookAmount;
   let orderPrice = req.body.orderPrice;
   let created_time = req.body.created_time;
+  console.log(req.body);
+  
   let sql =
-    "INSERT INTO `od_list`(`orderID`, `memberID`, `bookName`, `singlePrice`, `bookAmount`, `orderPrice`, `created_time`) VALUES ('" +
-    orderID +
-    "','" +
+    "INSERT INTO `od_list`(`memberID`, `bookName`, `singlePrice`, `bookAmount`, `orderPrice`, `created_time`) VALUES ('" +
     memberID +
     "','" +
     bookName +
