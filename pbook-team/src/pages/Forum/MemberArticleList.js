@@ -70,7 +70,14 @@ function MemberArticleList() {
 
   let columnCount = 1
   if (rows.length === 0) {
-    return <div>123</div>
+    return (
+      <div className="articleListControle">
+        <div className="articleList">
+          <span className="page-title">已發表文章</span>
+          <div className="noPost">沒有發表過文章....快到討論區找點靈感吧!!</div>
+        </div>
+      </div>
+    )
   } else {
     return (
       <>

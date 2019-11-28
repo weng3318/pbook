@@ -13,6 +13,10 @@ export const AppendTextarea = addElement => ({
   type: 'APPEND_TEXTAREA',
   content: addElement,
 })
+export const removeImg = leaveElement => ({
+  type: 'REMOVE_IMG',
+  content: leaveElement,
+})
 export const clearPostAritcleState = () => ({
   type: 'CLEAR_POST_DATA',
 })

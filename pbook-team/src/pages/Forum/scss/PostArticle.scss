@@ -127,4 +127,16 @@
       border-radius: 5px;
     }
   }
+  .insertImg {
+    max-width: 784px;
+    position: relative;
+    .img-demo {
+      width: 100%;
+    }
+    .imgCancel {
+      position: absolute;
+      top: 4px;
+      right: 20px;
+    }
+  }
 }

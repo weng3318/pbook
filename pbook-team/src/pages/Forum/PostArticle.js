@@ -8,6 +8,7 @@ import {
   AppendImgInput,
   AppendImgElement,
   clearPostAritcleState,
+  removeImg,
 } from './fmAction'
 //UI componet
 import CustomizedDialogs from '../../components/Material-UI/Dialog'
@@ -28,6 +29,10 @@ import InboxIcon from '@material-ui/icons/Inbox'
 import VideoLibraryIcon from '@material-ui/icons/VideoLibrary'
 import PostAddIcon from '@material-ui/icons/PostAdd'
 import CancelIcon from '@material-ui/icons/Cancel'
+
+import Fab from '@material-ui/core/Fab'
+import CloseIcon from '@material-ui/icons/Close'
+
 //textarea
 import TextareaAutosize from 'react-textarea-autosize'
 import Swal from 'sweetalert2'
@@ -83,7 +88,7 @@ const PostAritcle = props => {
   const [mainImg, setMainImg] = useState(0)
 
   let { category, MR_number } = useParams()
-  
+
   const Swal = require('sweetalert2')
 
   useEffect(() => {
@@ -114,7 +119,10 @@ const PostAritcle = props => {
     let formData = new FormData()
     for (let i = 0; i < mainImg; i++) {
       let file = document.querySelector(`#file${i}`).files[0]
-      formData.append('imgFile[]', file)
+      if (file) {
+        console.log('22')
+        formData.append('imgFile[]', file)
+      }
     }
     let subcate1 = document.querySelector('#grouped-select').value
     let title = document.querySelector('#title').value
@@ -163,15 +171,13 @@ const PostAritcle = props => {
   }
   const handleInsertImg = e => {
     let element = (
-      <div>
-        <input
-          type="file"
-          id={`file${props.imgCount}`}
-          onChange={handleUpload}
-          accept="image/*"
-          style={{ display: 'none' }}
-        ></input>
-      </div>
+      <input
+        type="file"
+        id={`file${props.imgCount}`}
+        onChange={handleUpload}
+        accept="image/*"
+        style={{ display: 'none' }}
+      ></input>
     )
     props.dispatch(AppendImgInput(element))
   }
@@ -183,13 +189,31 @@ const PostAritcle = props => {
     reader.readAsDataURL(file)
     reader.addEventListener('load', function(event) {
       let element = (
-        <ImgDemo imgData={event.target.result} imgCount={props.imgCount} />
+        <div className="insertImg " id={`img${props.imgCount}`}>
+          <ImgDemo imgData={event.target.result} imgCount={props.imgCount} />
+          <div className="imgCancel ">
+            <Fab size="small" aria-label="add" className={classes.margin}>
+              <CloseIcon onClick={e => cancelImg(e, props.imgCount)} />
+            </Fab>
+          </div>
+        </div>
       )
       setMainImg(mainImg + 1)
       props.dispatch(AppendImgElement(element, event.target.result))
     })
   }
 
+  const cancelImg = (event, removeNo) => {
+    // event.persist()
+    console.log(props.addElement)
+    // let element = props.addElement.filter(item => {
+    //   return item.props.id !== `img${removeNo}`
+    // })
+    // let removeIuput = document.querySelector(`file${removeNo}`)
+    // removeIuput.parentNode.removeChild(removeIuput)
+    // props.dispatch(removeImg(element))
+  }
+  // 檢查標題及子類
   const handleTitleCheck = () => {
     let allText1 = document.querySelectorAll('textarea')
     let allText = [...allText1]
@@ -419,13 +443,6 @@ const PostAritcle = props => {
             </div>
           </div>
           <section id="inputTextToSave" id="ddd">
-            {/* <input
-              type="file"
-              name="file1"
-              id="file2"
-              onChange={tryImg}
-            ></input> */}
-
             {props.addElement}
           </section>
         </div>

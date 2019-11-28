@@ -26,6 +26,11 @@ function postArticle(state = postArticleState, action) {
         ...state,
         addElement: [...state.addElement, action.content],
       }
+    case 'REMOVE_IMG':
+      return {
+        ...state,
+        addElement: [...action.content],
+      }
     case 'CLEAR_POST_DATA':
       return {
         ...postArticleState,
@@ -63,8 +68,7 @@ function UserDetails(state = detailInitState, action) {
     // case 'FM_USER_REQUEST':
     //   return { ...state, data: action.data }
     case 'FM_USER_RECEIVE':
-
-    return {
+      return {
         ...state,
         data: action.data.writer,
         follow: action.data.follow,
