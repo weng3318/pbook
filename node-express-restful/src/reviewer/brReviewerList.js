@@ -15,7 +15,7 @@ bluebird.promisifyAll(db)
 const perPage = 200
 router.get('/brReviewerList/:page?/:keyword?', (req, res) => {
     // 頁數資料傳輸
-    const output = {};
+    const output = {}; 
     output.params = req.params
     output.perPage = perPage
     let page = parseInt(req.params.page) || 1

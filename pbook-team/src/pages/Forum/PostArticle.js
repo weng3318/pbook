@@ -134,7 +134,6 @@ const PostAritcle = props => {
     // props.imgData.forEach(v => {
     //   formData.append('imgData[]', v)
     // })
-    console.log('post')
 
     fetch('http://localhost:5555/forum/postNew/', {
       method: 'POST',
@@ -145,7 +144,6 @@ const PostAritcle = props => {
         return response.json()
       })
       .then(result => {
-        console.log(result)
         if (result.message)
           Swal.fire({
             title: '新增成功!',
@@ -301,7 +299,6 @@ const PostAritcle = props => {
       })
   }
   const handleSection = () => {
-    console.log('section')
     let content = document.querySelector('#ddd')
     let arr = [...content.childNodes]
     let textContent = arr

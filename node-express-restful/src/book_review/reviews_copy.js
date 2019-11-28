@@ -4,10 +4,10 @@ const mysql = require("mysql");
 const bluebird = require("bluebird");
 const router = express.Router();
 const db = mysql.createConnection({
-  // host: "192.168.27.186",
-  host: "192.168.27.186",
-  user: "shan",
-  password: "opcp2428",
+  // host:"localhost",
+  host:"localhost",
+  user: "root",
+  password: "root",
   database: "pbook"
 });
 db.connect();

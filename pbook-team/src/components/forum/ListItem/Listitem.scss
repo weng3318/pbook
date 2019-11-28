@@ -1,3 +1,4 @@
+@import '../../../pages/Forum//scss/systemcolor';
 .forumPage {
   $grey-grey: #979d9d;
   $grass-yellow: #ffc408;
@@ -13,11 +14,80 @@
         padding-right: 8px;
         flex: 1 1 500px;
         color: $grey-grey;
+        .list-item-category {
+          font-size: 1.1rem;
+          color: rgba(0, 0, 0, 0.6);
+        }
+        .list-title {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 1;
+          -webkit-box-orient: vertical;
+        }
         .fm-subtitle {
           width: 570px;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
+        }
+        .list-item-details {
+          color: $Darjeeling;
+          .userFrame {
+            background-color: #fff;
+            width: 300px;
+            position: absolute;
+            bottom: 100%;
+            left: -60px;
+            box-shadow: 1px 3px #ccc;
+            border-radius: 5px;
+            color: $black-tea;
+            button:focus {
+              outline: none;
+            }
+            hr {
+              margin: 12px;
+              background-color: $season-green;
+              height: 1px;
+              border: none;
+            }
+            .title-line:after {
+              content: '';
+              display: block;
+              width: 100%;
+              border: 2px solid $grass-yellow;
+              border-radius: 5px 5px 0 0;
+            }
+            .title {
+              @extend %card-title-font;
+              display: flex;
+              justify-content: space-between;
+              padding: 8px 8px 0 8px;
+              .icon {
+                color: $grass-yellow;
+              }
+            }
+            .subtitle {
+              color: $deepsea;
+              padding-left: 8px;
+            }
+            .introduction {
+              padding: 0 8px 0 8px;
+              color: $grey-grey;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              display: -webkit-box;
+              -webkit-line-clamp: 3;
+              -webkit-box-orient: vertical;
+            }
+            .followText {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              padding: 0 8px 8px 8px;
+              font-size: 1.2rem;
+            }
+          }
         }
         .list-item-time {
           justify-content: space-between;
@@ -30,6 +100,8 @@
             color: $grass-yellow;
           }
           .item-time-right {
+            cursor: pointer;
+            display: flex;
             margin-right: 10px;
             .item-icon {
               margin: 0 10px 0 10px;
@@ -49,7 +121,8 @@
       }
 
       .item-right {
-        flex: 0 1 150px;
+        min-width: 150px;
+        flex: 0 0 150px;
       }
       .img {
         width: 150px;

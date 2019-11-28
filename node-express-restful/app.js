@@ -6,7 +6,7 @@ import { request } from "http";
 const app = express();
 const mysql = require("mysql");
 const db = mysql.createConnection({
-  host: "192.168.27.186",
+  host:"localhost",
   user: "root",
   password: "root",
   database: "pbook"

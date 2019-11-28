@@ -14,7 +14,7 @@ class HotArticle extends React.Component {
     }
   }
   componentDidMount() {
-    fetch('http://localhost:5555/forum/homepage', {
+    fetch('http://localhost:5555/forum/hotArticle', {
       method: 'GET',
     })
       .then(response => {
@@ -64,7 +64,7 @@ class HotArticle extends React.Component {
                           </div>
                         </Link>
 
-                        <div>{value.MR_nickname}</div>
+                        <div className="nickname">{value.MR_nickname}</div>
                         <div>
                           <span className="time">
                             {value.fm_publishTime.slice(0, 10)}

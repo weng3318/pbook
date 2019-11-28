@@ -2,7 +2,13 @@ import React from 'react'
 import './Listitem.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBookmark, faEllipsisH } from '@fortawesome/free-solid-svg-icons'
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+
+//material UI
+import StarsIcon from '@material-ui/icons/Stars'
+import Button from '@material-ui/core/Button'
+import ClickAwayListener from '@material-ui/core/ClickAwayListener'
+import { makeStyles } from '@material-ui/core/styles'
 
 import {
   faBookmark as faBookmarks,
@@ -16,18 +22,55 @@ class Listitem extends React.Component {
     this.state = {
       faBookmark: true,
       like: false,
+      userHover: false,
+      level: [
+        '品書會員',
+        '品書學徒',
+        '品書專家',
+        '品書大師',
+        '品書至尊',
+        '書評家',
+      ],
     }
   }
 
   componentDidMount() {}
   handleIconClick = value => event => {
     if (value === 1) {
-      this.setState({ faBookmark: !this.state.faBookmark })
+      this.handleBookmarkClick()
     }
     if (value === 2) {
       this.setState({ like: !this.state.like })
     }
   }
+  //user details hover frame
+  handleUserMouseInOut = event => {
+    this.setState({
+      userHover: !this.state.userHover,
+    })
+  }
+
+  handleBookmarkClick = () => {
+    if (localStorage.user !== undefined) {
+      let user = JSON.parse(localStorage.user)
+      let article = this.props.article
+
+      if (!faBookmark) {
+        fetch(
+          `http://localhost:5555/forum/article/bookmark/delete/${article.fm_articleId}/${user.MR_number}`
+        ).then(res => {
+          this.setState({ faBookmark: !this.state.faBookmark })
+        })
+      } else {
+        fetch(
+          `http://localhost:5555/forum/article/bookmark/add/${article.fm_articleId}/${user.MR_number}`
+        ).then(res => {
+          this.setState({ faBookmark: !this.state.faBookmark })
+        })
+      }
+    }
+  }
+
   render() {
     let article = this.props.article
     if (!this.props.empty) {
@@ -35,20 +78,78 @@ class Listitem extends React.Component {
         <>
           <div className="forum-list-item dis-flex">
             <div className="item-left">
-              <div className="list-item-category">{article.name}</div>
+              <div className="list-item-category">{article.categoriesName}</div>
               <Link to={`/forum/article/${article.fm_articleId}`}>
-                <div className="card-title-font">{article.fm_title}</div>
+                <div
+                  className="card-title-font list-title"
+                  title={article.fm_title}
+                >
+                  {article.fm_title}
+                </div>
               </Link>
               <Link to={`/forum/article/${article.fm_articleId}`}>
                 <div className="card-subtitle-font fm-subtitle">
                   {article.fm_subTitle}
                 </div>
               </Link>
-              <div className="list-item-details">{article.MR_nickname}</div>
+              <div className="list-item-details">
+                <span
+                  onMouseEnter={this.handleUserMouseInOut}
+                  onMouseLeave={this.handleUserMouseInOut}
+                >
+                  {article.MR_nickname}
+                  {/* user hover div */}
+                  <div
+                    className={
+                      'userFrame ' +
+                      (this.state.userHover ? 'displayBlock' : 'displayNone')
+                    }
+                  >
+                    <div className="title-line"></div>
+                    <div className="title">
+                      <span>{article.MR_nickname}</span>
+                      <span className="d-flex flex-align-center">
+                        <StarsIcon
+                          className="icon pr-1"
+                          style={{ fontSize: 26 }}
+                        ></StarsIcon>
+                        <span>
+                          {this.state.level[`${article.MR_personLevel}`]}
+                        </span>
+                      </span>
+                    </div>
+                    <hr></hr>
+                    <div className="subtitle">
+                      從
+                      <span className="m-1">
+                        {article.MR_createdDate.slice(0, 10)}{' '}
+                      </span>
+                      成為品書會員
+                    </div>
+                    <div
+                      className="mt-1 pr-2 introduction"
+                      title={article.MR_introduction}
+                    >
+                      {article.MR_introduction}
+                    </div>
+                    <hr></hr>
+                    <div>
+                      <span className="followText">
+                        <span className="mr-3">{this.props.follow || 6}</span>
+                        <span className="mr-3">人追蹤中</span>
+                        <Button variant="outlined" color="secondary">
+                          追蹤作者
+                        </Button>
+                      </span>
+                    </div>
+                  </div>
+                  {/* user hover end */}
+                </span>
+              </div>
               <div className="list-item-time dis-flex ">
                 <div>
                   <span>{article.fm_publishTime.slice(0, 10)}</span>
-                  <span>{article.fm_read}人已閱讀</span>
+                  <span className="ml-2">{article.fm_read}人已閱讀</span>
                   <span
                     className={
                       article.fm_featured ? 'displayInlineBlock' : 'diplayNone'
@@ -70,20 +171,7 @@ class Listitem extends React.Component {
                       icon={this.state.faBookmark ? faBookmarks : faBookmark}
                     />
                   </span>
-                  <span
-                    className="item-icon position-r"
-                    onClick={this.handleIconClick(2)}
-                  >
-                    <FontAwesomeIcon icon={faEllipsisH} />
-                    <div
-                      className={
-                        'likeOrNot position-a ' +
-                        (this.state.like ? 'displayBlock' : ' displayNone')
-                      }
-                    >
-                      13213123
-                    </div>
-                  </span>
+                  <ClickAway></ClickAway>
                 </div>
               </div>
             </div>
@@ -107,10 +195,10 @@ class Listitem extends React.Component {
         <>
           <div className="forum-list-item dis-flex">
             <div className="item-left">
-              <div className="list-item-category loading">1</div>
+              <div className="list-item-category loading"></div>
               <div className="card-title-font loading">Loading</div>
               <div className="card-subtitle-font fm-subtitle loading"></div>
-              <div className="list-item-details loading">1</div>
+              <div className="list-item-details loading"></div>
               <div className="list-item-time dis-flex loading">
                 <div className="loading">
                   <span></span>
@@ -142,3 +230,47 @@ class Listitem extends React.Component {
   }
 }
 export default Listitem
+
+function ClickAway() {
+  const classes = useStyles()
+  const [open, setOpen] = React.useState(false)
+
+  const handleClick = () => {
+    setOpen(prev => !prev)
+  }
+
+  const handleClickAway = () => {
+    setOpen(false)
+  }
+
+  return (
+    <ClickAwayListener onClickAway={handleClickAway}>
+      <div className={classes.wrapper} onClick={handleClick}>
+        <FontAwesomeIcon icon={faEllipsisH} />
+        {open ? (
+          <Link>
+            <div className={classes.div} style={{ cursor: 'pointer' }}>
+              檢舉文章
+            </div>
+          </Link>
+        ) : null}
+      </div>
+    </ClickAwayListener>
+  )
+}
+
+const useStyles = makeStyles(theme => ({
+  wrapper: {
+    position: 'relative',
+  },
+  div: {
+    position: 'absolute',
+    width: '80px',
+    top: 28,
+    right: 0,
+    // left: 0,
+    border: '1px solid',
+    padding: theme.spacing(1),
+    backgroundColor: theme.palette.background.paper,
+  },
+}))
