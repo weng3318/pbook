@@ -1,10 +1,11 @@
 @import '../../color.scss';
 .acItem {
-  a {
+  a h4{
     color: $color-black;
     &:hover {
-      color: darken($color-yellow, 30%);
-      text-shadow: 0 0 1px;
+      font-weight: bold;
+      color: $color-yellow;
+      text-shadow: 1px 1px 2px $color-black
     }
   }
 }

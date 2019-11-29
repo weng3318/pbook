@@ -20,6 +20,8 @@ const DataPic = props => {
     Page = Page1
     modeLink = '/books/' + props.nowPage + '/' + props.nowCategories
   }
+  
+  let discountData = props.discountAmount && props.discountAmount.data
   return (
     <>
       <Col md={10} className="books position-relative">
@@ -63,6 +65,7 @@ const DataPic = props => {
                   data={data}
                   cartPayload={props.cartPayload}
                   history={props.history}
+                  discountData={discountData}
                 ></BookInfoPic>
               </div>
             ))}

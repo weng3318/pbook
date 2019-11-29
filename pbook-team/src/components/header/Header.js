@@ -130,7 +130,7 @@ class Header extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.props.cartToOrder)
+    // console.log(this.props.cartToOrder)
     let pic = JSON.parse(localStorage.getItem('user'))
     if (pic !== null) {
       this.queryMember()

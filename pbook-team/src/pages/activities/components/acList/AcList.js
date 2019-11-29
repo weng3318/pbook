@@ -26,6 +26,7 @@ const AcList = props => {
                 +props.visibilityFilter.value === 3
               )
             })
+            .sort((a, b) => b.sid - a.sid)
             .map(v => (
               <AcItem key={v.sid} {...v} acType={acType} />
             ))}

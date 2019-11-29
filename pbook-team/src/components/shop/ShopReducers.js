@@ -19,6 +19,8 @@ import {
   ORDER_REQUEST,
   ADD_ORDER_RECEIVE,
   ADD_ORDER_REQUEST,
+  REVIEWS_RECEIVE,
+  REVIEWS_REQUEST,
   ADD_CART_TO_ORDER,
 } from './ShopActions'
 
@@ -78,6 +80,7 @@ function sp(
         ...state,
         isFetching: false,
         didInvalidate: false,
+        sids: action.sids,
         payload: action.payload,
         lastUpdated: action.receivedAt,
       }
@@ -433,7 +436,47 @@ function addOrder(state = [], action) {
       return state
   }
 }
-//---------------
+//---------------------
+//-----REVIEWS---------
+function rv(
+  state = {
+    isFetching: false,
+    didInvalidate: false,
+  },
+  action
+) {
+  switch (action.type) {
+    case REVIEWS_RECEIVE:
+      return {
+        ...state,
+        isFetching: false,
+        didInvalidate: false,
+        payload: action.payload,
+        lastUpdated: action.receivedAt,
+      }
+    case REVIEWS_REQUEST:
+      return {
+        ...state,
+        isFetching: true,
+        didInvalidate: false,
+      }
+    default:
+      return state
+  }
+}
+function reviews(state = [], action) {
+  switch (action.type) {
+    case REVIEWS_RECEIVE:
+    case REVIEWS_REQUEST:
+      return {
+        ...state,
+        ...rv(state[action], action),
+      }
+    default:
+      return state
+  }
+}
+//----------------------
 const ap = {
   totalAmount: 0,
   totalPrice: 0,
@@ -464,6 +507,7 @@ const ShopReducers = {
   shop,
   order,
   addOrder,
+  reviews,
   cartToOrder,
 }
 

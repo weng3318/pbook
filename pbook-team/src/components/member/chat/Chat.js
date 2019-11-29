@@ -16,9 +16,23 @@ import axios from 'axios'
 import moment from 'moment'
 import io from 'socket.io-client'
 import swal from '@sweetalert/with-react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faSearch,
+  faComments,
+  faCommentDots,
+  faUpload,
+  faSmile,
+  faUndoAlt,
+  faPenNib,
+  faPlusCircle,
+} from '@fortawesome/free-solid-svg-icons'
 
 var socket
-
+var items = [
+  '<img class="stickerImg" src="http://localhost:5555/images/chatSticker/sticker(0).png" alt="Avatar"/>',
+  '<img class="stickerImg" src="http://localhost:5555/images/chatSticker/sticker(1).png" alt="Avatar"/>',
+]
 class Chat extends React.Component {
   constructor(props) {
     super(props)
@@ -281,8 +295,7 @@ class Chat extends React.Component {
   }
 
   // 私聊的收回訊息
-  handleMessageDelete = e => {
-    let MessageSid = e.target.getAttribute('data-value')
+  handleMessageDelete = MessageSid => {
     console.log('handleMessageDelete MessageSid1', MessageSid)
 
     // 利用網址列取得chat_id
@@ -465,19 +478,14 @@ class Chat extends React.Component {
         this.messageMemo.classList.add('show-inline-flex')
         this.setState({ key: 'memoInsert' })
         break
+      case 'album':
+        this.messageSearch.classList.add('hide')
+        this.messageMemo.classList.add('show-inline-flex')
+        this.setState({ key: 'album' })
+        break
       default:
         break
     }
-
-    // if (this.state.key === 'chat') {
-    //   this.messageSearch.classList.add('hide')
-    //   this.messageMemo.classList.add('show-inline-flex')
-    //   this.setState({ key: 'memo' })
-    // } else {
-    //   this.messageSearch.classList.remove('hide')
-    //   this.messageMemo.classList.remove('show-inline-flex')
-    //   this.setState({ key: 'chat' })
-    // }
   }
 
   // 私聊記事本將TEXTAREA內容存到this.state.memoValue
@@ -531,6 +539,11 @@ class Chat extends React.Component {
     })
   }
 
+  //私聊記事本新增清空按鈕
+  handleClickMemo = () => {
+    this.setState({ memoValue: '' })
+  }
+
   //私聊記事本修改送出按鈕
   handleSubmitMemoEdit = memoSid => {
     // 取得貼文內容
@@ -562,6 +575,13 @@ class Chat extends React.Component {
         this.setState({ memoValue: '' })
       }
     })
+  }
+
+  //私聊的訊息添加至記事本
+  handleMessageAddToMemo = content => {
+    this.messageSearch.classList.add('hide')
+    this.messageMemo.classList.add('show-inline-flex')
+    this.setState({ memoValue: content, key: 'memoInsert' })
   }
 
   // 私聊記事本的光箱控制鈕
@@ -680,7 +700,7 @@ class Chat extends React.Component {
                         className="chatSearchBtn"
                         onClick={this.handleSearch}
                       >
-                        <i className="fas fa-search" aria-hidden="true"></i>
+                        <FontAwesomeIcon icon={faSearch} className="pointer" />
                       </span>
                     </form>
                   </ListGroup.Item>
@@ -784,7 +804,7 @@ class Chat extends React.Component {
                 <Tab.Content>
                   <div className="myDefault" ref={div => (this.myDiv = div)}>
                     <div className="p-2">
-                      <i className="far fa-comments mx-2"></i>
+                      <FontAwesomeIcon icon={faComments} className="mx-2" />
                       歡迎來到品書聊天廣場！目前有{this.state.people}
                       位會員正在線上。
                     </div>
@@ -907,7 +927,10 @@ class Chat extends React.Component {
                     return (
                       <Tab.Pane key={index} eventKey={'#' + value.chat_id}>
                         <div className="p-2">
-                          <i className="far fa-comment-dots mx-2"></i>
+                          <FontAwesomeIcon
+                            icon={faCommentDots}
+                            className="mx-2"
+                          />
                           {'您正在和[' + value.MR_name + ']聊天'}
                         </div>
                         <Tabs
@@ -945,6 +968,25 @@ class Chat extends React.Component {
                                                     __html: value2.content,
                                                   }}
                                                 ></p>
+                                                {value2.content.indexOf(
+                                                  '<img'
+                                                ) !== -1 ? (
+                                                  ''
+                                                ) : (
+                                                  <span
+                                                    className="messageAddMemo time-right"
+                                                    onClick={() => {
+                                                      this.handleMessageAddToMemo(
+                                                        value2.content
+                                                      )
+                                                    }}
+                                                  >
+                                                    <FontAwesomeIcon
+                                                      icon={faPenNib}
+                                                    />
+                                                    <span>添加至記事本</span>
+                                                  </span>
+                                                )}
                                                 <span className="time-right">
                                                   {moment(
                                                     value2.created_at
@@ -982,15 +1024,38 @@ class Chat extends React.Component {
                                                     'YYYY-MM-DD HH:mm:ss'
                                                   )}
                                                 </span>
-                                                <i
-                                                  className="fas fa-undo-alt messageDelete"
-                                                  data-value={value2.sid}
-                                                  onClick={
-                                                    this.handleMessageDelete
+                                                <span
+                                                  className="messageDelete"
+                                                  onClick={() =>
+                                                    this.handleMessageDelete(
+                                                      value2.sid
+                                                    )
                                                   }
                                                 >
-                                                  收回
-                                                </i>
+                                                  <FontAwesomeIcon
+                                                    icon={faUndoAlt}
+                                                  />
+                                                  <span>收回</span>
+                                                </span>
+                                                {value2.content.indexOf(
+                                                  '<img'
+                                                ) !== -1 ? (
+                                                  ''
+                                                ) : (
+                                                  <span
+                                                    className="messageAddMemo"
+                                                    onClick={() => {
+                                                      this.handleMessageAddToMemo(
+                                                        value2.content
+                                                      )
+                                                    }}
+                                                  >
+                                                    <FontAwesomeIcon
+                                                      icon={faPenNib}
+                                                    />
+                                                    <span>添加至記事本</span>
+                                                  </span>
+                                                )}
                                               </div>
                                             )
                                           } else if (
@@ -1013,7 +1078,7 @@ class Chat extends React.Component {
                                                     value2.content
                                                   ).map((value, index) => {
                                                     return (
-                                                      <p key={index}>
+                                                      <div key={index}>
                                                         <img
                                                           className="upLoadImg"
                                                           src={
@@ -1022,7 +1087,13 @@ class Chat extends React.Component {
                                                           }
                                                           alt="Avatar"
                                                         />
-                                                      </p>
+                                                        <div className="addToAlbum">
+                                                          <FontAwesomeIcon
+                                                            icon={faPlusCircle}
+                                                            className="pointer"
+                                                          />
+                                                        </div>
+                                                      </div>
                                                     )
                                                   })}
                                                 </p>
@@ -1033,15 +1104,19 @@ class Chat extends React.Component {
                                                     'YYYY-MM-DD HH:mm:ss'
                                                   )}
                                                 </span>
-                                                <i
-                                                  className="fas fa-undo-alt messageDelete"
-                                                  data-value={value2.sid}
-                                                  onClick={
-                                                    this.handleMessageDelete
+                                                <span
+                                                  className="messageDelete"
+                                                  onClick={() =>
+                                                    this.handleMessageDelete(
+                                                      value2.sid
+                                                    )
                                                   }
                                                 >
-                                                  收回
-                                                </i>
+                                                  <FontAwesomeIcon
+                                                    icon={faUndoAlt}
+                                                  />
+                                                  <span>收回</span>
+                                                </span>
                                               </div>
                                             )
                                           } else if (
@@ -1064,7 +1139,7 @@ class Chat extends React.Component {
                                                     value2.content
                                                   ).map((value, index) => {
                                                     return (
-                                                      <p key={index}>
+                                                      <div key={index}>
                                                         <img
                                                           className="upLoadImg"
                                                           src={
@@ -1073,7 +1148,13 @@ class Chat extends React.Component {
                                                           }
                                                           alt="Avatar"
                                                         />
-                                                      </p>
+                                                        <div className="addToAlbum">
+                                                          <FontAwesomeIcon
+                                                            icon={faPlusCircle}
+                                                            className="pointer"
+                                                          />
+                                                        </div>
+                                                      </div>
                                                     )
                                                   })}
                                                 </p>
@@ -1289,10 +1370,64 @@ class Chat extends React.Component {
                                         onClick={this.handleSubmitMemo}
                                         type="button"
                                         value="送出"
-                                        className="btn btn-outline-warning"
+                                        className="btn btn-outline-danger mx-3"
+                                      />
+                                      <input
+                                        onClick={this.handleClickMemo}
+                                        type="button"
+                                        value="清空"
+                                        className="btn btn-outline-secondary"
                                       />
                                     </div>
                                   </div>
+                                </div>
+                              </div>
+                            </div>
+                          </Tab>
+                          <Tab eventKey="album" title="相簿">
+                            <div className="chatMessageScroll">
+                              <div className="card-columns">
+                                <div className="card">
+                                  <img
+                                    src="http://localhost:5555/images/member/yoko.jpg"
+                                    className="card-img-top"
+                                    alt="相簿照片"
+                                  />
+                                </div>
+                                <div className="card">
+                                  <img
+                                    src="http://localhost:5555/images/member/yasu.jpg"
+                                    className="card-img-top"
+                                    alt="相簿照片"
+                                  />
+                                </div>
+                                <div className="card">
+                                  <img
+                                    src="http://localhost:5555/images/chatSticker/sticker(2).png"
+                                    className="card-img-top"
+                                    alt="相簿照片"
+                                  />
+                                </div>
+                                <div className="card">
+                                  <img
+                                    src="http://localhost:5555/images/member/yoko.jpg"
+                                    className="card-img-top"
+                                    alt="相簿照片"
+                                  />
+                                </div>
+                                <div className="card">
+                                  <img
+                                    src="http://localhost:5555/images/chatSticker/sticker(7).png"
+                                    className="card-img-top"
+                                    alt="相簿照片"
+                                  />
+                                </div>
+                                <div className="card">
+                                  <img
+                                    src="http://localhost:5555/ac/images/1200x628_20191028180100.png"
+                                    className="card-img-top"
+                                    alt="相簿照片"
+                                  />
                                 </div>
                               </div>
                             </div>
@@ -1319,7 +1454,10 @@ class Chat extends React.Component {
                         id="basic-text1"
                         style={{ width: '41.5px' }}
                       >
-                        <i className="fas fa-upload position-absolute"></i>
+                        <FontAwesomeIcon
+                          icon={faUpload}
+                          className="position-absolute"
+                        />
                         <input
                           type="file"
                           name="file"
@@ -1371,7 +1509,7 @@ class Chat extends React.Component {
                           className="input-group-text lime lighten-2 chatMessageSubmit"
                           id="triggerClick"
                         >
-                          <i className="far fa-smile-wink"></i>
+                          <FontAwesomeIcon icon={faSmile} />
                         </span>
                       </OverlayTrigger>
 

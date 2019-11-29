@@ -43,10 +43,7 @@ function BookInfo(props) {
         >
           <div className="book_pic">
             <img
-              src={
-                'http://localhost/books/src/venderBooks_Management/vb_images/' +
-                props.pic
-              }
+              src={'http://localhost:5555/images/books/' + props.pic}
               alt=""
             />
           </div>
@@ -65,7 +62,10 @@ function BookInfo(props) {
                 <span className="fixedPrice">
                   原價 <strike>{props.fixed_price}</strike>元
                 </span>{' '}
-                <span className="price">79</span> 折
+                <span className="price">
+                  {100 - discount === 100 ? '無打折' : 100 - discount}
+                </span>{' '}
+                折
                 <span className="price discountPrice">
                   {Math.round((props.fixed_price * (100 - discount)) / 100)}
                 </span>{' '}

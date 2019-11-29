@@ -41,16 +41,6 @@
     padding: 30px 0 10px 0;
     text-align: center;
 }
-/* 邊框顏色，上下底線 */
-.borderLineUpDown {
-    /* border-top:3px solid #2d3a3a; */
-    border-bottom:3px solid #2d3a3a;
-}
-/* 邊框顏色，右下底線 */
-.borderLineLB {
-    border-right:3px solid #2d3a3a;
-    border-bottom:3px solid #2d3a3a;
-}
 .brHotBookText:hover{
     text-decoration: none;
     color:#ffc408;
@@ -115,8 +105,7 @@
 }
 /* 頭書，單本書區域 (圖片區) */
 .brAvatarAllBox_Bookcase{
-    border-right:3px solid #2d3a3a;
-    border-bottom:3px solid #2d3a3a;
+    border-right:1px solid #2d3a3a;
     max-width: 160px;
     min-width: 80px;
     padding: 0 10px;
@@ -248,9 +237,11 @@
     min-width: 150px;
 }
 /* ------------------------------------------------------------------ */
-/* 書櫃列表，整體區域 ( 狀態變更 ) */
+/* 書櫃列表，整體區域 ( 狀態變更 + 外框陰影 ) */
 .ReviewerListAllBox_Bookcase{
     display: flex;
+    border: 1px solid #2d3a3a;
+    box-shadow: 3px 2px 6px #2d3a3a;
 }
 /* 書籍簡介，狀態預設隱藏 (書名、作者) */
 .bookInfoRWD{

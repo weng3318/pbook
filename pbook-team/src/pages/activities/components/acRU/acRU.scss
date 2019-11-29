@@ -1,9 +1,15 @@
 @import '../../color.scss';
 .acTable {
+  .popover{
+    max-width: 625px;
+    width: 100%;
+  }
   .acTitle {
     cursor: pointer;
+    transition: 0.1s;
     &:hover {
-      color: darken($color-yellow, 30%);
+      color: $color-yellow;
+      text-shadow: 1px 1px 1px $color-black;
       font-weight: 600;
       background-color: lighten($color-green, 5%);
     }
@@ -12,7 +18,8 @@
     color: $color-black;
     cursor: pointer;
     &:hover {
-      color: lighten($color-black, 30%);
+      text-shadow: 1px 1px 1px $color-black;
+      color: $color-yellow;
       background-color: lighten($color-green, 5%);
     }
   }

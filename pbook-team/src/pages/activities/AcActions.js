@@ -69,7 +69,6 @@ export function getDiscountBooks(acId) {
 // 取得書籍折價
 export const GET_DISCOUNT_AMOUNT_BASIC_NAME = 'DISCOUNT_AMOUNT'
 export function getDiscountAmount(memberLevel, bookSid = []) {
-  console.log('abc', bookSid)
   return {
     types: [
       'DISCOUNT_AMOUNT_REQUEST',

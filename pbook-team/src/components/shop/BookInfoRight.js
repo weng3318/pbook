@@ -20,7 +20,12 @@ const BookInfoRight = props => {
         button: 'OK',
       })
     } else if (index === -1) {
-      props.dispatch(addToCartFetch(sid))
+      props.dispatch(
+        addToCartFetch(
+          sid,
+          parseInt((props.data.fixed_price * (100 - discount)) / 100)
+        )
+      )
       localStorage.setItem(sid, 1)
       if (!localStorage.getItem('totalAmount')) {
         localStorage.setItem('totalAmount', 1)
@@ -39,12 +44,31 @@ const BookInfoRight = props => {
       })
     }
   }
+  let discount
+  for (let i = 0; i < 8; i++) {
+    if (
+      (props.discountData &&
+        props.discountData[i] &&
+        props.discountData[i].sid) === props.data.sid
+    ) {
+      discount =
+        props.discountData &&
+        props.discountData[i] &&
+        props.discountData[i].discount
+    }
+  }
+  if (!discount) return 'loading'
   return (
     <>
       <div className="d-flex flex-column book_sell">
         <span className="font-big pb-2">
-          優惠價 : <span className="price">79</span> 折{' '}
-          <span className="price">{props.data.fixed_price}</span> 元
+          優惠價 : <span className="price">{String(100 - discount)}</span> 折{' '}
+          <span className="price">
+            {String(
+              parseInt((props.data.fixed_price * (100 - discount)) / 100)
+            )}
+          </span>{' '}
+          元
         </span>
         <button className="addCart mb-2" onClick={() => addCart()}>
           放入購物車

@@ -15,76 +15,60 @@ class ReviewerBooks extends React.Component {
       csData: [],
       opened: null,
       openedSid: null,
+      hotNum: 3,
     }
-    this.handleOpened.bind(this)
   }
 
   componentDidMount() {
-    let newbrData
-    let newcsData
-    
-    axios
-      .get('http://localhost:5555/reviewer/brReviewerList')
-      .then(res => {
-        newbrData = res.data.rows
-        return axios.get('http://localhost:5555/reviewer/brBookcase')
-      })
-      .then(res => {
-        newcsData = res.data.rows
-        this.setState({
-          brData: newbrData,
-          csData: newcsData,
-        })
-      })
-      .catch(function(error) {
-        console.log('前端沒有取得資料', error)
-      })
-
-    // window.addEventListener('scroll', this.handleScroll.bind(this)) //監聽滾動
+    this.fetchData();
+    window.addEventListener('scroll', (e) => this.handleScroll(e)) //監聽滾動
     // window.addEventListener('resize', this.handleResize.bind(this)) //監聽視窗
   }
-  //移除監聽，防組件錯亂
-  // componentWillUnmount() {
-  //   window.removeEventListener('scroll', this.handleScroll.bind(this)) 
-  //   window.removeEventListener('resize', this.handleResize.bind(this))
-  // }
+
+  fetchData = () => {
+    this.fetchBrData();
+    this.fetchCsData();
+  }
+
+  fetchBrData = () => {
+    axios.get('http://localhost:5555/reviewer/brReviewerList')
+    .then(({ data: { rows: brData }}) => {
+      this.setState({ brData })
+    })
+  }
+
+  fetchCsData = () => {
+    axios.get('http://localhost:5555/reviewer/brBookcase')
+    .then(({ data: { rows: csData }}) => {
+      this.setState({ csData })
+    })
+  }
+  
+
+  // 移除監聽，防組件錯亂
+  componentWillUnmount() {
+    window.removeEventListener('scroll', (e) => this.handleScroll(e))
+  }
 
   handleScroll = e => {
-    let MaxHeight = e.srcElement.scrollingElement.scrollHeight
-    let FromTop = e.srcElement.scrollingElement.scrollTop
-    // console.log(
-    //   '滾動吧!',
-    //   '距離頂部',FromTop,
-    //   '可滾限度',MaxHeight
-    //   // '左右距離',e.srcElement.scrollingElement.scrollWidth,
-    // )
-    // 頂部高度  e.srcElement.scrollingElement.scrollTop
-    // 文件高度  e.srcElement.scrollingElement.scrollHeight
-  }
-  handleResize = e => {
-    let WinHeight = e.target.innerHeight
-    let WinWidth = e.target.innerWidth
-    // console.log(
-    //   '視窗改變了!',
-    //   '寬度', WinWidth,
-    //   '高度', WinHeight)
+    const maxHeight = e.srcElement.scrollingElement.scrollHeight;
+    const fromTop = e.srcElement.scrollingElement.scrollTop;
+    const { innerHeight } = window;
+    if (innerHeight + fromTop === maxHeight) {
+      this.setState({
+        hotNum:this.state.hotNum + 3
+      })
+    }
   }
 
   // 裝填
   handleOpened = (opened, openedSid) => {
     this.setState({ opened, openedSid })
   }
-  handleNewBook=()=>{
-    
-  }
+  
   render() {
-    // 進去撈 sid#state
     const { opened, openedSid } = this.state
     
-    // console.log('render brData 書評家',this.state.brData);
-    // console.log('render csData 看看書櫃',this.state.csData);
-    
-    // if (!this.state.brData.length) return <></>
     if (this.state.brData.length === 0)
     return (
       <>
@@ -111,18 +95,12 @@ class ReviewerBooks extends React.Component {
           // console.log('來自書評家',reviewerData.name,'的書籍isbn：',bookcaseData)
         }
       }
-      
-      // 熱門書籍數量
-      let hotNum = 5
-      // if(FromTop == MaxHeight-WinHeight){
-        //   hotNum = hotNum*2
-        // }
-        
         return (
+      <div className="br_bg">
       <>
         <BR_Navbar />
         <h1>看看書櫃</h1>
-        <section className="reviewerBooks borderLine">
+        <section className="reviewerBooks">
           {/* 接應id的書評家個人介紹 */}
           <BR_ReviewerList
             number={reviewerData.number}
@@ -143,10 +121,10 @@ class ReviewerBooks extends React.Component {
               <div className="HotBookBoxAll_Bookcase">
                 {this.state.csData
                   .filter(({ number }) => reviewerData.number === number)
-                  .filter((key, index) => index < hotNum)
+                  .filter((key, index) => index < 5)
                   .map(({ pic, sid, name, likebook, readbook }) => (
                     <BR_BookcaseHot_books
-                      onHandleOpen={this.handleOpened} //進去勒索
+                      onHandleOpen={this.handleOpened}
                       opened={opened}
                       key={sid}
                       sid={sid}
@@ -159,14 +137,15 @@ class ReviewerBooks extends React.Component {
               </div>
             </div>
           </div>
-
           {opened === 'blog' && <ReviewerBlog sid={openedSid} opened={opened} onHandleOpen={this.handleOpened}/>}
 
           {/* 針對書評家 - 書櫃列表 */}
           {this.state.csData
             .filter(({ number }) => number === reviewerData.number)
-            .map(({ title, vb_book_sid,name, pic, author, sid, introduction, blog, tube, likebook, readbook, isbn }) => (
+            .filter((key, index) => index < this.state.hotNum)
+            .map(({ number, title, vb_book_sid,name, pic, author, sid, introduction, blog, tube, likebook, readbook, isbn }) => (
               <BR_BookcaseList
+                number={number}
                 key={sid}
                 id={sid} // 點擊熱門書名傳送至對應#id
                 isbn={isbn}
@@ -182,22 +161,12 @@ class ReviewerBooks extends React.Component {
                 tube={tube}
                 likebook={likebook}
                 readbook={readbook}
+                refreshBlog={this.fetchCsData}
               ></BR_BookcaseList>
             ))}
-
-          {/* try */}
-          {/* {this.state.brData.filter(({br_name}) => br_name ===
-           this.state.csData.filter(({number}) => number === reviewerData.number).map(({br_name})=> br_name))
-           .map(({sid, br_name, pic, author, introduction })=>((
-            <BR_BookcaseList
-            br_name={br_name}
-            key={sid}
-            sid={sid}
-            ></BR_BookcaseList>
-          )))} */}
         </section>
-     
       </>
+      </div>
     )
   }
 }

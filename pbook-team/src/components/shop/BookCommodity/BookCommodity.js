@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Container, Row, Col } from 'react-bootstrap'
-import { bookInfoFetch, cartFetch } from '../ShopActions'
+import { bookInfoFetch, cartFetch, reviewsFetch } from '../ShopActions'
 import Breadcrumb from './Breadcrumb'
 import BookDetail from './BookDetail'
 import BookPic from './BookPic'
@@ -12,15 +12,19 @@ import './BookCommodity.scss'
 
 const BookCommodity = props => {
   // let favState = JSON.parse(localStorage.getItem('favState'))
+  let memberLevel = JSON.parse(localStorage.getItem('user')).MR_personLevel
+  if (!memberLevel) memberLevel = 1
   useEffect(() => {
     props.dispatch(bookInfoFetch(props.match.params.sid))
+    props.dispatch(reviewsFetch(props.match.params.sid))
     props.dispatch(cartFetch())
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   let bookInfoPayload = props.bookInfo.payload
   let cartPayload = props.Cart.payload
-  console.log(cartPayload)
+  let reviewsPayload = props.reviews.payload
+  let discountAmount = props.discountAmount[memberLevel]
   return (
     <>
       <Container className="px-0 detail_wrapper" fluid={true}>
@@ -28,12 +32,16 @@ const BookCommodity = props => {
         <Container className="mt-5">
           <Row>
             <BookPic bookInfoPayload={bookInfoPayload}></BookPic>
-            <BookDetail bookInfoPayload={bookInfoPayload}></BookDetail>
+            <BookDetail
+              bookInfoPayload={bookInfoPayload}
+              discountAmount={discountAmount}
+            ></BookDetail>
             <BookBuy
               bookInfoPayload={bookInfoPayload}
               cartPayload={cartPayload}
               history={props.history}
               match={props.match}
+              discountAmount={discountAmount}
             ></BookBuy>
           </Row>
         </Container>
@@ -41,7 +49,7 @@ const BookCommodity = props => {
           <Row>
             <Col md={12}>
               <BookProduct bookInfoPayload={bookInfoPayload}></BookProduct>
-              <BookComment></BookComment>
+              <BookComment reviewsPayload={reviewsPayload}></BookComment>
             </Col>
           </Row>
         </Container>
@@ -52,6 +60,8 @@ const BookCommodity = props => {
 
 const mapStateToProps = state => ({
   bookInfo: state.bookInfo,
+  reviews: state.reviews,
   Cart: state.Cart,
+  discountAmount: state.discountAmount,
 })
 export default connect(mapStateToProps)(BookCommodity)
