@@ -30,7 +30,6 @@
         max-width: 80%;
         max-height: 726px;
       }
-      
     }
     button:focus {
       outline: none;
@@ -168,6 +167,15 @@
         width: 90px;
         background-color: $black-tea;
         color: #ffffff;
+      }
+    }
+    .video-frame {
+      display: flex;
+      margin: 16px;
+      .video-iframe {
+        flex: '1 1 0';
+        width: 100%;
+        height: auto;
       }
     }
   }

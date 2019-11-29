@@ -39,6 +39,7 @@ const ArticleContent = props => {
   const [like, setLike] = useState(0)
   const [bookmark, setBookmark] = useState(false)
   const [favorite, setFavorite] = useState(false)
+  const [videoCount, setVideoCount] = useState(false)
 
   useEffect(() => {
     let mark = 0
@@ -72,6 +73,16 @@ const ArticleContent = props => {
       handleContentUpdated()
     }
   }, [data])
+  useEffect(() => {
+    if (videoCount) {
+      videoCount.forEach(value => {
+        console.log(value)
+        let aaa = document.querySelector(`#video${value}`)
+        let content = JSON.parse(textareaValue[value])
+        aaa.innerHTML = content
+      })
+    }
+  }, [textareaValue])
 
   const handleContentUpdated = () => {
     fetch(
@@ -84,6 +95,7 @@ const ArticleContent = props => {
         return res.json()
       })
       .then(result => {
+        let video = []
         let imgCount = 0
         let textAreaCount = 0
         let type = data.article.fm_demoImage.split('.')[1]
@@ -98,6 +110,14 @@ const ArticleContent = props => {
               )
               textAreaCount++
               return textareaElement
+            case 'div':
+              let uni2 = `video${textAreaCount}`
+              let videoElement = (
+                <div id={uni2} className="video-frame" key={uni2}></div>
+              )
+              video.push(textAreaCount)
+              textAreaCount++
+              return videoElement
             case 'img':
               let uni1 = `img${imgCount}`
               let imgElement = (
@@ -115,8 +135,9 @@ const ArticleContent = props => {
               return 'nothing'
           }
         })
-        setTextareaValue(result.textareaValue)
+        setVideoCount(video)
         setAddElement([...body])
+        setTextareaValue(result.textareaValue)
       })
   }
   //追蹤作家

@@ -4,6 +4,7 @@ import { BrowserRouter as Route, Link } from 'react-router-dom'
 import CardS1 from '../../components/forum/CardS1/CardS1'
 import Listitem from '../../components/forum/ListItem/ListItem'
 import HotArticle from '../../components/forum/HotArticle/HotArticle'
+
 import './scss/Forum.scss'
 
 class Forum extends React.Component {

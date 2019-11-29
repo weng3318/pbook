@@ -365,15 +365,19 @@ const PostAritcle = props => {
     },
     buttonsStyling: false,
   })
-
+  //處理文章內容 section
   const handleSection = () => {
     let content = document.querySelector('#ddd')
     let arr = [...content.childNodes]
     let textContent = arr
       .filter(item => {
-        return item.nodeName === 'TEXTAREA'
+        return item.nodeName === 'TEXTAREA' || item.className === 'video-frame'
       })
-      .map(item => item.value)
+      .map(item => {
+        if (item.nodeName === 'TEXTAREA') return item.value
+        if (item.className === 'video-frame')
+          return JSON.stringify(item.innerHTML)
+      })
     setTextareaValue(textContent)
 
     let arr1 = arr.filter(item => {
@@ -381,7 +385,7 @@ const PostAritcle = props => {
     })
     let nodeNameSelect = arr1.map(item => {
       if (item.nodeName == 'DIV') {
-        if (item.className === 'video-frame') return ''
+        if (item.className === 'video-frame') return 'div'
         if (item.firstChild.nodeName === 'DIV') {
           if (item.firstChild.firstChild.nodeName === 'IMG') {
             return 'img'
@@ -531,9 +535,6 @@ const ImgDemo = props => {
       ></img>
     </div>
   )
-}
-const Video = props => {
-  return <div className="video-frame">{props.vedio}</div>
 }
 // 綁定props.todos <=> store.todos
 const mapStateToProps = store => ({

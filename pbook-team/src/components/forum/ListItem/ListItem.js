@@ -76,7 +76,7 @@ class Listitem extends React.Component {
     if (!this.props.empty) {
       return (
         <>
-          <div className="forum-list-item dis-flex bounceOutUp">
+          <div className="forum-list-item dis-flex">
             <div className="item-left">
               <div className="list-item-category">{article.categoriesName}</div>
               <Link to={`/forum/article/${article.fm_articleId}`}>
