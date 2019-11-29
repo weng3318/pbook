@@ -11,7 +11,7 @@
     flex-wrap: wrap;
 
     .HotArticle-title {
-      font-size: 1.6rem;
+      @extend %title-module;
       &:before {
         content: '';
         font-size: 1.1rem;

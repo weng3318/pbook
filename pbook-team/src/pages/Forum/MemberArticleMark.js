@@ -31,6 +31,10 @@ function MemberArticleMark() {
   const [rows, setRows] = useState([])
   let memberId = JSON.parse(localStorage.getItem('user')).MR_number
   useEffect(() => {
+    getdata()
+  }, [])
+
+  const getdata = () => {
     fetch(`http://localhost:5555/forum/manageArticleMark/list/${memberId}`)
       .then(response => {
         return response.json()
@@ -39,8 +43,7 @@ function MemberArticleMark() {
         console.log(result)
         setRows(result)
       })
-  }, [])
-
+  }
   const handleDelete = (id, title, memberId) => {
     Swal.fire({
       title: '取消收藏書籤?',
@@ -61,6 +64,7 @@ function MemberArticleMark() {
           })
           .then(result => {
             if (result.affectedRows === 1) {
+              getdata()
               Swal.fire('書籤已移除', '', 'success')
             } else {
               Swal.fire('書籤未移除', '請與客服人員聯絡', 'error')
@@ -72,7 +76,14 @@ function MemberArticleMark() {
 
   let columnCount = 1
   if (rows.length === 0) {
-    return <div>123</div>
+    return (
+      <div className="articleListControle">
+        <div className="articleList">
+          <span className="page-title">已收藏書籤</span>
+          <div className="noPost">沒有收藏書籤....快到討論區找點靈感吧!!</div>
+        </div>
+      </div>
+    )
   } else {
     return (
       <>
