@@ -8,27 +8,35 @@ class BR_BookcaseList extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      isLogin: false,
       opened: null,
       like: this.props.likebook,
       read: this.props.readbook,
     }
   }
 
-//   componentDidMount() {}
-//   componentWillReceiveProps(nextProps) {}
-//   shouldComponentUpdate() {
-//     return true
-//   }
-//   componentWillUpdate() {}
-//   //   render()
-//   componentDidUpdate(prevProps, prevState) {
-//     console.log('prevState.like ', prevState.like)
-//     console.log('this.state.like ', this.state.like)
-//     if (prevState.like !== this.state.like) {
-//       //
-//     }
-//   }
-// componentWillUnmount() {}
+  componentDidMount() {
+    if (JSON.parse(localStorage.getItem('user')) !== null) {
+      this.setState({
+        isLogin: true,
+      })
+    }
+  }
+  //   componentDidMount() {}
+  //   componentWillReceiveProps(nextProps) {}
+  //   shouldComponentUpdate() {
+  //     return true
+  //   }
+  //   componentWillUpdate() {}
+  //   //   render()
+  //   componentDidUpdate(prevProps, prevState) {
+  //     console.log('prevState.like ', prevState.like)
+  //     console.log('this.state.like ', this.state.like)
+  //     if (prevState.like !== this.state.like) {
+  //       //
+  //     }
+  //   }
+  // componentWillUnmount() {}
 
   // 讚數
   like = value => {
@@ -44,6 +52,7 @@ class BR_BookcaseList extends React.Component {
     })
   }
   render() {
+    console.log(this.props)
     const { opened } = this.state
     const { sid, name, number, blog, vb_book_sid, br_name } = this.props
 
@@ -83,7 +92,7 @@ class BR_BookcaseList extends React.Component {
             <div className="bookName_Bookcase">作者：{this.props.author}</div>
           </div>
 
-          <div className="brInfoBox_Bookcase borderLineUpDown">
+          <div className="brInfoBox_Bookcase">
             {/* <h4 className="h4_br">書籍簡介</h4> */}
             <div className="blurBar"></div>
             <div className="brInfoTextBox_Bookcase">
@@ -116,22 +125,32 @@ class BR_BookcaseList extends React.Component {
                 src={require('../reviewer_page/images/icon_Store.png')}
               />
             </Link>
-
-            {/* 編輯模式按鈕 */}
-            <div className="Animate_Edit_Box">
-              <div
-                className="Animate_Edit_btn"
-                onClick={() =>
-                  this.handleOpened(opened === 'edit' ? null : 'edit')
-                }
-              >
-                <img
-                  className="icon_Blog_Edit"
-                  src={require('../reviewer_page/images/icon_Blog_Edit.png')}
-                />
-                <h5 className="text_Blog_Edit">編輯模式</h5>
-              </div>
-            </div>
+            {/* {this.state.isLogin && (JSON.parse(localStorage.getItem('user')).MR_number !==
+            this.props.number)  */}
+            {!this.state.isLogin ? (
+              ''
+            ) : JSON.parse(localStorage.getItem('user')).MR_number ==
+              this.props.number ? (
+              <>
+                {/* 編輯模式按鈕 */}
+                <div className="Animate_Edit_Box">
+                  <div
+                    className="Animate_Edit_btn"
+                    onClick={() =>
+                      this.handleOpened(opened === 'edit' ? null : 'edit')
+                    }
+                  >
+                    <img
+                      className="icon_Blog_Edit"
+                      src={require('../reviewer_page/images/icon_Blog_Edit.png')}
+                    />
+                    <h5 className="text_Blog_Edit">編輯模式</h5>
+                  </div>
+                </div>
+              </>
+            ) : (
+              ''
+            )}
 
             {/* 收藏書籍 (圖示) */}
             <div className="brIconBox_Bookcase">
@@ -196,7 +215,7 @@ class BR_BookcaseList extends React.Component {
             refreshBlog={this.props.refreshBlog}
           />
         )}
-        {/* <div style={{height:'30px'}}></div> */}
+        <div style={{ height: '30px' }}></div>
         {/* </ScrollToTop> */}
       </>
     )

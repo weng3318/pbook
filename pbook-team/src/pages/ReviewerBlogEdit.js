@@ -14,6 +14,7 @@ export class ReviewerBlogEdit extends Component {
       blogData: this.props.blog,
     }
   }
+  
   componentDidMount() {
     let newcsData
     axios
@@ -25,42 +26,21 @@ export class ReviewerBlogEdit extends Component {
       .then(res => {
         this.setState({ csData: newcsData, bkData: res.data.rows })
       })
-      .catch(function(error) {
+      .catch((error)=> {
         console.log('前端沒有取得資料', error)
       })
   }
-
+  
   // 編輯用API-------------------------------------------------------------------------
   handleBlogEdit = () => {
-    fetch('http://localhost:5555/reviewer/brBlogEdit', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        sid: this.props.sid,
-        blog: this.state.blogData,
-      }),
+    axios.post('http://localhost:5555/reviewer/brBlogEdit',{
+      sid: this.props.sid,
+      blog: this.state.blogData,
     })
-      .then(response => {
-        if (!response) throw new Error(response.statusText)
-        return response.json()
-      })
       .then(data => {
         this.props.refreshBlog()
         swal('編輯完成', '', 'success')
       })
-    // .then(data => {
-    //   console.log('Fetch進來的資料', JSON.stringify(data))
-    //   let status = data.status
-    //   let message = data.message
-    //   if (status === '修改成功') {
-    //     this.success(status, message)
-    //   }
-    //   if (status === '修改失敗') {
-    //     this.fail(status, message)
-    //   }
-    // })
   }
 
   render() {

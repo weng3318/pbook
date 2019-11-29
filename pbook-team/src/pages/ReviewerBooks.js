@@ -100,7 +100,7 @@ class ReviewerBooks extends React.Component {
       <>
         <BR_Navbar />
         <h1>看看書櫃</h1>
-        <section className="reviewerBooks borderLine">
+        <section className="reviewerBooks">
           {/* 接應id的書評家個人介紹 */}
           <BR_ReviewerList
             number={reviewerData.number}
@@ -143,8 +143,9 @@ class ReviewerBooks extends React.Component {
           {this.state.csData
             .filter(({ number }) => number === reviewerData.number)
             .filter((key, index) => index < this.state.hotNum)
-            .map(({ title, vb_book_sid,name, pic, author, sid, introduction, blog, tube, likebook, readbook, isbn }) => (
+            .map(({ number, title, vb_book_sid,name, pic, author, sid, introduction, blog, tube, likebook, readbook, isbn }) => (
               <BR_BookcaseList
+                number={number}
                 key={sid}
                 id={sid} // 點擊熱門書名傳送至對應#id
                 isbn={isbn}

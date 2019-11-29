@@ -65,7 +65,7 @@ export class ReviewerBlog extends React.Component {
       <section className="reviewerBlog ">
       {/* 部落格內文 */}
           <BR_BlogList
-          onHandleOpen={this.props.onHandleOpen} //進去勒索
+          onHandleOpen={this.props.onHandleOpen}
           opened={this.props.opened}
           key={BlogData.sid}
           sid={BlogData.sid}
