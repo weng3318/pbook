@@ -8,30 +8,6 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 //action
 import { letMeLogin } from './fmAction'
-// 2 3 1 7 10 11 21 13 4
-// const vb_categories = {
-//   1: '文學小說',
-//   2: '商業理財',
-//   3: '藝術設計',
-//   4: '人文史地',
-//   5: '社會科學',
-//   6: '自然科普',
-//   7: '心理勵志',
-//   8: '醫療保健',
-//   9: '飲食',
-//   10: '生活風格',
-//   11: '美食旅遊',
-//   12: '宗教命理',
-//   13: '親子教養',
-//   14: ' 童書/青少年文學',
-//   15: '輕小說',
-//   16: '漫畫',
-//   17: '語言學習',
-//   18: '考試用書',
-//   19: '電腦資訊',
-//   20: '專業/教科書/政府出版品',
-//   21: '數位科技',
-// }
 
 class TopicPage extends React.Component {
   constructor(props) {

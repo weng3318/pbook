@@ -1,5 +1,6 @@
 // Action Creators
 
+//---- postArticle --------
 export const AppendImgElement = (addElement, uploading) => ({
   type: 'APPEND_IMG_ELEMENT',
   content: addElement,
@@ -9,14 +10,18 @@ export const AppendImgInput = addElement => ({
   type: 'APPEND_IMGINPUT',
   content: addElement,
 })
-export const AppendTextarea = addElement => ({
-  type: 'APPEND_TEXTAREA',
-  content: addElement,
-})
 export const removeImg = removeNO => ({
   type: 'REMOVE_IMG',
   removeNO: removeNO,
 })
+export const AppendTextarea = addElement => ({
+  type: 'APPEND_TEXTAREA',
+  content: addElement,
+})
+export const AppendVedio = () => ({
+  type: 'APPEND_VEDIO',
+})
+
 export const clearPostAritcleState = () => ({
   type: 'CLEAR_POST_DATA',
 })
@@ -27,6 +32,7 @@ export const readMoreResponse = number => ({
   type: 'MORE_RESPONSES',
   number: number,
 })
+//---- postArticle End--------
 
 //給UserDetailsFetch用=======
 const fmUserRequest = () => {

@@ -9,6 +9,7 @@ import {
   AppendImgElement,
   clearPostAritcleState,
   removeImg,
+  AppendVedio,
 } from './fmAction'
 //UI componet
 import CustomizedDialogs from '../../components/Material-UI/Dialog'
@@ -36,6 +37,7 @@ import CloseIcon from '@material-ui/icons/Close'
 //textarea
 import TextareaAutosize from 'react-textarea-autosize'
 import Swal from 'sweetalert2'
+import { func } from 'prop-types'
 
 const useStyles = makeStyles(theme => ({
   formControl: {
@@ -97,17 +99,21 @@ const PostAritcle = props => {
     handleInsertTextarea()
   }, [])
 
+  //上傳input圖片點擊
   useEffect(() => {
     if (props.imgCount !== 0) {
       document.querySelector(`#file${props.imgCount - 1}`).click()
     }
   }, [props.imgCount])
+
+  //標題及子分類檢查
   useEffect(() => {
     if (titleCheck !== 1) {
       handleSection()
     }
   }, [titleCheck])
 
+  //確認發文
   useEffect(() => {
     if (canIPost) {
       confirmPost()
@@ -115,17 +121,13 @@ const PostAritcle = props => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [canIPost])
 
-  useEffect(() => {
-    console.log(props.addElement)
-  }, [props.addElement])
-
+  //step3 : 上傳發文內容
   const confirmPost = () => {
     let formData = new FormData()
     for (let i = 0; i < mainImg; i++) {
-      let file = document.querySelector(`#file${i}`).files[0]
-      console.log(file)
+      let file = document.querySelector(`#file${i}`)
       if (file) {
-      formData.append('imgFile[]', file)
+        formData.append('imgFile[]', file.files[0])
       }
     }
     let subcate1 = document.querySelector('#grouped-select').value
@@ -173,6 +175,8 @@ const PostAritcle = props => {
         )
       })
   }
+
+  //插入圖片 STEP1:插入隱藏input
   const handleInsertImg = e => {
     let element = (
       <input
@@ -181,11 +185,13 @@ const PostAritcle = props => {
         onChange={handleUpload}
         accept="image/*"
         style={{ display: 'none' }}
+        key={`file${props.imgCount}`}
       ></input>
     )
     props.dispatch(AppendImgInput(element))
   }
 
+  //插入圖片 STEP2:處理上傳圖片
   const handleUpload = e => {
     let inputId = `#file${props.imgCount}`
     let file = document.querySelector(inputId).files[0]
@@ -193,11 +199,19 @@ const PostAritcle = props => {
     reader.readAsDataURL(file)
     reader.addEventListener('load', function(event) {
       let element = (
-        <div className="insertImg " id={`img${props.imgCount}`}>
+        <div
+          className="insertImg "
+          id={`img${props.imgCount}`}
+          key={`img${props.imgCount}`}
+        >
           <ImgDemo imgData={event.target.result} imgCount={props.imgCount} />
           <div className="imgCancel ">
             <Fab size="small" aria-label="add" className={classes.margin}>
-              <CloseIcon onClick={e => cancelImg(e, props.imgCount)} />
+              <CloseIcon
+                onClick={e => {
+                  cancelImg(e, props.imgCount)
+                }}
+              />
             </Fab>
           </div>
         </div>
@@ -207,18 +221,45 @@ const PostAritcle = props => {
     })
   }
 
+  //取消上傳圖片
   const cancelImg = (event, removeNo) => {
-    // event.persist()
-    // console.log(props.addElement)
+    event.persist()
     // let element = props.addElement.filter(item => {
     //   return item.props.id !== `img${removeNo}`
     // })
-    // let removeIuput = document.querySelector(`file${removeNo}`)
-    // removeIuput.parentNode.removeChild(removeIuput)
-    console.log(removeNo)
     props.dispatch(removeImg(removeNo))
   }
-  // 檢查標題及子類
+  //插入新段落
+  const handleInsertTextarea = e => {
+    let element = (
+      <TextareaAutosize
+        key={textareaCount}
+        id={`textarea${textareaCount + 1}`}
+        placeholder="..."
+      ></TextareaAutosize>
+    )
+    setTextareaCount(textareaCount + 1)
+    props.dispatch(AppendTextarea(element))
+  }
+  //發表文章 step1:發文確認
+  const confirmForPost = () => {
+    swalWithBootstrapButtons
+      .fire({
+        title: '確定發文?',
+        text: '',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: '是&nbsp;的',
+        cancelButtonText: '取&nbsp;消',
+        reverseButtons: true,
+      })
+      .then(result => {
+        if (result.value) {
+          handleTitleCheck()
+        }
+      })
+  }
+  //發表文章 step2: 檢查標題及子類
   const handleTitleCheck = () => {
     let allText1 = document.querySelectorAll('textarea')
     let allText = [...allText1]
@@ -246,6 +287,7 @@ const PostAritcle = props => {
       }
     }
   }
+  //側邊條FIXED事件
   const handelAsideFixed = () => {
     var sidePanel = document.querySelector('#side-panel')
     window.addEventListener('scroll', () => {
@@ -260,6 +302,7 @@ const PostAritcle = props => {
       }
     })
   }
+  //fetch子分類名稱
   const handleSubCate = () => {
     fetch(`http://localhost:5555/forum/cate/${category}`)
       .then(response => {
@@ -270,18 +313,30 @@ const PostAritcle = props => {
         setSubcate(result.subcategory)
       })
   }
-  const handleInsertTextarea = e => {
-    let element = (
-      <TextareaAutosize
-        key={textareaCount}
-        id={`textarea${textareaCount + 1}`}
-        placeholder="..."
-      ></TextareaAutosize>
-    )
-    setTextareaCount(textareaCount + 1)
-    props.dispatch(AppendTextarea(element))
+
+  //插入影片
+  const InsertVedio = () => {
+    props.dispatch(AppendVedio())
+    Swal.fire({
+      title: '請輸入影片崁入碼',
+      input: 'text',
+      inputValue: '',
+      showCancelButton: true,
+      inputValidator: value => {
+        if (!value) {
+          return '請輸入影片崁入碼'
+        } else {
+          document.querySelector('.video-frame').innerHTML = value
+        }
+      },
+    })
   }
 
+  // if (ipAddress) {
+  //   Swal.fire(`Your IP address is ${ipAddress}`)
+  // }
+
+  //取消發文
   const handleCancelPost = e => {
     swalWithBootstrapButtons
       .fire({
@@ -302,31 +357,15 @@ const PostAritcle = props => {
     // props.history.push('/forum')
   }
 
+  //sweetAlert
   const swalWithBootstrapButtons = Swal.mixin({
     customClass: {
-      confirmButton: 'btn btn-success',
+      confirmButton: 'btn btn-success ml-4',
       cancelButton: 'btn btn-danger',
     },
     buttonsStyling: false,
   })
 
-  const confirmForPost = () => {
-    swalWithBootstrapButtons
-      .fire({
-        title: '確定發文?',
-        text: '',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: '是的',
-        cancelButtonText: '取消',
-        reverseButtons: true,
-      })
-      .then(result => {
-        if (result.value) {
-          handleTitleCheck()
-        }
-      })
-  }
   const handleSection = () => {
     let content = document.querySelector('#ddd')
     let arr = [...content.childNodes]
@@ -337,12 +376,18 @@ const PostAritcle = props => {
       .map(item => item.value)
     setTextareaValue(textContent)
 
-    let nodeNameSelect = arr.map(item => {
+    let arr1 = arr.filter(item => {
+      return item.nodeName !== 'INPUT'
+    })
+    let nodeNameSelect = arr1.map(item => {
       if (item.nodeName == 'DIV') {
-        if (item.firstChild.nodeName === 'IMG') {
-          return 'img'
-        } else {
-          return ''
+        if (item.className === 'video-frame') return ''
+        if (item.firstChild.nodeName === 'DIV') {
+          if (item.firstChild.firstChild.nodeName === 'IMG') {
+            return 'img'
+          } else {
+            return ''
+          }
         }
       } else if (item.nodeName === 'TEXTAREA') {
         if (item.value !== '') {
@@ -355,7 +400,7 @@ const PostAritcle = props => {
     let result = nodeNameSelect.filter(item => item !== '')
     // console.log(nodeNameSelect)
     setSectionElement(result)
-    setCanIPost(1)
+    setCanIPost(canIPost + 1)
   }
   return (
     <div className="post-article">
@@ -383,7 +428,7 @@ const PostAritcle = props => {
                 </ListItemIcon>
                 <ListItemText primary="Unsplash圖片" />
               </ListItem>
-              <ListItem button onClick={confirmPost}>
+              <ListItem button onClick={InsertVedio}>
                 <ListItemIcon>
                   <VideoLibraryIcon />
                 </ListItemIcon>
@@ -479,12 +524,16 @@ const ImgDemo = props => {
   return (
     <div key={props.imgCount}>
       <img
+        alt=""
         className="img-demo"
         src={props.imgData}
         id={`demoImg${props.imgCount - 1}`}
       ></img>
     </div>
   )
+}
+const Video = props => {
+  return <div className="video-frame">{props.vedio}</div>
 }
 // 綁定props.todos <=> store.todos
 const mapStateToProps = store => ({

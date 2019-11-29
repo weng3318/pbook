@@ -154,19 +154,21 @@ router
     let articleId = req.params.articleId;
     let fm_memberId = req.params.userId;
     let fm_articleId = null;
-    let fm_responseId = null;
+    let fm_responseSid = null;
 
     if (articleId.indexOf("MR") > 0) {
       fm_articleId = articleId;
     } else {
       fm_responseId = articleId;
     }
-    let sql = `INSERT INTO fm_bookmark(fm_bookmarkSid, fm_articleId, fm_responseId, fm_memberId) VALUES (NULL,?,?,?)`;
+    console.log(fm_articleId, fm_memberId);
+    let sql = `INSERT INTO fm_bookmark(fm_bookmarkSid, fm_articleId, fm_responseSid, fm_memberId) VALUES (NULL,?,?,?)`;
 
     db.query(
       sql,
-      [fm_articleId, fm_responseId, fm_memberId],
+      [fm_articleId, fm_responseSid, fm_memberId],
       (error, results, field) => {
+        if (error) throw error;
         res.json(results);
       }
     );
@@ -398,6 +400,7 @@ router
     console.log("post article");
     let resData = {};
     let data = req.body;
+    console.log(req.body);
     let articleId = +new Date() + data.MR_number;
     let filename = "";
     let mainImg = "";
@@ -474,9 +477,9 @@ router
         demoImage,
         articleId + ".json",
         memberId,
-        1,
+        0,
         Math.floor(Math.random() * 60 + 1),
-        Math.floor(Math.random() * 1380 + 1),
+        Math.floor(Math.random() * 1000 + 1),
         time
       ],
       (error, results, fields) => {

@@ -20,11 +20,16 @@ function postArticle(state = postArticleState, action) {
         addElement: [...state.addElement, action.content],
         imgData: [...state.imgData, action.imgData],
       }
-
     case 'APPEND_TEXTAREA':
       return {
         ...state,
         addElement: [...state.addElement, action.content],
+      }
+    case 'APPEND_VEDIO':
+      let element = <div className="video-frame"></div>
+      return {
+        ...state,
+        addElement: [...state.addElement, element],
       }
     case 'REMOVE_IMG':
       let newContent = state.addElement.filter(item => {
@@ -35,13 +40,12 @@ function postArticle(state = postArticleState, action) {
             return item
           }
         }
-        console.log(item.props.id, imgId, fileId)
       })
-      console.log('re', newContent)
       return {
         ...state,
         addElement: [...newContent],
       }
+
     case 'CLEAR_POST_DATA':
       return {
         ...postArticleState,

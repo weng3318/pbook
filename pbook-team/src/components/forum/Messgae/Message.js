@@ -142,6 +142,7 @@ const MessageChild = props => {
   }, [])
 
   const handleResponseLike = sid => {
+    let node = document.querySelector('.thumb-sm')
     fetch(`http://localhost:5555/forum/article/responseLike/${sid}/${like}`, {
       method: 'GET',
     })
@@ -150,6 +151,11 @@ const MessageChild = props => {
       })
       .then(result => {
         if (result.affectedRows === 1) {
+          node.classList.add('animated', 'bounceIn')
+          node.addEventListener('animationend', function() {
+            node.classList.remove('animated', 'bounceIn')
+            node.removeEventListener('animationend', () => {})
+          })
           setLike(like + 1)
         }
       })

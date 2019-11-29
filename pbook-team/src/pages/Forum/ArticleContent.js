@@ -2,6 +2,7 @@ import React, { useState, useEffect, createRef } from 'react'
 import { BrowserRouter as Link, useParams } from 'react-router-dom'
 import { connect } from 'react-redux'
 import './scss/ArticleContent.scss'
+import './scss/animate.css'
 //action
 import { letMeLogin, readMoreResponse } from './fmAction'
 //Material Icons
@@ -118,6 +119,7 @@ const ArticleContent = props => {
         setAddElement([...body])
       })
   }
+  //追蹤作家
   const handleFollow = () => {
     if (favorite) {
       fetch(
@@ -135,6 +137,7 @@ const ArticleContent = props => {
       })
     }
   }
+  //書籤click
   const handleBookmarkClick = () => {
     if (bookmark) {
       fetch(
@@ -152,13 +155,19 @@ const ArticleContent = props => {
       })
     }
   }
+  //喜歡文章
   const handleClickArticleLike = () => {
+    let node = document.querySelector('.thumb')
     fetch(`http://localhost:5555/forum/article/like/${articleId}/${like}`)
       .then(res => {
         return res.json()
       })
       .then(result => {
-        document.querySelector('.thumb').classList.add('active')
+        node.classList.add('animated', 'bounceIn')
+        node.addEventListener('animationend', function() {
+          node.classList.remove('animated', 'bounceIn')
+          node.removeEventListener('animationend', () => {})
+        })
         setLike(like + 1)
       })
   }
