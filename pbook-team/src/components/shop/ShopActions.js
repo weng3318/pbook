@@ -422,6 +422,39 @@ export const addOrderFetch = (
   }
 }
 //------------------------
+//-------REVIEWS--------
+export const REVIEWS_RECEIVE = 'REVIEWS_RECEIVE'
+export const REVIEWS_REQUEST = 'REVIEWS_REQUEST'
+function rvReceive(sid, json) {
+  return {
+    type: REVIEWS_RECEIVE,
+    sid,
+    payload: json,
+    receivedAt: Date.now(),
+  }
+}
+function rvRequest(sid) {
+  return {
+    type: REVIEWS_REQUEST,
+    sid,
+  }
+}
+export const reviewsFetch = sid => async dispatch => {
+  dispatch(rvRequest(sid))
+  try {
+    let response = await fetch('http://localhost:5555/books/reviews/' + sid, {
+      method: 'GET',
+      headers: new Headers({
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      }),
+    })
+    dispatch(rvReceive(sid, await response.json()))
+  } catch (error) {
+    console.log('error ', error)
+  }
+}
+//------------------------
 export const ADD_CART_TO_ORDER = 'ADD_CART_TO_ORDER'
 export const addCartToOrder = (totalAmount, totalPrice) => {
   return {

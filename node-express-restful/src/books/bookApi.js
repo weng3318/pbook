@@ -460,7 +460,7 @@ router.get("/order/:member?", (req, res) => {
   if (member) {
     member = member.split("'").join("\\'"); // 避免 SQL injection
     where += " AND `od_list`.`memberID` = '" + member + "'";
-    output.memberID = member; //可以在網址看keyword用
+    output.memberID = member;
   }
   let sql = "SELECT COUNT(1) `total` FROM `od_list`" + where;
   // console.log(sql);
@@ -483,7 +483,6 @@ router.get("/order/:member?", (req, res) => {
 });
 
 router.post("/addOrder", (req, res) => {
-  let orderID = req.body.orderID;
   let memberID = req.body.memberID;
   let bookName = req.body.bookName;
   let singlePrice = req.body.singlePrice;
@@ -511,6 +510,33 @@ router.post("/addOrder", (req, res) => {
       res.json({
         message: "新增訂單成功"
       });
+    })
+    .catch(error => {
+      console.log(error);
+    });
+});
+
+router.get("/reviews/:book", (req, res) => {
+  const output = {};
+  let book = req.params.book || "";
+  let where = " WHERE 1";
+  book = book.split("'").join("\\'"); // 避免 SQL injection
+  where += " AND `vb_ratings`.`book` = '" + book + "'";
+  output.bookSid = book;
+
+  let sql = "SELECT COUNT(1) `total` FROM `vb_ratings`" + where;
+  // console.log(sql);
+  db.queryAsync(sql)
+    .then(results => {
+      output.total = results[0]["total"]; //這本書多少人評論
+      return db.queryAsync(
+        "SELECT `vb_ratings`.*,`mr_information`.`MR_pic`,`mr_information`.`MR_nickname`,`mr_level`.`MR_levelName` FROM `vb_ratings` LEFT JOIN `mr_information` ON `vb_ratings`.`member` = `mr_information`.`MR_number` LEFT JOIN `mr_level` ON `mr_information`.`MR_personLevel` = `mr_level`.`MR_personLevel` " +
+          where
+      );
+    })
+    .then(results => {
+      output.rows = results;
+      res.json(output);
     })
     .catch(error => {
       console.log(error);

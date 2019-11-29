@@ -1,23 +1,35 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import { Col } from 'react-bootstrap'
+import swal from '@sweetalert/with-react'
 import { connect } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import {
   delCartFetch,
   addCartToOrder,
-  cartFetch,
   editCartFetch,
 } from '../shop/ShopActions'
 import './Cart.scss'
 
 const StepOne = props => {
-  let [amount, setAmount] = useState(1)
-  let [price, setPrice] = useState(1)
   let bookAmount = []
   let totalCart = props.cartPayload && props.cartPayload.totalCart
+  let totalAmount, totalPrice
+  function nextStep() {
+    if (totalCart === 0) {
+      swal({
+        text: '購物車沒有商品',
+        icon: 'warning',
+        button: 'OK',
+      })
+    } else {
+      props.changeSteps(1)
+    }
+  }
   function changeAmount() {
+    totalAmount = 0
+    totalPrice = 0
     for (let i = 0; i < totalCart; i++) {
       if (
         +document.querySelector(
@@ -36,12 +48,16 @@ const StepOne = props => {
           +bookAmount[i]
         )
       )
-      // props.dispatch(cartFetch())
-      if (props.order === 0) {
-        props.setOrder(1)
-      } else if (props.order === 1) {
-        props.setOrder(0)
-      }
+      totalAmount += +bookAmount[i]
+      totalPrice +=
+        +bookAmount[i] *
+        +(props.cartPayload && props.cartPayload.cart[i].fixed_price)
+    }
+    props.dispatch(addCartToOrder(totalAmount, totalPrice))
+    if (props.order === 0) {
+      props.setOrder(1)
+    } else if (props.order === 1) {
+      props.setOrder(0)
     }
   }
   function delCart(sid, fixed_price) {
@@ -50,8 +66,12 @@ const StepOne = props => {
     let b =
       props.cartToOrder.totalPrice - localStorage.getItem(sid) * fixed_price
     props.dispatch(addCartToOrder(a, b))
+    if (props.order === 0) {
+      props.setOrder(1)
+    } else if (props.order === 1) {
+      props.setOrder(0)
+    }
     localStorage.removeItem(sid)
-    props.dispatch(cartFetch())
   }
   return (
     <>
@@ -141,10 +161,7 @@ const StepOne = props => {
               </span>
             </span>
           </div>
-          <button
-            className="goCheckout ml-auto m-4"
-            onClick={() => props.changeSteps(1)}
-          >
+          <button className="goCheckout ml-auto m-4" onClick={() => nextStep()}>
             前往結帳
           </button>
         </div>
