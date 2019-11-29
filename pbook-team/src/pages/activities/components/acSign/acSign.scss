@@ -34,7 +34,8 @@
       }
       &:active,
       &:focus {
-        box-shadow: none;
+        box-shadow: 0 0 0.2rem $color-green !important;
+        border-color: $color-green !important;
       }
     }
   }

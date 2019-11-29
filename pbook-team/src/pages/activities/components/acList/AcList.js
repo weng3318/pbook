@@ -6,12 +6,12 @@ import { connect } from 'react-redux'
 // import { acFetch } from '../../AcActions'
 import { fetchAcList } from '../../AcActions'
 // import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
-import WOW from 'wow.js'
+import WOW from 'wowjs'
 
 const AcList = props => {
   let acType = props.match.params.acType
   useEffect(() => {
-    new WOW().init()
+    new WOW.WOW().init()
     props.dispatch(fetchAcList(acType))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.match.params.acType])
