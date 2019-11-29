@@ -1,5 +1,8 @@
 @import '../../color.scss';
 .acCalendarContainer {
+  .popover{
+    max-width: 480px;
+  }
   .fc-header-toolbar {
     h2 {
       overflow: hidden;

@@ -75,9 +75,8 @@ class AC {
         }
         cp_sql_string += " 0 )"
         // -------
-        sql += cate_condition.length === 0 ? '' : 'AND ' + cate_sql_string
-        sql += cpId.length.length === 0 ? '' : 'AND ' + cp_sql_string
-        console.log(sql)
+        sql += cate_condition.length === 0 ? '' : ' AND ' + cate_sql_string
+        sql += cpId.length === 0 ? '' : ' AND ' + cp_sql_string
         let books = await sqlQuery(sql)
         return books
     }
@@ -115,7 +114,6 @@ class AC {
         }
         // 取得折價金額
         discount.amount = await AC.getDiscountAmount(acId)
-        console.log(123, acId, discount.amount)
         discount.info = `member: 適用會員。\nbooks: 適用書籍。\namount: 折價 O %。\nmember與books若為空陣列代表全部適用 `
         return discount
     }
