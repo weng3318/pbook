@@ -11,9 +11,10 @@ export class ReviewerBlogEdit extends Component {
     super(props)
     this.state = {
       csData: [],
-      blogData:'',
+      blogData: this.props.blog,
     }
   }
+  
   componentDidMount() {
     let newcsData
     axios
@@ -25,81 +26,26 @@ export class ReviewerBlogEdit extends Component {
       .then(res => {
         this.setState({ csData: newcsData, bkData: res.data.rows })
       })
-      .catch(function(error) {
+      .catch((error)=> {
         console.log('前端沒有取得資料', error)
       })
   }
-
+  
   // 編輯用API-------------------------------------------------------------------------
-  handleBlogEdit = (e) => {
-    e.preventDefault()
-    fetch('http://localhost:5555/reviewer/brBlogEdit', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        sid: this.props.sid,
-        blog: this.state.blogData,
-      }),
+  handleBlogEdit = () => {
+    axios.post('http://localhost:5555/reviewer/brBlogEdit',{
+      sid: this.props.sid,
+      blog: this.state.blogData,
     })
-      .then(response => {
-        if (!response) throw new Error(response.statusText)
-        return response.json()
+      .then(data => {
+        this.props.refreshBlog()
+        swal('編輯完成', '', 'success')
       })
-      .then(data=>{
-        swal('編輯完成','','success').then(value=>{
-          setTimeout(()=>{
-            window.location.reload()
-          },100)
-        })
-      })
-      // .then(data => {
-      //   console.log('Fetch進來的資料', JSON.stringify(data))
-      //   let status = data.status
-      //   let message = data.message
-      //   if (status === '修改成功') {
-      //     this.success(status, message)
-      //   }
-      //   if (status === '修改失敗') {
-      //     this.fail(status, message)
-      //   }
-      // })
   }
-
-  // Sweet動畫---------------------------------------------------------------------
-  success = (status, message) => {
-    swal({
-      title: status,
-      text: message,
-      icon: 'success',
-      button: 'OK',
-    }).then(title => {
-      if (title === '編輯完成') {
-        swal('文章已經發佈了!', {
-          icon: 'success',
-        })
-      }
-      setTimeout(()=>{
-        window.location = '/member'
-      }, 1000)
-    })
-  }
-  fail = (status, message) => {
-    swal({
-      title: status,
-      text: message,
-      icon: 'error',
-      button: '編輯完成',
-    })
-  }
-  // Sweet動畫---------------------------------------------------------------------
 
   render() {
-    let { opened } = this.props
-    let { name } = this.props
-    let { br_name } = this.props
-    console.log(this.state.blogData)
+    let { opened, name, br_name } = this.props
+
     // if (!this.state.csData.length) return <></>
     if (this.state.csData.length === 0)
       return (
@@ -117,15 +63,14 @@ export class ReviewerBlogEdit extends Component {
       }
     }
 
-    // let LinkTo_sid = (window.location.pathname.slice(-2).replace('/',''))
-    // console.log('書櫃跳來的sid', LinkTo_sid)
-    console.log('編輯模式進來的sid', this.props.sid)
     return (
+      <div className="bg">
       <>
         <h3 className="h3_br">書評家 {br_name}</h3>
-    <section className="br_CKEditor">
-        {/* <div className="h5_br">你正在編輯<div className="h3_Red">{name}</div></div> */}
-        <div className="h5_Edit">正在編輯..<div className="h3_Red">{name}</div></div>
+        <section className="br_CKEditor">
+          <div className="h5_Edit">
+            正在編輯..<div className="h3_Red">{name}</div>
+          </div>
           <div className="Animate_Close_Box">
             <div
               className="Animate_Close_btn"
@@ -140,66 +85,35 @@ export class ReviewerBlogEdit extends Component {
               <h5 className="text_Blog_Close">關閉編輯</h5>
             </div>
           </div>
-          
+
           <section className="Blog_textarea">
-
-            <form onSubmit={this.handleBlogEdit}>
-              <button
-                  type="submit" 
-                  className="Blog_submit"
-                  // onClick={this.handleBlogEdit}
-                  value="編輯完成">編輯完成</button>
-
-          {/* ---------------------------------------------------------------- */}
-          <CKEditor
-            sid={this.props.sid}
-            blog={this.props.blog}
-            editor={ClassicEditor}
-            config={{
-              language: 'zh',
-            }}
-            
-            data={this.props.blog}
-            
-            onInit={editor => {
-              // 存儲"編輯器"，在需要時使用。
-              console.log('編輯器可以使用了！', editor)
-              // 外部添加 decoupled-document 工具欄導入
-              // editor.ui
-              //   .getEditableElement()
-              //   .parentElement.insertBefore(
-              //     editor.ui.view.toolbar.element,
-              //     editor.ui.getEditableElement()
-              //   )
-            }}
-
-              // 31
-              // handleChange = (e) => {
-              // this.setState({
-              // [e.target.name]: e.target.value
-              //     })
-              //   }
-// --------------------------------------------------------------------
-                onChange={(event, editor) => {
+            <button
+              onClick={() => this.handleBlogEdit()}
+              className="Blog_submit"
+              value="編輯完成"
+            >
+              編輯完成
+            </button>
+            {/* ---------------------------------------------------------------- */}
+            <CKEditor
+              editor={ClassicEditor}
+              config={{
+                language: 'zh',
+              }}
+              data={this.state.blogData}
+              onChange={(event, editor) => {
                 const data = editor.getData()
                 this.setState({
-                  blogData:data
+                  blogData: data,
                 })
-                console.log({ event, editor, data })
+                console.log('change')
               }}
-
-              onBlur={(event, editor) => {
-                console.log('失焦!Blur.', editor)
-              }}
-              onFocus={(event, editor) => {
-                console.log('聚焦!Focus.', editor)
-              }}
-          />
-          {/* ---------------------------------------------------------------- */}
-            </form>
+            />
+            {/* ---------------------------------------------------------------- */}
+          </section>
         </section>
-    </section>
       </>
+      </div>
     )
   }
 }

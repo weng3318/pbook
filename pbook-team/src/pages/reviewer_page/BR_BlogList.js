@@ -25,7 +25,7 @@ class BR_BlogList extends React.Component {
       </div>
           <h5 className="h5_br">正在閱讀..<h3 className="h3_gray">{this.props.name}</h3></h5>
           <br/>
-        <section className="ReviewerListAllBox reviewerList">
+        <section className="Blog_Read_Box">
           <h5 className="" dangerouslySetInnerHTML={{__html:this.props.blog}}></h5>
         </section>
 
