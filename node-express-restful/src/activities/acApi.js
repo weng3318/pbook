@@ -60,7 +60,6 @@ router.get('/book-discount/:bookId/:memberLevel?', async (req, res, next) => {
 // 取得一陣列的書籍折價資訊
 router.post('/books-discount/:memberLevel?', async (req, res, next) => {
     let bookArray = req.body
-    console.log(bookArray)
     let memberLevel = req.params.memberLevel || 1
     let key = "__express__/activities/book-discount-for-member-level/" + memberLevel
     let cacheContent = cache.getKey(key)
@@ -70,7 +69,8 @@ router.post('/books-discount/:memberLevel?', async (req, res, next) => {
         cache.setKey(key, { body, saveDate: currentDate })
         cache.save(true /* noPrune */)
     } else {
-        var body = JSON.parse(cacheContent.body)
+        var body = cacheContent.body
+    
     }
     let discountArray = []
     for (let i = 0; i < bookArray.length; i++) {
