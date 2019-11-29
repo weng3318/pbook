@@ -235,7 +235,8 @@ function Bookinfo() {
                   {'作者:'}&nbsp;
                   <span style={{ opacity: 0.6 }}>{data.author}</span>
                   &nbsp;&nbsp;&nbsp;
-                  {'出版社:'} &nbsp;<span style={{ opacity: 0.6 }}>{data.cp_name}</span>
+                  {'出版社:'} &nbsp;
+                  <span style={{ opacity: 0.6 }}>{data.cp_name}</span>
                   &nbsp;&nbsp;&nbsp;
                   {'出版日期:'} &nbsp;
                   <span style={{ opacity: 0.6 }}>

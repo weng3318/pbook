@@ -1,7 +1,7 @@
 /* /reviews  書評首頁 */
-#root {
+/* #root {
   background-image: url('../../images/bg.png');
-}
+} */
 /* 右側愛心區塊 */
 .reviews_col {
   display: flex;
