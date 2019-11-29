@@ -339,3 +339,18 @@
 .hide{
   display: hide;
 }
+
+.addToAlbum{
+  color: #fff;
+  text-align: right;
+  margin: 0 10px;
+  position: absolute;
+  top:0px;
+  right:0px;
+}
+
+.addToAlbum:hover{
+  color: #ffc408;
+  text-align: right;
+  margin: 0 10px;
+}

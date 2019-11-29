@@ -106,7 +106,7 @@ class Theme extends React.Component {
                         <li></li>
                       </ul>
                       <figcaption>
-                        <h1>{value.name}</h1>
+                        <h4 className="recomend-h4">{value.name}</h4>
                         <span>作者：{value.author}</span>
                         <p className="recomend-p">{value.introduction}</p>
                       </figcaption>

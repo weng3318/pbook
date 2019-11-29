@@ -17,8 +17,8 @@ class Home extends React.Component {
       <>
         <Carousel />
         {/* <TimeLine /> */}
-        {/* <Theme /> */}
-        <Storyteller />
+        <Theme />
+        {/* <Storyteller /> */}
       </>
     )
   }
