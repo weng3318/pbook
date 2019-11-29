@@ -35,7 +35,7 @@ function BookInfo(props) {
     discount = discountInfo ? +discountInfo.discount : 0
   }
   return (
-    <div className="book_box col-md-3 mb-5">
+    <div className="book_box col-md-3 mb-5 wow fadeIn">
       <figure className="mb-1">
         <Link
           to={'/books/information/' + props.sid}

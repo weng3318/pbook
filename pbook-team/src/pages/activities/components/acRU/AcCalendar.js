@@ -52,6 +52,7 @@ function AcCalendar(props) {
             el.dataset.toggle = 'popover'
             el.dataset.trigger = 'hover'
             el.dataset.placement = 'top'
+            el.dataset.container = '.acCalendarContainer'
             el.dataset.html = 'true'
             el.dataset.content = eventObj.event.extendedProps.description
             el.setAttribute('title', eventObj.event.title)
