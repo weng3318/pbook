@@ -2,7 +2,15 @@
 
 .detail_wrapper {
   background-image: url('../../../images/bg.png');
-  height: 400vh;
+  // height: 400vh;
+  .bread{
+    .linkTo{
+      color: $color-black;
+      &:hover{
+        text-decoration: underline;
+      }
+    }
+  }
   .bookTitle {
     font-size: 1.5rem;
   }
@@ -150,6 +158,33 @@
             background-color: $color-red;
           }
         }
+      }
+    }
+  }
+  .bookReviews{
+    .title{
+      border-bottom: 1px solid $color-gray;
+      font-size: 1.5rem;
+    }
+    .eachReview{
+      width: 100%;
+      border-bottom: 1px solid $color-gray;
+      .memberImg{
+        width: 5vw;
+        height: 5vw;
+        border-radius: 50%;
+        overflow: hidden;
+        img{
+          object-fit: cover;
+          height: 100%;
+          width: 100%;
+        }
+      }
+      .date{
+        color: $color-gray;
+      }
+      .content{
+        height: 7vw;
       }
     }
   }
