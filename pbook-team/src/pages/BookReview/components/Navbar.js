@@ -4,7 +4,6 @@ import axios from 'axios'
 function Navbar() {
   const [data, setData] = useState([])
   const urlParams = window.location.pathname.replace('/book_reviews/', '')
-  
 
   let c, s1, x, y, z
   if (x == undefined) {
@@ -23,15 +22,15 @@ function Navbar() {
     }
   }
 
-  for (let i = 0; i < data.length; i++) {
-    if (data[i].categories == c) {
-      x = data[i].categoriesName
-    }
-    if (data[i].sid == urlParams) {
-      y = data[i].categoriesName + '>'
-      z = data[i].name
-    }
-  }
+  // for (let i = 0; i < data.length; i++) {
+  //   if (data[i].categories == c) {
+  //     x = data[i].categoriesName
+  //   }
+  //   if (data[i].sid == urlParams) {
+  //     y = data[i].categoriesName + '>'
+  //     z = data[i].name
+  //   }
+  // }
 
   useEffect(() => {
     nav()
