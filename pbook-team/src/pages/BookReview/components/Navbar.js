@@ -35,7 +35,7 @@ function Navbar() {
 
   useEffect(() => {
     nav()
-  }, [])
+  },[])
 
   const nav = async () => {
     await axios.get('http://localhost:5555/reviews/nav').then(res => {

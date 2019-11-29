@@ -412,7 +412,7 @@ const List = () => {
                 <img
                   className="reviews_list_img"
                   key={data.sid}
-                  src={require('./images/' + data.pic)}
+                  src={`http://localhost:5555/images/books/${data.pic}`}
                 />
               </BookColumn>
               <BookColumn>
@@ -463,7 +463,7 @@ const List = () => {
                 <div key={index}>
                   <img
                     className="reviews_recommendBook_img"
-                    src={require('./images/' + book.pic)}
+                    src={`http://localhost:5555/images/books/${book.pic}`}
                   />
                   <div className="reviews_recommendBookName">{book.name}</div>
                 </div>
