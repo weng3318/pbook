@@ -11,7 +11,7 @@ const fs = require('fs'); //處理檔案的核心套件(內建?)
 const mysql = require("mysql");
 // 設定資料庫連線
 const db = mysql.createConnection({
-    host:"localhost",
+    host:"192.168.27.186",
     user: "root",
     password: "root",
     database: "pbook"

@@ -1,19 +1,38 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import moment from 'moment'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCaretRight } from '@fortawesome/free-solid-svg-icons'
+import { addToCartFetch } from '../../../../components/shop/ShopActions'
 import './bookInfo.scss'
 import { connect } from 'react-redux'
+import swal from 'sweetalert'
 function BookInfo(props) {
+  function addCart(sid) {
+    let cart = props.Cart.payload && props.Cart.payload.cart
+    let index = cart.findIndex(carts => carts.sid === sid)
+    if (index !== -1) {
+      swal({
+        text: '購物車已有此商品',
+        icon: 'warning',
+        button: 'OK',
+      })
+    } else if (index === -1) {
+      props.dispatch(addToCartFetch(sid))
+      swal({
+        text: '加入購物車成功',
+        icon: 'success',
+        button: 'OK',
+      })
+    }
+  }
+
   let discount = 0
   if (
     props.discountAmount[props.memberLevel] &&
     props.discountAmount[props.memberLevel].data
   ) {
-    discount = +props.discountAmount[props.memberLevel].data.find(
+    let discountInfo = props.discountAmount[props.memberLevel].data.find(
       v => v.sid === props.sid
-    ).discount
+    )
+    discount = discountInfo ? +discountInfo.discount : 0
   }
   return (
     <div className="book_box col-md-3 mb-5">
@@ -58,12 +77,15 @@ function BookInfo(props) {
         </Link>
       </figure>
       <div className="book_sell d-flex justify-content-center">
-        <button className="addCart">放入購物車</button>
+        <button className="addCart" onClick={() => addCart(props.sid)}>
+          放入購物車
+        </button>
       </div>
     </div>
   )
 }
 const mapStateToProps = state => ({
+  Cart: state.Cart,
   discountAmount: state.discountAmount,
 })
 export default connect(mapStateToProps)(BookInfo)

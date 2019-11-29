@@ -88,7 +88,7 @@ class ViewMemberBooks extends React.Component {
                                 <div style={{width:'250px', height: '240px'}}>
                                     <img 
                                       style= {{objectFit: 'contain', width: '100%', height: '100%'}} 
-                                       src = {this.state.path + data.mb_pic.split(',')[0]} 
+                                       src = {this.state.path + data.mb_pic.trim().split(',')[0]} 
                                       />
                                 </div>
                                 <div style={{textAlign: 'left', width: '400px'}}>

@@ -23,7 +23,7 @@ bluebird.promisifyAll(db);
 
 index.get("/timeLine", function (req, res) {
     db.queryAsync(
-        "SELECT br_bookcase.*, br_reviewerlist.br_name, br_reviewerlist.sid brr_sid FROM br_bookcase LEFT JOIN br_reviewerlist ON br_reviewerlist.number = br_bookcase.number ORDER BY created_time DESC"
+        "SELECT br_bookcase.*, br_reviewerlist.br_name, br_reviewerlist.sid brr_sid FROM br_bookcase LEFT JOIN br_reviewerlist ON br_reviewerlist.number = br_bookcase.number ORDER BY created_time ASC LIMIT 4,20"
     )
         .then(results => {
             res.json(results)

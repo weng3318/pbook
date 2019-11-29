@@ -136,14 +136,14 @@ class AddMemberBook extends React.Component {
       formData.append('avatar', this.state.pictures[i])
     }
     //formData.append('avatar', this.state.pictures)
-    console.log('formData', formData)
+    // console.log('formData', formData)
 
     fetch('http://localhost:5555/member/imgFiles', {
       method: 'POST',
       body: formData,
     })
       .then(res => {
-        console.log('res2:', res)
+        // console.log('res2:', res)
         return res.json()
       })
       .then(imgs => {
@@ -173,7 +173,7 @@ class AddMemberBook extends React.Component {
         })
           .then(response => {
             if (!response) throw new Error(response.statusText)
-            console.log('3' + response)
+            // console.log('3' + response)
             return response.json()
           })
           .then(data => {

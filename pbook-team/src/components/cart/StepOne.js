@@ -1,23 +1,24 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Col } from 'react-bootstrap'
 import { connect } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
-import { delCartFetch } from '../shop/ShopActions'
+import {
+  delCartFetch,
+  addCartToOrder,
+  cartFetch,
+  editCartFetch,
+} from '../shop/ShopActions'
 import './Cart.scss'
 
 const StepOne = props => {
+  let [amount, setAmount] = useState(1)
+  let [price, setPrice] = useState(1)
   let bookAmount = []
-  let totalAmount, totalPrice
+  let totalCart = props.cartPayload && props.cartPayload.totalCart
   function changeAmount() {
-    totalAmount = 0
-    totalPrice = 0
-    for (
-      let i = 0;
-      i < (props.cartPayload && props.cartPayload.totalCart);
-      i++
-    ) {
+    for (let i = 0; i < totalCart; i++) {
       if (
         +document.querySelector(
           '.bookAmount' + (props.cartPayload && props.cartPayload.cart[i].sid)
@@ -29,35 +30,29 @@ const StepOne = props => {
           '.bookAmount' + (props.cartPayload && props.cartPayload.cart[i].sid)
         ).value
       }
-
-      localStorage.setItem(
-        props.cartPayload && props.cartPayload.cart[i].sid,
-        +bookAmount[i]
+      props.dispatch(
+        editCartFetch(
+          props.cartPayload && props.cartPayload.cart[i].sid,
+          +bookAmount[i]
+        )
       )
-      totalPrice += +(
-        (props.cartPayload && props.cartPayload.cart[i].fixed_price) *
-        localStorage.getItem(props.cartPayload && props.cartPayload.cart[i].sid)
-      )
-      totalAmount += +bookAmount[i]
+      // props.dispatch(cartFetch())
+      if (props.order === 0) {
+        props.setOrder(1)
+      } else if (props.order === 1) {
+        props.setOrder(0)
+      }
     }
-    localStorage.setItem('totalAmount', totalAmount)
-    props.setTotalAmount(totalAmount)
-    localStorage.setItem('totalPrice', totalPrice)
-    props.setTotalPrice(totalPrice)
-    // props.history.go(0)
   }
   function delCart(sid, fixed_price) {
     props.dispatch(delCartFetch(sid))
-    let a = localStorage.getItem('totalAmount') - localStorage.getItem(sid)
+    let a = props.cartToOrder.totalAmount - localStorage.getItem(sid)
     let b =
-      localStorage.getItem('totalPrice') -
-      localStorage.getItem(sid) * fixed_price
-    localStorage.setItem('totalAmount', a)
-    localStorage.setItem('totalPrice', b)
+      props.cartToOrder.totalPrice - localStorage.getItem(sid) * fixed_price
+    props.dispatch(addCartToOrder(a, b))
     localStorage.removeItem(sid)
-    props.history.go(0)
+    props.dispatch(cartFetch())
   }
-  console.log(props.cartPayload)
   return (
     <>
       <Col md={7}>
@@ -101,7 +96,7 @@ const StepOne = props => {
                     onChange={() => changeAmount()}
                     min="1"
                     max="99"
-                    defaultValue={localStorage.getItem(cartData.sid)}
+                    defaultValue={cartData.amount}
                   />
                 </div>
                 <div>
@@ -134,7 +129,7 @@ const StepOne = props => {
           <div className="d-flex justify-content-between mt-3 mx-5">
             <span>商品數量</span>
             <span className="color-red">
-              {localStorage.getItem('totalAmount')}
+              {props.cartPayload && props.cartPayload.totalAmount}
             </span>
           </div>
           <div className="d-flex justify-content-between mt-3 mx-5">
@@ -142,7 +137,7 @@ const StepOne = props => {
             <span>
               NT${' '}
               <span className="color-red">
-                {localStorage.getItem('totalPrice')}
+                {props.cartPayload && props.cartPayload.totalPrice}
               </span>
             </span>
           </div>
@@ -160,6 +155,8 @@ const StepOne = props => {
 
 const mapStateToProps = state => ({
   delCart: state.delCart,
+  editCart: state.editCart,
   Cart: state.Cart,
+  cartToOrder: state.cartToOrder,
 })
 export default connect(mapStateToProps)(StepOne)

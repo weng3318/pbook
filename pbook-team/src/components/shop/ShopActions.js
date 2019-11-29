@@ -221,6 +221,46 @@ export const delCartFetch = sid => async dispatch => {
   }
 }
 //------------------------
+//-------EDIT_CART--------
+export const EDIT_CART_RECEIVE = 'EDIT_CART_RECEIVE'
+export const EDIT_CART_REQUEST = 'EDIT_CART_REQUEST'
+function ecReceive(sid, amount, json) {
+  return {
+    type: EDIT_CART_RECEIVE,
+    sid,
+    amount,
+    payload: json,
+    receivedAt: Date.now(),
+  }
+}
+function ecRequest(sid, amount) {
+  return {
+    type: EDIT_CART_REQUEST,
+    sid,
+    amount,
+  }
+}
+export const editCartFetch = (sid, amount) => async dispatch => {
+  dispatch(ecRequest(sid, amount))
+  try {
+    let response = await fetch('http://localhost:5555/books/editCart', {
+      method: 'POST',
+      credentials: 'include',
+      body: JSON.stringify({
+        sid: sid,
+        amount: amount,
+      }),
+      headers: new Headers({
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      }),
+    })
+    dispatch(ecReceive(sid, amount, await response.json()))
+  } catch (error) {
+    console.log('error ', error)
+  }
+}
+//------------------------
 //-------CART--------
 export const CART_RECEIVE = 'CART_RECEIVE'
 export const CART_REQUEST = 'CART_REQUEST'
@@ -253,7 +293,7 @@ export const cartFetch = () => async dispatch => {
   }
 }
 //------------------------
-//-------CART--------
+//-------ORDER--------
 export const ORDER_RECEIVE = 'ORDER_RECEIVE'
 export const ORDER_REQUEST = 'ORDER_REQUEST'
 function odReceive(memberID, json) {
@@ -289,3 +329,105 @@ export const orderFetch = memberID => async dispatch => {
   }
 }
 //------------------------
+//-------ADD_ORDER--------
+export const ADD_ORDER_RECEIVE = 'ADD_ORDER_RECEIVE'
+export const ADD_ORDER_REQUEST = 'ADD_ORDER_REQUEST'
+function aoReceive(
+  memberID,
+  bookName,
+  singlePrice,
+  bookAmount,
+  orderPrice,
+  created_time,
+  json
+) {
+  return {
+    type: ADD_ORDER_RECEIVE,
+    memberID,
+    bookName,
+    singlePrice,
+    bookAmount,
+    orderPrice,
+    created_time,
+    payload: json,
+    receivedAt: Date.now(),
+  }
+}
+function aoRequest(
+  memberID,
+  bookName,
+  singlePrice,
+  bookAmount,
+  orderPrice,
+  created_time
+) {
+  return {
+    type: ADD_ORDER_REQUEST,
+    memberID,
+    bookName,
+    singlePrice,
+    bookAmount,
+    orderPrice,
+    created_time,
+  }
+}
+export const addOrderFetch = (
+  memberID,
+  bookName,
+  singlePrice,
+  bookAmount,
+  orderPrice,
+  created_time
+) => async dispatch => {
+  dispatch(
+    aoRequest(
+      memberID,
+      bookName,
+      singlePrice,
+      bookAmount,
+      orderPrice,
+      created_time
+    )
+  )
+  try {
+    let response = await fetch('http://localhost:5555/books/addOrder', {
+      method: 'POST',
+      credentials: 'include',
+      body: JSON.stringify({
+        memberID: memberID,
+        bookName: bookName,
+        singlePrice: singlePrice,
+        bookAmount: bookAmount,
+        orderPrice: orderPrice,
+        created_time: created_time,
+      }),
+      headers: new Headers({
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      }),
+    })
+    dispatch(
+      aoReceive(
+        memberID,
+        bookName,
+        singlePrice,
+        bookAmount,
+        orderPrice,
+        created_time,
+        await response.json()
+      )
+    )
+  } catch (error) {
+    console.log('error ', error)
+  }
+}
+//------------------------
+export const ADD_CART_TO_ORDER = 'ADD_CART_TO_ORDER'
+export const addCartToOrder = (totalAmount, totalPrice) => {
+  return {
+    type: ADD_CART_TO_ORDER,
+    totalAmount: totalAmount,
+    totalPrice: totalPrice,
+    receivedAt: Date.now(),
+  }
+}

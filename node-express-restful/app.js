@@ -6,7 +6,9 @@ import { request } from "http";
 const app = express();
 const mysql = require("mysql");
 const db = mysql.createConnection({
-  host:"localhost",
+
+  host: "192.168.27.186",
+
   user: "root",
   password: "root",
   database: "pbook"
@@ -55,6 +57,8 @@ app.use(express.static("public"));
 app.use((req, res, next) => {
   if (!req.session.cart) req.session.cart = [];
   if (!req.session.totalCart) req.session.totalCart = 0;
+  if (!req.session.totalAmount) req.session.totalAmount = 0;
+  if (!req.session.totalPrice) req.session.totalPrice = 0;
   next();
 });
 

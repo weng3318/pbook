@@ -374,6 +374,8 @@ class Chat extends React.Component {
       myDelete: 0,
       myUpload: 0,
     })
+    let triggerClick = document.getElementById('triggerClick').click()
+    console.log('triggerClick', triggerClick)
   }
 
   // 下方input的圖片上傳
@@ -1367,7 +1369,7 @@ class Chat extends React.Component {
                       >
                         <span
                           className="input-group-text lime lighten-2 chatMessageSubmit"
-                          id="basic-text1"
+                          id="triggerClick"
                         >
                           <i className="far fa-smile-wink"></i>
                         </span>
