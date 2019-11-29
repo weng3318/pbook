@@ -13,6 +13,8 @@ const Shop = props => {
   let mode = localStorage.getItem('mode')
     ? localStorage.getItem('mode')
     : 'list'
+  let memberLevel = JSON.parse(localStorage.getItem('user')).MR_personLevel
+  if (!memberLevel) memberLevel = 1
   useEffect(() => {
     props.dispatch(cgFetch())
     props.dispatch(cartFetch())
@@ -21,6 +23,7 @@ const Shop = props => {
     )
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.match.params.page, props.match.params.categories, searchValue])
+
   const Search = event => {
     searchValue = document.querySelector('.searchInput').value
     setValue(searchValue)
@@ -28,9 +31,11 @@ const Shop = props => {
     event.preventDefault()
     return false
   }
+
   let categoriesPayload = props.categories.payload
   let shopPayload = props.shop.payload
   let cartPayload = props.Cart.payload
+  let discountAmount = props.discountAmount[memberLevel]
   let Data
   if (mode === 'list') {
     Data = DataList
@@ -51,6 +56,7 @@ const Shop = props => {
           <Row>
             <Categories categoriesPayload={categoriesPayload}></Categories>
             <Data
+              discountAmount={discountAmount}
               shopPayload={shopPayload}
               cartPayload={cartPayload}
               nowCategories={props.match.params.categories}
@@ -68,5 +74,6 @@ const mapStateToProps = state => ({
   shop: state.shop,
   categories: state.categories,
   Cart: state.Cart,
+  discountAmount: state.discountAmount,
 })
 export default connect(mapStateToProps)(Shop)

@@ -80,6 +80,7 @@ function sp(
         ...state,
         isFetching: false,
         didInvalidate: false,
+        sids: action.sids,
         payload: action.payload,
         lastUpdated: action.receivedAt,
       }

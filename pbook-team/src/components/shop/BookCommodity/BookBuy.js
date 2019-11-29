@@ -21,7 +21,12 @@ const BookBuy = props => {
     props.bookInfoPayload &&
     props.bookInfoPayload.rows &&
     props.bookInfoPayload.rows[0]
-
+  let discount
+  discount =
+    props.discountAmount &&
+    props.discountAmount.data &&
+    props.discountAmount.data[0].discount
+  if (!discount) return 'loading'
   let totalAmount = props.cartToOrder.totalAmount
   let totalPrice = props.cartToOrder.totalPrice
   function addCart() {
@@ -35,7 +40,12 @@ const BookBuy = props => {
         button: 'OK',
       })
     } else if (index === -1) {
-      props.dispatch(addToCartFetch(sid))
+      props.dispatch(
+        addToCartFetch(
+          sid,
+          parseInt(((data && data.fixed_price) * (100 - discount)) / 100)
+        )
+      )
       localStorage.setItem(sid, 1)
       props.dispatch(
         addCartToOrder(totalAmount + 1, totalPrice + (data && data.fixed_price))
