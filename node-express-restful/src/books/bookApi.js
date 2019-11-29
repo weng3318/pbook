@@ -377,6 +377,7 @@ router.get("/addToCart", (req, res) => {
 
 router.post("/addToCart", (req, res) => {
   let bookSid = req.body.sid;
+  let price = req.body.price;
   let sql = "SELECT * FROM `vb_books` WHERE `sid`= " + bookSid;
   // if (!req.session.cart) req.session.cart = [];
   // if (!req.session.totalCart) req.session.totalCart = 0;
@@ -387,7 +388,7 @@ router.post("/addToCart", (req, res) => {
         pic: results[0].pic,
         name: results[0].name,
         amount: 1,
-        fixed_price: results[0].fixed_price
+        fixed_price: price
       });
       let index = req.session.cart.findIndex(carts => carts.sid === bookSid);
       req.session.totalAmount += req.session.cart[index].amount;

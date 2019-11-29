@@ -5,7 +5,6 @@ import moment from 'moment'
 import './BookCommodity.scss'
 
 const BookComment = props => {
-  let reviewsPayload = props.reviewsPayload && props.reviewsPayload
   return (
     <>
       <div className="bookReviews my-5">
@@ -13,7 +12,7 @@ const BookComment = props => {
         {props.reviewsPayload &&
           props.reviewsPayload &&
           props.reviewsPayload.rows.map(reviewsData => (
-            <div className="eachReview d-flex pt-5">
+            <div className="eachReview d-flex pt-5" key={reviewsData.sid}>
               <div className="memberImg mr-5">
                 <img
                   src={

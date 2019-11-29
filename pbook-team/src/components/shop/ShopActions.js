@@ -1,4 +1,6 @@
 //-------categories--------
+import { getDiscountAmount } from '../../pages/activities/AcActions'
+
 export const CATEGORIES_RECEIVE = 'CATEGORIES_RECEIVE'
 export const CATEGORIES_REQUEST = 'CATEGORIES_REQUEST'
 //給cgFetch用=======
@@ -74,9 +76,13 @@ export const shopFetch = (
         }),
       }
     )
-    dispatch(
-      shopReceive(shopPage, shopCategories, shopKeyword, await response.json())
-    )
+
+    const json = await response.json()
+    dispatch(shopReceive(shopPage, shopCategories, shopKeyword, json))
+    const sids = json.rows.map(v => v.sid)
+    let memberLevel = JSON.parse(localStorage.getItem('user')).MR_personLevel
+    if (!memberLevel) memberLevel = 1
+    dispatch(getDiscountAmount(memberLevel, sids))
   } catch (error) {
     console.log('error ', error)
   }
@@ -109,7 +115,12 @@ export const bookInfoFetch = sid => async dispatch => {
         'Content-Type': 'application/json',
       }),
     })
-    dispatch(bookInfoReceive(sid, await response.json()))
+    const json = await response.json()
+    dispatch(bookInfoReceive(sid, json))
+    const sids = json.rows.map(v => v.sid)
+    let memberLevel = JSON.parse(localStorage.getItem('user')).MR_personLevel
+    if (!memberLevel) memberLevel = 1
+    dispatch(getDiscountAmount(memberLevel, sids))
   } catch (error) {
     console.log('error ', error)
   }
@@ -154,33 +165,38 @@ export const addToFavFetch = (memberID, isbn) => async dispatch => {
 //-------ADD_TO_CART--------
 export const ADD_TO_CART_RECEIVE = 'ADD_TO_CART_RECEIVE'
 export const ADD_TO_CART_REQUEST = 'ADD_TO_CART_REQUEST'
-function atcReceive(sid, json) {
+function atcReceive(sid, price, json) {
   return {
     type: ADD_TO_CART_RECEIVE,
     sid,
+    price,
     payload: json,
     receivedAt: Date.now(),
   }
 }
-function atcRequest(sid) {
+function atcRequest(sid, price) {
   return {
     type: ADD_TO_CART_REQUEST,
     sid,
+    price,
   }
 }
-export const addToCartFetch = sid => async dispatch => {
-  dispatch(atcRequest(sid))
+export const addToCartFetch = (sid, price) => async dispatch => {
+  dispatch(atcRequest(sid, price))
   try {
     let response = await fetch('http://localhost:5555/books/addToCart', {
       method: 'POST',
       credentials: 'include',
-      body: JSON.stringify({ sid: sid }),
+      body: JSON.stringify({
+        sid: sid,
+        price: price,
+      }),
       headers: new Headers({
         Accept: 'application/json',
         'Content-Type': 'application/json',
       }),
     })
-    dispatch(atcReceive(sid, await response.json()))
+    dispatch(atcReceive(sid, price, await response.json()))
   } catch (error) {
     console.log('error ', error)
   }

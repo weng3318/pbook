@@ -12,6 +12,8 @@ import './BookCommodity.scss'
 
 const BookCommodity = props => {
   // let favState = JSON.parse(localStorage.getItem('favState'))
+  let memberLevel = JSON.parse(localStorage.getItem('user')).MR_personLevel
+  if (!memberLevel) memberLevel = 1
   useEffect(() => {
     props.dispatch(bookInfoFetch(props.match.params.sid))
     props.dispatch(reviewsFetch(props.match.params.sid))
@@ -22,6 +24,7 @@ const BookCommodity = props => {
   let bookInfoPayload = props.bookInfo.payload
   let cartPayload = props.Cart.payload
   let reviewsPayload = props.reviews.payload
+  let discountAmount = props.discountAmount[memberLevel]
   return (
     <>
       <Container className="px-0 detail_wrapper" fluid={true}>
@@ -29,12 +32,16 @@ const BookCommodity = props => {
         <Container className="mt-5">
           <Row>
             <BookPic bookInfoPayload={bookInfoPayload}></BookPic>
-            <BookDetail bookInfoPayload={bookInfoPayload}></BookDetail>
+            <BookDetail
+              bookInfoPayload={bookInfoPayload}
+              discountAmount={discountAmount}
+            ></BookDetail>
             <BookBuy
               bookInfoPayload={bookInfoPayload}
               cartPayload={cartPayload}
               history={props.history}
               match={props.match}
+              discountAmount={discountAmount}
             ></BookBuy>
           </Row>
         </Container>
@@ -55,5 +62,6 @@ const mapStateToProps = state => ({
   bookInfo: state.bookInfo,
   reviews: state.reviews,
   Cart: state.Cart,
+  discountAmount: state.discountAmount,
 })
 export default connect(mapStateToProps)(BookCommodity)

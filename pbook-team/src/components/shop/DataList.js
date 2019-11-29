@@ -21,6 +21,7 @@ const DataList = props => {
     Page = Page1
     modeLink = '/books/' + props.nowPage + '/' + props.nowCategories
   }
+  let discountData = props.discountAmount && props.discountAmount.data
   return (
     <>
       <Col md={10} className="books">
@@ -66,6 +67,7 @@ const DataList = props => {
                 data={data}
                 cartPayload={props.cartPayload}
                 history={props.history}
+                discountData={discountData}
               ></BookInfoRight>
               {/*書籍資訊右半*/}
             </div>
