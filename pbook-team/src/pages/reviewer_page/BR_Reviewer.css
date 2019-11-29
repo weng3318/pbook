@@ -5,12 +5,10 @@
     margin: 0;
     padding: 0;
 }
-/* 超連結反饋，參照用 */
-/* a:hover{
-    color:#ff525b;
-    background-color: #cde2d0;
-    text-decoration: none;
-} */
+/* 背景圖片 */
+.br_bg{
+    background-image: url(./images/bg.png);
+}
 /* 移除超連結底線 */
 a:hover{
     text-decoration: none;

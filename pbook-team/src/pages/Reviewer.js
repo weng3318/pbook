@@ -31,6 +31,7 @@ export class Reviewer extends React.Component {
     console.log('所有的書評家', this.state.brData)
 
     return (
+      <div className="br_bg">
       <>
         <BR_Navbar />
         <h1>書評家</h1>
@@ -62,6 +63,7 @@ export class Reviewer extends React.Component {
         )}
     </div>
       </>
+    </div>
     )
   }
 }
