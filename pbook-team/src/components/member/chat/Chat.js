@@ -281,8 +281,7 @@ class Chat extends React.Component {
   }
 
   // 私聊的收回訊息
-  handleMessageDelete = e => {
-    let MessageSid = e.target.getAttribute('data-value')
+  handleMessageDelete = MessageSid => {
     console.log('handleMessageDelete MessageSid1', MessageSid)
 
     // 利用網址列取得chat_id
@@ -531,6 +530,11 @@ class Chat extends React.Component {
     })
   }
 
+  //私聊記事本新增清空按鈕
+  handleClickMemo = () => {
+    this.setState({ memoValue: '' })
+  }
+
   //私聊記事本修改送出按鈕
   handleSubmitMemoEdit = memoSid => {
     // 取得貼文內容
@@ -562,6 +566,13 @@ class Chat extends React.Component {
         this.setState({ memoValue: '' })
       }
     })
+  }
+
+  //私聊的訊息添加至記事本
+  handleMessageAddToMemo = content => {
+    this.messageSearch.classList.add('hide')
+    this.messageMemo.classList.add('show-inline-flex')
+    this.setState({ memoValue: content, key: 'memoInsert' })
   }
 
   // 私聊記事本的光箱控制鈕
@@ -945,6 +956,23 @@ class Chat extends React.Component {
                                                     __html: value2.content,
                                                   }}
                                                 ></p>
+                                                {value2.content.indexOf(
+                                                  '<img'
+                                                ) !== -1 ? (
+                                                  ''
+                                                ) : (
+                                                  <span
+                                                    onClick={() => {
+                                                      this.handleMessageAddToMemo(
+                                                        value2.content
+                                                      )
+                                                    }}
+                                                  >
+                                                    <i className="fas fa-pen-nib messageAddMemo time-right">
+                                                      <span>添加至記事本</span>
+                                                    </i>
+                                                  </span>
+                                                )}
                                                 <span className="time-right">
                                                   {moment(
                                                     value2.created_at
@@ -982,15 +1010,34 @@ class Chat extends React.Component {
                                                     'YYYY-MM-DD HH:mm:ss'
                                                   )}
                                                 </span>
-                                                <i
-                                                  className="fas fa-undo-alt messageDelete"
-                                                  data-value={value2.sid}
-                                                  onClick={
-                                                    this.handleMessageDelete
+                                                <span
+                                                  onClick={() =>
+                                                    this.handleMessageDelete(
+                                                      value2.sid
+                                                    )
                                                   }
                                                 >
-                                                  收回
-                                                </i>
+                                                  <i className="fas fa-undo-alt messageDelete">
+                                                    <span>收回</span>
+                                                  </i>
+                                                </span>
+                                                {value2.content.indexOf(
+                                                  '<img'
+                                                ) !== -1 ? (
+                                                  ''
+                                                ) : (
+                                                  <span
+                                                    onClick={() => {
+                                                      this.handleMessageAddToMemo(
+                                                        value2.content
+                                                      )
+                                                    }}
+                                                  >
+                                                    <i className="fas fa-pen-nib messageAddMemo">
+                                                      <span>添加至記事本</span>
+                                                    </i>
+                                                  </span>
+                                                )}
                                               </div>
                                             )
                                           } else if (
@@ -1033,15 +1080,17 @@ class Chat extends React.Component {
                                                     'YYYY-MM-DD HH:mm:ss'
                                                   )}
                                                 </span>
-                                                <i
-                                                  className="fas fa-undo-alt messageDelete"
-                                                  data-value={value2.sid}
-                                                  onClick={
-                                                    this.handleMessageDelete
+                                                <span
+                                                  onClick={() =>
+                                                    this.handleMessageDelete(
+                                                      value2.sid
+                                                    )
                                                   }
                                                 >
-                                                  收回
-                                                </i>
+                                                  <i className="fas fa-undo-alt messageDelete">
+                                                    <span>收回</span>
+                                                  </i>
+                                                </span>
                                               </div>
                                             )
                                           } else if (
@@ -1289,7 +1338,13 @@ class Chat extends React.Component {
                                         onClick={this.handleSubmitMemo}
                                         type="button"
                                         value="送出"
-                                        className="btn btn-outline-warning"
+                                        className="btn btn-outline-danger mx-3"
+                                      />
+                                      <input
+                                        onClick={this.handleClickMemo}
+                                        type="button"
+                                        value="清空"
+                                        className="btn btn-outline-secondary"
                                       />
                                     </div>
                                   </div>

@@ -190,9 +190,32 @@
   padding: 3px;
 }
 
+.messageDelete > span {
+  padding-left: 3px;
+}
+
 .messageDelete:hover {
   color: #ff525b;
   border: 1px solid #ff525b;
+}
+
+.messageAddMemo {
+  cursor: pointer;
+  margin-left: 10px;
+  color: #999;
+  font-size: small;
+  border: 1px solid #999;
+  padding: 3px;
+}
+
+.messageAddMemo > span {
+  padding-left: 3px;
+}
+
+.messageAddMemo:hover {
+  border: 1px solid #ffc408;
+  background: #ffc408;
+  color: #fff;
 }
 
 .chatWrap .chatDeleteMessage {
