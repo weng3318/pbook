@@ -43,7 +43,8 @@ function AcRU(props) {
     swal('確定取消活動?\n' + acSignItem.title, {
       buttons: { acDNo: '取消', acDYes: '確認' },
     }).then(result => {
-      if (result === 'yes') {
+      console.log(result)
+      if (result === 'acDYes') {
         fetch('http://localhost:5555/activities/ac-sign', {
           method: 'DELETE',
           body: JSON.stringify(acSignItem),

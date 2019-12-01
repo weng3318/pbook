@@ -2,8 +2,12 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import './acItem.scss'
+import WOW from 'wowjs'
 
 function AcItemOffline(props) {
+  React.useEffect(() => {
+    new WOW.WOW().init()
+  })
   return (
     <>
       <div className="acItem row mt-3 wow fadeIn">

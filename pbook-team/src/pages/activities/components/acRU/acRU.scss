@@ -1,8 +1,13 @@
 @import '../../color.scss';
 .acTable {
-  .popover{
-    max-width: 625px;
+  color: $color-black;
+  .popover {
     width: 100%;
+    border: 1px solid darken($color-green, 5%);
+    max-width: 480px;
+    .popover-header {
+      background: $color-green;
+    }
   }
   .acTitle {
     cursor: pointer;
@@ -11,7 +16,6 @@
       color: $color-yellow;
       text-shadow: 1px 1px 1px $color-black;
       font-weight: 600;
-      background-color: lighten($color-green, 5%);
     }
   }
   .icon {
@@ -25,7 +29,7 @@
   }
 
   .table-striped tbody tr:nth-of-type(odd) {
-    background-color: lighten($color-green, 12%);
+    background-color: lighten($color-green, 13%);
   }
 }
 .swal-button--acDYes {

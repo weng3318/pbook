@@ -1,7 +1,12 @@
 @import '../../color.scss';
 .acCalendarContainer {
-  .popover{
+  .popover {
+    color: $color-black;
+    border: 1px solid darken($color-green, 5%);
     max-width: 480px;
+    .popover-header{
+      background: $color-green;
+    }
   }
   .fc-header-toolbar {
     h2 {

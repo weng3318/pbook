@@ -74,4 +74,32 @@
       box-shadow: none;
     }
   }
+  .swal-button--acDNo {
+    outline: none;
+    box-shadow: none;
+    border-color: transparent;
+    background: $color-green;
+    color: $color-black;
+    transition: .3s;
+    &:hover {
+      background: lighten($color-green, 5%);
+    }
+    &:active,
+    &:focus {
+      box-shadow: 0 0 0.2rem $color-green !important;
+      border-color: $color-green !important;
+    }
+  }
+  .swal-button--acDYes {
+    @extend .swal-button--acDNo;
+    background-color: $color-red;
+    &:active,
+    &:focus {
+      box-shadow: 0 0 0.2rem $color-red !important;
+      border-color: $color-red !important;
+    }
+    &:hover {
+      background: lighten($color-red, 5%);
+    }
+  }
 }

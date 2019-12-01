@@ -161,7 +161,11 @@ class AC {
         let sql = ''
         let result = {
             type: 1,
-            description: '報名成功'
+            description: '報名成功',
+            inputData,
+            title: '',
+            intro: '',
+            date: '',
         }
         inputData.memberId = (await AC.memberSidMapArray())[inputData.memberNum] || req.sessionID
 
@@ -177,8 +181,8 @@ class AC {
         }
 
         // 檢查名額
-        sql = 'SELECT `quota`, `registered` FROM `ac_pbook2` WHERE `sid`=' + inputData.acId
-        let { quota, registered } = (await sqlQuery(sql))[0]
+        sql = 'SELECT `quota`, `registered`, `title`, `intro`, `date` FROM `ac_pbook2` WHERE `sid`=' + inputData.acId
+        let { quota, registered, title, intro, date } = (await sqlQuery(sql))[0]
         if ((quota - registered) <= 0) {
             result.type = 0
             result.description = '名額已滿'
@@ -195,6 +199,9 @@ class AC {
         // 名額減一
         sql = 'UPDATE `ac_pbook2` SET `registered`=' + (registered + 1) + ' WHERE `sid`=' + inputData.acId
         await sqlQuery(sql)
+        result.title = title
+        result.intro = intro
+        result.date = date
 
         return result
     }
