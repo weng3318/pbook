@@ -6,6 +6,7 @@
     "@ckeditor/ckeditor5-build-classic": "^15.0.0",
     "@ckeditor/ckeditor5-build-decoupled-document": "^15.0.0",
     "@ckeditor/ckeditor5-dev-webpack-plugin": "^8.0.5",
+    "@ckeditor/ckeditor5-editor-balloon": "^15.0.0",
     "@ckeditor/ckeditor5-react": "^2.0.0",
     "@emotion/core": "^10.0.22",
     "@emotion/styled": "^10.0.23",

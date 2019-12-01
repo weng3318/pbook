@@ -8,28 +8,29 @@ class BR_ReviewerList extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      isLogin: false,
-      loginUI: null,
+      isLogin: JSON.parse(localStorage.getItem('user')) !== null,
+      loginUI: false,
     }
   }
 
   componentDidMount() {
-    if (JSON.parse(localStorage.getItem('user')) !== null) {
-      this.setState({
-        isLogin: true,
-      })
-    }
     axios
       .get('http://localhost:5555/reviewer/brReviewerList')
       .then(({ data: { rows: brData } }) => {
         this.setState({ brData })
       })
     // 關閉登錄UI
-    // document.addEventListener('click', (event) => {
-    //   this.setState({
-    //     isLogin: null,
-    //   })
-    // })
+  
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.loginUI) {
+      document.getElementById('overlay').addEventListener('click', (event) => {
+        this.setState({
+          loginUI: false,
+        })
+      })
+    }
   }
   // 防止冒泡
   // stopBubble(event) {
@@ -53,9 +54,14 @@ class BR_ReviewerList extends React.Component {
         number: inNumber,
         number_reviewer: this.props.number,
       })
-      .then(data => {
+      .then(res => {
         // this.state.refreshLikeBook()
-        swal('收藏成功', '', 'success')
+        if(res.data.status === 'success'){
+          swal('收藏成功', '', 'success')
+        // console.log('收藏成功data',res)
+        } else {
+          swal('已加入收藏', '', 'success')
+        }
       })
     } 
   }
@@ -81,7 +87,8 @@ class BR_ReviewerList extends React.Component {
           className="ReviewerListAllBox reviewerList br_bg">
 
         {/* 呼叫登錄UI */}
-        {loginUI === 'inLogin' && <div className="inLoginUI"><Login/></div>}
+        
+        {loginUI && <div className="inLoginUI"><div id="overlay" /><Login/></div>}
 
           <div className="d-flex">
             <div className="brAvatarAllBox borderLineR">
@@ -121,7 +128,7 @@ class BR_ReviewerList extends React.Component {
               {!this.state.isLogin ? (
                 <>
                   {/* 沒登入狀態，呼叫登入UI */}
-                <div onClick={()=> this.openedLoginUI(loginUI === 'inLogin' ? null : 'inLogin')} className="brIconBox borderLineTop">
+                <div onClick={()=> this.openedLoginUI(!loginUI)} className="brIconBox borderLineTop">
                   <img
                     className="brIconFollow"
                     src={require('../reviewer_page/images/icon_followLogin.png')}

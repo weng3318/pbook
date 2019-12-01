@@ -5,6 +5,17 @@
     margin: 0;
     padding: 0;
 }
+/* 登錄模擬背景 */
+#overlay{
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    left: 0;
+    top: 0;
+    background: #000;
+    z-index: 5;
+    opacity: 0.7;
+}
 /* 背景圖片 */
 .br_bg{
     background-image: url(./images/bg.png);
@@ -12,7 +23,7 @@
 .bg_black::before{
     content: '';
     display: block;
-    background: rgba(0,0,0,.7);
+    background: rgba(0,0,0,.9);
     position: absolute;
     left:0;
     right:0;
@@ -257,7 +268,7 @@ a:hover{
 }
 .brIconFollow_Ani{
     position: absolute;
-    max-width: 50%;
+    max-width: 46%;
     left: 50%;
     transform: translateX(-50%);
     display: none;
