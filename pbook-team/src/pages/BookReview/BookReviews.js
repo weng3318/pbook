@@ -457,10 +457,11 @@ const List = () => {
           <div className="reviews_recommendBook">
             {recommendBook.map((book, index) => (
               <Link
+              key={index}
                 className="reviews_recommendBook_Link"
                 to={'/book_reviews/' + book.sid}
               >
-                <div key={index}>
+                <div>
                   <img
                     className="reviews_recommendBook_img"
                     src={`http://localhost:5555/images/books/${book.pic}`}

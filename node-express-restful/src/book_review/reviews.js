@@ -14,7 +14,7 @@ db.connect();
 bluebird.promisifyAll(db);
 
 //分類
-router.post("/categoryBar", (req, res) => {
+router.get("/categoryBar", (req, res) => {
   const sql = "SELECT * FROM `vb_categories` WHERE 1";
   db.query(sql, (error, results) => {
     if (error) {
@@ -86,7 +86,7 @@ router.get("/search_book/?", (req, res) => {
 
 // Nav
 router.get("/nav", (req, res) => {
-  const sql = `SELECT vb_books.sid vb_sid,vb_books.name vb_name,vb_books.categories vb_cate,vb_categories.categoriesName vb_cateName FROM vb_books LEFT JOIN vb_categories ON vb_categories.sid = vb_books.categories `;
+  const sql = `SELECT vb_books.sid,vb_books.name,vb_books.categories,vb_categories.categoriesName FROM vb_books LEFT JOIN vb_categories ON vb_categories.sid = vb_books.categories `;
   db.query(sql, (error, results) => {
     if (error) {
       return res.send(error);

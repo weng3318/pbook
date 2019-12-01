@@ -22,15 +22,15 @@ function Navbar() {
     }
   }
 
-  // for (let i = 0; i < data.length; i++) {
-  //   if (data[i].categories == c) {
-  //     x = data[i].categoriesName
-  //   }
-  //   if (data[i].sid == urlParams) {
-  //     y = data[i].categoriesName + '>'
-  //     z = data[i].name
-  //   }
-  // }
+  for (let i = 0; i < data.length; i++) {
+    if (data[i].categories == c) {
+      x = data[i].categoriesName
+    }
+    if (data[i].sid == urlParams) {
+      y = data[i].categoriesName + '>'
+      z = data[i].name
+    }
+  }
 
   useEffect(() => {
     nav()
