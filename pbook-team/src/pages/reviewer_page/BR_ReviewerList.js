@@ -2,13 +2,14 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import swal from '@sweetalert/with-react'
+import Login from '../login/Login'
 
 class BR_ReviewerList extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       isLogin: false,
-      user:'',
+      loginUI: null,
     }
   }
 
@@ -23,29 +24,44 @@ class BR_ReviewerList extends React.Component {
       .then(({ data: { rows: brData } }) => {
         this.setState({ brData })
       })
+    // 關閉登錄UI
+    // document.addEventListener('click', (event) => {
+    //   this.setState({
+    //     isLogin: null,
+    //   })
+    // })
   }
+  // 防止冒泡
+  // stopBubble(event) {
+  //   event.nativeEvent.stopImmediatePropagation()
+  // }
+
+
+    // 登錄捷徑
+    openedLoginUI=(loginUI)=>{
+      this.setState({
+        loginUI,
+      })
+    }
 
   // 收藏書評家API-------------------------------------------------------------------------
-  handleLikeBook = () => {
-    // if (isLogin){
+  handleFollowReviewer = () => {
+    let inNumber = JSON.parse(localStorage.getItem('user')).MR_number
+    if (inNumber){
       axios
       .post('http://localhost:5555/reviewer/brReviewerAdd', {
-        number: this.props.number,
-        number_reviewer: this.state.number,
+        number: inNumber,
+        number_reviewer: this.props.number,
       })
       .then(data => {
-        this.state.refreshLikeBook()
+        // this.state.refreshLikeBook()
         swal('收藏成功', '', 'success')
       })
-    // } 
-    // else {
-    //   swal('請登入會員').then(value=>{
-    //     login()
-    //   })
-    // }
+    } 
   }
-
   render() {
+    const { loginUI } = this.state
+
     // console.log(this.props)
     ;(function(d, s, id) {
       var js,
@@ -57,15 +73,16 @@ class BR_ReviewerList extends React.Component {
       fjs.parentNode.insertBefore(js, fjs)
     })(document, 'script', 'facebook-jssdk')
 
-    // 點擊追蹤圖示導向
-    let Hash = `#${this.props.number}`
     return (
       <>
         {/* 設定書評列表的 id={會員編號} {this.props.number} */}
         <section
           id={this.props.number}
-          className="ReviewerListAllBox reviewerList"
-        >
+          className="ReviewerListAllBox reviewerList br_bg">
+
+        {/* 呼叫登錄UI */}
+        {loginUI === 'inLogin' && <div className="inLoginUI"><Login/></div>}
+
           <div className="d-flex">
             <div className="brAvatarAllBox borderLineR">
               <h5 className="h5_br">{this.props.title}</h5>
@@ -100,46 +117,48 @@ class BR_ReviewerList extends React.Component {
                 <div className="brReadBooks">看看書櫃</div>
               </Link>
 
-              {/* 追蹤作者----------------------------------------------------- */}
+              {/* 收藏作者----------------------------------------------------- */}
               {!this.state.isLogin ? (
                 <>
-              <Link to={`/reviewer${Hash}`}>
-                <div className="brIconBox borderLineTop">
+                  {/* 沒登入狀態，呼叫登入UI */}
+                <div onClick={()=> this.openedLoginUI(loginUI === 'inLogin' ? null : 'inLogin')} className="brIconBox borderLineTop">
                   <img
                     className="brIconFollow"
-                    // 請先登入
                     src={require('../reviewer_page/images/icon_followLogin.png')}
                   />
                 </div>
-              </Link>
               </>
             ) : JSON.parse(localStorage.getItem('user')).MR_number !==
               this.props.number ? (
               <>
-              <Link to={`/reviewer${Hash}`}>
-                <div className="brIconBox borderLineTop">
+              {/* 達成收藏條件，也不是自己看自己書櫃的話---------------------------------------- */}
+              {/* 添加動畫判斷 */}
+                <div onClick={()=> this.handleFollowReviewer()} className="brIconBox borderLineTop">
                   <img
-                    className="brIconFollow"
-                    // 追蹤作者
+                    className="brIconFollow_noAni"
+                    // 收藏作者
                     src={require('../reviewer_page/images/icon_follow.png')}
                   />
+                  <img
+                    className="brIconFollow_Ani"
+                    // 收藏作者
+                    src={require('../reviewer_page/images/like.svg')}
+                  />
                 </div>
-              </Link>
               </>
             ) : (
               <>
-              <Link to={`/reviewer${Hash}`}>
-                <div className="brIconBox borderLineTop">
+              {/* 如果自己看自己的話---------------------------------------- */}
+                <Link to={'/reviewer/reviewerBooks/' + this.props.sid} className="brIconBox borderLineTop">
                   <img
                     className="brIconFollow"
-                    // 取消追蹤
-                    src={require('../reviewer_page/images/icon_follow.png')}
+                    // 無法收藏，變成看看書櫃
+                    src={require('../reviewer_page/images/icon_followMy.png')}
                   />
-                </div>
-              </Link>
+                </Link>
               </>
             )}
-              {/* 追蹤作者----------------------------------------------------- */}
+              {/* 收藏作者 結束----------------------------------------------------- */}
 
               <div className="brIconBox borderLineTop">
                 <a

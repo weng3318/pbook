@@ -22,6 +22,12 @@ class BR_BookcaseList extends React.Component {
       this.setState({
         isLogin: true,
       })
+    };
+    if (this.props.readbook === null, this.props.likebook === null){
+      this.setState({
+        readData:0,
+        likeData:0,
+      })
     }
   }
   //   componentDidMount() {}
@@ -51,7 +57,7 @@ class BR_BookcaseList extends React.Component {
         likebook: this.state.likeData + value,
       })
       .then(data => {
-        this.props.refreshLikeBook()
+        // this.props.refreshLikeBook()
         swal('按讚成功', '', 'success')
       })
   }

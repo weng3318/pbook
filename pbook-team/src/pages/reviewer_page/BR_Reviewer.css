@@ -5,6 +5,28 @@
     margin: 0;
     padding: 0;
 }
+/* 背景圖片 */
+.br_bg{
+    background-image: url(./images/bg.png);
+}
+.bg_black::before{
+    content: '';
+    display: block;
+    background: rgba(0,0,0,.7);
+    position: absolute;
+    left:0;
+    right:0;
+    top:0;
+    bottom:0;
+}
+/* 書評家登錄用組件 */
+.inLoginUI{
+    position: absolute;
+    max-width: 88%;
+    top: -78%;
+    left: 10%;
+    right: 0;
+}
 /* 看看書櫃 (按鈕、超連結)*/
 .brReadBooks{
     min-width: 70px;
@@ -45,10 +67,6 @@
 /* 邊框線，左 */
 .borderLineL {
     border-left:1px solid #2d3a3a;
-}
-/* 背景圖片 */
-.br_bg{
-    background-image: url(./images/bg.png);
 }
 /* 移除超連結底線 */
 a:hover{
@@ -212,7 +230,7 @@ a:hover{
     min-width: 20%;
     max-width: 33%;
 }
-/* 職業介紹、追蹤作者、社群分享，共用區域 (按鈕圖片) */
+/* 職業介紹、收藏作者、社群分享，共用區域 (按鈕圖片) */
 .brIconBox{
     min-height: 45px;
     bottom: 0;
@@ -221,10 +239,30 @@ a:hover{
     display: flex;
     justify-content: center;
     align-items: center;
-    /* justify-content: space-around; */
     position: relative;
 }
-/* 追蹤作者 (按鈕) */
+.brIconBox:hover .brIconFollow_Ani{
+    display: block;
+}
+.brIconBox:hover .brIconFollow_noAni{
+    display: none;
+}
+/* 進階收藏作者 (無動畫) */
+.brIconFollow_noAni{
+    position: absolute;
+    max-width: 80%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: block;
+}
+.brIconFollow_Ani{
+    position: absolute;
+    max-width: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: none;
+}
+/* 收藏作者 (按鈕) */
 .brIconFollow{
     position: absolute;
     max-width: 80%;
@@ -278,5 +316,10 @@ a:hover{
         width: 100%;
         border-left:0px solid #2d3a3a;
         border-top:1px solid #2d3a3a;
+    }
+    /* 書評家登錄用組件 RWD (位置調整) */
+    .inLoginUI{
+        top: -12%;
+        left: 0;
     }
 }

@@ -140,7 +140,7 @@ class ReviewerBooks extends React.Component {
           {/* 熱門書評列表 */}
           <div className="HotBookBoxAll_Light">
             <div className="blackBG">
-              <h5 className="h5_hotText">熱門書評</h5>
+              <h5 className="h5_hotText">推薦書評</h5>
               <div className="HotBookBoxAll_Bookcase">
                 {this.state.csData
                   .filter(({ number }) => reviewerData.number === number)

@@ -52,4 +52,29 @@ router.get('/brReviewerList/:page?/:keyword?', (req, res) => {
         })
 })
 
+//收藏書評家
+router.post('/brReviewerAdd', (req, res, next)=>{
+    let number = req.body.number
+    let number_reviewer = req.body.number_reviewer
+
+    let check = `SELECT COUNT(1) total FROM br_reviewermark where number = '${number}' and number_reviewer = '${number_reviewer}'`
+    db.queryAsync(check)
+    
+    .then((results) => {
+        let checkNum = results[0][`total`]
+
+        console.log('比對該書評家納入收藏紀錄，判斷存在的收藏筆數',checkNum)
+        console.log('發送來的會員編號',number,'發送來的書評家編號',number_reviewer)
+
+        if(checkNum < 1 )
+        return db.queryAsync(`INSERT INTO br_reviewermark (sid, number, number_reviewer, created_time) VALUES (NULL, '${number}', '${number_reviewer}', NOW())`,(err, result)=>{
+            if(err){ res.json(err) }
+            res.json({
+                status: "收藏書評家成功",
+                message: "收藏名單已更新"
+                })
+            })
+        })
+    })
+
 module.exports = router;

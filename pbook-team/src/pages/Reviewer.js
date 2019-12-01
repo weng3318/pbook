@@ -33,9 +33,10 @@ export class Reviewer extends React.Component {
             </h1>
           </>
         )
-    // console.log('所有的書評家', this.state.brData)
 
     return (
+      // <div className="HotBookBoxAll_Light">
+      // <div className="bg_black">
       <div className="br_bg">
         <>
           <BR_Navbar />
@@ -77,6 +78,8 @@ export class Reviewer extends React.Component {
           </div>
         </>
       </div>
+      // </div>
+      // </div>
     )
   }
 }
