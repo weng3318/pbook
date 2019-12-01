@@ -1,7 +1,50 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import axios from 'axios'
+import swal from '@sweetalert/with-react'
 
 class BR_ReviewerList extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      isLogin: false,
+      user:'',
+    }
+  }
+
+  componentDidMount() {
+    if (JSON.parse(localStorage.getItem('user')) !== null) {
+      this.setState({
+        isLogin: true,
+      })
+    }
+    axios
+      .get('http://localhost:5555/reviewer/brReviewerList')
+      .then(({ data: { rows: brData } }) => {
+        this.setState({ brData })
+      })
+  }
+
+  // 收藏書評家API-------------------------------------------------------------------------
+  handleLikeBook = () => {
+    // if (isLogin){
+      axios
+      .post('http://localhost:5555/reviewer/brReviewerAdd', {
+        number: this.props.number,
+        number_reviewer: this.state.number,
+      })
+      .then(data => {
+        this.state.refreshLikeBook()
+        swal('收藏成功', '', 'success')
+      })
+    // } 
+    // else {
+    //   swal('請登入會員').then(value=>{
+    //     login()
+    //   })
+    // }
+  }
+
   render() {
     // console.log(this.props)
     ;(function(d, s, id) {
@@ -42,26 +85,61 @@ class BR_ReviewerList extends React.Component {
 
               <Link
                 to={'/reviewer/reviewerBooks/' + this.props.sid}
-                className="d-flex justify-content-center borderLineTop"
+                className="brSeeBookBox d-flex justify-content-center borderLineTop"
               >
                 <div className="brIconBox">
                   <img
-                    className="brMark_img"
+                    className="brMark_img_noAni"
                     src={require('../reviewer_page/images/P_logo.png')}
+                  />
+                  <img
+                    className="brMark_img_ani"
+                    src={require('../reviewer_page/images/ani_LoadingPBook_min.gif')}
                   />
                 </div>
                 <div className="brReadBooks">看看書櫃</div>
               </Link>
 
-              {/* 追蹤作者 */}
+              {/* 追蹤作者----------------------------------------------------- */}
+              {!this.state.isLogin ? (
+                <>
               <Link to={`/reviewer${Hash}`}>
                 <div className="brIconBox borderLineTop">
                   <img
                     className="brIconFollow"
+                    // 請先登入
+                    src={require('../reviewer_page/images/icon_followLogin.png')}
+                  />
+                </div>
+              </Link>
+              </>
+            ) : JSON.parse(localStorage.getItem('user')).MR_number !==
+              this.props.number ? (
+              <>
+              <Link to={`/reviewer${Hash}`}>
+                <div className="brIconBox borderLineTop">
+                  <img
+                    className="brIconFollow"
+                    // 追蹤作者
                     src={require('../reviewer_page/images/icon_follow.png')}
                   />
                 </div>
               </Link>
+              </>
+            ) : (
+              <>
+              <Link to={`/reviewer${Hash}`}>
+                <div className="brIconBox borderLineTop">
+                  <img
+                    className="brIconFollow"
+                    // 取消追蹤
+                    src={require('../reviewer_page/images/icon_follow.png')}
+                  />
+                </div>
+              </Link>
+              </>
+            )}
+              {/* 追蹤作者----------------------------------------------------- */}
 
               <div className="brIconBox borderLineTop">
                 <a

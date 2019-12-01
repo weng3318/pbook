@@ -2,7 +2,8 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import ReviewerBlog from '../ReviewerBlog'
 import ReviewerBlogEdit from '../ReviewerBlogEdit'
-import ScrollToTop from '../../pages/activities/components/ScrollToTop'
+import axios from 'axios'
+import swal from '@sweetalert/with-react'
 
 class BR_BookcaseList extends React.Component {
   constructor(props) {
@@ -10,8 +11,9 @@ class BR_BookcaseList extends React.Component {
     this.state = {
       isLogin: false,
       opened: null,
-      like: this.props.likebook,
+      likeData: this.props.likebook,
       read: this.props.readbook,
+      readData: this.props.readbook,
     }
   }
 
@@ -38,13 +40,33 @@ class BR_BookcaseList extends React.Component {
   //   }
   // componentWillUnmount() {}
 
-  // 讚數
-  like = value => {
+  // 按讚數API-------------------------------------------------------------------------
+  handleLikeBook = value => {
     this.setState({
-      like: this.state.like + value,
+      likeData: this.state.likeData + value,
+    })
+    axios
+      .post('http://localhost:5555/reviewer/brLikeBook', {
+        sid: this.props.sid,
+        likebook: this.state.likeData + value,
+      })
+      .then(data => {
+        this.props.refreshLikeBook()
+        swal('按讚成功', '', 'success')
+      })
+  }
+  // 閱讀數API-------------------------------------------------------------------------
+  handleReadBook = opened => {
+    this.setState({
+      opened,
+      readData:opened === 'blog' ? this.state.readData + 1 : this.state.readData,
+    })
+    axios.post('http://localhost:5555/reviewer/brReadBook', {
+      sid: this.props.sid,
+      readbook:opened === 'blog' ? this.state.readData + 1 : this.state.readData,
     })
   }
-  // 閱讀數
+  // 開關狀態
   handleOpened = opened => {
     this.setState({
       opened,
@@ -52,7 +74,7 @@ class BR_BookcaseList extends React.Component {
     })
   }
   render() {
-    console.log(this.props)
+    // console.log(this.state.likeData)
     const { opened } = this.state
     const { sid, name, number, blog, vb_book_sid, br_name } = this.props
 
@@ -68,13 +90,14 @@ class BR_BookcaseList extends React.Component {
 
     return (
       <>
-        {/* <ScrollToTop> */}
         <section className="ReviewerListAllBox_Bookcase">
           {/* 書籍圖片 */}
           <div
             className="brAvatarAllBox_Bookcase"
             id={this.props.sid}
-            onClick={() => this.handleOpened(opened === 'blog' ? null : 'blog')}
+            onClick={() =>
+              this.handleReadBook(opened === 'blog' ? null : 'blog')
+            }
           >
             {/* <img className="brBookInfoImg_Bookcase" src={require(`./images_books/vb_9789578587823.jpg`)}/> */}
             {/* <img className="brBookInfoImg_Bookcase" src={require(`./images/${this.props.pic}`)}/> */}
@@ -101,6 +124,7 @@ class BR_BookcaseList extends React.Component {
                   <div className="bookName_Bookcase">書名：</div>
                   <div className="bookNameText_Bookcase">{this.props.name}</div>
                 </div>
+
                 <div className="brAuthorText">作者：{this.props.author}</div>
               </div>
               {/* 書櫃區的簡介內文 */}
@@ -129,7 +153,7 @@ class BR_BookcaseList extends React.Component {
             this.props.number)  */}
             {!this.state.isLogin ? (
               ''
-            ) : JSON.parse(localStorage.getItem('user')).MR_number ==
+            ) : JSON.parse(localStorage.getItem('user')).MR_number ===
               this.props.number ? (
               <>
                 {/* 編輯模式按鈕 */}
@@ -166,22 +190,24 @@ class BR_BookcaseList extends React.Component {
 
               <div className="brLikeBox">
                 {/* 讚數、閱讀數 */}
-                <img
-                  className="brMark_img"
-                  onClick={() => this.like(1)}
-                  src={require('../reviewer_page/images/icon_likebook.png')}
-                />
-                <span className="brMark_p">{this.state.like}</span>
-                {/* <span className="brMark_p">{this.props.likebook}</span> */}
-                <img
-                  onClick={() =>
-                    this.handleOpened(opened === 'blog' ? null : 'blog')
-                  }
-                  className="brMark_img_noAni"
-                  src={require('../reviewer_page/images/icon_readbook.png')}
-                />
-                <span className="brMark_p">{this.state.read}</span>
-              </div>
+                      <img
+                        className="brMark_img"
+                        onClick={() => this.handleLikeBook(1)}
+                        src={require('../reviewer_page/images/icon_likebook.png')}
+                      />
+                      <span className="brMark_p">{this.state.likeData}</span>
+                      {/* <span className="brMark_p">{this.props.likebook}</span> */}
+
+                      <img
+                        onClick={() =>
+                          this.handleReadBook(opened === 'blog' ? null : 'blog')
+                        }
+                        className="brMark_img_noAni"
+                        src={require('../reviewer_page/images/icon_readbook.png')}
+                      />
+                      <span className="brMark_p">{this.state.readData}</span>
+                    </div>
+
               {/* 分享功能 */}
               <div className="fbBox">
                 <div
@@ -215,8 +241,6 @@ class BR_BookcaseList extends React.Component {
             refreshBlog={this.props.refreshBlog}
           />
         )}
-        <div style={{ height: '30px' }}></div>
-        {/* </ScrollToTop> */}
       </>
     )
   }

@@ -37,7 +37,9 @@ export class ReviewerBlog extends React.Component {
     if (this.state.csData.length === 0)
       return (
         <>
-          <h1 className="h1_br">取得資料中...</h1>
+          <h1 className="h1_br">取得資料中...
+            <img className="loadingGif" src={require('./reviewer_page/images/ani_LoadingPBook.gif')}/>
+          </h1>
         </>
       )
     let csData = this.state.csData
