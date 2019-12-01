@@ -96,7 +96,8 @@ const ArticleContent = props => {
       })
       .then(result => {
         let video = []
-        let imgCount = 0
+        let imgUpload = 0
+        let imgUnsplash = 0
         let textAreaCount = 0
         let type = data.article.fm_demoImage.split('.')[1]
         let body = result.element.map(item => {
@@ -118,19 +119,32 @@ const ArticleContent = props => {
               video.push(textAreaCount)
               textAreaCount++
               return videoElement
-            case 'img':
-              let uni1 = `img${imgCount}`
-              let imgElement = (
+            case 'img-upload':
+              let uni1 = `imgUpload${imgUpload}`
+              let imgUploadElement = (
                 <img
                   className="contentImg"
                   alt=""
                   key={uni1}
                   id={uni1}
-                  src={`http://localhost:5555/images/forum/article_key/${data.article.fm_articleId}${imgCount}.${type}`}
+                  src={`http://localhost:5555/images/forum/article_key/${data.article.fm_articleId}${imgUpload}.${type}`}
                 ></img>
               )
-              imgCount++
-              return imgElement
+              imgUpload++
+              return imgUploadElement
+            case 'img-unsplash':
+              let uni3 = `imgUnsplash${imgUnsplash}`
+              let imgUpsplashElement = (
+                <img
+                  className="contentImg"
+                  alt=""
+                  key={uni3}
+                  id={uni3}
+                  src={result.imgFromUnsplash[imgUnsplash]}
+                ></img>
+              )
+              imgUnsplash++
+              return imgUpsplashElement
             default:
               return 'nothing'
           }

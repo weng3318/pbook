@@ -6,7 +6,7 @@ const upload = multer({ dest: "tmp_uploads/" }); //圖片上傳
 const fs = require("fs"); //檔案處理
 const moment = require("moment-timezone");
 const db = mysql.createConnection({
-  host: "192.168.27.186",
+  host: "192.168.27.186", 
   user: "root",
   password: "root",
   database: "pbook"
@@ -63,8 +63,8 @@ router
       "SELECT * FROM `fm_article` article JOIN `vb_categories` vb ON article.`fm_category` = vb.`sid` JOIN `mr_information` mr ON article.`fm_memberId`=mr.`MR_number` LIMIT " +
       number;
     db.query(sql, (error, results, fields) => {
-      if (error) throw error;
-      // output.featured = results;
+      if (error) throw error; 
+      // output.featured = results; 
       res.json(results);
     });
   });
@@ -400,7 +400,7 @@ router
     console.log("post article");
     let resData = {};
     let data = req.body;
-    console.log(req.body);
+    // console.log(req.body);
     let articleId = +new Date() + data.MR_number;
     let filename = "";
     let mainImg = "";
@@ -410,7 +410,6 @@ router
       mainImg = Math.floor(Math.random() * 10) + 1 + "0.jpg";
     }
     for (let i = 0; i < data.imgCount; i++) {
-      console.log("123312");
       if (req.files[i] && req.files[i].mimetype) {
         filename = articleId + i + "." + req.files[i].mimetype.slice(6, 10);
         if (i === 0) {
@@ -444,11 +443,12 @@ router
         return item.slice(0, 200);
       }
     })[0];
-    console.log(subTitle);
+    // console.log('imgUploadElement',data.imgFromUnsplash);
     let demoImage = mainImg;
     let content = {
       element: data.element,
-      textareaValue: data.textareaValue.filter(item => item !== "")
+      textareaValue: data.textareaValue.filter(item => item !== ""),
+      imgFromUnsplash:data.imgFromUnsplash
     };
     fs.writeFile(
       __dirname + "/../../public/forum/content/" + articleId + ".json",

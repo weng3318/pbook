@@ -10,15 +10,15 @@ const fs = require('fs'); //處理檔案的核心套件(內建?)
 
 const mysql = require("mysql");
 // 設定資料庫連線
-const db = mysql.createConnection({
-    host:"192.168.27.186",
+const db = mysql.createConnection({ 
+    host:"localhost",
     user: "root",
     password: "root",
     database: "pbook"
 });
 db.connect(); //資料庫連線
 
-bluebird.promisifyAll(db);
+bluebird.promisifyAll(db); 
 
 var mapResult = [];
 chat.post("/chatList2", function (req, res) {

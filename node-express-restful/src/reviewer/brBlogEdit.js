@@ -24,7 +24,7 @@ bluebird.promisifyAll(db)
 // const mysql = require('mysql');
 // bluebird.promisifyAll(db);
 // const db = mysql.createConnection({
-//     host: "localhost",
+//     host: "192.168.27.186",
 //     user: "root",
 //     password: "root",
 //     database: "pbook"
