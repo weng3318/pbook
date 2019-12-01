@@ -113,10 +113,9 @@ class ReviewerBooks extends React.Component {
       for (let i = 0; i < csData.length; i++) {
         if (csData[i].number == reviewerData.number) {
           bookcaseData = csData[i].isbn
-          // console.log('來自書評家',reviewerData.name,'的書籍isbn：',bookcaseData)
+          console.log('進入',reviewerData.br_name,'會員編號',reviewerData.number,'的書櫃')
         }
       }
-      var element = document.getElementById("box");
 
         return (
       <div className="br_bg">

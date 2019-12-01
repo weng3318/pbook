@@ -19,10 +19,9 @@ class BR_ReviewerList extends React.Component {
       .then(({ data: { rows: brData } }) => {
         this.setState({ brData })
       })
+    }
+    
     // 關閉登錄UI
-  
-  }
-
   componentDidUpdate(prevProps, prevState) {
     if (this.state.loginUI) {
       document.getElementById('overlay').addEventListener('click', (event) => {
@@ -32,11 +31,6 @@ class BR_ReviewerList extends React.Component {
       })
     }
   }
-  // 防止冒泡
-  // stopBubble(event) {
-  //   event.nativeEvent.stopImmediatePropagation()
-  // }
-
 
     // 登錄捷徑
     openedLoginUI=(loginUI)=>{
@@ -53,6 +47,7 @@ class BR_ReviewerList extends React.Component {
       .post('http://localhost:5555/reviewer/brReviewerAdd', {
         number: inNumber,
         number_reviewer: this.props.number,
+        
       })
       .then(res => {
         // this.state.refreshLikeBook()
@@ -60,7 +55,7 @@ class BR_ReviewerList extends React.Component {
           swal('收藏成功', '', 'success')
         // console.log('收藏成功data',res)
         } else {
-          swal('已加入收藏', '', 'success')
+          swal('已加入過收藏！', '', 'warning')
         }
       })
     } 
