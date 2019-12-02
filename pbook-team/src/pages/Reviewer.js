@@ -25,22 +25,28 @@ export class Reviewer extends React.Component {
   }
 
   render() {
+    console.log(this.state.brData)
     if (this.state.brData.length === 0)
-        return (
-          <>
-            <h1 className="h1_br">取得資料中...
-              <img className="loadingGif" src={require('./reviewer_page/images/ani_LoadingPBook.gif')}/>
-            </h1>
-          </>
-        )
+      return (
+        <>
+          <h1 className="h1_br">
+            取得資料中...
+            <img
+              className="loadingGif"
+              src={require('./reviewer_page/images/ani_LoadingPBook.gif')}
+            />
+          </h1>
+        </>
+      )
 
+    
     return (
       // <div className="HotBookBoxAll_Light">
       // <div className="bg_black">
       <div className="br_bg">
         <>
-          <BR_Navbar />
-          <h1>書評家</h1>
+          <BR_Navbar data={this.state.brData} />
+          <h1>　</h1>
           <div className="bg_pic">
             {this.state.brData.map(
               ({

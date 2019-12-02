@@ -7,17 +7,20 @@ class FbMessage extends React.Component {
     this.state = {}
   }
 
-  render() {
-    return (
-      <>
-        <div className="fbMessage">
-          <a href="http://m.me/100463904770895" target="_blank">
-            <i class="far fa-comment-dots fbicon"></i>
-          </a>
-        </div>
-      </>
-    )
-  }
+
+
+    render(){
+        return(
+            <>
+            <div className="fbMessage">
+                <a href="http://m.me/100463904770895"
+                target="_blank">
+                    <i className="far fa-comment-dots fbicon"></i> 
+                </a>
+            </div>
+            </>
+        )
+    }
 }
 
 export default FbMessage
