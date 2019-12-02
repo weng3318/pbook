@@ -1,7 +1,7 @@
 /* /reviews  書評首頁 */
-* {
-  outline: none;
-}
+/* #root {
+  background-image: url('../../images/bg.png');
+} */
 /* 右側愛心區塊 */
 .reviews_col {
   display: flex;
@@ -17,6 +17,8 @@
 }
 /* 書籍分類第一排 */
 .reviews_cate1 {
+  display: flex;
+  width: 700px;
   margin: 0 0 0 25px;
 }
 /* 書籍分類第二排 */
@@ -134,6 +136,13 @@
 }
 
 .reviews_btn:focus {
+  background: #2d3a3a;
+  color: #ffc408;
+  outline: none;
+  z-index: 99;
+}
+
+.reviews_btn_active {
   background: #2d3a3a;
   color: #ffc408;
   outline: none;
@@ -258,6 +267,9 @@
   right: 160px;
   bottom: 10px;
 }
+.reviews_BookBuy :focus {
+  outline: 0;
+}
 /* 推薦書籍文字 */
 .reviews_recommendText {
   font-size: 25px;
@@ -309,6 +321,9 @@
   right: 160px;
   top: 10px;
 }
+.reviews_BookCase:focus {
+  outline: 0;
+}
 
 /* 書評輸入欄 */
 .reviews_textarea {
@@ -354,7 +369,7 @@
 
 /* 未登入會員連結 */
 .reviews_Login {
-  margin: 50px auto 80px 400px;
+  margin: 50px auto 80px 300px;
 }
 /* 下方其他會員書評 */
 .reviews_text {
