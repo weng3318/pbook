@@ -544,4 +544,34 @@ router.get("/reviews/:book", (req, res) => {
     });
 });
 
+router.get("/favorite/:member", (req, res) => {
+  let member = req.params.member; //search用
+  let where = " WHERE 1 ";
+  member = member.split("'").join("\\'"); // 避免 SQL injection
+  where += " AND `number` = '" + member + "'";
+  let sql = "SELECT `br_bookcase`.`isbn` FROM `br_bookcase`" + where;
+  // console.log(sql);
+  db.queryAsync(sql)
+    .then(results => {
+      res.json(results);
+    })
+    .catch(error => {
+      console.log(error);
+    });
+});
+
+router.get("/favoriteNum/:isbn", (req, res) => {
+  let isbn = req.params.isbn; //search用
+  let where = " WHERE 1 ";
+  isbn = isbn.split("'").join("\\'"); // 避免 SQL injection
+  where += " AND `isbn` = '" + isbn + "'";
+  let sql = "SELECT COUNT(1) `total` FROM `br_bookcase`" + where;
+  db.queryAsync(sql)
+    .then(results => {
+      res.json(results[0]["total"]);
+    })
+    .catch(error => {
+      console.log(error);
+    });
+});
 module.exports = router;
