@@ -71,7 +71,7 @@ class ReviewerBooks extends React.Component {
         this.setState({
           hotNum: Math.min(csLength, this.state.hotNum + 3)
         })
-      }, 800);
+      }, 600);
     }
   }
 
@@ -113,15 +113,15 @@ class ReviewerBooks extends React.Component {
       for (let i = 0; i < csData.length; i++) {
         if (csData[i].number == reviewerData.number) {
           bookcaseData = csData[i].isbn
-          console.log('進入',reviewerData.br_name,'會員編號',reviewerData.number,'的書櫃')
+          // console.log('進入',reviewerData.br_name,'會員編號',reviewerData.number,'的書櫃')
         }
       }
 
         return (
       <div className="br_bg">
       <>
-        <BR_Navbar />
-        <h1>看看書櫃</h1>
+        <BR_Navbar brData={this.state.brData}/>
+        <h1>　</h1>
         <section className="reviewerBooks">
           {/* 接應id的書評家個人介紹 */}
           <BR_ReviewerList
