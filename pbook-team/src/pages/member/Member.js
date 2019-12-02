@@ -4,6 +4,7 @@ import Sidebar from '../../components/member/Sidebar'
 import Navbar from '../../components/member/Navbar'
 // import Edit from './Edit'
 // import Info from './Info'
+import FbMessage from './FbMessage'
 
 
 class Member extends React.Component {
@@ -22,7 +23,7 @@ class Member extends React.Component {
               <Sidebar />
               {/* <Edit />
               <Info /> */}
-              
+              <FbMessage/>
             </div>
           </div>
         </Row>
