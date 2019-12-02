@@ -68,7 +68,7 @@ function Bookinfo() {
   const OptionBar = styled.div`
     display: flex;
     flex-direction: row-reverse;
-    margin: 10px 50px 0 0;
+    margin: 50px 200px 0px 0;
   `
 
   // 書本外框
@@ -229,7 +229,7 @@ function Bookinfo() {
                 <Pagination.Prev className="pageNum" />
               </LinkContainer>
             )}
-            {pageNum}
+            {pageNum.filter((key, index) => index < 15)}
             {p < page && (
               <LinkContainer to={'/reviews?' + c + 'p=' + (Number(p) + 1)}>
                 <Pagination.Next className="pageNum" />
