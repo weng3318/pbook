@@ -65,13 +65,11 @@ class BR_BookcaseList extends React.Component {
   handleReadBook = opened => {
     this.setState({
       opened,
-      readData:
-        opened === 'blog' ? this.state.readData + 1 : this.state.readData,
+      readData:opened === 'blog' ? this.state.readData + 1 : this.state.readData,
     })
     axios.post('http://localhost:5555/reviewer/brReadBook', {
       sid: this.props.sid,
-      readbook:
-        opened === 'blog' ? this.state.readData + 1 : this.state.readData,
+      readbook:opened === 'blog' ? this.state.readData + 1 : this.state.readData,
     })
   }
   // 開關狀態
@@ -107,15 +105,11 @@ class BR_BookcaseList extends React.Component {
               this.handleReadBook(opened === 'blog' ? null : 'blog')
             }
           >
-            {/* <img className="brBookInfoImg_Bookcase" src={require(`./images_books/vb_9789578587823.jpg`)}/> */}
-            {/* <img className="brBookInfoImg_Bookcase" src={require(`./images/${this.props.pic}`)}/> */}
             <img
               className="brBookInfoImg_Bookcase"
               src={`http://localhost:5555/images/books/${this.props.pic}`}
               alt=""
             />
-
-            {/* <img className="brBookInfoImg_Bookcase" src={`http://localhost/books/src/venderBooks_Management/vb_images/${this.props.pic}`} alt=""/> */}
           </div>
 
           <div className="bookInfoRWD">
@@ -157,8 +151,6 @@ class BR_BookcaseList extends React.Component {
                 src={require('../reviewer_page/images/icon_Store.png')}
               />
             </Link>
-            {/* {this.state.isLogin && (JSON.parse(localStorage.getItem('user')).MR_number !==
-            this.props.number)  */}
             {!this.state.isLogin ? (
               ''
             ) : JSON.parse(localStorage.getItem('user')).MR_number ===

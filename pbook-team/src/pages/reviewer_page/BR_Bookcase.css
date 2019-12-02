@@ -1,12 +1,3 @@
-/* 載入gif */
-.loading{
-    background-image: url(./images/ani_LoadingPBook.gif);
-    background-repeat: no-repeat;
-    background-position: center center;
-    display: block;
-    width: 100%;
-    height: 200px;
-}
 /* 模糊吧條 */
 .blurBar{
     position: absolute;
@@ -93,7 +84,6 @@
     left: 50%;
     top: 63%;
     transform: translateX(-50%);
-    
 }
 /* 熱門書評，多本書區域 (圖片區塊) */
 .HotBookBox_Bookcase{
