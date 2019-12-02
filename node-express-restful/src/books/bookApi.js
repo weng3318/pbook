@@ -560,11 +560,11 @@ router.get("/favorite/:member", (req, res) => {
     });
 });
 
-router.get("/favoriteNum/:isbn", (req, res) => {
-  let isbn = req.params.isbn; //search用
+router.get("/favoriteNum/:sid", (req, res) => {
+  let sid = req.params.sid; //search用
   let where = " WHERE 1 ";
-  isbn = isbn.split("'").join("\\'"); // 避免 SQL injection
-  where += " AND `isbn` = '" + isbn + "'";
+  sid = sid.split("'").join("\\'"); // 避免 SQL injection
+  where += " AND `bookSid` = '" + sid + "'";
   let sql = "SELECT COUNT(1) `total` FROM `br_bookcase`" + where;
   db.queryAsync(sql)
     .then(results => {

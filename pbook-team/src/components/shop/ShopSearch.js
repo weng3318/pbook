@@ -13,6 +13,9 @@ const ShopSearch = props => {
   let mode = localStorage.getItem('mode')
     ? localStorage.getItem('mode')
     : 'list'
+  let memberLevel
+  if (!localStorage.getItem('user')) memberLevel = 1
+  else memberLevel = JSON.parse(localStorage.getItem('user')).MR_personLevel
   useEffect(() => {
     props.dispatch(cgFetch())
     props.dispatch(
@@ -29,6 +32,7 @@ const ShopSearch = props => {
   }
   let categoriesPayload = props.categories.payload
   let shopPayload = props.shop.payload
+  let discountAmount = props.discountAmount[memberLevel]
   let Data
   if (mode === 'list') {
     Data = DataList
@@ -43,8 +47,12 @@ const ShopSearch = props => {
         <Breadcrumb Search={Search} searchValue={searchValue}></Breadcrumb>
         <Container>
           <Row>
-            <Categories categoriesPayload={categoriesPayload}></Categories>
+            <Categories
+              categoriesPayload={categoriesPayload}
+              nowCategories={props.match.params.categories}
+            ></Categories>
             <Data
+              discountAmount={discountAmount}
               shopPayload={shopPayload}
               nowPage={props.match.params.page}
               keyword={props.match.params.keyword}
@@ -60,5 +68,6 @@ const ShopSearch = props => {
 const mapStateToProps = state => ({
   shop: state.shop,
   categories: state.categories,
+  discountAmount: state.discountAmount,
 })
 export default connect(mapStateToProps)(ShopSearch)
