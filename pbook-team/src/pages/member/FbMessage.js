@@ -1,5 +1,4 @@
 import React from 'react'
-import MessengerCustomerChat from 'react-messenger-customer-chat';
 import './lukeStyle.scss'
 
 class FbMessage extends React.Component{
