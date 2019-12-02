@@ -40,6 +40,7 @@ const BookBuy = props => {
     memberID = 'MR00174'
     favIndex = -1
   } else {
+    if (!props.favoritePayload) return 'loading'
     memberID = JSON.parse(localStorage.getItem('user')).MR_number
     favIndex = (props.favoritePayload && props.favoritePayload).findIndex(
       favorite => +favorite.isbn === isbn

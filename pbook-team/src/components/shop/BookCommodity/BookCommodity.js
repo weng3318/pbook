@@ -33,16 +33,10 @@ const BookCommodity = props => {
   useEffect(() => {
     props.dispatch(bookInfoFetch(props.match.params.sid))
     props.dispatch(reviewsFetch(props.match.params.sid))
+    props.dispatch(favoriteNumFetch(props.match.params.sid))
     props.dispatch(getRecommendBooks(memberID, 4))
     props.dispatch(cartFetch())
     props.dispatch(favoriteFetch(memberID))
-    // props.dispatch(
-    //   favoriteNumFetch(
-    //     props.bookInfo.payload &&
-    //       props.bookInfo.payload.rows &&
-    //       props.bookInfo.payload.rows[0].isbn
-    //   )
-    // )
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   let bookInfoPayload = props.bookInfo.payload
@@ -51,7 +45,6 @@ const BookCommodity = props => {
   let favoritePayload = props.favorite.payload
   let favoriteNumPayload = props.favoriteNum.payload
   let discountAmount = props.discountAmount[memberLevel]
-  console.log(favoriteNumPayload)
   return (
     <ScrollToTop>
       <Container className="px-0 detail_wrapper" fluid={true}>
