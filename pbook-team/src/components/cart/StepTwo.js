@@ -37,7 +37,7 @@ const StepTwo = props => {
   function goPay() {
     for (s in required_fields) {
       item = required_fields[s]
-      // item.el.style.border = '1px solid #ccc'
+      item.el.style.border = 'none'
       item.infoEl.textContent = ''
     }
     delivery.style.border = 'none'
