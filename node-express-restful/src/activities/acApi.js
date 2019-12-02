@@ -83,14 +83,15 @@ router.post('/books-discount/:memberLevel?', async (req, res, next) => {
     let memberLevel = req.params.memberLevel || 1
     let key = "__express__/activities/book-discount-for-member-level/" + memberLevel
     let cacheContent = cache.getKey(key)
-    if (!cacheContent) {
+    let currentDate = (new Date()).toLocaleDateString()
+    if (!cacheContent || cacheContent.saveDate !== currentDate) {
         var body = await AC.getBooksDiscountForMemberLevel(memberLevel)
-        let currentDate = (new Date()).toLocaleDateString()
-        cache.setKey(key, { body, saveDate: currentDate })
-        cache.save(true /* noPrune */)
+        await cache.setKey(key, { body, saveDate: currentDate })
+        await cache.save(true /* noPrune */)
+        console.log('save cache')
     } else {
+        console.log('cache save date: ', cacheContent.saveDate)
         var body = cacheContent.body
-
     }
     let discountArray = []
     for (let i = 0; i < bookArray.length; i++) {
@@ -140,6 +141,14 @@ router.put('/ac-sign', async (req, res, next) => {
 })
 router.delete('/ac-sign', async (req, res, next) => {
     res.json(await AC.deleteSignedActivities(req.body))
+})
+
+router.get('/ac-like/:memberNum/:acType/:acId/:toggle?', async (req, res, next) => {
+    const { memberNum, acType, acId, toggle } = req.params
+    res.json(await AC.acLike(memberNum, acType, acId, toggle))
+})
+router.get('/ac-like/:memberNum', async (req, res, next) => {
+    res.json(await AC.getAcLike(req.params.memberNum))
 })
 
 module.exports = router

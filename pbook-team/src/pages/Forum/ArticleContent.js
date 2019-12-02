@@ -39,6 +39,7 @@ const ArticleContent = props => {
   const [like, setLike] = useState(0)
   const [bookmark, setBookmark] = useState(false)
   const [favorite, setFavorite] = useState(false)
+  const [videoCount, setVideoCount] = useState(false)
 
   useEffect(() => {
     let mark = 0
@@ -72,6 +73,16 @@ const ArticleContent = props => {
       handleContentUpdated()
     }
   }, [data])
+  useEffect(() => {
+    if (videoCount) {
+      videoCount.forEach(value => {
+        console.log(value)
+        let aaa = document.querySelector(`#video${value}`)
+        let content = JSON.parse(textareaValue[value])
+        aaa.innerHTML = content
+      })
+    }
+  }, [textareaValue])
 
   const handleContentUpdated = () => {
     fetch(
@@ -84,7 +95,9 @@ const ArticleContent = props => {
         return res.json()
       })
       .then(result => {
-        let imgCount = 0
+        let video = []
+        let imgUpload = 0
+        let imgUnsplash = 0
         let textAreaCount = 0
         let type = data.article.fm_demoImage.split('.')[1]
         let body = result.element.map(item => {
@@ -98,25 +111,47 @@ const ArticleContent = props => {
               )
               textAreaCount++
               return textareaElement
-            case 'img':
-              let uni1 = `img${imgCount}`
-              let imgElement = (
+            case 'div':
+              let uni2 = `video${textAreaCount}`
+              let videoElement = (
+                <div id={uni2} className="video-frame" key={uni2}></div>
+              )
+              video.push(textAreaCount)
+              textAreaCount++
+              return videoElement
+            case 'img-upload':
+              let uni1 = `imgUpload${imgUpload}`
+              let imgUploadElement = (
                 <img
                   className="contentImg"
                   alt=""
                   key={uni1}
                   id={uni1}
-                  src={`http://localhost:5555/images/forum/article_key/${data.article.fm_articleId}${imgCount}.${type}`}
+                  src={`http://localhost:5555/images/forum/article_key/${data.article.fm_articleId}${imgUpload}.${type}`}
                 ></img>
               )
-              imgCount++
-              return imgElement
+              imgUpload++
+              return imgUploadElement
+            case 'img-unsplash':
+              let uni3 = `imgUnsplash${imgUnsplash}`
+              let imgUpsplashElement = (
+                <img
+                  className="contentImg"
+                  alt=""
+                  key={uni3}
+                  id={uni3}
+                  src={result.imgFromUnsplash[imgUnsplash]}
+                ></img>
+              )
+              imgUnsplash++
+              return imgUpsplashElement
             default:
               return 'nothing'
           }
         })
-        setTextareaValue(result.textareaValue)
+        setVideoCount(video)
         setAddElement([...body])
+        setTextareaValue(result.textareaValue)
       })
   }
   //追蹤作家

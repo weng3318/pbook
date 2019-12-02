@@ -6,7 +6,9 @@ import WOW from 'wowjs'
 
 function AcItemOffline(props) {
   React.useEffect(() => {
-    new WOW.WOW().init()
+    try {
+      new WOW.WOW().init()
+    } catch (err) {}
   })
   return (
     <>

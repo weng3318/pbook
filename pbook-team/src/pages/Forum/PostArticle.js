@@ -12,7 +12,6 @@ import {
   AppendVedio,
 } from './fmAction'
 //UI componet
-import CustomizedDialogs from '../../components/Material-UI/Dialog'
 import { makeStyles } from '@material-ui/core/styles'
 import InputLabel from '@material-ui/core/InputLabel'
 import Input from '@material-ui/core/Input'
@@ -30,14 +29,16 @@ import InboxIcon from '@material-ui/icons/Inbox'
 import VideoLibraryIcon from '@material-ui/icons/VideoLibrary'
 import PostAddIcon from '@material-ui/icons/PostAdd'
 import CancelIcon from '@material-ui/icons/Cancel'
-
-import Fab from '@material-ui/core/Fab'
 import CloseIcon from '@material-ui/icons/Close'
+import Fab from '@material-ui/core/Fab'
+// ResponsiveDialog
+import useMediaQuery from '@material-ui/core/useMediaQuery'
+import ResponsiveDialog from '../../components/Material-UI/ResponsiveDialog'
+import { useTheme } from '@material-ui/core/styles'
 
 //textarea
 import TextareaAutosize from 'react-textarea-autosize'
 import Swal from 'sweetalert2'
-import { func } from 'prop-types'
 
 const useStyles = makeStyles(theme => ({
   formControl: {
@@ -50,10 +51,6 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.paper,
   },
 }))
-
-function ListItemLink(props) {
-  return <ListItem button component="a" {...props} />
-}
 
 const vb_categories = {
   1: '文學小說',
@@ -85,13 +82,18 @@ const PostAritcle = props => {
   const [titleCheck, setTitleCheck] = useState(1) //title&subcate檢查
   const [textareaValue, setTextareaValue] = useState('')
   const [sectionElement, setSectionElement] = useState('')
+  const [imgFromUnsplash, setImgFromUnsplash] = useState([])
   const [canIPost, setCanIPost] = useState(0)
   const [subcate, setSubcate] = useState([1, 2])
   const [mainImg, setMainImg] = useState(0)
+  const [openUnsplash, setOpenUnsplash] = useState(false)
+  const [isMainUpload, setIsMainUpload] = useState(false)
 
   let { category, MR_number } = useParams()
 
   const Swal = require('sweetalert2')
+  const theme = useTheme()
+  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
 
   useEffect(() => {
     handelAsideFixed()
@@ -102,7 +104,10 @@ const PostAritcle = props => {
   //上傳input圖片點擊
   useEffect(() => {
     if (props.imgCount !== 0) {
-      document.querySelector(`#file${props.imgCount - 1}`).click()
+      let file = document.querySelector(`#file${props.imgCount - 1}`)
+      if (file) {
+        file.click()
+      }
     }
   }, [props.imgCount])
 
@@ -121,58 +126,15 @@ const PostAritcle = props => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [canIPost])
 
-  //step3 : 上傳發文內容
-  const confirmPost = () => {
-    let formData = new FormData()
-    for (let i = 0; i < mainImg; i++) {
-      let file = document.querySelector(`#file${i}`)
-      if (file) {
-        formData.append('imgFile[]', file.files[0])
-      }
-    }
-    let subcate1 = document.querySelector('#grouped-select').value
-    let title = document.querySelector('#title').value
-    formData.append('imgCount', mainImg)
-    if (sectionElement !== '') {
-      sectionElement.forEach(v => {
-        formData.append('element[]', v)
-      })
-    }
-    textareaValue.forEach(v => {
-      formData.append('textareaValue[]', v)
-    })
-    formData.append('title', title)
-    formData.append('cate', category)
-    formData.append('subcate', subcate1)
-    formData.append('MR_number', MR_number)
-    // props.imgData.forEach(v => {
-    //   formData.append('imgData[]', v)
-    // })
-
-    fetch('http://localhost:5555/forum/postNew/', {
-      method: 'POST',
-      body: formData,
-    })
+  //fetch子分類名稱
+  const handleSubCate = () => {
+    fetch(`http://localhost:5555/forum/cate/${category}`)
       .then(response => {
-        console.log(response.status)
+        if (!response.ok) throw new Error(response.statusText)
         return response.json()
       })
       .then(result => {
-        if (result.message)
-          Swal.fire({
-            title: '新增成功!',
-            text: '將回到個人首頁',
-            icon: 'success',
-            confirmButtonText: '太棒了',
-          })
-        props.dispatch(clearPostAritcleState())
-        props.history.push('/forum')
-      })
-      .catch(function(error) {
-        console.log(
-          'There has been a problem with your fetch operation: ',
-          error.message
-        )
+        setSubcate(result.subcategory)
       })
   }
 
@@ -269,7 +231,7 @@ const PostAritcle = props => {
     }
     let select = document.querySelector('#grouped-select')
     let title = document.querySelector('#title')
-
+    //標題及子分類都有填
     if (select.value !== '' && title.value !== '') {
       document.querySelector('.selectControl').classList.remove('show')
       document.querySelector('#subcate-help').classList.remove('show')
@@ -280,12 +242,161 @@ const PostAritcle = props => {
       if (select.value === '') {
         document.querySelector('.selectControl').classList.add('show')
         document.querySelector('#subcate-help').classList.add('show')
+        document.documentElement.scrollTop = 0
       }
       if (title.value === '') {
         document.querySelector('#title').classList.add('show')
         document.querySelector('#title-help').classList.add('show')
       }
     }
+  }
+
+  //step3 : 處理文章內容 section
+  const handleSection = () => {
+    let mainImgIndex = false
+    let content = document.querySelector('#ddd')
+    let arr = [...content.childNodes]
+    let textContent = arr
+      .filter(item => {
+        return item.nodeName === 'TEXTAREA' || item.className === 'video-frame'
+      })
+      .map(item => {
+        if (item.nodeName === 'TEXTAREA') return item.value
+        if (item.className === 'video-frame')
+          return JSON.stringify(item.innerHTML)
+      })
+    setTextareaValue(textContent)
+
+    let arr1 = arr.filter(item => {
+      return item.nodeName !== 'INPUT'
+    })
+    //選擇section內node 挑出textarea 和 上傳圖片 和unsplash圖片 回傳為arr分別處理
+    let arrOfUnsplash = []
+    let nodeNameSelect = arr1.map((item, index) => {
+      if (item.nodeName == 'DIV') {
+        if (item.className === 'video-frame') return 'div'
+        if (item.firstChild.nodeName === 'DIV') {
+          let node = item.firstChild.firstChild
+          //如果img 的src開頭為data表示為上傳圖片 => img-upload 開頭為http為unsplash圖片=>img-unsplash
+          if (node.nodeName === 'IMG') {
+            if (node.src.slice(0, 4) === 'data') {
+              if (!mainImgIndex) {
+                mainImgIndex = 1
+              }
+              return 'img-upload'
+            } else {
+              if (!mainImgIndex) {
+                mainImgIndex = 2
+              }
+              arrOfUnsplash.push(node.src)
+              return 'img-unsplash'
+            }
+          }
+        }
+      } else if (item.nodeName === 'TEXTAREA') {
+        if (item.value !== '') {
+          return 'textarea'
+        } else {
+          return ''
+        }
+      }
+    })
+    let result = nodeNameSelect.filter(item => item !== '')
+    // console.log(nodeNameSelect)
+    setIsMainUpload(mainImgIndex)
+    setImgFromUnsplash(arrOfUnsplash)
+    setSectionElement(result)
+    setCanIPost(canIPost + 1)
+  }
+
+  //step4 : 上傳發文內容
+  const confirmPost = () => {
+    let formData = new FormData()
+    for (let i = 0; i < mainImg; i++) {
+      let file = document.querySelector(`#file${i}`)
+      if (file) {
+        formData.append('imgFile[]', file.files[0])
+      }
+    }
+    let subcate1 = document.querySelector('#grouped-select').value
+    let title = document.querySelector('#title').value
+    formData.append('imgCount', mainImg)
+    if (sectionElement !== '') {
+      sectionElement.forEach(v => {
+        formData.append('element[]', v)
+      })
+    }
+    textareaValue.forEach(v => {
+      formData.append('textareaValue[]', v)
+    })
+
+    imgFromUnsplash.forEach(v => {
+      formData.append('imgFromUnsplash[]', v)
+    })
+    formData.append('isMainUpload', isMainUpload)
+    formData.append('title', title)
+    formData.append('cate', category)
+    formData.append('subcate', subcate1)
+    formData.append('MR_number', MR_number)
+    // props.imgData.forEach(v => {
+    //   formData.append('imgData[]', v)
+    // })
+
+    fetch('http://localhost:5555/forum/postNew/', {
+      method: 'POST',
+      body: formData,
+    })
+      .then(response => {
+        console.log(response.status)
+        return response.json()
+      })
+      .then(result => {
+        if (result.message)
+          Swal.fire({
+            title: '新增成功!',
+            text: '將回到個人首頁',
+            icon: 'success',
+            confirmButtonText: '太棒了',
+          })
+        props.dispatch(clearPostAritcleState())
+        props.history.push('/forum')
+      })
+      .catch(function(error) {
+        console.log(
+          'There has been a problem with your fetch operation: ',
+          error.message
+        )
+      })
+  }
+
+  //插入 Unsplash圖片 123
+  const handleUnsplashOpen = () => {
+    setOpenUnsplash(true)
+  }
+  const handleUnsplashClose = () => {
+    setOpenUnsplash(false)
+  }
+  const handleUnsplashPick = url => {
+    let element = (
+      <div
+        className="insertImg "
+        id={`img${props.imgCount}`}
+        key={`img${props.imgCount}`}
+      >
+        <ImgDemo imgData={url} imgCount={props.imgCount} />
+        <div className="imgCancel ">
+          <Fab size="small" aria-label="add" className={classes.margin}>
+            <CloseIcon
+              onClick={e => {
+                cancelImg(e, props.imgCount)
+              }}
+            />
+          </Fab>
+        </div>
+      </div>
+    )
+    setMainImg(mainImg + 1)
+    props.dispatch(AppendImgInput(element))
   }
   //側邊條FIXED事件
   const handelAsideFixed = () => {
@@ -301,17 +412,6 @@ const PostAritcle = props => {
         sidePanel.classList.add('fixed')
       }
     })
-  }
-  //fetch子分類名稱
-  const handleSubCate = () => {
-    fetch(`http://localhost:5555/forum/cate/${category}`)
-      .then(response => {
-        if (!response.ok) throw new Error(response.statusText)
-        return response.json()
-      })
-      .then(result => {
-        setSubcate(result.subcategory)
-      })
   }
 
   //插入影片
@@ -366,42 +466,6 @@ const PostAritcle = props => {
     buttonsStyling: false,
   })
 
-  const handleSection = () => {
-    let content = document.querySelector('#ddd')
-    let arr = [...content.childNodes]
-    let textContent = arr
-      .filter(item => {
-        return item.nodeName === 'TEXTAREA'
-      })
-      .map(item => item.value)
-    setTextareaValue(textContent)
-
-    let arr1 = arr.filter(item => {
-      return item.nodeName !== 'INPUT'
-    })
-    let nodeNameSelect = arr1.map(item => {
-      if (item.nodeName == 'DIV') {
-        if (item.className === 'video-frame') return ''
-        if (item.firstChild.nodeName === 'DIV') {
-          if (item.firstChild.firstChild.nodeName === 'IMG') {
-            return 'img'
-          } else {
-            return ''
-          }
-        }
-      } else if (item.nodeName === 'TEXTAREA') {
-        if (item.value !== '') {
-          return 'textarea'
-        } else {
-          return ''
-        }
-      }
-    })
-    let result = nodeNameSelect.filter(item => item !== '')
-    // console.log(nodeNameSelect)
-    setSectionElement(result)
-    setCanIPost(canIPost + 1)
-  }
   return (
     <div className="post-article">
       <div className="Navbar">
@@ -422,7 +486,7 @@ const PostAritcle = props => {
                 <ListItemText primary="插入圖片" />
               </ListItem>
               {/* <CustomizedDialogs handleImgFile={handleImgagefile} /> */}
-              <ListItem button onClick={handleSection}>
+              <ListItem button onClick={handleUnsplashOpen}>
                 <ListItemIcon>
                   <SearchIcon />
                 </ListItemIcon>
@@ -495,6 +559,12 @@ const PostAritcle = props => {
           <section id="inputTextToSave" id="ddd">
             {props.addElement}
           </section>
+          <ResponsiveDialog
+            fullScreen={fullScreen}
+            openUnsplash={openUnsplash}
+            closeUnsplash={handleUnsplashClose}
+            pickUnsplash={handleUnsplashPick}
+          ></ResponsiveDialog>
         </div>
       </div>
     </div>
@@ -521,19 +591,17 @@ const PostAritcle = props => {
 // }
 
 const ImgDemo = props => {
+  let id = props.imgCount < 0 ? 0 : props.imgCount
   return (
     <div key={props.imgCount}>
       <img
         alt=""
         className="img-demo"
         src={props.imgData}
-        id={`demoImg${props.imgCount - 1}`}
+        id={`demoImg${id}`}
       ></img>
     </div>
   )
-}
-const Video = props => {
-  return <div className="video-frame">{props.vedio}</div>
 }
 // 綁定props.todos <=> store.todos
 const mapStateToProps = store => ({

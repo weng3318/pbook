@@ -9,7 +9,10 @@
       width: 360px;
       height: 370px;
       position: relative;
-
+      transition: 0.2s;
+      &:hover {
+        transform: scale(1.02);
+      }
       .card-s1-img {
         display: block;
         width: 100%;

@@ -6,10 +6,10 @@ function Navbar() {
   const urlParams = window.location.pathname.replace('/book_reviews/', '')
 
   let c, s1, x, y, z
-  if (x == undefined) {
+  if (x === undefined) {
     x = ''
   }
-  if (y == undefined) {
+  if (y === undefined) {
     y = ''
     z = ''
   }
@@ -27,14 +27,14 @@ function Navbar() {
       x = data[i].categoriesName
     }
     if (data[i].sid == urlParams) {
-      y = data[i].categoriesName + '>'
+      y = data[i].categoriesName + ` ` + '>'
       z = data[i].name
     }
   }
 
   useEffect(() => {
     nav()
-  },[])
+  }, [])
 
   const nav = async () => {
     await axios.get('http://localhost:5555/reviews/nav').then(res => {
@@ -42,7 +42,20 @@ function Navbar() {
     })
   }
 
-  return <nav className="brNavbar">{`首頁>品書書評>${x}${y}${z}`}</nav>
+  return (
+    <div className="reviews_crumb">
+      {`首頁 > 品書書評 >`}
+      <span className="reviews_red">&nbsp;{x}</span>
+      <span>
+        &nbsp;
+        {y}
+      </span>
+      <span className="reviews_crumb2">
+        &nbsp;
+        {z}
+      </span>
+    </div>
+  )
 }
 
 export default Navbar

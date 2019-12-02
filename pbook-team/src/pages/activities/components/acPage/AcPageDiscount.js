@@ -13,8 +13,10 @@ import BookInfo from './BookInfo'
 import AcPageAside from './AcPageAside'
 import AcPageFoot from './AcPageFoot'
 import ScrollToTop from '../ScrollToTop'
+import AcBreadCrumb from '../AcBreadCrumb'
 import { cartFetch } from '../../../../components/shop/ShopActions'
 import WOW from 'wowjs'
+import moment from 'moment'
 
 // import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 
@@ -77,10 +79,16 @@ const AcPageDiscount = props => {
   }
 
   acInfo = acInfo[0]
+  let bread = [
+    { text: '首頁', url: '/' },
+    { text: '優惠活動', url: '/activities/discount' },
+    { text: acInfo.title, url: '/activities/discount/' + acId },
+  ]
 
   return (
     <>
       <ScrollToTop>
+        <AcBreadCrumb bread={bread} />
         <div className="container acPage">
           <div
             className="banner my-3"
@@ -93,11 +101,15 @@ const AcPageDiscount = props => {
             <main className="col-md-9">
               <div className="info my-3">
                 <small>
-                  <time>開始時間：{acInfo.start_time.substr(0, 10)}</time>
+                  <time>
+                    開始時間：{moment(acInfo.start_time).format('YYYY-MM-DD')}
+                  </time>
                 </small>
                 <br />
                 <small>
-                  <time>結束時間：{acInfo.end_time.substr(0, 10)}</time>
+                  <time>
+                    結束時間：{moment(acInfo.end_time).format('YYYY-MM-DD')}
+                  </time>
                 </small>
               </div>
               <header className="py-3">

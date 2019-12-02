@@ -457,7 +457,7 @@ const List = () => {
           <div className="reviews_recommendBook">
             {recommendBook.map((book, index) => (
               <Link
-              key={index}
+                key={index}
                 className="reviews_recommendBook_Link"
                 to={'/book_reviews/' + book.sid}
               >
@@ -530,7 +530,7 @@ const List = () => {
                   onKeyPress={keypress}
                   placeholder="新增評論..."
                 />
-                <BookRow>
+                <div className="reviews_push2">
                   <p style={{ width: '80px' }}>幫書籍評分</p>
                   <BookStar
                     score_star={review.star}
@@ -543,7 +543,7 @@ const List = () => {
                   >
                     送出評論
                   </button>
-                </BookRow>
+                </div>
               </form>
             ) : (
               <form className="reviews_form">
@@ -576,14 +576,14 @@ const List = () => {
                   </h6>
                   &nbsp;&nbsp;&nbsp;&nbsp;
                   <div className="reviews_time">
-                    {/* {new Intl.DateTimeFormat('zh-TW', {
+                    {new Intl.DateTimeFormat('zh-TW', {
                       year: 'numeric',
                       month: 'numeric',
                       day: 'numeric',
                       hour12: false,
                     })
                       .format(new Date(data.create_time))
-                      .replace(/\//g, '-')} */}
+                      .replace(/\//g, '-')}
                   </div>
                 </BookRow>
                 <br />

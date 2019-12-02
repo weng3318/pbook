@@ -1,7 +1,5 @@
 import React, { useState } from 'react'
 import axios from 'axios'
-import { faSearch } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export function Search(props) {
   const [s_result, outputResult] = useState([])
@@ -57,9 +55,9 @@ export function Search(props) {
         <ul className="reviews_search_result">
           {s_result.map((res, index) => (
             <>
-            <li key={index} value={res.sid} onClick={setName}>
-              {res.name}
-            </li>
+              <li key={index} value={res.sid} onClick={setName}>
+                {res.name}
+              </li>
             </>
           ))}
         </ul>
