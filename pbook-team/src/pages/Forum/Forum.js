@@ -1,9 +1,10 @@
 import React from 'react'
 // eslint-disable-next-line no-unused-vars
 import { BrowserRouter as Route, Link } from 'react-router-dom'
-import CardS1 from '../../components/forum/CardS1/CardS1'
+import CardS11 from '../../components/forum/CardS1/CardS1-1'
 import Listitem from '../../components/forum/ListItem/ListItem'
 import HotArticle from '../../components/forum/HotArticle/HotArticle'
+
 import './scss/Forum.scss'
 
 class Forum extends React.Component {
@@ -54,7 +55,7 @@ class Forum extends React.Component {
     let contentTop = document.documentElement.clientHeight
     let scrollTop = document.documentElement.scrollTop
     let scrollHeight = document.documentElement.scrollHeight
-    let reLoadValue = scrollHeight - contentTop - 100
+    let reLoadValue = scrollHeight - contentTop - 200
     let stopValue = scrollHeight - contentTop + contentTop
     if (!this.state.outOfList) {
       if (scrollTop > reLoadValue) {
@@ -67,16 +68,22 @@ class Forum extends React.Component {
             return res.json()
           })
           .then(result2 => {
-            this.setState({
-              articleList: result2,
-              number: newNumber,
-            })
-            document.documentElement.scrollTop = reLoadValue
+            this.setState(
+              {
+                articleList: result2,
+                number: newNumber,
+              },
+              () => {
+                console.log(this.state.articleList)
+                document.documentElement.scrollTop = reLoadValue
+              }
+            )
+
             if (
-              scrollTop + contentTop + 40 > stopValue ||
+              scrollTop + contentTop + 50 > stopValue ||
               this.state.number > 100
             ) {
-              console.log('list end')
+              console.log('list end', this.state.number)
               window.removeEventListener('scroll', () => {})
               this.setState({ outOfList: true })
             }
@@ -94,9 +101,9 @@ class Forum extends React.Component {
           <div className="position-r">
             <div className="featured-title">精選文章</div>
             <div className="featured">
-              <CardS1 data={this.state.data[0]} />
-              <CardS1 data={this.state.data[1]} />
-              <CardS1 data={this.state.data[2]} />
+              <CardS11 data={this.state.data[0]} />
+              <CardS11 data={this.state.data[1]} />
+              <CardS11 data={this.state.data[2]} />
             </div>
             <div style={{ color: 'transparent' }}>更多精選</div>
             <Link

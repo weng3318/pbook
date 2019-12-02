@@ -18,7 +18,7 @@ const db = mysql.createConnection({
 });
 db.connect(); //資料庫連線
 
-bluebird.promisifyAll(db);
+bluebird.promisifyAll(db); 
 
 var mapResult = [];
 chat.post("/chatList2", function (req, res) {
