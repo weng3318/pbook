@@ -29,7 +29,7 @@ class BR_BlogList extends React.Component {
           <h5 className="" dangerouslySetInnerHTML={{__html:this.props.blog}}></h5>
         </section>
 
-          <img className="pbookChick BlogMouse" onClick={this.handleURL} src={require('./images/品書印章.png')}/>
+          <img className="pbookChick" onClick={this.handleURL} src={require('./images/品書印章.png')}/>
       </>
     )
   }

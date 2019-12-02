@@ -5,6 +5,63 @@
     margin: 0;
     padding: 0;
 }
+/* 登錄模擬背景 */
+#overlay{
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    left: 0;
+    top: 0;
+    background: #000;
+    z-index: 5;
+    opacity: 0.7;
+}
+/* 背景圖片 */
+.br_bg{
+    background-image: url(./images/bg.png);
+}
+.bg_black::before{
+    content: '';
+    display: block;
+    background: rgba(0,0,0,.9);
+    position: absolute;
+    left:0;
+    right:0;
+    top:0;
+    bottom:0;
+}
+/* 書評家登錄用組件 */
+.inLoginUI{
+    position: absolute;
+    max-width: 88%;
+    top: -78%;
+    left: 10%;
+    right: 0;
+}
+/* 看看書櫃 (按鈕、超連結)*/
+.brReadBooks{
+    min-width: 70px;
+    font-size: 1rem;
+    color: #2d3a3a;
+    margin: 10px 0 10px 5px;
+}
+.brReadBooks:hover{
+    color: #ffc408;
+    text-shadow: 0.03rem 0rem 0rem rgba(45, 58, 58, 0.4);
+}
+.brMark_img_noAni{
+    display: block;
+}
+.brMark_img_ani{
+    display: none;
+}
+/* 看看書櫃，hover動畫 */
+.brSeeBookBox:hover .brMark_img_ani{
+    display: block;
+}
+.brSeeBookBox:hover .brMark_img_noAni{
+    display: none;
+}
 /* 邊框線，參照用 */
 .borderLine {
     border: 1px solid #2d3a3a;
@@ -21,10 +78,6 @@
 /* 邊框線，左 */
 .borderLineL {
     border-left:1px solid #2d3a3a;
-}
-/* 背景圖片 */
-.br_bg{
-    background-image: url(./images/bg.png);
 }
 /* 移除超連結底線 */
 a:hover{
@@ -49,11 +102,15 @@ a:hover{
     transform: translate(-50%);
     transition: 0.2s;
 }
-/* 取得資料中... (文字) */
+/* 取得資料中... (文字、GIF) */
 .h1_br{
+    text-align: center;
     font-weight: bolder;
     margin: 1rem;
     color: #2d3a3a;
+}
+.loadingGif{
+    margin: 0 0 0 30px;
 }
 /* 標題，主要文字 */
 .h5_br{
@@ -81,7 +138,7 @@ a:hover{
     transition: 0.5s;
     z-index: 1;
 }
-/* 書評文章內文title (黃字版)*/
+/* 書評文章內文title (紅字版)*/
 .h5_title{
     font-size: 1.6rem;
     font-weight: 550;
@@ -162,17 +219,6 @@ a:hover{
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
 }
-/* 看看書櫃 (按鈕、超連結)*/
-.brReadBooks{
-    min-width: 70px;
-    font-size: 1rem;
-    color: #2d3a3a;
-    margin: 10px 0 10px 5px;
-}
-.brReadBooks:hover{
-    color:#ffc408;
-    /* background-color: #cde2d0; */
-}
 /* 書評家簡介全區域 (縮放限制) */
 .brInfoBox{
     /* min-width: 260px; */
@@ -195,7 +241,7 @@ a:hover{
     min-width: 20%;
     max-width: 33%;
 }
-/* 職業介紹、追蹤作者、社群分享，共用區域 (按鈕圖片) */
+/* 職業介紹、收藏作者、社群分享，共用區域 (按鈕圖片) */
 .brIconBox{
     min-height: 45px;
     bottom: 0;
@@ -204,10 +250,30 @@ a:hover{
     display: flex;
     justify-content: center;
     align-items: center;
-    /* justify-content: space-around; */
     position: relative;
 }
-/* 追蹤作者 (按鈕) */
+.brIconBox:hover .brIconFollow_Ani{
+    display: block;
+}
+.brIconBox:hover .brIconFollow_noAni{
+    display: none;
+}
+/* 進階收藏作者 (無動畫) */
+.brIconFollow_noAni{
+    position: absolute;
+    max-width: 80%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: block;
+}
+.brIconFollow_Ani{
+    position: absolute;
+    max-width: 46%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: none;
+}
+/* 收藏作者 (按鈕) */
 .brIconFollow{
     position: absolute;
     max-width: 80%;
@@ -261,5 +327,10 @@ a:hover{
         width: 100%;
         border-left:0px solid #2d3a3a;
         border-top:1px solid #2d3a3a;
+    }
+    /* 書評家登錄用組件 RWD (位置調整) */
+    .inLoginUI{
+        top: -12%;
+        left: 0;
     }
 }

@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import CKEditor from '@ckeditor/ckeditor5-react'
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
+// import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
+// import InlineEditor from '@ckeditor/ckeditor5-build-inline'
+import BalloonBlockEditor from '@ckeditor/ckeditor5-build-balloon-block'
 import { withRouter } from 'react-router-dom'
 import axios from 'axios'
-import '@ckeditor/ckeditor5-build-classic/build/translations/zh'
 import swal from '@sweetalert/with-react'
+import '@ckeditor/ckeditor5-build-classic/build/translations/zh'
 
 export class ReviewerBlogEdit extends Component {
   constructor(props) {
@@ -48,11 +50,13 @@ export class ReviewerBlogEdit extends Component {
 
     // if (!this.state.csData.length) return <></>
     if (this.state.csData.length === 0)
-      return (
-        <>
-          <h1 className="h1_br">取得資料中...</h1>
-        </>
-      )
+        return (
+          <>
+            <h1 className="h1_br">取得資料中...
+              <img className="loadingGif" src={require('./reviewer_page/images/ani_LoadingPBook.gif')}/>
+            </h1>
+          </>
+        )
     // 書櫃資料
     let csData = this.state.csData
 
@@ -96,7 +100,7 @@ export class ReviewerBlogEdit extends Component {
             </button>
             {/* ---------------------------------------------------------------- */}
             <CKEditor
-              editor={ClassicEditor}
+              editor={BalloonBlockEditor}
               config={{
                 language: 'zh',
               }}
@@ -111,7 +115,7 @@ export class ReviewerBlogEdit extends Component {
             />
             {/* ---------------------------------------------------------------- */}
           </section>
-        </section>
+          </section>
       </>
       </div>
     )

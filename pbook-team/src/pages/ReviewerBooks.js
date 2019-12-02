@@ -16,6 +16,7 @@ class ReviewerBooks extends React.Component {
       opened: null,
       openedSid: null,
       hotNum: 3,
+      loading: false,
     }
   }
 
@@ -43,21 +44,34 @@ class ReviewerBooks extends React.Component {
       this.setState({ csData })
     })
   }
-  
 
   // 移除監聽，防組件錯亂
   componentWillUnmount() {
     window.removeEventListener('scroll', (e) => this.handleScroll(e))
   }
 
+  startLoading = () => this.setState({ loading: true });
+  endLoading = () => this.setState({ loading: false });
+
   handleScroll = e => {
     const maxHeight = e.srcElement.scrollingElement.scrollHeight;
     const fromTop = e.srcElement.scrollingElement.scrollTop;
     const { innerHeight } = window;
+    const { csData, hotNum } = this.state;
+    const csLength = csData.filter(({ number }) => number === this.getReviewerData().number).length;
     if (innerHeight + fromTop === maxHeight) {
-      this.setState({
-        hotNum:this.state.hotNum + 3
-      })
+      if (hotNum === csLength) {
+        // do something
+        return false;
+      }
+ 
+      this.startLoading();
+      window.setTimeout(() => {
+        this.endLoading();
+        this.setState({
+          hotNum: Math.min(csLength, this.state.hotNum + 3)
+        })
+      }, 800);
     }
   }
 
@@ -65,36 +79,44 @@ class ReviewerBooks extends React.Component {
   handleOpened = (opened, openedSid) => {
     this.setState({ opened, openedSid })
   }
+
+  getReviewerData() {
+    const { brData } = this.state;
+    let reviewerData = null;
+    for (let i = 0; i < brData.length; i++) {
+      if (brData[i].sid == this.props.match.params.sid) {
+        reviewerData = brData[i]
+      }
+    }
+    return reviewerData;
+  }
   
   render() {
-    const { opened, openedSid } = this.state
+    const { opened, openedSid, loading } = this.state
     
     if (this.state.brData.length === 0)
     return (
-      <>
-          <h1 className="h1_br">取得資料中...</h1>
+        <>
+          <h1 className="h1_br">取得資料中...
+            <img className="loadingGif" src={require('./reviewer_page/images/ani_LoadingPBook.gif')}/>
+          </h1>
         </>
       )
       
       let brData = this.state.brData //書評家
       let csData = this.state.csData //看看書櫃
       
-      let reviewerData = null;
-      for (let i = 0; i < brData.length; i++) {
-        if (brData[i].sid == this.props.match.params.sid) {
-          reviewerData = brData[i]
-          console.log('書評家編號', reviewerData.number, '為對象。')
-        }
-      }
+      const reviewerData = this.getReviewerData();
       
       // 指定會員的書櫃，收藏的書籍
       let bookcaseData = null
       for (let i = 0; i < csData.length; i++) {
         if (csData[i].number == reviewerData.number) {
           bookcaseData = csData[i].isbn
-          // console.log('來自書評家',reviewerData.name,'的書籍isbn：',bookcaseData)
+          console.log('進入',reviewerData.br_name,'會員編號',reviewerData.number,'的書櫃')
         }
       }
+
         return (
       <div className="br_bg">
       <>
@@ -117,7 +139,7 @@ class ReviewerBooks extends React.Component {
           {/* 熱門書評列表 */}
           <div className="HotBookBoxAll_Light">
             <div className="blackBG">
-              <h5 className="h5_hotText">熱門書評</h5>
+              <h5 className="h5_hotText">推薦書評</h5>
               <div className="HotBookBoxAll_Bookcase">
                 {this.state.csData
                   .filter(({ number }) => reviewerData.number === number)
@@ -136,6 +158,7 @@ class ReviewerBooks extends React.Component {
                   ))}
               </div>
             </div>
+
           </div>
           {opened === 'blog' && <ReviewerBlog sid={openedSid} opened={opened} onHandleOpen={this.handleOpened}/>}
 
@@ -159,11 +182,16 @@ class ReviewerBooks extends React.Component {
                 blog={blog}
                 introduction={introduction}
                 tube={tube}
-                likebook={likebook}
                 readbook={readbook}
+                likebook={likebook}
+                refreshReadBook={this.fetchCsData}
+                refreshLikeBook={this.fetchCsData}
                 refreshBlog={this.fetchCsData}
               ></BR_BookcaseList>
             ))}
+          {loading && <h1 className="h1_br">取得資料中...
+            <img className="loadingGif" src={require('./reviewer_page/images/ani_LoadingPBook.gif')}/>
+          </h1>}
         </section>
       </>
       </div>
