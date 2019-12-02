@@ -7,6 +7,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPencilAlt, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import swal from 'sweetalert'
 import AcCalendar from './AcCalendar'
+import $ from 'jquery'
+import 'bootstrap'
 
 function AcRU(props) {
   let user = localStorage.user ? JSON.parse(localStorage.user) : false
@@ -14,6 +16,7 @@ function AcRU(props) {
   React.useEffect(() => {
     let userNum = user ? user.MR_number : 'not login'
     props.dispatch(getAcTable(userNum))
+    $('[data-toggle="popover"]').popover()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -40,7 +43,8 @@ function AcRU(props) {
     swal('確定取消活動?\n' + acSignItem.title, {
       buttons: { acDNo: '取消', acDYes: '確認' },
     }).then(result => {
-      if (result === 'yes') {
+      console.log(result)
+      if (result === 'acDYes') {
         fetch('http://localhost:5555/activities/ac-sign', {
           method: 'DELETE',
           body: JSON.stringify(acSignItem),
@@ -60,6 +64,7 @@ function AcRU(props) {
   }
 
   function handleClick(sid) {
+    $('[data-toggle="popover"]').popover('dispose')
     props.history.push('/activities/offline/' + sid)
   }
 
@@ -87,6 +92,17 @@ function AcRU(props) {
                     <tr key={v.sid}>
                       <th scope="row">{i + 1}</th>
                       <td
+                        title={v.title}
+                        data-toggle="popover"
+                        data-trigger="hover"
+                        data-placement="bottom"
+                        data-delay={JSON.stringify({ show: 500, hide: 0 })}
+                        data-container=".acTable"
+                        data-html="true"
+                        data-content={`
+                        時間：${v.date.substr(0, 10)}
+                        <br/>地點：${v.location}<br/>
+                        簡介：<br/>${v.brief_intro}`}
                         className="acTitle"
                         onClick={() => {
                           handleClick(v.acId)

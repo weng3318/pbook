@@ -33,7 +33,6 @@ export class ReviewerBlog extends React.Component {
         this.setState({ opened:opened })
     }
   render() {
-    
     // if (!this.state.csData.length) return <></>
     if (this.state.csData.length === 0)
       return (
@@ -43,14 +42,14 @@ export class ReviewerBlog extends React.Component {
       )
     let csData = this.state.csData
     
-// 參數接法
+// 參數接
     // let BlogData = null
     //   for (let i = 0; i < csData.length; i++) {
     //     if (csData[i].sid == this.props.match.params.sid) {
     //       BlogData = csData[i]
     //     }
     // }
-// State接法
+// State接
     let BlogData = null
       for (let i = 0; i < csData.length; i++) {
         if (csData[i].sid == this.props.sid) {
@@ -60,12 +59,13 @@ export class ReviewerBlog extends React.Component {
     console.log('點選書籍，獲取sid', BlogData.sid)
     
     return (
+    <div className="br_bg">
     <>
       <h3 className="h3_br">Blogger</h3>
       <section className="reviewerBlog ">
       {/* 部落格內文 */}
           <BR_BlogList
-          onHandleOpen={this.props.onHandleOpen} //進去勒索
+          onHandleOpen={this.props.onHandleOpen}
           opened={this.props.opened}
           key={BlogData.sid}
           sid={BlogData.sid}
@@ -74,9 +74,8 @@ export class ReviewerBlog extends React.Component {
           tube={BlogData.tube}
           ></BR_BlogList>
       </section>
-      {/* 效果圖 開發參照 */}
-      {/* <img className="BlogBG" src={require('../pages/reviewer_page/images/03_評品書.png')}/> */}
     </>
+    </div>
     )
   }
 }

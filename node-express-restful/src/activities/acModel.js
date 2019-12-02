@@ -33,7 +33,7 @@ class AC {
     }
 
     static async getDiscountById(acId) {
-        let sql = "SELECT * FROM `pm_event` WHERE `sid`=" + acId
+        let sql = "SELECT * FROM `pm_event2` WHERE `sid`=" + acId
         let discount = await sqlQuery(sql)
         return discount[0]
     }
@@ -60,20 +60,23 @@ class AC {
     static async getDiscountBooksByCate(acId, cpId = []) {
         let sql = "SELECT * FROM `pm_books_group` WHERE `categories_id` AND `event_id` =" + acId
         let cate_condition = await sqlQuery(sql)
-        sql = "SELECT * FROM `vb_books` WHERE ( "
+        sql = "SELECT * FROM `vb_books` WHERE 1 "
         // 限制分類
+        let cate_sql_string = '('
         for (let i = 0; i < cate_condition.length; i++) {
-            sql += " `categories`=" + cate_condition[i].categories_id + " OR"
+            cate_sql_string += " `categories`=" + cate_condition[i].categories_id + " OR"
         }
-        sql += " 0 )"
+        cate_sql_string += " 0 )"
         // -------
         // 限制廠商
-        sql += " AND ("
+        let cp_sql_string = '('
         for (let i = 0; i < cpId.length; i++) {
-            sql += " `publishing`=" + cpId[i] + " OR"
+            cp_sql_string += " `publishing`=" + cpId[i] + " OR"
         }
-        sql += " 0 )"
+        cp_sql_string += " 0 )"
         // -------
+        sql += cate_condition.length === 0 ? '' : ' AND ' + cate_sql_string
+        sql += cpId.length === 0 ? '' : ' AND ' + cp_sql_string
         let books = await sqlQuery(sql)
         return books
     }
@@ -98,8 +101,11 @@ class AC {
         // 取得適用會員
         discount.member = +info.user_level ? await AC.getDiscountMember(acId) : [1, 2, 3, 4, 5, 6]
         // 取得適用書籍
-        if (info.group_type === 0) {
+        if (info.group_type === 0 && info.cp_group === 0) {
             discount.books = []
+        } else if (info.group_type === 0 && info.cp_group === 1) {
+            let cpId = await AC.getDiscountCp(acId)
+            discount.books = await AC.getDiscountBooksByCate(acId, cpId)
         } else if (info.group_type === 1) {
             let cpId = await AC.getDiscountCp(acId)
             discount.books = await AC.getDiscountBooksByCate(acId, cpId)
@@ -155,7 +161,11 @@ class AC {
         let sql = ''
         let result = {
             type: 1,
-            description: '報名成功'
+            description: '報名成功',
+            inputData,
+            title: '',
+            intro: '',
+            date: '',
         }
         inputData.memberId = (await AC.memberSidMapArray())[inputData.memberNum] || req.sessionID
 
@@ -171,8 +181,8 @@ class AC {
         }
 
         // 檢查名額
-        sql = 'SELECT `quota`, `registered` FROM `ac_pbook2` WHERE `sid`=' + inputData.acId
-        let { quota, registered } = (await sqlQuery(sql))[0]
+        sql = 'SELECT `quota`, `registered`, `title`, `intro`, `date` FROM `ac_pbook2` WHERE `sid`=' + inputData.acId
+        let { quota, registered, title, intro, date } = (await sqlQuery(sql))[0]
         if ((quota - registered) <= 0) {
             result.type = 0
             result.description = '名額已滿'
@@ -189,6 +199,9 @@ class AC {
         // 名額減一
         sql = 'UPDATE `ac_pbook2` SET `registered`=' + (registered + 1) + ' WHERE `sid`=' + inputData.acId
         await sqlQuery(sql)
+        result.title = title
+        result.intro = intro
+        result.date = date
 
         return result
     }
@@ -201,7 +214,7 @@ class AC {
         let sql = 'SELECT * FROM `ac_sign` WHERE `memberId`="' + memberId + '"'
         let signedAc = await sqlQuery(sql)
 
-        sql = 'SELECT `sid`,`title`, `date` FROM `ac_pbook2` WHERE 0'
+        sql = 'SELECT `sid`,`title`, `date`, `location`, `brief_intro` FROM `ac_pbook2` WHERE 0'
         for (let i = 0; i < signedAc.length; i++) {
             sql += ' OR `sid`=' + signedAc[i].acId
         }
@@ -210,6 +223,8 @@ class AC {
             let ac = acTitleArray.find(v2 => +v2.sid === +v.acId)
             v.title = ac.title
             v.date = ac.date
+            v.location = ac.location
+            v.brief_intro = ac.brief_intro
         })
 
         return signedAc

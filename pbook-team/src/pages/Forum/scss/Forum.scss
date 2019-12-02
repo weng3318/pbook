@@ -41,7 +41,7 @@ html {
     margin-top: 12px;
   }
   .featured-title {
-    font-size: 1.4rem;
+    @extend %title-module;
     margin: 12px 0 0 12px;
   }
   .featured-title::before {
@@ -54,7 +54,7 @@ html {
     right: 10px;
     bottom: 0;
     font-size: 1.2rem;
-    color: $grey-grey;
+    color: $black-tea;
     text-decoration: underline;
   }
   .forum-list-wrapper {
@@ -62,7 +62,7 @@ html {
     max-width: 740px;
   }
   .articleList-title {
-    font-size: 1.4rem;
+    @extend %title-module;
     margin: 12px 0 12px 12px;
     padding: 12px 0 4px 0;
 

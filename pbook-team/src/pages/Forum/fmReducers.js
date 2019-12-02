@@ -20,12 +20,32 @@ function postArticle(state = postArticleState, action) {
         addElement: [...state.addElement, action.content],
         imgData: [...state.imgData, action.imgData],
       }
-
     case 'APPEND_TEXTAREA':
       return {
         ...state,
         addElement: [...state.addElement, action.content],
       }
+    case 'APPEND_VEDIO':
+      let element = <div className="video-frame"></div>
+      return {
+        ...state,
+        addElement: [...state.addElement, element],
+      }
+    case 'REMOVE_IMG':
+      let newContent = state.addElement.filter(item => {
+        let imgId = `img${action.removeNO}`
+        let fileId = `file${action.removeNO}`
+        if (item.props.id !== imgId) {
+          if (item.props.id !== fileId) {
+            return item
+          }
+        }
+      })
+      return {
+        ...state,
+        addElement: [...newContent],
+      }
+
     case 'CLEAR_POST_DATA':
       return {
         ...postArticleState,
@@ -63,8 +83,7 @@ function UserDetails(state = detailInitState, action) {
     // case 'FM_USER_REQUEST':
     //   return { ...state, data: action.data }
     case 'FM_USER_RECEIVE':
-
-    return {
+      return {
         ...state,
         data: action.data.writer,
         follow: action.data.follow,

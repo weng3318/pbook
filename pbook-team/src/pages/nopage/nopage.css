@@ -27,6 +27,7 @@
   flex-direction: column;
   justify-content: center;
   text-align: center;
+  z-index: 4;
 }
 
 @media (max-width: 460px) {

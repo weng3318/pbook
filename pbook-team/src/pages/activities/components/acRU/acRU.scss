@@ -1,24 +1,35 @@
 @import '../../color.scss';
 .acTable {
+  color: $color-black;
+  .popover {
+    width: 100%;
+    border: 1px solid darken($color-green, 5%);
+    max-width: 480px;
+    .popover-header {
+      background: $color-green;
+    }
+  }
   .acTitle {
     cursor: pointer;
+    transition: 0.1s;
     &:hover {
-      color: darken($color-yellow, 30%);
+      color: $color-yellow;
+      text-shadow: 1px 1px 1px $color-black;
       font-weight: 600;
-      background-color: lighten($color-green, 5%);
     }
   }
   .icon {
     color: $color-black;
     cursor: pointer;
     &:hover {
-      color: lighten($color-black, 30%);
+      text-shadow: 1px 1px 1px $color-black;
+      color: $color-yellow;
       background-color: lighten($color-green, 5%);
     }
   }
 
   .table-striped tbody tr:nth-of-type(odd) {
-    background-color: lighten($color-green, 12%);
+    background-color: lighten($color-green, 13%);
   }
 }
 .swal-button--acDYes {

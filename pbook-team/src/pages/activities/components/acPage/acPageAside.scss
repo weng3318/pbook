@@ -36,11 +36,13 @@
       width: 50%;
       border: none;
       border: 1px solid transparent;
+      transition: .3s;
       &:hover,
       &:focus {
-        border: 1px solid $color-yellow;
         background: lighten($color-green, 5px);
         outline: none;
+        box-shadow: none;
+        color: $color-black;
       }
     }
   }

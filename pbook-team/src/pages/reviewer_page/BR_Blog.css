@@ -5,6 +5,11 @@
     background: #2d3a3a;
     padding: 0 100px 50px 100px;
 }
+/* 部落格瀏覽外框 */
+.Blog_Read_Box{
+    border: 1px solid #2d3a3a;
+    padding: 100px;
+}
 /* 表單送出按鈕，自訂樣式 */
 .Blog_submit{
     min-width: 150px;
@@ -145,7 +150,6 @@
 }
 /* 書評部落格 (參照背景) */
 .reviewerBlog {
-    border-bottom: 2px solid #2d3a3a;
     padding: 30px 200px 50px 200px;
     /* background: #fff; */
     /* background: url(../reviewer_page//images/03_評品書.png) center center; */

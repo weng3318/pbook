@@ -5,12 +5,27 @@
     margin: 0;
     padding: 0;
 }
-/* 超連結反饋，參照用 */
-/* a:hover{
-    color:#ff525b;
-    background-color: #cde2d0;
-    text-decoration: none;
-} */
+/* 邊框線，參照用 */
+.borderLine {
+    border: 1px solid #2d3a3a;
+    box-shadow: 3px 3px 8px #2d3a3a;
+}
+/* 邊框線，上 */
+.borderLineTop {
+    border-top:1px solid #2d3a3a;
+}
+/* 邊框線，右 */
+.borderLineR {
+    border-right:1px solid #2d3a3a;
+}
+/* 邊框線，左 */
+.borderLineL {
+    border-left:1px solid #2d3a3a;
+}
+/* 背景圖片 */
+.br_bg{
+    background-image: url(./images/bg.png);
+}
 /* 移除超連結底線 */
 a:hover{
     text-decoration: none;
@@ -73,14 +88,6 @@ a:hover{
     color: #ff525b;
     /* color: #ffc408; */
     text-shadow: 0.05rem 0rem 0rem rgba(45, 58, 58, 0.4);
-}
-/* 邊框顏色，參照用 */
-.borderLine {
-    border: 3px solid #2d3a3a;
-}
-/* 邊框顏色，上底線 */
-.borderLineTop {
-    border-top:3px solid #2d3a3a;
 }
 /* 麵包屑(Breadcrumbs) */
 .brNavbar{
@@ -229,9 +236,15 @@ a:hover{
     background: #1877f2;
     height: 25px;
 }
-/* 書評家列表，整體區域 ( Display狀態改變) */
+/* 書評家列表，整體區域 ( Display狀態改變 + 外框陰影) */
 .ReviewerListAllBox{
     display: flex;
+    border: 1px solid #2d3a3a;
+    box-shadow: 3px 3px 8px #2d3a3a;
+}
+.brYouTubeRWD{
+    border-left:1px solid #2d3a3a;
+    border-top:0px solid #2d3a3a;
 }
 @media (max-width: 786px) {
     /* 書評家列表，整體區域 (狀態改變) */
@@ -246,5 +259,7 @@ a:hover{
     /* 影片顯示，RWD (狀態改變) */
     .brYouTubeRWD{
         width: 100%;
+        border-left:0px solid #2d3a3a;
+        border-top:1px solid #2d3a3a;
     }
 }
