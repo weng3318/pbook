@@ -6,7 +6,7 @@ const upload = multer({ dest: "tmp_uploads/" }); //圖片上傳
 const fs = require("fs"); //檔案處理
 const moment = require("moment-timezone");
 const db = mysql.createConnection({
-  host: "192.168.27.186", 
+  host: "192.168.27.186",
   user: "root",
   password: "root",
   database: "pbook"
@@ -63,8 +63,8 @@ router
       "SELECT * FROM `fm_article` article JOIN `vb_categories` vb ON article.`fm_category` = vb.`sid` JOIN `mr_information` mr ON article.`fm_memberId`=mr.`MR_number` LIMIT " +
       number;
     db.query(sql, (error, results, fields) => {
-      if (error) throw error; 
-      // output.featured = results; 
+      if (error) throw error;
+      // output.featured = results;
       res.json(results);
     });
   });
@@ -80,7 +80,7 @@ router
     let category = req.params.category;
     let output = {};
     let sql = `SELECT * FROM mr_information JOIN vb_categories ON vb_categories.sid='${category}' WHERE MR_number= '${memberId}'`;
-    console.log(sql);
+    
     // res.json(sql);
     db.queryAsync(sql)
       .then(results => {
@@ -89,7 +89,6 @@ router
         return db.queryAsync(sql);
       })
       .then(results => {
-        console.log(results[0]["COUNT(1)"]);
         output.follow = results[0]["COUNT(1)"];
         res.json(output);
       });
@@ -161,7 +160,6 @@ router
     } else {
       fm_responseId = articleId;
     }
-    console.log(fm_articleId, fm_memberId);
     let sql = `INSERT INTO fm_bookmark(fm_bookmarkSid, fm_articleId, fm_responseSid, fm_memberId) VALUES (NULL,?,?,?)`;
 
     db.query(
@@ -254,7 +252,7 @@ router
     let fm_articleId = req.params.articleId;
     let fm_responseId = req.params.memberId;
     let fm_responseContent = req.body.contentValue;
-    console.log(123, req.body);
+    // console.log(123, req.body);
     let sql = `INSERT INTO fm_articleresponse(sid, fm_articleId, fm_responseId, fm_responseContent, fm_resLike, responseTime) VALUES (NULL,?,?,?,0,NOW())`;
     db.query(
       sql,
@@ -302,7 +300,7 @@ router
 router
   .route("/cate/:number/:subCate?")
   .all((req, res, next) => {
-    next();
+    next(); 
   })
   .get((req, res) => {
     let output = {};
@@ -400,7 +398,7 @@ router
     console.log("post article");
     let resData = {};
     let data = req.body;
-    // console.log(req.body);
+    console.log(req.body);
     let articleId = +new Date() + data.MR_number;
     let filename = "";
     let mainImg = "";
@@ -433,7 +431,9 @@ router
         resData.filename = "no img file";
       }
     }
-
+    if (data.isMainUpload === "2") {
+      mainImg = data.imgFromUnsplash[0];
+    }
     let category = data.cate;
     let subCategories = data.subcate;
     let title = data.title;
@@ -443,12 +443,12 @@ router
         return item.slice(0, 200);
       }
     })[0];
-    // console.log('imgUploadElement',data.imgFromUnsplash);
+
     let demoImage = mainImg;
     let content = {
       element: data.element,
       textareaValue: data.textareaValue.filter(item => item !== ""),
-      imgFromUnsplash:data.imgFromUnsplash
+      imgFromUnsplash: data.imgFromUnsplash
     };
     fs.writeFile(
       __dirname + "/../../public/forum/content/" + articleId + ".json",

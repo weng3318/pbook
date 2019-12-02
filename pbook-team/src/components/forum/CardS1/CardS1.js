@@ -17,17 +17,18 @@ class CardS1 extends React.PureComponent {
       user: [],
     }
   }
-  componentDidUpdate() {
+  componentDidMount() {
     new WOW.WOW().init()
-    fetch(
-      `http://localhost:5555/forum/message/content/${this.props.data.fm_articleId}`
-    )
-      .then(res => {
-        return res.json()
-      })
-      .then(result => {
-        this.setState({ messageCount: result.length })
-      })
+      fetch(
+        `http://localhost:5555/forum/message/content/${this.props.data.fm_articleId}`
+      )
+        .then(res => {
+          return res.json()
+        })
+        .then(result => {
+          console.log(result)
+          this.setState({ messageCount: result.length })
+        })
   }
 
   render() {
@@ -43,19 +44,19 @@ class CardS1 extends React.PureComponent {
       )
     } else {
       let article = this.props.data
+      let url = ''
+      if (article.fm_demoImage.slice(0, 4) === 'http') {
+        url = article.fm_demoImage
+      } else {
+        url = `http://localhost:5555/images/forum/article_key/${article.fm_demoImage}`
+      }
+
       return (
         <>
           <div className="cards-frame wow fadeIn">
             <figure className="card-figure card-module">
               <Link to={`/forum/article/${article.fm_articleId}`}>
-                <img
-                  className="card-s1-img"
-                  alt=""
-                  src={
-                    'http://localhost:5555/images/forum/article_key/' +
-                    article.fm_demoImage
-                  }
-                />
+                <img className="card-s1-img" alt="" src={url} />
               </Link>
               <div className="card-body">
                 <Link to={`/forum/article/${article.fm_articleId}`}>
