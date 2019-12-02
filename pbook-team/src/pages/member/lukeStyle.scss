@@ -51,6 +51,42 @@ $content: 24px;
   color: #ff525b;
 }
 
+//FBMessage
+.fbMessage{
+    width: 50px;
+    height: 50px;
+    // background: rgb(86, 75, 97);
+
+  .fbicon{
+    font-size: 60px;
+    color: $yellow;
+    position: fixed;
+    bottom: 60px;
+    right: 40px;
+    width: 60px;
+    height: 60px;
+    opacity: 0.6;
+    z-index: 10;
+    cursor: pointer;
+    animation: bounce 1s infinite alternate;
+    
+    &:hover{
+      color: $black;
+      font-size: 80px;
+    }
+  }
+  @keyframes bounce {
+    0% {
+      transform: translateY(0px);
+      // transform: translateZ(0px);
+    }
+    100% {
+        transform: translateY(-15px);
+        // transform: translateZ(20px);
+    }
+  }
+}
+
 //查看訂單
 .queryOrder {
   @extend .contentWrap;
@@ -150,7 +186,7 @@ $content: 24px;
   position: absolute;
   // background: #f24;
   right: 0;
-  left: 320px;
+  left: 300px;
   height: 100%;
   padding: 31px;
   color: $yellow;
@@ -341,7 +377,7 @@ $content: 24px;
 .booksContent {
   position: absolute;
   right: 0;
-  left: 320px;
+  left: 300px;
   height: 100%;
   padding: 31px;
   color: $yellow;

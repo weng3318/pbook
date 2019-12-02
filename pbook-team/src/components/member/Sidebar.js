@@ -148,7 +148,7 @@ const Sidebar = props => {
                     活動
                   </Accordion.Toggle>
                   <Accordion.Collapse eventKey="0" className="sidebar_item">
-                    <Link to="">
+                    <Link to="member/activities">
                       <div style={{ cursor: 'pointer' }}>相關活動</div>
                     </Link>
                   </Accordion.Collapse>
@@ -314,7 +314,7 @@ const Sidebar = props => {
                     活動
                   </Accordion.Toggle>
                   <Accordion.Collapse eventKey="0" className="sidebar_item">
-                    <Link to="">
+                    <Link to="member/activities">
                       <div style={{ cursor: 'pointer' }}>相關活動</div>
                     </Link>
                   </Accordion.Collapse>
@@ -380,6 +380,7 @@ const Sidebar = props => {
         <Route exact path="/member/edit" component={Edit} />
         <Route exact path="/member/AddMemberBook" component={AddMemberBook} />
         <Route exact path="/member/PasswordModify" component={PasswordModify} />
+        <Route exact path="/member/activities" component={AcRU} />
         <Route path="/member/BooksFavorite/:page?" component={BooksFavorite} />
         <Route path="/member/ViewMemberBooks" component={ViewMemberBooks} />
         <Route path="/member/QueryOrder" component={QueryOrder} />

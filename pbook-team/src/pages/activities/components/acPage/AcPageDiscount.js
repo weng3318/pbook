@@ -14,6 +14,7 @@ import AcPageAside from './AcPageAside'
 import AcPageFoot from './AcPageFoot'
 import ScrollToTop from '../ScrollToTop'
 import { cartFetch } from '../../../../components/shop/ShopActions'
+import WOW from 'wowjs'
 
 // import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 
@@ -28,6 +29,7 @@ const AcPageDiscount = props => {
     memberLevel = JSON.parse(localStorage.user).MR_personLevel
   }
   useEffect(() => {
+    new WOW.WOW().init()
     // 取得活動列表
     if (!props.acData.offline.data.length) {
       props.dispatch(fetchAcList('discount'))

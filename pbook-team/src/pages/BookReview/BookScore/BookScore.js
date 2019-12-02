@@ -46,13 +46,6 @@ const BookScore = ({ callback ,callback2}) => {
     setBookinfo(callback())
   }, [callback, callback2])
 
-  //資料ajax
-  // const star = () => {
-  //   axios.get('http://localhost:5555/reviews/book_ratings').then(res => {
-  //     setBs(res.data.data)
-  //   }, [])
-  // }
-
   let fiveStars = [],
     fourStars = [],
     threeStars = [],

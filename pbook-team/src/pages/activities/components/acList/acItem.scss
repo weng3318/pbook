@@ -1,11 +1,23 @@
 @import '../../color.scss';
 .acItem {
-  a h4{
+  figure {
+    overflow: hidden;
+    a{
+      transition: .3s;
+    }
+    &:hover {
+      a {
+        transform: scale(1.02);
+      }
+    }
+  }
+  a h4 {
     color: $color-black;
+    transition: 0.1s;
     &:hover {
       font-weight: bold;
       color: $color-yellow;
-      text-shadow: 1px 1px 2px $color-black
+      text-shadow: 1px 1px 1px $color-black;
     }
   }
 }
