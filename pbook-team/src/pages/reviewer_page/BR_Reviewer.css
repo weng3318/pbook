@@ -258,6 +258,9 @@ a:hover{
 .brIconBox:hover .brIconFollow_noAni{
     display: none;
 }
+.brIconBox:hover .brIconFollow_Did{
+    display: block;
+}
 /* 進階收藏作者 (無動畫) */
 .brIconFollow_noAni{
     position: absolute;
@@ -281,10 +284,23 @@ a:hover{
     transform: translateX(-50%);
     transition: 0.2s;
 }
+.brIconFollow_Did{
+    position: absolute;
+    max-width: 80%;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: 0.2s;
+    display: none;
+}
 .brIconFollow:hover{
     max-width: 90%;
     border-radius: 20px;
     border:2px solid #ffc408;
+}
+.brIconFollow_Did:hover{
+    max-width: 90%;
+    border-radius: 22px;
+    border:2px solid #979d9d;
 }
 /* 分享圖示 (書評家的 社群圖示) */
 .brIconShare{
