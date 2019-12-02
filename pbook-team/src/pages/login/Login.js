@@ -199,7 +199,7 @@ class Login extends React.Component {
     return result
   }
 
-  //照片上傳
+  //照片上傳，可換照片
   onChangeHandler(e) {
       
       let fileField = document.querySelector("input[type='file']")
@@ -208,11 +208,19 @@ class Login extends React.Component {
       var reader = new FileReader;
       reader.readAsDataURL(file);
         reader.onload = function(e) {
+          let oldImages = document.querySelector('.imgBorder')
           let image = document.createElement('img')
-          image.setAttribute('src', e.target.result)
+          if(!oldImages){
+            image.setAttribute('src', e.target.result) 
+          }else{
+            oldImages.removeAttribute('src')
+            oldImages.setAttribute('src', e.target.result)
+          }
           image.classList.add('imgBorder')
           image.classList.add('brAvatarImg')
           uploadImg.append(image)
+
+          
       }
   
     

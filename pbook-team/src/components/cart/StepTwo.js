@@ -5,13 +5,13 @@ import moment from 'moment'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons'
 import swal from '@sweetalert/with-react'
-import { addOrderFetch } from '../shop/ShopActions'
+import { addOrderFetch, delCartFetch } from '../shop/ShopActions'
 import './Cart.scss'
 
 const StepTwo = props => {
   //let b = document.querySelector('input[name="delivery"]:checked')
   let memberID = JSON.parse(localStorage.getItem('user')).MR_number
-  let orderPrice = localStorage.getItem('totalPrice')
+  let orderPrice = props.cartPayload && props.cartPayload.totalPrice
   let created_time = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')
   let bookName = [],
     singlePrice = [],
@@ -58,9 +58,25 @@ const StepTwo = props => {
         props.setOrder(1)
         swal('送出訂單成功', {
           icon: 'success',
-        }).then(() => {
-          props.changeSteps(2)
         })
+          .then(() => {
+            for (
+              let i = 0;
+              i < (props.cartPayload && props.cartPayload.totalCart);
+              i++
+            ) {
+              props.dispatch(
+                delCartFetch(
+                  props.cartPayload &&
+                    props.cartPayload.cart &&
+                    props.cartPayload.cart[i].sid
+                )
+              )
+            }
+          })
+          .then(() => {
+            props.changeSteps(2)
+          })
       } else {
         swal('送出訂單失敗')
       }

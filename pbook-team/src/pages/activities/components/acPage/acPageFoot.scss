@@ -19,6 +19,7 @@
     margin-bottom: 2rem;
     margin-top: 1rem;
     button {
+      transition: 0.5s;
       background: none;
       border: none;
       font-weight: bold;
@@ -55,17 +56,16 @@
         top: 0;
         left: 0;
         background: $color-black;
-        opacity: 0.5;
+        opacity: 0.6;
+        transition: 0.5s;
       }
     }
     &:hover {
       button {
-        transition: 0.5s;
         color: lighten($color-black, 20%);
       }
       a:after {
         opacity: 0;
-        transition: 0.5s;
       }
     }
   }

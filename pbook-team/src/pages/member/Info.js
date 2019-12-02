@@ -75,6 +75,7 @@ class Info extends React.Component {
                       <div className="MB_title">
                               會員資料
                       </div>
+                        <div className="myCard">
                       <div className="row">
                           <div className="list">
                               <div className="row item">
@@ -120,7 +121,8 @@ class Info extends React.Component {
                                       </div>
                           </div>
                       </div>            
-                  </div>
+                        </div>
+                </div>
           </>
         )
     }

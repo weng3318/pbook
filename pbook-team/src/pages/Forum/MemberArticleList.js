@@ -29,7 +29,12 @@ const useStyles = makeStyles({
 function MemberArticleList() {
   const classes = useStyles()
   const [rows, setRows] = useState([])
+
   useEffect(() => {
+    getData()
+  }, [])
+
+  const getData = () => {
     let memberId = JSON.parse(localStorage.getItem('user')).MR_number
     fetch(`http://localhost:5555/forum/manageArticle/posted/${memberId}`)
       .then(response => {
@@ -39,8 +44,7 @@ function MemberArticleList() {
         console.log(result)
         setRows(result)
       })
-  }, [])
-
+  }
   const handleDelete = (id, title) => {
     Swal.fire({
       title: '確定刪除文章?',
@@ -58,8 +62,9 @@ function MemberArticleList() {
             return res.json()
           })
           .then(result => {
-            if (result.affectedRows === 0) {
+            if (result.affectedRows === 1) {
               Swal.fire('文章已刪除', '', 'success')
+              getData()
             } else {
               Swal.fire('文章未刪除', '請與客服人員聯絡', 'error')
             }
@@ -70,7 +75,14 @@ function MemberArticleList() {
 
   let columnCount = 1
   if (rows.length === 0) {
-    return <div>123</div>
+    return (
+      <div className="articleListControle">
+        <div className="articleList">
+          <span className="page-title">已發表文章</span>
+          <div className="noPost">沒有發表過文章....快到討論區找點靈感吧!!</div>
+        </div>
+      </div>
+    )
   } else {
     return (
       <>

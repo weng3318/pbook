@@ -14,6 +14,12 @@ const BookDetail = props => {
     props.bookInfoPayload &&
     props.bookInfoPayload.rows &&
     props.bookInfoPayload.rows[0]
+  let discount
+  discount =
+    props.discountAmount &&
+    props.discountAmount.data &&
+    props.discountAmount.data[0].discount
+  if (!discount) return 'loading'
 
   return (
     <>
@@ -38,9 +44,13 @@ const BookDetail = props => {
               定價：NT$<s>{data && data.fixed_price}</s>
             </span>
             <span className="my-2 ml-2">
-              優惠價：<span className="discount">88</span>折，NT$
+              優惠價：<span className="discount">{100 - discount}</span>折，NT$
               <span className="discount">
-                {String(parseInt((data && data.fixed_price) * 0.88))}
+                {String(
+                  parseInt(
+                    ((data && data.fixed_price) * (100 - discount)) / 100
+                  )
+                )}
               </span>
             </span>
             {/* <span>現金回饋：5％(活動詳情)回饋金可全額折抵商品</span> */}

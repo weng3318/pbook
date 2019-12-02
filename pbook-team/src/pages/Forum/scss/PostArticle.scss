@@ -65,6 +65,8 @@
       max-width: 900px;
       @extend %card-module;
       min-height: 1000px;
+      margin-bottom: 36px;
+      padding-bottom: 36px;
       .title-line {
         background: $grass-yellow;
         margin-bottom: 8px;
@@ -125,6 +127,29 @@
     &.show {
       border: 2px solid $Darjeeling;
       border-radius: 5px;
+    }
+  }
+  .insertImg {
+    margin: 16px 0;
+    max-width: 784px;
+    position: relative;
+    .img-demo {
+      width: 100%;
+    }
+    .imgCancel {
+      position: absolute;
+      top: 4px;
+      right: 20px;
+    }
+  }
+  .video-frame {
+    display: flex;
+    padding-left: 24px;
+    margin: 16px;
+    .video-iframe {
+      flex: '1 1 0';
+      width: 100%;
+      height: auto;
     }
   }
 }

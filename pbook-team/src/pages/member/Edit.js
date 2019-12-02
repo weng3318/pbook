@@ -1,7 +1,7 @@
 import React from 'react'
 import './lukeStyle.scss'
 import swal from '@sweetalert/with-react'
-import {withRouter} from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 
 class Edit extends React.Component {
   constructor() {
@@ -41,8 +41,12 @@ class Edit extends React.Component {
         return response.json()
       })
       .then(data => {
-          // console.log("test", JSON.stringify(data));
-        if (data[0].MR_birthday !== null && data[0].MR_mobile !== null && data[0].MR_address !== null ) {
+        // console.log("test", JSON.stringify(data));
+        if (
+          data[0].MR_birthday !== null &&
+          data[0].MR_mobile !== null &&
+          data[0].MR_address !== null
+        ) {
           let bdy = data[0].MR_birthday
           let birthday = bdy.slice(0, 10)
           this.setState({
@@ -80,7 +84,7 @@ class Edit extends React.Component {
           icon: 'success',
         })
       }
-      setTimeout(()=>{
+      setTimeout(() => {
         window.location = '/member'
       }, 1000)
     })
@@ -95,15 +99,37 @@ class Edit extends React.Component {
     })
   }
 
-  //照片上傳
-  onChangeHandler = (e) => {
-    // console.log(e.target.files[0]);
+  //照片上傳，可換照片
+  onChangeHandler = e => {
+    let fileField = document.querySelector("input[type='file']")
+    // let figure = document.querySelector('figure')
+    // figure.classList.remove('backgroundImage')
+    let uploadImg = document.querySelector('.uploadImg')
+    var file = fileField.files[0]
+    var reader = new FileReader()
+    reader.readAsDataURL(file)
+    reader.onload = function(e) {
+      let oldImages = document.querySelector('.brAvatarImg')
+      let image = document.createElement('img')
+      if(!oldImages){
+        image.setAttribute('src', e.target.result)
+      }else{
+        oldImages.removeAttribute('src')
+        oldImages.setAttribute('src', e.target.result)
+      }
+      // let image = document.createElement('img')
+      // image.setAttribute('src', e.target.result)
+      // image.classList.add('imgBorder')
+      image.classList.add('brAvatarImg')
+      uploadImg.append(image)
+    }
+
     this.setState({
       selectedFile: e.target.files[0],
     })
   }
 
-  handleChange = (e) => {
+  handleChange = e => {
     const name = e.target.name
     const obj = {}
     obj[name] = e.target.value
@@ -111,7 +137,6 @@ class Edit extends React.Component {
   }
 
   handleEdit = () => {
-    
     let number = JSON.parse(localStorage.getItem('user')).MR_number
     const formData = new FormData()
     let fileField = document.querySelector("input[type='file']")
@@ -129,10 +154,9 @@ class Edit extends React.Component {
       })
       .then(img => {
         // console.log("imgFile", img)
-        if(img.filename ==""){
-          imgFile = "品書印章.png"
-        }
-        else{
+        if (img.filename == '') {
+          imgFile = '品書印章.png'
+        } else {
           imgFile = img.filename
         }
         // console.log(1111);
@@ -174,7 +198,7 @@ class Edit extends React.Component {
   render() {
     let member = this.state.member
     // console.log("member", member);
-    
+
     let newPic = 'http://localhost:5555/images/member/' + member.MR_pic
     // console.log("newPic",newPic);
     let level = [
@@ -187,44 +211,80 @@ class Edit extends React.Component {
       '書評家',
     ]
 
-      return (
-        <>
-              <div className="editWrap">
-            <div className=" wrap">
-              <div className="MB_title">會員資料修改</div>
-              <div className="d-flex">
-                <div className="list">
-                  <div className="d-flex item">
-                    <h4>帳號 : </h4>
-                    <input type="text" id="email" name="email" value={this.state.email} onChange={this.handleChange}/>
-                  </div>
-                  <div className="d-flex item">
-                    <h4>姓名 : </h4>
-                    <input type="text" id="name" name="name" value={this.state.name} onChange={this.handleChange}/>
-                  </div>
-                  <div className="d-flex item">
-                    <h4>暱稱 : </h4>
-                    <input type="text" id="nickname" name="nickname" value={this.state.nickname} onChange={this.handleChange}/>
-                  </div>
-                  <div className="d-flex item">
-                    <h4>生日 : </h4>
-                    <input type="text" id="birthday" name="birthday" value={this.state.birthday} onChange={this.handleChange}/>                  </div>
-                  <div className="d-flex item">
-                    <h4>手機 : </h4>
-                    <input type="text" id="mobile" name="mobile" value={this.state.mobile && this.state.mobile} onChange={this.handleChange}/>
-                  </div>
-                  <div className="d-flex item">
-                    <h4>地址 : </h4>
-                    <textarea
-                      name="address"
-                      id=""
-                      cols="30"
-                      rows="5"
-                      style={{ width: '300px', minHeight: '50px', resize: 'none' }}
-                      value={this.state.address} onChange={this.handleChange}
-                    ></textarea>
-                  </div>
+    return (
+      <>
+        <div className="editWrap">
+          <div className=" wrap">
+            <div className="MB_title">會員資料修改</div>
+            <div className="d-flex">
+              <div className="list">
+                <div className="d-flex item">
+                  <h4>帳號 : </h4>
+                  <input
+                    type="text"
+                    id="email"
+                    name="email"
+                    value={this.state.email}
+                    onChange={this.handleChange}
+                  />
                 </div>
+                <div className="d-flex item">
+                  <h4>姓名 : </h4>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={this.state.name}
+                    onChange={this.handleChange}
+                  />
+                </div>
+                <div className="d-flex item">
+                  <h4>暱稱 : </h4>
+                  <input
+                    type="text"
+                    id="nickname"
+                    name="nickname"
+                    value={this.state.nickname}
+                    onChange={this.handleChange}
+                  />
+                </div>
+                <div className="d-flex item">
+                  <h4>生日 : </h4>
+                  <input
+                    type="text"
+                    id="birthday"
+                    name="birthday"
+                    value={this.state.birthday}
+                    onChange={this.handleChange}
+                  />{' '}
+                </div>
+                <div className="d-flex item">
+                  <h4>手機 : </h4>
+                  <input
+                    type="text"
+                    id="mobile"
+                    name="mobile"
+                    value={this.state.mobile && this.state.mobile}
+                    onChange={this.handleChange}
+                  />
+                </div>
+                <div className="d-flex item">
+                  <h4>地址 : </h4>
+                  <textarea
+                    name="address"
+                    id=""
+                    cols="30"
+                    rows="5"
+                    style={{
+                      width: '300px',
+                      minHeight: '50px',
+                      resize: 'none',
+                    }}
+                    value={this.state.address}
+                    onChange={this.handleChange}
+                  ></textarea>
+                </div>
+              </div>
               <div className="list-r">
                 <div className="itemTitle">
                   <h3>會員編號 :</h3>
@@ -239,7 +299,9 @@ class Edit extends React.Component {
                     style={{
                       backgroundImage: `url(${newPic})`,
                     }}
-                  ></figure>
+                  >
+                    <div className="uploadImg"></div>
+                  </figure>
                   <div className="chang_btn">
                     <input
                       className="btn btn-warning my-2 my-sm-0"
@@ -279,7 +341,7 @@ class Edit extends React.Component {
               </div>
             </div>
           </div>
-          </div>
+        </div>
       </>
     )
   }

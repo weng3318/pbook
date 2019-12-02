@@ -1,22 +1,34 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { connect } from 'react-redux'
 import { Col } from 'react-bootstrap'
+import { orderFetch } from '../shop/ShopActions'
 import moment from 'moment'
 import './Cart.scss'
 
 const StepThree = props => {
+  let member = JSON.parse(localStorage.getItem('user')).MR_number
+  useEffect(() => {
+    props.dispatch(orderFetch(member))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+  let date = moment(
+    props.order.payload &&
+      props.order.payload.rows &&
+      props.order.payload.rows[0].created_time
+  ).format('YYYYMMDD')
+  console.log(date)
   let orderID
   let sid =
-    props.orderPayload &&
-    props.orderPayload.rows &&
-    props.orderPayload.rows[0].sid
-  console.log(sid)
+    props.order.payload &&
+    props.order.payload.rows &&
+    props.order.payload.rows[0].sid
 
   if (sid < 10) {
-    orderID = 'OD0000' + sid
+    orderID = date + sid
   } else if (sid < 100) {
-    orderID = 'OD000' + sid
+    orderID = date + sid
   } else if (sid < 1000) {
-    orderID = 'OD00' + sid
+    orderID = date + sid
   }
   return (
     <>
@@ -30,9 +42,9 @@ const StepThree = props => {
             <div className="m-3 orderTime">
               訂購時間：
               {moment(
-                props.orderPayload &&
-                  props.orderPayload.rows &&
-                  props.orderPayload.rows[0].created_time
+                props.order.payload &&
+                  props.order.payload.rows &&
+                  props.order.payload.rows[0].created_time
               ).format('YYYY-MM-DD HH:mm:ss')}
             </div>
             <div className="m-3 detail">
@@ -42,9 +54,9 @@ const StepThree = props => {
                 <div className="bookAmount">數量</div>
                 <div className="bookPrice">價格</div>
               </div>
-              {props.orderPayload &&
-                props.orderPayload &&
-                props.orderPayload.rows.map(orderData => (
+              {props.order.payload &&
+                props.order.payload &&
+                props.order.payload.rows.map(orderData => (
                   <div
                     className="m-4 d-flex align-items-center eachDetail"
                     key={orderData.sid}
@@ -60,9 +72,9 @@ const StepThree = props => {
             <div className="m-3 price">
               總金額：NT${' '}
               <span className="color-red">
-                {props.orderPayload &&
-                  props.orderPayload.rows &&
-                  props.orderPayload.rows[0].orderPrice}
+                {props.order.payload &&
+                  props.order.payload.rows &&
+                  props.order.payload.rows[0].orderPrice}
               </span>
             </div>
           </div>
@@ -77,4 +89,7 @@ const StepThree = props => {
   )
 }
 
-export default StepThree
+const mapStateToProps = state => ({
+  order: state.order,
+})
+export default connect(mapStateToProps)(StepThree)

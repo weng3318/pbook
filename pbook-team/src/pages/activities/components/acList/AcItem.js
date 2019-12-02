@@ -2,11 +2,15 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import './acItem.scss'
+import WOW from 'wowjs'
 
 function AcItemOffline(props) {
+  React.useEffect(() => {
+    new WOW.WOW().init()
+  })
   return (
     <>
-      <div className="acItem row mt-3">
+      <div className="acItem row mt-3 wow fadeIn">
         <figure className="acImg col-md-4">
           {/* eslint-disable-next-line jsx-a11y/anchor-has-content */}
           <Link
