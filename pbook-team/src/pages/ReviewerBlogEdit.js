@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import CKEditor from '@ckeditor/ckeditor5-react'
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
+// import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
+// import InlineEditor from '@ckeditor/ckeditor5-build-inline'
+import BalloonBlockEditor from '@ckeditor/ckeditor5-build-balloon-block'
 import { withRouter } from 'react-router-dom'
 import axios from 'axios'
 import swal from '@sweetalert/with-react'
@@ -98,7 +100,7 @@ export class ReviewerBlogEdit extends Component {
             </button>
             {/* ---------------------------------------------------------------- */}
             <CKEditor
-              editor={ClassicEditor}
+              editor={BalloonBlockEditor}
               config={{
                 language: 'zh',
               }}
@@ -113,7 +115,7 @@ export class ReviewerBlogEdit extends Component {
             />
             {/* ---------------------------------------------------------------- */}
           </section>
-        </section>
+          </section>
       </>
       </div>
     )

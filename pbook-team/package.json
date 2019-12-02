@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@ckeditor/ckeditor5-build-balloon": "^15.0.0",
+    "@ckeditor/ckeditor5-build-balloon-block": "^15.0.0",
     "@ckeditor/ckeditor5-build-classic": "^15.0.0",
     "@ckeditor/ckeditor5-build-decoupled-document": "^15.0.0",
+    "@ckeditor/ckeditor5-build-inline": "^15.0.0",
     "@ckeditor/ckeditor5-dev-webpack-plugin": "^8.0.5",
     "@ckeditor/ckeditor5-editor-balloon": "^15.0.0",
     "@ckeditor/ckeditor5-media-embed": "^15.0.0",

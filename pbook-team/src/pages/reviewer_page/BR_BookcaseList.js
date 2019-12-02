@@ -22,11 +22,11 @@ class BR_BookcaseList extends React.Component {
       this.setState({
         isLogin: true,
       })
-    };
-    if (this.props.readbook === null, this.props.likebook === null){
+    }
+    if ((this.props.readbook === null, this.props.likebook === null)) {
       this.setState({
-        readData:0,
-        likeData:0,
+        readData: 0,
+        likeData: 0,
       })
     }
   }
@@ -65,11 +65,13 @@ class BR_BookcaseList extends React.Component {
   handleReadBook = opened => {
     this.setState({
       opened,
-      readData:opened === 'blog' ? this.state.readData + 1 : this.state.readData,
+      readData:
+        opened === 'blog' ? this.state.readData + 1 : this.state.readData,
     })
     axios.post('http://localhost:5555/reviewer/brReadBook', {
       sid: this.props.sid,
-      readbook:opened === 'blog' ? this.state.readData + 1 : this.state.readData,
+      readbook:
+        opened === 'blog' ? this.state.readData + 1 : this.state.readData,
     })
   }
   // 開關狀態
@@ -196,23 +198,21 @@ class BR_BookcaseList extends React.Component {
 
               <div className="brLikeBox">
                 {/* 讚數、閱讀數 */}
-                      <img
-                        className="brMark_img"
-                        onClick={() => this.handleLikeBook(1)}
-                        src={require('../reviewer_page/images/icon_likebook.png')}
-                      />
-                      <span className="brMark_p">{this.state.likeData}</span>
-                      {/* <span className="brMark_p">{this.props.likebook}</span> */}
-
-                      <img
-                        onClick={() =>
-                          this.handleReadBook(opened === 'blog' ? null : 'blog')
-                        }
-                        className="brMark_img_noAni"
-                        src={require('../reviewer_page/images/icon_readbook.png')}
-                      />
-                      <span className="brMark_p">{this.state.readData}</span>
-                    </div>
+                <img
+                  className="brMark_img"
+                  onClick={() => this.handleLikeBook(1)}
+                  src={require('../reviewer_page/images/icon_likebook.png')}
+                />
+                <span className="brMark_p">{this.state.likeData}</span>
+                <img
+                  onClick={() =>
+                    this.handleReadBook(opened === 'blog' ? null : 'blog')
+                  }
+                  className="brMark_img_noAni"
+                  src={require('../reviewer_page/images/icon_readbook.png')}
+                />
+                <span className="brMark_p">{this.state.readData}</span>
+              </div>
 
               {/* 分享功能 */}
               <div className="fbBox">

@@ -1,15 +1,20 @@
 /* 編輯內文，表單區域設定 */
 .Blog_textarea{
     color: #2d3a3a;
-    border: 2px solid #2d3a3a;
-    background: #2d3a3a;
+    border: 1px solid #2d3a3a;
+    background-image: url(./images/bg.png);
     padding: 0 100px 50px 100px;
+    background: #eee;
 }
 /* 部落格瀏覽外框 */
 .Blog_Read_Box{
     border: 1px solid #2d3a3a;
     padding: 30px 30px 50px 30px;
     background: rgba(45, 58, 58, 0.1);
+}
+/* 編輯模式，區塊遮罩 */
+.br_CKEditor{
+    overflow: hidden;
 }
 /* 表單送出按鈕，自訂樣式 */
 .Blog_submit{
@@ -30,12 +35,6 @@
     border: 2px solid #cde2d0;
     color: #cde2d0;
     font-size: 1.2em;
-}
-/* CKEditor編輯器控制 */
-.br_CKEditor{
-    min-height: 260px;
-    border-bottom: 5px solid #2d3a3a;
-    overflow: hidden;
 }
 .ck.ck-content table{
 	margin:0 auto;

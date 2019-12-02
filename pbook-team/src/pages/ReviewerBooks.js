@@ -71,7 +71,7 @@ class ReviewerBooks extends React.Component {
         this.setState({
           hotNum: Math.min(csLength, this.state.hotNum + 3)
         })
-      }, 1000);
+      }, 800);
     }
   }
 
