@@ -55,7 +55,7 @@ class Forum extends React.Component {
     let contentTop = document.documentElement.clientHeight
     let scrollTop = document.documentElement.scrollTop
     let scrollHeight = document.documentElement.scrollHeight
-    let reLoadValue = scrollHeight - contentTop - 100
+    let reLoadValue = scrollHeight - contentTop - 200
     let stopValue = scrollHeight - contentTop + contentTop
     if (!this.state.outOfList) {
       if (scrollTop > reLoadValue) {
@@ -71,14 +71,17 @@ class Forum extends React.Component {
             this.setState({
               articleList: result2,
               number: newNumber,
+            }, () => {
+              console.log(this.state.articleList)
+              document.documentElement.scrollTop = reLoadValue
             })
-            document.documentElement.scrollTop = reLoadValue
+
             if (
-              scrollTop + contentTop + 40 > stopValue ||
+              scrollTop + contentTop + 50 > stopValue ||
               this.state.number > 100
             ) {
-              console.log('list end')
-              window.removeEventListener('scroll', () => {})
+              console.log('list end', this.state.number)
+              window.removeEventListener('scroll', () => { })
               this.setState({ outOfList: true })
             }
           })
@@ -127,8 +130,8 @@ class Forum extends React.Component {
                   <Listitem empty={true} />
                 </>
               ) : (
-                ''
-              )}
+                  ''
+                )}
             </div>
             <div className="HotArticle-wrapper card-module position-a">
               <HotArticle />
