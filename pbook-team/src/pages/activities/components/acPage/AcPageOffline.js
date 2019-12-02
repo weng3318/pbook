@@ -8,6 +8,7 @@ import AcPageAside from './AcPageAside'
 import AcPageFoot from './AcPageFoot'
 import ScrollToTop from '../ScrollToTop'
 import AcBreadCrumb from '../AcBreadCrumb'
+import moment from 'moment'
 
 // import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 
@@ -49,7 +50,7 @@ const AcPageOffline = props => {
             <main className="col-md-9">
               <div className="info my-3">
                 <small>
-                  <time>時間：{item.date.substr(0, 10)}</time>
+                  <time>時間：{moment(item.date).format('YYYY-MM-DD')}</time>
                 </small>
                 <br />
                 <small>

@@ -80,7 +80,9 @@ function AcRU(props) {
               <table className="table table-striped table-bordered my-3">
                 <thead>
                   <tr>
-                    <th scope="col">#</th>
+                    <th scope="col" className="text-center">
+                      #
+                    </th>
                     <th scope="col">活動名稱</th>
                     <th scope="col">姓名</th>
                     <th scope="col">電話</th>
@@ -94,7 +96,9 @@ function AcRU(props) {
                     props.acTable.data.map(function(v, i) {
                       return (
                         <tr key={v.sid}>
-                          <th scope="row">{i + 1}</th>
+                          <th className="text-center" scope="row">
+                            {i + 1}
+                          </th>
                           <td
                             title={v.title}
                             data-toggle="popover"
