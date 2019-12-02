@@ -13,7 +13,9 @@ const member = {
   FavoriteReviwer: '收藏書評家',
   ViewMemberBooks: '配對書籍',
   AddMemberBook: '上架配對書籍',
-  memberArticleList: '已發佈文章'
+  activities: '相關活動',
+  memberArticleList: '已發佈文章',
+  memberArticleMark: '已收藏書籤',
 }
 
 const Navbar = props => {
