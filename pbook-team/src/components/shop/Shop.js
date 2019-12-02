@@ -13,8 +13,9 @@ const Shop = props => {
   let mode = localStorage.getItem('mode')
     ? localStorage.getItem('mode')
     : 'list'
-  let memberLevel = JSON.parse(localStorage.getItem('user')).MR_personLevel
-  if (!memberLevel) memberLevel = 1
+  let memberLevel
+  if (!localStorage.getItem('user')) memberLevel = 1
+  else memberLevel = JSON.parse(localStorage.getItem('user')).MR_personLevel
   useEffect(() => {
     props.dispatch(cgFetch())
     props.dispatch(cartFetch())
