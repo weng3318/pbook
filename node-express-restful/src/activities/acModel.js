@@ -293,7 +293,6 @@ class AC {
         } else {
             return isLike;
         }
-        console.log(2222, sql)
         return await sqlQuery(sql)
     }
 

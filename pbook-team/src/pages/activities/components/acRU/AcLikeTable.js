@@ -15,7 +15,7 @@ function AcLikeTable(props) {
     for (let i = 0; i < offlineLikes.length || i < discountLikes.length; i++) {
       rows.push(
         <tr key={i}>
-          <td>{discountLikes[i] ? i + 1 : ''}</td>
+          <th className="text-center">{discountLikes[i] ? i + 1 : ''}</th>
           <td
             className="acTitle"
             onClick={() => {
@@ -32,7 +32,7 @@ function AcLikeTable(props) {
               {discountLikes[i] ? discountLikes[i].info.title : ''}
             </div>
           </td>
-          <td>{offlineLikes[i] ? i + 1 : ''}</td>
+          <th className="text-center">{offlineLikes[i] ? i + 1 : ''}</th>
           <td
             className="acTitle"
             title={offlineLikes[i] ? offlineLikes[i].info.title : ''}
@@ -56,9 +56,13 @@ function AcLikeTable(props) {
         <table className="table table-striped table-bordered my-3">
           <thead>
             <tr>
-              <th scope="col">#</th>
+              <th scope="col" className="text-center">
+                #
+              </th>
               <th scope="col">優惠活動</th>
-              <th scope="col">#</th>
+              <th scope="col" className="text-center">
+                #
+              </th>
               <th scope="col">實體活動</th>
             </tr>
           </thead>
