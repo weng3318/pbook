@@ -1,4 +1,5 @@
 import { db, sqlQuery } from './connectDB'
+import moment from 'moment'
 
 class AC {
 
@@ -277,6 +278,49 @@ class AC {
             }
         }
         return result
+    }
+
+    static async acLike(memberNum, acType, acId, toggle) {
+        let sqlWhere = 'WHERE `memberNum`="' + memberNum + '" AND `type`=' + acType + ' AND `acId`=' + acId
+        let sql = 'SELECT COUNT(1) FROM `ac_like` ' + sqlWhere
+        let currentTime = moment(new Date()).format("YYYY-MM-DD HH:mm:ss")
+        let isLike = (await sqlQuery(sql))[0]['COUNT(1)']
+        if (toggle && isLike) {
+            sql = 'DELETE FROM `ac_like` ' + sqlWhere
+        } else if (toggle && !isLike) {
+            sql = 'INSERT INTO `ac_like`(`memberNum`, `type`, `acId`, `time`)'
+            sql += `VALUES ("${memberNum}",${acType},${acId},"${currentTime}")`
+        } else {
+            return isLike;
+        }
+        console.log(2222, sql)
+        return await sqlQuery(sql)
+    }
+
+    static async getAcLike(memberNum) {
+        let sql = 'SELECT * FROM `ac_like` WHERE `memberNum`="' + memberNum + '"'
+        let likeArray = await sqlQuery(sql)
+        let offlineLikes = likeArray.filter(v => +v.type === 1)
+        let discountLikes = likeArray.filter(v => +v.type === 2)
+        sql = 'SELECT `sid`,`title`,`date` FROM `ac_pbook2` WHERE 0'
+        offlineLikes.forEach(v => {
+            sql += ' OR `sid`=' + v.acId
+        })
+        let offlineLikesInfo = await sqlQuery(sql)
+        offlineLikes.forEach(v => {
+            v.info = offlineLikesInfo.filter(w => w.sid === v.acId)[0]
+        })
+
+        sql = 'SELECT `sid`,`title`,`start_time`, `end_time` FROM `pm_event2` WHERE 0'
+        discountLikes.forEach(v => {
+            sql += ' OR `sid`=' + v.acId
+        })
+        let discountLikesInfo = await sqlQuery(sql)
+        discountLikes.forEach(v => {
+            v.info = discountLikesInfo.filter(w => w.sid === v.acId)[0]
+        })
+        return { offlineLikes, discountLikes }
+
     }
 
 }

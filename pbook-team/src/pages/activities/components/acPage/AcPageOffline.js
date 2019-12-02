@@ -7,6 +7,7 @@ import { fetchAcList } from '../../AcActions'
 import AcPageAside from './AcPageAside'
 import AcPageFoot from './AcPageFoot'
 import ScrollToTop from '../ScrollToTop'
+import AcBreadCrumb from '../AcBreadCrumb'
 
 // import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 
@@ -27,9 +28,15 @@ const AcPageOffline = props => {
   if (!item || !item.length) return <></>
   item = item[0]
   // --------------------------------------
+  let bread = [
+    { text: '首頁', url: '/' },
+    { text: '實體活動', url: '/activities/offline' },
+    { text: item.title, url: '/activities/offline/' + acId },
+  ]
   return (
     <>
       <ScrollToTop>
+        <AcBreadCrumb bread={bread} />
         <div className="container acPage">
           <div
             className="banner my-3"

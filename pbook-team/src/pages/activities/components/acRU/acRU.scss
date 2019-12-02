@@ -1,5 +1,11 @@
 @import '../../color.scss';
-.acTable {
+.acTableContainer {
+  .nav-tabs {
+    a {
+      color: darken($color-green, 30%);
+    }
+  }
+
   color: $color-black;
   .popover {
     width: 100%;
@@ -16,6 +22,18 @@
       color: $color-yellow;
       text-shadow: 1px 1px 1px $color-black;
       font-weight: 600;
+    }
+    &::after {
+      display: block;
+      content: attr(title);
+      font-weight: 600;
+      text-shadow: 1px 1px 1px transparent;
+      height: 1px;
+      color: transparent;
+      overflow: hidden;
+      visibility: hidden;
+    }
+    .acTitleBold::after {
     }
   }
   .icon {
