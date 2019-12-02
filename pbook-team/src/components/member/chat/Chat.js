@@ -701,7 +701,6 @@ class Chat extends React.Component {
     //   .then(response => {
     //     FileDownload(response.data, 'report.csv')
     //   })
-
     // axios({
     //   // 用axios傳送post請求
     //   method: 'post',
@@ -711,29 +710,28 @@ class Chat extends React.Component {
     // }).then(res => {
     //   res.data.pipe(fs.creat)
     // })
-
-    axios
-      .post(
-        'http://localhost:5555/nana_use/downloadImg',
-        {
-          picName: picName,
-        },
-        {
-          responseType: 'blob', // 设置响应数据类型
-        }
-      )
-      .then(res => {
-        if (res.status === 200) {
-          var fileName = picName
-          let url = window.URL.createObjectURL(new Blob([res.data]))
-          let link = document.createElement('a')
-          link.style.display = 'none'
-          link.href = url
-          link.setAttribute('download', fileName) // 自定义下载文件名（如exemple.txt）
-          document.body.appendChild(link)
-          link.click()
-        }
-      })
+    // axios
+    //   .post(
+    //     'http://localhost:5555/nana_use/downloadImg',
+    //     {
+    //       picName: picName,
+    //     },
+    //     {
+    //       responseType: 'blob', // 设置响应数据类型
+    //     }
+    //   )
+    //   .then(res => {
+    //     if (res.status === 200) {
+    //       var fileName = picName
+    //       let url = window.URL.createObjectURL(new Blob([res.data]))
+    //       let link = document.createElement('a')
+    //       link.style.display = 'none'
+    //       link.href = url
+    //       link.setAttribute('download', fileName) // 自定义下载文件名（如exemple.txt）
+    //       document.body.appendChild(link)
+    //       link.click()
+    //     }
+    //   })
   }
 
   componentDidMount() {
@@ -1198,19 +1196,21 @@ class Chat extends React.Component {
                                                             className="pointer"
                                                           />
                                                         </div>
-                                                        <div
+                                                        <a
+                                                          href="http://localhost:5555/images/chatFile/_tmp_php1vLYdh.jpg"
+                                                          download={value}
                                                           className="downloadImg"
-                                                          onClick={() =>
-                                                            this.handleDownloadImg(
-                                                              value
-                                                            )
-                                                          }
+                                                          // onClick={() =>
+                                                          //   this.handleDownloadImg(
+                                                          //     value
+                                                          //   )
+                                                          // }
                                                         >
                                                           <FontAwesomeIcon
                                                             icon={faDownload}
                                                             className="pointer"
                                                           />
-                                                        </div>
+                                                        </a>
                                                       </div>
                                                     )
                                                   })}
