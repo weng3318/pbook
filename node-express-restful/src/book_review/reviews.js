@@ -46,7 +46,7 @@ router.get(`/?`, (req, res) => {
   s = urlpart.query.s || "";
 
   page = urlpart.query.p || 1;
-  let perPage = 10;
+  let perPage = 15;
   let output = {};
   db.queryAsync(`SELECT COUNT(1) total FROM vb_books WHERE categories ${c}`)
     .then(results => {

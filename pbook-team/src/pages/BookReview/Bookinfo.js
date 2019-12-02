@@ -1,8 +1,8 @@
+/* eslint-disable no-unused-expressions */
 /* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useCallback } from 'react'
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import styled from '@emotion/styled'
 import { LinkContainer } from 'react-router-bootstrap'
 import axios from 'axios'
@@ -51,9 +51,27 @@ function Bookinfo() {
       p = s2[1]
     }
   }
+  if (c == undefined) {
+    c = ''
+  }
+
+  const searchParams = new URLSearchParams(window.location.search)
+  const sidFromUrl = +searchParams.get('c')
+  s = +searchParams.get('p')
+  // if (s == 0) {
+  //   s == 1
+  //   console.log(s)
+  // }
+  console.log(s)
+
   //---------------------------------------------------------------------------
 
   //---------------------------------------------------------------------------
+  const All = styled.section`
+    background-image: url('../../images/bg.png');
+    background-repeat: repeat;
+  `
+
   const Main = styled.section`
     margin: 0 auto;
     width: 1200px;
@@ -141,7 +159,7 @@ function Bookinfo() {
       .get(`http://localhost:5555/reviews/?${c}a=${array}&p=${p}&s=${e}`)
       .then(res => {
         setBookInformation(res.data.rows)
-        getPage(Math.ceil(res.data.total / 10))
+        getPage(Math.ceil(res.data.total / 15))
         console.log(res.data)
       })
       .catch(error => {
@@ -152,7 +170,15 @@ function Bookinfo() {
   for (let i = 1; i <= page; i++) {
     pageNum.push(
       <LinkContainer key={i} to={'reviews?' + c + 'p=' + i}>
-        <Pagination.Item value={i}>{i}</Pagination.Item>
+        <Pagination.Item>
+          <button
+            className={
+              `reviews_P_button` + ` ` + (i === s ? `reviews_P_button2` : '')
+            }
+          >
+            {i}
+          </button>
+        </Pagination.Item>
       </LinkContainer>
     )
   }
@@ -193,7 +219,7 @@ function Bookinfo() {
         <BookSearch search_result={search_result} />
       </div>
       <Main>
-        <Category callback3={callback3} />
+        <Category callback3={callback3} search_result={search_result} />
         <OptionBar>
           <select
             onChange={e => {

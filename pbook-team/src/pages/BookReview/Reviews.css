@@ -84,11 +84,16 @@
   margin: 0 0 1px 0;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  padding: 6px;
+  padding: 6px 10px;
   background: #cde2d0;
   color: #2d3a3a;
   white-space: nowrap;
   overflow: hidden;
+}
+.reviews_crumb2 {
+  display: flex;
+  width: 100%;
+  color: #ff525b;
 }
 
 /* 搜尋結果 */
@@ -141,6 +146,15 @@
   outline: none;
   z-index: 99;
 }
+.reviews_red {
+  color: #ff525b;
+}
+.reviews_btn_focus {
+  background: #2d3a3a;
+  color: #ffc408;
+  outline: none;
+  z-index: 99;
+}
 
 .reviews_btn_active {
   background: #2d3a3a;
@@ -153,6 +167,14 @@
   background: #2d3a3a;
   color: #ffc408;
   outline: none;
+}
+/* 分頁CSS */
+.reviews_P_button {
+  border: none;
+  background: transparent;
+}
+.reviews_P_button2 {
+  color: #ff525b;
 }
 
 .reviews_pagination {
@@ -170,14 +192,14 @@
   color: black;
   outline: none;
 }
-.pagination .page-item .page-link:focus {
+/* .pagination .page-item .page-link:focus {
   border-color: #cde2d0;
   background: #cde2d0;
   color: white;
   outline: none;
   z-index: 2;
-}
-.pagination .page-item :active {
+} */
+/* .pagination .page-item :active {
   background-color: #cde2d0;
   border-color: #cde2d0;
   color: white;
@@ -186,13 +208,13 @@
   background-color: #cde2d0;
   border-color: #cde2d0;
   color: white;
-}
+} */
 .pagination .page-item .pageNum {
   background-color: white !important;
   border-color: #dee2e6 !important;
   color: black !important;
 }
-
+/* -------------------------------------------------------------------------------------------------------- */
 .reviews_Link {
   z-index: 1;
   text-decoration: none;
@@ -352,6 +374,12 @@
 .reviews_push {
   margin: 0 0 0 50px;
 }
+/* 發表評論整排外框 */
+.reviews_push2 {
+  display: flex;
+  flex-direction: row;
+  margin: 10px 0;
+}
 
 /* 會員大頭貼 */
 .reviews_member_img {
@@ -361,6 +389,7 @@
   width: 100px;
   height: 100px;
   margin: 45px 0 0 50px;
+  object-fit: cover;
 }
 /* 會員暱稱 */
 .reviews_member_nickname {
@@ -387,6 +416,7 @@
   justify-content: center;
   width: 20px;
   font-size: 20px;
+  margin: 0 0 0 20px;
 }
 
 /* 會員右方取消編輯按鈕 */
@@ -406,6 +436,7 @@
   width: 100px;
   height: 100px;
   margin: 0px 0 0 50px;
+  object-fit: cover;
 }
 
 /* 日期時間 */
@@ -417,7 +448,7 @@
 .reviews_UpdateBtn {
   width: 110px;
   height: 30px;
-  margin: 0 0 15px 850px;
+  margin: 10px 0 0px 855px;
   border-radius: 8px;
   background-color: #2d3a3a;
   color: #ffc408;
@@ -428,7 +459,7 @@
 /* 書評回覆顯示欄 */
 .reviews_reply_view {
   position: relative;
-  border-bottom: 1px dashed #ccc;
+  border-top: 1px dashed #ccc;
   background-color: rgba(204, 204, 204, 0.3);
   width: 1000px;
   height: 60px;
@@ -439,7 +470,7 @@
 .reviews_reply_text {
   width: 1000px;
   height: 35px;
-  margin: 0 0 10px 0;
+  margin: 36px 0 10px 0;
   border-radius: 0.2rem;
   padding: 0.2rem;
   resize: none;
@@ -453,7 +484,7 @@
 
 /* 書評回覆修改回覆輸入欄 */
 .reviews_reply_editText {
-  width: 200px;
+  width: 800px;
   height: 25px;
   border-radius: 0.2rem;
   padding: 0.2rem;

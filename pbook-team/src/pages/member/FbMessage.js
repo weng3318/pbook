@@ -1,11 +1,11 @@
 import React from 'react'
 import './lukeStyle.scss'
 
-class FbMessage extends React.Component{
-    constructor(){
-        super()
-        this.state = {}
-    }
+class FbMessage extends React.Component {
+  constructor() {
+    super()
+    this.state = {}
+  }
 
 
 
@@ -22,6 +22,5 @@ class FbMessage extends React.Component{
         )
     }
 }
-
 
 export default FbMessage
