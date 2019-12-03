@@ -28,11 +28,11 @@ function AcSign(props) {
       .then(response => {
         props.handleClose()
         swal(
-          +response.type ? '報名成功' : '報名失敗',
+          +response.type ? '報名成功' : '報名結果',
           +response.type
             ? '活動 ' + props.title + ' 報名成功'
             : response.description,
-          +response.type ? 'success' : 'error'
+          +response.type ? 'success' : 'info'
         )
         setResult(response)
       })
