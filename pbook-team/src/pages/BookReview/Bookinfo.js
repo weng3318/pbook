@@ -177,7 +177,8 @@ function Bookinfo() {
         .catch(error => {
           console.log(error)
         })
-    } else if (e.length == 0) {
+    } else {
+      setSb({ isSearch: false })
       bookInfo()
     }
   }
