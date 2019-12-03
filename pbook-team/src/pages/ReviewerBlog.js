@@ -63,7 +63,7 @@ export class ReviewerBlog extends React.Component {
     return (
     <div className="br_bg">
     <>
-      <h3 className="h3_br">Blogger</h3>
+      <h3 className="h3_br">{this.props.title}</h3>
       <section className="reviewerBlog ">
       {/* 部落格內文 */}
           <BR_BlogList
