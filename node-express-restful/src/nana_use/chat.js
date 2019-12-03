@@ -18,7 +18,7 @@ const db = mysql.createConnection({
 });
 db.connect(); //資料庫連線
 
-bluebird.promisifyAll(db); 
+bluebird.promisifyAll(db);
 
 var mapResult = [];
 chat.post("/chatList2", function (req, res) {
@@ -194,35 +194,6 @@ chat.post("/imgFiles", upload.array('avatar', 5), (req, res, next) => {
         pictures: images
     })
 
-})
-
-chat.post("/downloadImg", (req, res, next) => {
-    console.log('downloadImg picName', req.body.picName);
-    // res.setHeader('Content-Type', 'application/vnd.ms-excel');
-    // res.write("http://localhost:5555/images/chatFile/"+req.body.picName);
-    // res.end();
-    var currDir = path.normalize(req.query.dir),
-        fileName = req.body.picName,
-        currFile = path.join(currDir, fileName),
-        fReadStream;
-
-    fs.exists(currFile, function (exist) {
-        if (exist) {
-            res.set({
-                "Content-type": "application/octet-stream",
-                "Content-Disposition": "attachment;filename=" + encodeURI(fileName)
-            });
-            fReadStream = fs.createReadStream(currFile);
-            fReadStream.on("data", (chunk) => res.write(chunk, "binary"));
-            fReadStream.on("end", function () {
-                res.end();
-            });
-        } else {
-            res.set("Content-type", "text/html");
-            res.send("file not exist!");
-            res.end();
-        }
-    });
 })
 
 module.exports = chat;

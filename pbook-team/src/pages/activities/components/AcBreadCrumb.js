@@ -5,10 +5,14 @@ function AcBreadCrumb(props) {
   let bread = props.bread
   let rows = []
   for (let i = 0; i < bread.length - 1 || i < 0; i++) {
-    rows.push(<Link to={bread[i].url}>{bread[i].text + ' > '}</Link>)
+    rows.push(
+      <Link key={i} to={bread[i].url}>
+        {bread[i].text + ' > '}
+      </Link>
+    )
   }
   rows.push(
-    <Link to={bread[bread.length - 1].url}>
+    <Link key={bread.length} to={bread[bread.length - 1].url}>
       <span className="active">{bread[bread.length - 1].text}</span>
     </Link>
   )

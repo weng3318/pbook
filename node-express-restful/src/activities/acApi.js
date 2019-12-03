@@ -92,6 +92,7 @@ router.post('/books-discount/:memberLevel?', async (req, res, next) => {
     } else {
         console.log('cache save date: ', cacheContent.saveDate)
         var body = cacheContent.body
+        if (typeof (body) === 'string') body = JSON.parse(body)
     }
     let discountArray = []
     for (let i = 0; i < bookArray.length; i++) {
