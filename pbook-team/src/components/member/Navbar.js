@@ -38,7 +38,7 @@ const Navbar = props => {
         {/* <BR_PathNow /> */}
         {/* <BR_DateTime /> */}
         <h5 style={{ color: '#3d2a2a' }}>
-          首頁： 會員
+          首頁 > 會員
         </h5>
       </div>
          </>
@@ -48,7 +48,7 @@ const Navbar = props => {
               {/* <BR_PathNow /> */}
               {/* <BR_DateTime /> */}
               <h5 style={{ color: '#3d2a2a' }}>
-                首頁： 會員 > <span style={{color: '#FF525B'}}>{arr}</span>
+                首頁 > 會員 > <span style={{color: '#FF525B'}}>{arr}</span>
               </h5>
             </div>
            </>
