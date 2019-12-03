@@ -112,21 +112,6 @@ a:hover{
 .loadingGif{
     margin: 0 0 0 30px;
 }
-/* 標題，主要文字 */
-.h5_br{
-    text-align: center;
-    font-weight: 800;
-    color: #2d3a3a;
-    margin: 10px 0;
-}
-/* 標題，主要文字 */
-.h5_Edit{
-    background: #2d3a3a;
-    text-align: center;
-    font-weight: 800;
-    font-size: 1.2rem;
-    color: #979d9d;
-}
 /* 書評文章內文title (文字)*/
 .h5_title{
     font-weight: 550;
@@ -148,7 +133,6 @@ a:hover{
 }
 /* 麵包屑(Breadcrumbs) */
 .brNavbar{
-    
     display: flex;
     justify-content: space-between;
     width: 100%;
@@ -160,6 +144,11 @@ a:hover{
     color: #2d3a3a;
     white-space: nowrap;
     overflow: hidden;
+}
+/* 麵包屑路徑，文字 (置中調整) */
+.h5_bread{
+    transform: translateY(18%);
+    color: #2d3a3a;
 }
 /* 書評列表 (參照背景) */
 .reviewerList {
@@ -258,6 +247,9 @@ a:hover{
 .brIconBox:hover .brIconFollow_noAni{
     display: none;
 }
+.brIconBox:hover .brIconFollow_Did{
+    display: block;
+}
 /* 進階收藏作者 (無動畫) */
 .brIconFollow_noAni{
     position: absolute;
@@ -281,10 +273,23 @@ a:hover{
     transform: translateX(-50%);
     transition: 0.2s;
 }
+.brIconFollow_Did{
+    position: absolute;
+    max-width: 80%;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: 0.2s;
+    display: none;
+}
 .brIconFollow:hover{
     max-width: 90%;
     border-radius: 20px;
     border:2px solid #ffc408;
+}
+.brIconFollow_Did:hover{
+    max-width: 90%;
+    border-radius: 22px;
+    border:2px solid #979d9d;
 }
 /* 分享圖示 (書評家的 社群圖示) */
 .brIconShare{

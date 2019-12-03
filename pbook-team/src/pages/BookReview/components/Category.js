@@ -17,7 +17,6 @@ function Category(props) {
 
   const searchParams = new URLSearchParams(props.location.search)
   const sidFromUrl = +searchParams.get('c')
-  const sidFromPage = +searchParams.get('p')
 
   if (error) return <div>failed to load</div>
   if (!data) return <div>loading...</div>

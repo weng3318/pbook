@@ -18,7 +18,19 @@ const BookDetail = props => {
     props.discountAmount &&
     props.discountAmount.data &&
     props.discountAmount.data[0].discount
-  if (!discount) return 'loading'
+  if (!discount)
+    return (
+      <>
+        <h4>
+          取得資料中...
+          <img
+            className="loadingGif"
+            src={require('./ani_LoadingPBook.gif')}
+            alt=""
+          />
+        </h4>
+      </>
+    )
   return (
     <>
       <Col md={5}>

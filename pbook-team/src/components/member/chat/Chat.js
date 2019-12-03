@@ -693,45 +693,27 @@ class Chat extends React.Component {
 
   //私聊下載照片
   handleDownloadImg = picName => {
-    // const FileDownload = require('js-file-download')
-    // axios
-    //   .post(`http://localhost:5555/nana_use/downloadImg`, {
-    //     picName: picName,
-    //   })
-    //   .then(response => {
-    //     FileDownload(response.data, 'report.csv')
-    //   })
-    // axios({
-    //   // 用axios傳送post請求
-    //   method: 'post',
-    //   url: 'http://localhost:5555/nana_use/downloadImg', // 請求地址
-    //   responseType: 'stream', // 表明返回伺服器返回的資料型別
-    //   picName: picName, // 引數
-    // }).then(res => {
-    //   res.data.pipe(fs.creat)
-    // })
-    // axios
-    //   .post(
-    //     'http://localhost:5555/nana_use/downloadImg',
-    //     {
-    //       picName: picName,
-    //     },
-    //     {
-    //       responseType: 'blob', // 设置响应数据类型
-    //     }
-    //   )
-    //   .then(res => {
-    //     if (res.status === 200) {
-    //       var fileName = picName
-    //       let url = window.URL.createObjectURL(new Blob([res.data]))
-    //       let link = document.createElement('a')
-    //       link.style.display = 'none'
-    //       link.href = url
-    //       link.setAttribute('download', fileName) // 自定义下载文件名（如exemple.txt）
-    //       document.body.appendChild(link)
-    //       link.click()
-    //     }
-    //   })
+    var url = 'http://localhost:5555/images/chatFile/' + picName
+    axios
+      .get(url, {
+        responseType: 'blob', //返回数据的格式指定为blob
+      })
+      .then(response => {
+        console.log(response)
+        let url = window.URL.createObjectURL(response.data) //创建一个新的 URL 对象
+        console.log(url)
+        //以下代码一句话解释，在页面上生成一个a标签并指定href为上面的url,然后模拟点击，以实现自动下载
+        var a = document.createElement('a')
+        document.body.appendChild(a)
+        a.href = url
+        a.download = picName
+        a.click()
+        window.URL.revokeObjectURL(url)
+      })
+      .catch(err => {
+        console.log(`接口调用失败`)
+        console.log(err)
+      })
   }
 
   componentDidMount() {
@@ -1196,21 +1178,19 @@ class Chat extends React.Component {
                                                             className="pointer"
                                                           />
                                                         </div>
-                                                        <a
-                                                          href="http://localhost:5555/images/chatFile/_tmp_php1vLYdh.jpg"
-                                                          download={value}
+                                                        <div
                                                           className="downloadImg"
-                                                          // onClick={() =>
-                                                          //   this.handleDownloadImg(
-                                                          //     value
-                                                          //   )
-                                                          // }
+                                                          onClick={() =>
+                                                            this.handleDownloadImg(
+                                                              value
+                                                            )
+                                                          }
                                                         >
                                                           <FontAwesomeIcon
                                                             icon={faDownload}
                                                             className="pointer"
                                                           />
-                                                        </a>
+                                                        </div>
                                                       </div>
                                                     )
                                                   })}

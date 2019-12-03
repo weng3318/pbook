@@ -96,16 +96,21 @@
     .recommendBooks {
       border-top: 1px solid $color-gray;
       text-align: center;
-      .title{
+      .title {
         font-size: 2rem;
       }
-      .recommend{
+      .recommend {
         width: 10vw;
         height: 10vw;
-        img{
+        // overflow: hidden;
+        img {
+          transition: 0.2s;
           object-fit: cover;
           height: 100%;
           width: 100%;
+          &:hover {
+            transform: scale(1.05);
+          }
         }
       }
     }
