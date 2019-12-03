@@ -3,7 +3,7 @@ import './CardS1.scss'
 import UserDetails from '../UserDetails/UserDetails'
 import { Link } from 'react-router-dom'
 
-import WOW from 'wowjs'
+// import WOW from 'wowjs'
 
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import { faCat } from '@fortawesome/free-solid-svg-icons'
@@ -18,7 +18,6 @@ class CardS1 extends React.PureComponent {
     }
   }
   componentDidUpdate() {
-    new WOW.WOW().init()
     fetch(
       `http://localhost:5555/forum/message/content/${this.props.data.fm_articleId}`
     )
@@ -35,7 +34,7 @@ class CardS1 extends React.PureComponent {
     if (!this.props.data || this.props.data.length === 0) {
       return (
         <>
-          <div className="cards-frame wow zoomIn">
+          <div className="cards-frame">
             <figure className="card-figure ">
               <img className="card-s1-img" alt="" src={require('./2.jpg')} />
             </figure>
@@ -53,7 +52,7 @@ class CardS1 extends React.PureComponent {
 
       return (
         <>
-          <div className="cards-frame wow fadeIn">
+          <div className="cards-frame ">
             <figure className="card-figure card-module">
               <Link to={`/forum/article/${article.fm_articleId}`}>
                 <img className="card-s1-img" alt="" src={url} />
