@@ -9,3 +9,23 @@
 書櫃會員
 帳號: yui@gmail.com
 密碼: a123
+
+
+1品書會員註冊
+javascript:(function () {
+    let el = document.querySelectorAll('input');
+    el[0].value = 'dragonqoo1988@gmail.com';
+    el[1].value = '林暐哲';
+    el[2].value = 'Luke';
+    el[3].value = 'a123';
+    el[4].value = 'a123';
+})()
+
+
+
+活動報名
+javascript:(function () {
+    let el = document.querySelectorAll('input');
+    el[1].value = '0921123456';
+    el[2].value = 'dragonqoo1988@gmail.com';
+})()
