@@ -57,7 +57,15 @@ const BookInfoRight = props => {
         props.discountData[i].discount
     }
   }
-  if (!discount) return 'loading'
+  if (!discount)
+    return (
+      <>
+        <h4>
+          取得資料中...
+          <img className="loadingGif" src={require('./ani_LoadingPBook.gif')} />
+        </h4>
+      </>
+    )
   return (
     <>
       <div className="d-flex flex-column book_sell">

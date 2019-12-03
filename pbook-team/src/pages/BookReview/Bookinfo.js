@@ -191,7 +191,6 @@ function Bookinfo() {
       <div className="reviews_searchBar">
         <BookSearch search_result={search_result} />
       </div>
-      <All>
         <Main>
           <Category callback3={callback3} search_result={search_result} />
           <OptionBar>
@@ -245,7 +244,6 @@ function Bookinfo() {
             ''
           )}
         </Main>
-      </All>
     </>
   )
 }

@@ -56,7 +56,15 @@ const BookInfoPic = props => {
         props.discountData[i].discount
     }
   }
-  if (!discount) return 'loading'
+  if (!discount)
+    return (
+      <>
+        <h4>
+          取得資料中...
+          <img className="loadingGif" src={require('./ani_LoadingPBook.gif')} />
+        </h4>
+      </>
+    )
   return (
     <>
       <div className="book_pic mr-3">
