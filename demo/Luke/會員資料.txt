@@ -10,54 +10,56 @@
 帳號: yui@gmail.com
 密碼: a123
 
+帳號:dragonqoo1988@gmail.com
+手機:0921123456
 
-1品書會員註冊
-javascript:(function(){
-    function setNativeValue(element, value) {
-        let lastValue = element.value;
-        element.value = value;
-        let event = new Event("input", { target: element, bubbles: true });
-        event.simulated = true;
-        let tracker = element._valueTracker;
-        if (tracker) {
-            tracker.setValue(lastValue);
-        }
-        element.dispatchEvent(event);
-    }
-    
-    var input = document.querySelectorAll("input");
-    setNativeValue(input[0], "dragonqoo1988@gmail.com");
-    setNativeValue(input[1], "dragonqoo1988@gmail.com");
+
+找新書、買書
+
+熱門書評家
+
+找小編
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(function() {
+  let el = document.querySelectorAll('input');
+  el[0].value = 'dragonqoo1988@gmail.com';
+  el[1].value = '林暐哲';
+  el[2].value = 'Luke';
+  el[3].value = 'a123';
+  el[4].value = 'a123';
+
+   el[0].change()
+
 })()
 
-
-
-(function () {
-    let el = document.querySelectorAll('input');
-    el[0].value = 'dragonqoo1988@gmail.com';
-    el[1].value = '林暐哲';
-    el[2].value = 'Luke';
-    el[3].value = 'a123';
-    el[4].value = 'a123';
-})()
-
-
-
-活動報名
-javascript:(function(){
-    function setNativeValue(element, value) {
-        let lastValue = element.value;
-        element.value = value;
-        let event = new Event("input", { target: element, bubbles: true });
-        event.simulated = true;
-        let tracker = element._valueTracker;
-        if (tracker) {
-            tracker.setValue(lastValue);
-        }
-        element.dispatchEvent(event);
-    }
-    
-    var input = document.querySelectorAll("input");
-    setNativeValue(input[1], "0921123456");
-    setNativeValue(input[2], "dragonqoo1988@gmail.com");
-})()

@@ -13,6 +13,24 @@ class ViewMemberBooks extends React.Component {
         }
       }
 
+      success = (status, message) => {
+        swal({
+          title: status,
+          text: message,
+          icon: 'success',
+          button: 'OK',
+        }).then(title => {
+          if (title === '可以參加配對活動') {
+            swal('您已經成功做了修改!', {
+              icon: 'success',
+            })
+          }
+          setTimeout(() => {
+            window.location = '/member'
+          }, 1000)
+        })
+      }
+
       componentDidMount(){
         this.queryMemberBooks()
       }
@@ -36,8 +54,8 @@ class ViewMemberBooks extends React.Component {
       }
 
       deleteBook = (sid, name) =>{
-        console.log("sid", sid);
-        console.log(name);
+        // console.log("sid", sid);
+        // console.log(name);
         swal({
           title: '您確定要刪除, 書名:' + name +'?',
           icon: 'warning',
@@ -46,8 +64,9 @@ class ViewMemberBooks extends React.Component {
         }).then( willDelete => {
           if(willDelete){
             axios.post('http://localhost:5555/member/deleteBook',{ sid })
-            .then( res => {
-              window.location.href = 'http://localhost:3000/member/ViewMemberBooks'
+            .then( data => {
+              console.log(data);
+              window.location.href = 'http://localhost:3000/member'
             })
           }
           
