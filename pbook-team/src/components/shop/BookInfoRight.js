@@ -64,7 +64,7 @@ const BookInfoRight = props => {
           取得資料中...
           <img
             className="loadingGif"
-            src={require('./ani_LoadingPBook.gif')}
+            src={require('./images/ani_LoadingPBook.gif')}
             alt=""
           />
         </h4>
