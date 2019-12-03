@@ -60,9 +60,9 @@ function BookInfo(props) {
               {props.name}
             </h6>
             <span className="info mb-2 mt-1">
-              <span className="author" title={'作者：' + props.author}>
+              {/* <span className="author" title={'作者：' + props.author}>
                 作者：{props.author}
-              </span>
+              </span> */}
               <div className="">
                 <span className="fixedPrice">
                   原價 <strike>{props.fixed_price}</strike>元

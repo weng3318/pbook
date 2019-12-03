@@ -19,7 +19,7 @@ function AcItemOffline(props) {
             to={'/activities/' + props.acType + '/' + props.sid}
             className="img"
           >
-            <img src={'http://localhost:5555/ac/images/' + props.img}></img>
+            <img src={'http://localhost:5555/ac/images/s/' + props.img}></img>
           </Link>
         </figure>
         <section className="acContent col-md-6">

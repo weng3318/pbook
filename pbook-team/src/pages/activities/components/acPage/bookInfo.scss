@@ -1,6 +1,7 @@
 @import '../../color.scss';
 
 .book_box {
+  max-width: 13rem;
   figure {
     transition: 0.3s;
     &:hover {
