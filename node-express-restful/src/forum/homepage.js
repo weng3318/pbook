@@ -80,16 +80,17 @@ router
     let category = req.params.category;
     let output = {};
     let sql = `SELECT * FROM mr_information JOIN vb_categories ON vb_categories.sid='${category}' WHERE MR_number= '${memberId}'`;
-    
     // res.json(sql);
     db.queryAsync(sql)
       .then(results => {
+        output.sql = sql;
         output.writer = results[0];
         sql = `SELECT COUNT(1) FROM fm_favorite WHERE fm_lovewriter='${memberId}'`;
         return db.queryAsync(sql);
       })
       .then(results => {
         output.follow = results[0]["COUNT(1)"];
+        console.log(output, memberId);
         res.json(output);
       });
   });
@@ -300,7 +301,7 @@ router
 router
   .route("/cate/:number/:subCate?")
   .all((req, res, next) => {
-    next(); 
+    next();
   })
   .get((req, res) => {
     let output = {};
