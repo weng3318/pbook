@@ -62,7 +62,7 @@ class BR_BookcaseList extends React.Component {
       })
       .then(data => {
         // this.props.refreshLikeBook()
-        swal('按讚成功', '', 'success')
+        swal('按讚成功', '', require('./images/swal_success.gif'))
       })
   }
   // 閱讀數API-------------------------------------------------------------------------
@@ -158,7 +158,7 @@ class BR_BookcaseList extends React.Component {
             
             {!this.state.isLogin ? (
               ''
-            ) : JSON.parse(localStorage.getItem('user')).MR_number !==
+            ) : JSON.parse(localStorage.getItem('user')).MR_number ===
               this.props.number ? (
               <>
                 {/* 編輯模式按鈕 */}
@@ -210,7 +210,7 @@ class BR_BookcaseList extends React.Component {
                     this.handleReadBook(opened === 'blog' ? null : 'blog')
                   }
                   className="brMark_img_noAni"
-                  src={require('../reviewer_page/images/icon_eye.png')}/>
+                  src={require('../reviewer_page/images/icon_readbook.png')}/>
                 </>
                 ):(
                   <>
@@ -219,7 +219,7 @@ class BR_BookcaseList extends React.Component {
                     this.handleReadBook(opened === 'blog' ? null : 'blog')
                   }
                   className="brMark_img_noAni"
-                  src={require('../reviewer_page/images/icon_close_eye.png')}/>
+                  src={require('../reviewer_page/images/icon_eye.png')}/>
                 </>
                 )}
                 
