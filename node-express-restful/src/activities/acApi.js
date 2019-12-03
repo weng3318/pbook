@@ -8,6 +8,7 @@ import nodemailer from 'nodemailer';
 import { mailAcSignOK, mailAcSignNotice } from './acMail';
 import schedule from 'node-schedule';
 import moment from 'moment';
+import getAllDiscountAmount from './getAllDiscountAmount'
 
 var transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -104,6 +105,10 @@ router.post('/books-discount/:memberLevel?', async (req, res, next) => {
 // 對某階級的會員，取得所有書籍折價資訊
 router.get('/book-discount-for-member-level/:memberLevel', flatCacheMiddleware, async (req, res, next) => {
     res.json(await AC.getBooksDiscountForMemberLevel(req.params.memberLevel))
+})
+
+router.get('/getAllDiscountAmount', async (req, res, next) => {
+    res.json(await getAllDiscountAmount())
 })
 
 // 對特定會員，獲得協同過濾推薦書籍
