@@ -19,16 +19,15 @@ class CardS1 extends React.PureComponent {
   }
   componentDidMount() {
     new WOW.WOW().init()
-      fetch(
-        `http://localhost:5555/forum/message/content/${this.props.data.fm_articleId}`
-      )
-        .then(res => {
-          return res.json()
-        })
-        .then(result => {
-          console.log(result)
-          this.setState({ messageCount: result.length })
-        })
+    fetch(
+      `http://localhost:5555/forum/message/content/${this.props.data.fm_articleId}`
+    )
+      .then(res => {
+        return res.json()
+      })
+      .then(result => {
+        this.setState({ messageCount: result.length })
+      })
   }
 
   render() {
