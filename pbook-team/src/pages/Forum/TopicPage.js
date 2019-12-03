@@ -10,8 +10,6 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 //action
 import { letMeLogin } from './fmAction'
 
-
-
 class TopicPage extends React.Component {
   constructor(props) {
     super(props)
@@ -75,6 +73,7 @@ class TopicPage extends React.Component {
         </h2>
       )
     } else {
+      console.log('render')
       if (this.props.cate !== this.state.cate) {
         this.handleCateChange()
       }

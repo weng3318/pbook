@@ -242,13 +242,23 @@ const PostAritcle = props => {
       if (select.value === '') {
         document.querySelector('.selectControl').classList.add('show')
         document.querySelector('#subcate-help').classList.add('show')
-        document.documentElement.scrollTop = 0
+        goToTop()
       }
       if (title.value === '') {
         document.querySelector('#title').classList.add('show')
         document.querySelector('#title-help').classList.add('show')
       }
     }
+  }
+  const goToTop = (event, destination = 0, duration = 300) => {
+    const scrollStep = -window.scrollY / (duration / 15)
+    const scrollInterval = setInterval(function() {
+      if (window.scrollY !== 0 && window.scrollY > destination) {
+        window.scrollBy(200, scrollStep)
+      } else {
+        clearInterval(scrollInterval)
+      }
+    }, 15)
   }
 
   //step3 : 處理文章內容 section
