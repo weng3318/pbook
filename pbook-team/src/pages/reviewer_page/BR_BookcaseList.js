@@ -158,7 +158,7 @@ class BR_BookcaseList extends React.Component {
             
             {!this.state.isLogin ? (
               ''
-            ) : JSON.parse(localStorage.getItem('user')).MR_number ===
+            ) : JSON.parse(localStorage.getItem('user')).MR_number !==
               this.props.number ? (
               <>
                 {/* 編輯模式按鈕 */}
