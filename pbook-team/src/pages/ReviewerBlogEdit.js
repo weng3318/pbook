@@ -73,7 +73,7 @@ export class ReviewerBlogEdit extends Component {
         <h3 className="h3_br">書評家 {br_name}</h3>
         <section className="br_CKEditor">
           <div className="h5_Edit">
-            正在編輯..<div className="h3_Red">{name}</div>
+            正在編輯<div className="h3_Red">{name}</div>
           </div>
           <div className="Animate_Close_Box">
             <div
