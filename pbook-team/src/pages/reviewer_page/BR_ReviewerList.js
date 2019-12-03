@@ -79,7 +79,7 @@ class BR_ReviewerList extends React.Component {
         if(res.data.status === 'success'){
           swal('收藏成功','','success')
           this.setState({
-            followDid:false
+            followDid:true
           })
         // console.log('收藏成功data',res)
         } else {

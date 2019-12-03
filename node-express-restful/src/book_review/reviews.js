@@ -37,16 +37,16 @@ router.get(`/?`, (req, res) => {
   }
 
   if (urlpart.query.a == 1) {
-    a = "publish_date";
-  } else if (urlpart.query.a == 2) {
     a = "page";
+  } else if (urlpart.query.a == 2) {
+    a = "publish_date";
   } else {
     a = "fixed_price";
   }
   s = urlpart.query.s || "";
 
   page = urlpart.query.p || 1;
-  let perPage = 15;
+  let perPage = 20;
   let output = {};
   db.queryAsync(`SELECT COUNT(1) total FROM vb_books WHERE categories ${c}`)
     .then(results => {

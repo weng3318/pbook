@@ -128,7 +128,7 @@ function Bookinfo() {
       .get(`http://localhost:5555/reviews/?${c}a=${array}&p=${p}&s=${e}`)
       .then(res => {
         setBookInformation(res.data.rows)
-        getPage(Math.ceil(res.data.total / 15))
+        getPage(Math.ceil(res.data.total / 20))
         console.log(res.data)
       })
       .catch(error => {
@@ -225,7 +225,7 @@ function Bookinfo() {
                   <Pagination.Prev className="pageNum" />
                 </LinkContainer>
               )}
-              {pageNum.filter((key, index) => index < 15)}
+              {pageNum}
               {p < page && (
                 <LinkContainer to={'/reviews?' + c + 'p=' + (Number(p) + 1)}>
                   <Pagination.Next className="pageNum" />
