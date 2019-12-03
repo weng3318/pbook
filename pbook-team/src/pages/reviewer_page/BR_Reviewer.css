@@ -133,7 +133,6 @@ a:hover{
 }
 /* 麵包屑(Breadcrumbs) */
 .brNavbar{
-    
     display: flex;
     justify-content: space-between;
     width: 100%;
@@ -145,6 +144,11 @@ a:hover{
     color: #2d3a3a;
     white-space: nowrap;
     overflow: hidden;
+}
+/* 麵包屑路徑，文字 (置中調整) */
+.h5_bread{
+    transform: translateY(18%);
+    color: #2d3a3a;
 }
 /* 書評列表 (參照背景) */
 .reviewerList {
