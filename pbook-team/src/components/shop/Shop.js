@@ -55,7 +55,10 @@ const Shop = props => {
         ></Breadcrumb>
         <Container>
           <Row>
-            <Categories categoriesPayload={categoriesPayload}></Categories>
+            <Categories
+              categoriesPayload={categoriesPayload}
+              nowCategories={props.match.params.categories}
+            ></Categories>
             <Data
               discountAmount={discountAmount}
               shopPayload={shopPayload}

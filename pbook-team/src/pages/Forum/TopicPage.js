@@ -6,6 +6,7 @@ import ButtonUI from '../../components/Material-UI/Button'
 import { Nav } from 'react-bootstrap'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
+import CircularProgress from '@material-ui/core/CircularProgress'
 //action
 import { letMeLogin } from './fmAction'
 
@@ -66,8 +67,13 @@ class TopicPage extends React.Component {
 
   render() {
     if (!this.state.featured) {
-      return <h2>hello{this.props.cate}</h2>
+      return (
+        <h2 className="dis-flex dis-justify-center">
+          <CircularProgress color="secondary" />
+        </h2>
+      )
     } else {
+      console.log('render')
       if (this.props.cate !== this.state.cate) {
         this.handleCateChange()
       }

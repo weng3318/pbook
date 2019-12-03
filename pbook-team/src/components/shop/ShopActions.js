@@ -552,29 +552,29 @@ export const favoriteFetch = member => async dispatch => {
   }
 }
 //-------------------------
-//-------Favorite-----------
+//-------FAVORITENUM-----------
 export const FAVORITENUM_RECEIVE = 'FAVORITENUM_RECEIVE'
 export const FAVORITENUM_REQUEST = 'FAVORITENUM_REQUEST'
 
-function favoriteNumReceive(isbn, json) {
+function favoriteNumReceive(sid, json) {
   return {
     type: FAVORITENUM_RECEIVE,
-    isbn,
+    sid,
     payload: json,
     receivedAt: Date.now(),
   }
 }
-function favoriteNumRequest(isbn) {
+function favoriteNumRequest(sid) {
   return {
     type: FAVORITENUM_REQUEST,
-    isbn,
+    sid,
   }
 }
-export const favoriteNumFetch = isbn => async dispatch => {
-  dispatch(favoriteNumRequest(isbn))
+export const favoriteNumFetch = sid => async dispatch => {
+  dispatch(favoriteNumRequest(sid))
   try {
     let response = await fetch(
-      'http://localhost:5555/books/favoriteNum/' + isbn,
+      'http://localhost:5555/books/favoriteNum/' + sid,
       {
         method: 'GET',
         headers: new Headers({
@@ -583,7 +583,7 @@ export const favoriteNumFetch = isbn => async dispatch => {
         }),
       }
     )
-    dispatch(favoriteNumReceive(isbn, await response.json()))
+    dispatch(favoriteNumReceive(sid, await response.json()))
   } catch (error) {
     console.log('error ', error)
   }

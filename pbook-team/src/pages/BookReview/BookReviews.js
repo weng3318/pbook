@@ -17,12 +17,11 @@ import Nav from './components/Navbar'
 //---------------------------------------------------------------------------------------------------------
 const All = styled.section`
   background-image: url('../../images/bg.png');
-  background-repeat: repeat;
 `
 
 //主要內容外框
 const Main = styled.section`
-  margin: 40px auto 0 auto;
+  margin: 40px auto -35px auto;
   width: 1200px;
 `
 

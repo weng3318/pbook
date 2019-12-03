@@ -80,17 +80,17 @@ router
     let category = req.params.category;
     let output = {};
     let sql = `SELECT * FROM mr_information JOIN vb_categories ON vb_categories.sid='${category}' WHERE MR_number= '${memberId}'`;
-    console.log(sql);
     // res.json(sql);
     db.queryAsync(sql)
       .then(results => {
+        output.sql = sql;
         output.writer = results[0];
         sql = `SELECT COUNT(1) FROM fm_favorite WHERE fm_lovewriter='${memberId}'`;
         return db.queryAsync(sql);
       })
       .then(results => {
-        console.log(results[0]["COUNT(1)"]);
         output.follow = results[0]["COUNT(1)"];
+        console.log(output, memberId);
         res.json(output);
       });
   });
@@ -161,7 +161,6 @@ router
     } else {
       fm_responseId = articleId;
     }
-    console.log(fm_articleId, fm_memberId);
     let sql = `INSERT INTO fm_bookmark(fm_bookmarkSid, fm_articleId, fm_responseSid, fm_memberId) VALUES (NULL,?,?,?)`;
 
     db.query(
@@ -254,7 +253,7 @@ router
     let fm_articleId = req.params.articleId;
     let fm_responseId = req.params.memberId;
     let fm_responseContent = req.body.contentValue;
-    console.log(123, req.body);
+    // console.log(123, req.body);
     let sql = `INSERT INTO fm_articleresponse(sid, fm_articleId, fm_responseId, fm_responseContent, fm_resLike, responseTime) VALUES (NULL,?,?,?,0,NOW())`;
     db.query(
       sql,
@@ -410,7 +409,6 @@ router
       mainImg = Math.floor(Math.random() * 10) + 1 + "0.jpg";
     }
     for (let i = 0; i < data.imgCount; i++) {
-      console.log("123312");
       if (req.files[i] && req.files[i].mimetype) {
         filename = articleId + i + "." + req.files[i].mimetype.slice(6, 10);
         if (i === 0) {
@@ -434,7 +432,9 @@ router
         resData.filename = "no img file";
       }
     }
-
+    if (data.isMainUpload === "2") {
+      mainImg = data.imgFromUnsplash[0];
+    }
     let category = data.cate;
     let subCategories = data.subcate;
     let title = data.title;
@@ -444,11 +444,12 @@ router
         return item.slice(0, 200);
       }
     })[0];
-    console.log(subTitle);
+
     let demoImage = mainImg;
     let content = {
       element: data.element,
-      textareaValue: data.textareaValue.filter(item => item !== "")
+      textareaValue: data.textareaValue.filter(item => item !== ""),
+      imgFromUnsplash: data.imgFromUnsplash
     };
     fs.writeFile(
       __dirname + "/../../public/forum/content/" + articleId + ".json",

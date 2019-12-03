@@ -2,6 +2,12 @@
 /* #root {
   background-image: url('../../images/bg.png');
 } */
+/* 主頁面背景 */
+.reviews_MainPage {
+  background-image: url('../../images/bg.png');
+  /* z-index: -1; */
+}
+
 /* 右側愛心區塊 */
 .reviews_col {
   display: flex;
@@ -19,15 +25,16 @@
 .reviews_cate1 {
   display: flex;
   width: 700px;
-  margin: 0 0 0 25px;
+  margin: 0px 0 0 25px;
+  transform: translate(0, 10px);
 }
 /* 書籍分類第二排 */
 .reviews_cate2 {
-  margin: 0 0 0 90px;
+  margin: 10px 0 0 90px;
 }
 /* 書籍分類第三排 */
 .reviews_cate3 {
-  margin: 0 0 0 145px;
+  margin: 0px 0 0 145px;
 }
 /* 分數文字 */
 .reviews_bol {
@@ -62,6 +69,7 @@
   width: 320px;
   border: 1px solid #eaeaea;
   outline: none;
+  z-index: 99;
 }
 .reviews_search:hover {
   border-color: #a0a0a0 #b9b9b9 #b9b9b9 #b9b9b9;
@@ -181,11 +189,12 @@
   width: 600px;
   display: flex;
   justify-content: center;
-  margin: 0 0px 30px 180px;
+  margin: 0 0px 0px 180px;
   border-color: #dee2e6 !important;
   color: black !important;
   text-decoration: none;
   outline: none;
+  transform: translate(0, -40px);
 }
 
 .pagination .page-item .page-link {
@@ -227,14 +236,27 @@
   color: black;
   border: 1px solid #dee2e6;
 }
-
 .reviews_img {
   max-height: 100%;
   max-width: 100%;
   width: 150px;
   height: 150px;
   border: 1px solid #ccc;
+  z-index: 99;
 }
+/* .reviews_img {
+  max-height: 100%;
+  max-width: 100%;
+  width: 150px;
+  height: 150px;
+  border: 1px solid #ccc;
+  transition: 0.5s;
+  z-index: 99;
+} */
+/* .reviews_img:hover {
+  width: 155px;
+  height: 155px;
+} */
 
 /* 文字超連結A標籤 效果 */
 .reviews_list_sid {

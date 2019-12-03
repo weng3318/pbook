@@ -18,6 +18,9 @@
       margin: 16px auto 32px auto;
       padding: 0 16px;
       font-size: 1.4rem;
+      pre {
+        font-family: 'Microsoft JhengHei', 'Noto Sans TC', sans-serif !important;
+      }
       .contentPre {
         width: 100%;
         margin: 8px 0 8px 0;
@@ -30,7 +33,6 @@
         max-width: 80%;
         max-height: 726px;
       }
-      
     }
     button:focus {
       outline: none;
@@ -168,6 +170,15 @@
         width: 90px;
         background-color: $black-tea;
         color: #ffffff;
+      }
+    }
+    .video-frame {
+      display: flex;
+      margin: 16px;
+      .video-iframe {
+        flex: '1 1 0';
+        width: 100%;
+        height: auto;
       }
     }
   }

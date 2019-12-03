@@ -9,7 +9,7 @@ import mysql from "mysql";
 //             debug    : false 
 //             });     
 const pool = mysql.createPool({
-            host:"192.168.27.186",
+            host: "192.168.27.186",
             user: "root",
             password: "root",
             database: "pbook",
