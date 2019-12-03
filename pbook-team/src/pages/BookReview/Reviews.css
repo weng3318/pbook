@@ -236,12 +236,22 @@
   color: black;
   border: 1px solid #dee2e6;
 }
+.reviews_book_img_f {
+  display: flex;
+  flex-direction: column;
+}
+.reviews_book_img {
+  margin: 34px auto;
+  width: 155px;
+  height: 155px;
+}
 .reviews_img {
   max-height: 100%;
   max-width: 100%;
   width: 150px;
   height: 150px;
   border: 1px solid #ccc;
+  transition: 0.5s;
   z-index: 99;
 }
 /* .reviews_img {
@@ -253,10 +263,10 @@
   transition: 0.5s;
   z-index: 99;
 } */
-/* .reviews_img:hover {
+.reviews_img:hover {
   width: 155px;
   height: 155px;
-} */
+}
 
 /* 文字超連結A標籤 效果 */
 .reviews_list_sid {
@@ -326,6 +336,12 @@
   justify-content: space-around;
   margin: 0 0 0 140px;
 }
+
+.reviews_recommendBook_f {
+  width: 125px;
+  height: 125px;
+}
+
 /* 書本推薦區圖片 */
 .reviews_recommendBook_img {
   max-height: 100%;
@@ -335,6 +351,10 @@
   margin: 0 0 0 50px;
   border: 1px solid #ccc;
 }
+/* .reviews_recommendBook_img:hover {
+  width: 125px;
+  height: 125px;
+} */
 /* 書本推薦區文字 */
 .reviews_recommendBookName {
   margin: 0 0 0 50px;
@@ -426,11 +446,14 @@
 .reviews_text {
   width: 1000px;
   height: 50px;
-  margin: 20px auto;
+  margin: 20px auto 35px auto;
 }
 /* 下方書評區塊 */
 .reviews_member_text {
-  margin: 0 auto 0 70px;
+  margin: 0 auto 0px 70px;
+}
+.reviews_member_text2 {
+  margin: 0 auto 15px 70px;
 }
 /* 會員右方刪除修改按鈕 */
 .reviews_member_icon {

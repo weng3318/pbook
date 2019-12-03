@@ -21,7 +21,7 @@ const All = styled.section`
 
 //主要內容外框
 const Main = styled.section`
-  margin: 40px auto -35px auto;
+  margin: 40px auto -45px auto;
   width: 1200px;
 `
 
