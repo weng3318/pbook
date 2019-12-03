@@ -68,7 +68,7 @@ class CardS1 extends React.PureComponent {
                     className="card-s1-subTitle card-subtitle-font"
                     // title={article.fm_subTitle}
                   >
-                    {article.fm_subTitle}
+                    {article.fm_subTitle.slice(0, 60)}
                   </div>
                 </Link>
                 <div className="user-details">
