@@ -5,6 +5,7 @@ import Breadcrumb from './Breadcrumb'
 import Categories from './Categories'
 import DataList from './DataList'
 import DataPic from './DataPic'
+import ScrollToTop from './ScrollToTop'
 import { shopFetch, cgFetch, cartFetch } from './ShopActions'
 import './Shop.scss'
 
@@ -46,7 +47,7 @@ const Shop = props => {
     localStorage.setItem('mode', 'pic')
   }
   return (
-    <>
+    <ScrollToTop>
       <Container className="px-0 book_wrapper" fluid={true}>
         <Breadcrumb
           categoriesPayload={categoriesPayload}
@@ -70,7 +71,7 @@ const Shop = props => {
           </Row>
         </Container>
       </Container>
-    </>
+    </ScrollToTop>
   )
 }
 

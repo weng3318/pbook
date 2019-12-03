@@ -14,11 +14,9 @@ import BookDetail from './BookDetail'
 import BookPic from './BookPic'
 import BookBuy from './BookBuy'
 import BookProduct from './BookProduct'
-import ScrollToTop from './ScrollToTop'
 import BookComment from './BookComment'
-
+import ScrollToTop from '../ScrollToTop'
 import './BookCommodity.scss'
-import { func } from 'prop-types'
 
 const BookCommodity = props => {
   // let favState = JSON.parse(localStorage.getItem('favState'))

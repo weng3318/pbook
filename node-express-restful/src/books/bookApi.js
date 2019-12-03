@@ -46,7 +46,6 @@ router.get("/book_data/:page?/:categories?/:keyword?", (req, res) => {
     where += " AND `vb_books`.`categories`" + " = " + categories;
     output.categories = categories;
   }
-  console.log(where)
   
   let sql =
     "SELECT COUNT(1) `total` FROM `vb_books` LEFT JOIN `cp_data_list` ON `vb_books`.`publishing` = `cp_data_list`.`sid` LEFT JOIN `vb_ratings` ON `vb_books`.`sid`=`vb_ratings`.`book`" +
