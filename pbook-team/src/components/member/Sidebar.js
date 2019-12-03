@@ -367,7 +367,7 @@ const Sidebar = props => {
                     書評家專用
                   </Accordion.Toggle>
                   <Accordion.Collapse eventKey="0" className="sidebar_item">
-                    <Link to="">
+                    <Link to="/reviewer">
                       <div style={{ cursor: 'pointer' }}>編輯資料</div>
                     </Link>
                   </Accordion.Collapse>
