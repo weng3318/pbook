@@ -33,7 +33,7 @@ class Login extends React.Component {
       captcha2: '',
       forgetPwd: false,
       err_email: '信箱: 合理的EMAIL格式',
-      err_username: '使用者姓名: 至少3個字元',
+      err_username: '使用者姓名: 至少2個字元',
       err_password: '至少有一個數字、一個小寫英文字母、密碼長度在 4~8 之間',
       err_captcha: '請輸入圖上的字',
       picture: '請選擇個人頭像',

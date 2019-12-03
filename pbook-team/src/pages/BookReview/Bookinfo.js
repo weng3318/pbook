@@ -56,30 +56,16 @@ function Bookinfo() {
   }
 
   const searchParams = new URLSearchParams(window.location.search)
-  const sidFromUrl = +searchParams.get('c')
-  s = +searchParams.get('p')
-  // if (s == 0) {
-  //   s == 1
-  //   console.log(s)
-  // }
+  s = +searchParams.get('p') || 1
   console.log(s)
 
   //---------------------------------------------------------------------------
 
   //---------------------------------------------------------------------------
-  const All = styled.section`
-    background-image: url('../../images/bg.png');
-    background-repeat: repeat;
-  `
 
   const Main = styled.section`
-    margin: 0 auto;
+    margin: -25px auto;
     width: 1200px;
-  `
-
-  const CategoryBar = styled.div`
-    display: flex;
-    width: 700px;
   `
 
   //右上排列方式欄位
@@ -100,23 +86,6 @@ function Bookinfo() {
     display: flex;
     flex-direction: column;
     align-items: center;
-  `
-
-  //書本圖片
-  const BookImage = styled.div`
-    margin: 36px auto;
-  `
-  //書本資訊
-  const BookInfo = styled.div`
-    width: 600px;
-    height: 183px;
-    margin: 20px 2rem;
-    overflow: hidden;
-    white-space: wrap;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
   `
   //書本星數
   const BookScoreSet = styled.div`
@@ -159,7 +128,7 @@ function Bookinfo() {
       .get(`http://localhost:5555/reviews/?${c}a=${array}&p=${p}&s=${e}`)
       .then(res => {
         setBookInformation(res.data.rows)
-        getPage(Math.ceil(res.data.total / 15))
+        getPage(Math.ceil(res.data.total / 20))
         console.log(res.data)
       })
       .catch(error => {
@@ -208,69 +177,72 @@ function Bookinfo() {
         .catch(error => {
           console.log(error)
         })
-    } else if (e.length == 0) {
+    } else {
+      setSb({ isSearch: false })
       bookInfo()
     }
   }
 
   return (
     <>
-      <div className="reviews_searchBar">
-        <BookSearch search_result={search_result} />
-      </div>
-      <Main>
-        <Category callback3={callback3} search_result={search_result} />
-        <OptionBar>
-          <select
-            onChange={e => {
-              setArray(e.target.value)
-            }}
-            value={array}
-            name="array"
-          >
-            <option value="1">討論度(高>低)</option>
-            <option value="2">上市日期(新>舊)</option>
-            <option value="3">暢銷度</option>
-          </select>
-        </OptionBar>
+      <section className="reviews_MainPage">
+        <div className="reviews_searchBar">
+          <BookSearch search_result={search_result} />
+        </div>
+        <Main>
+          <Category callback3={callback3} search_result={search_result} />
+          <OptionBar>
+            <select
+              onChange={e => {
+                setArray(e.target.value)
+              }}
+              value={array}
+              name="array"
+            >
+              <option value="1">討論度(高>低)</option>
+              <option value="2">上市日期(新>舊)</option>
+              <option value="3">暢銷度</option>
+            </select>
+          </OptionBar>
 
-        {
-          <Book>
-            <BooksData bookInformation={bookInformation} />
-            <BookColumn>
-              <BookScore callback={callback} callback2={callback2} />
-            </BookColumn>
-          </Book>
-        }
+          {
+            <Book>
+              <BooksData bookInformation={bookInformation} />
+              <BookColumn>
+                <BookScore callback={callback} callback2={callback2} />
+              </BookColumn>
+            </Book>
+          }
 
-        {!sb.isSearch ? (
-          <Pagination className="reviews_pagination">
-            {p >= 2 && (
-              <LinkContainer to={'/reviews?' + c + 'p=1'}>
-                <Pagination.First className="pageNum" />
-              </LinkContainer>
-            )}
-            {p >= 2 && (
-              <LinkContainer to={'/reviews?' + c + 'p=' + Number(p - 1)}>
-                <Pagination.Prev className="pageNum" />
-              </LinkContainer>
-            )}
-            {pageNum.filter((key, index) => index < 15)}
-            {p < page && (
-              <LinkContainer to={'/reviews?' + c + 'p=' + (Number(p) + 1)}>
-                <Pagination.Next className="pageNum" />
-              </LinkContainer>
-            )}
-            {p < page && (
-              <LinkContainer to={'/reviews?' + c + 'p=' + page}>
-                <Pagination.Last className="pageNum" />
-              </LinkContainer>
-            )}
-          </Pagination>
-        ) : (
-          ''
-        )}
-      </Main>
+          {!sb.isSearch ? (
+            <Pagination className="reviews_pagination">
+              {p >= 2 && (
+                <LinkContainer to={'/reviews?' + c + 'p=1'}>
+                  <Pagination.First className="pageNum" />
+                </LinkContainer>
+              )}
+              {p >= 2 && (
+                <LinkContainer to={'/reviews?' + c + 'p=' + Number(p - 1)}>
+                  <Pagination.Prev className="pageNum" />
+                </LinkContainer>
+              )}
+              {pageNum}
+              {p < page && (
+                <LinkContainer to={'/reviews?' + c + 'p=' + (Number(p) + 1)}>
+                  <Pagination.Next className="pageNum" />
+                </LinkContainer>
+              )}
+              {p < page && (
+                <LinkContainer to={'/reviews?' + c + 'p=' + page}>
+                  <Pagination.Last className="pageNum" />
+                </LinkContainer>
+              )}
+            </Pagination>
+          ) : (
+            ''
+          )}
+        </Main>
+      </section>
     </>
   )
 }

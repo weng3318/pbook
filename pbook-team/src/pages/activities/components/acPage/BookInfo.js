@@ -15,7 +15,12 @@ function BookInfo(props) {
         button: 'OK',
       })
     } else if (index === -1) {
-      props.dispatch(addToCartFetch(sid))
+      props.dispatch(
+        addToCartFetch(
+          sid,
+          Math.round((props.fixed_price * (100 - discount)) / 100)
+        )
+      )
       swal({
         text: '加入購物車成功',
         icon: 'success',
@@ -55,9 +60,9 @@ function BookInfo(props) {
               {props.name}
             </h6>
             <span className="info mb-2 mt-1">
-              <span className="author" title={'作者：' + props.author}>
+              {/* <span className="author" title={'作者：' + props.author}>
                 作者：{props.author}
-              </span>
+              </span> */}
               <div className="">
                 <span className="fixedPrice">
                   原價 <strike>{props.fixed_price}</strike>元

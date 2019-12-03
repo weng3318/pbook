@@ -1,21 +1,17 @@
-import React,{useMemo} from 'react'
+/* eslint-disable jsx-a11y/alt-text */
+import React, { useMemo } from 'react'
 import styled from '@emotion/styled'
-import useSWR from 'swr'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 
 // const fetcher = (url) => fetch(url).then(r => r.json())
 
-
 function BooksData(props) {
   //直排
-  const BookColumn = styled.div`
+  const BookColumn = styled.section`
     display: flex;
     flex-direction: column;
   `
-  //書本圖片
-  const BookImage = styled.div`
-    margin: 36px auto;
-  `
+
   //書本資訊
   const BookInfo = styled.div`
     width: 600px;
@@ -29,13 +25,13 @@ function BooksData(props) {
     -webkit-box-orient: vertical;
   `
 
-  const {bookInformation}=props
+  const { bookInformation } = props
 
   return (
     <>
-      <BookColumn>
+      <section className="reviews_book_img_f">
         {bookInformation.map(item => (
-          <BookImage key={item.sid}>
+          <div className="reviews_book_img" key={item.sid}>
             <Link to={'/book_reviews/' + item.sid}>
               <img
                 key={item.sid}
@@ -43,9 +39,9 @@ function BooksData(props) {
                 src={`http://localhost:5555/images/books/${item.pic}`}
               />
             </Link>
-          </BookImage>
+          </div>
         ))}
-      </BookColumn>
+      </section>
       <BookColumn>
         {bookInformation.map(item => (
           <BookInfo key={item.sid}>

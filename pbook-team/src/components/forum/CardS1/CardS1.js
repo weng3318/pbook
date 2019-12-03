@@ -3,7 +3,7 @@ import './CardS1.scss'
 import UserDetails from '../UserDetails/UserDetails'
 import { Link } from 'react-router-dom'
 
-import WOW from 'wowjs'
+import '../../../pages/Forum/scss/animate.css'
 
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import { faCat } from '@fortawesome/free-solid-svg-icons'
@@ -18,24 +18,28 @@ class CardS1 extends React.PureComponent {
     }
   }
   componentDidMount() {
-    new WOW.WOW().init()
-      fetch(
-        `http://localhost:5555/forum/message/content/${this.props.data.fm_articleId}`
-      )
-        .then(res => {
-          return res.json()
+    let node = document.querySelector('.cards-frame')
+    fetch(
+      `http://localhost:5555/forum/message/content/${this.props.data.fm_articleId}`
+    )
+      .then(res => {
+        node.classList.add('animated', 'fadeIn')
+        node.addEventListener('animationend', function() {
+          node.classList.remove('animated', 'fadeIn')
+          node.removeEventListener('animationend', () => {})
         })
-        .then(result => {
-          console.log(result)
-          this.setState({ messageCount: result.length })
-        })
+        return res.json()
+      })
+      .then(result => {
+        this.setState({ messageCount: result.length })
+      })
   }
 
   render() {
     if (!this.props.data || this.props.data.length === 0) {
       return (
         <>
-          <div className="cards-frame wow zoomIn">
+          <div className="cards-frame ">
             <figure className="card-figure ">
               <img className="card-s1-img" alt="" src={require('./2.jpg')} />
             </figure>
@@ -53,7 +57,7 @@ class CardS1 extends React.PureComponent {
 
       return (
         <>
-          <div className="cards-frame wow fadeIn">
+          <div className="cards-frame ">
             <figure className="card-figure card-module">
               <Link to={`/forum/article/${article.fm_articleId}`}>
                 <img className="card-s1-img" alt="" src={url} />
@@ -69,7 +73,7 @@ class CardS1 extends React.PureComponent {
                     className="card-s1-subTitle card-subtitle-font"
                     // title={article.fm_subTitle}
                   >
-                    {article.fm_subTitle}
+                    {article.fm_subTitle.slice(0, 60)}
                   </div>
                 </Link>
                 <div className="user-details">

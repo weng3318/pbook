@@ -14,6 +14,7 @@ class BR_BookcaseList extends React.Component {
       likeData: this.props.likebook,
       read: this.props.readbook,
       readData: this.props.readbook,
+      eye:false,
     }
   }
 
@@ -29,6 +30,9 @@ class BR_BookcaseList extends React.Component {
         likeData: 0,
       })
     }
+    this.setState({
+      eye:false,
+    })
   }
   //   componentDidMount() {}
   //   componentWillReceiveProps(nextProps) {}
@@ -66,6 +70,7 @@ class BR_BookcaseList extends React.Component {
     this.setState({
       opened,
       readData:opened === 'blog' ? this.state.readData + 1 : this.state.readData,
+      eye: opened === 'blog' ? true : false
     })
     axios.post('http://localhost:5555/reviewer/brReadBook', {
       sid: this.props.sid,
@@ -82,7 +87,7 @@ class BR_BookcaseList extends React.Component {
   render() {
     // console.log(this.state.likeData)
     const { opened } = this.state
-    const { sid, name, number, blog, vb_book_sid, br_name } = this.props
+    const { sid, name, number, blog, vb_book_sid, br_name, title } = this.props
 
     ;(function(d, s, id) {
       var js,
@@ -142,18 +147,18 @@ class BR_BookcaseList extends React.Component {
             </div>
 
             {/* 看更多 more (圖示) */}
-            <Link
-              to={`/books/information/${vb_book_sid}`}
+            <div onClick={() => this.handleReadBook(opened === 'blog' ? null : 'blog')}
               className="brIconMore_Bookcase"
             >
               <img
                 className="brMore_img"
-                src={require('../reviewer_page/images/icon_Store.png')}
+                src={require('../reviewer_page/images/icon_more.png')}
               />
-            </Link>
+            </div>
+            
             {!this.state.isLogin ? (
               ''
-            ) : JSON.parse(localStorage.getItem('user')).MR_number ===
+            ) : JSON.parse(localStorage.getItem('user')).MR_number !==
               this.props.number ? (
               <>
                 {/* 編輯模式按鈕 */}
@@ -184,7 +189,7 @@ class BR_BookcaseList extends React.Component {
               >
                 <img
                   className="brMark_img"
-                  src={require('../reviewer_page/images/icon_shaer.png')}
+                  src={require('../reviewer_page/images/ing_cart_black.png')}
                 />
               </Link>
 
@@ -196,13 +201,29 @@ class BR_BookcaseList extends React.Component {
                   src={require('../reviewer_page/images/icon_likebook.png')}
                 />
                 <span className="brMark_p">{this.state.likeData}</span>
-                <img
+
+                {!this.state.eye ?
+                (
+                <>
+                  <img
                   onClick={() =>
                     this.handleReadBook(opened === 'blog' ? null : 'blog')
                   }
                   className="brMark_img_noAni"
-                  src={require('../reviewer_page/images/icon_readbook.png')}
-                />
+                  src={require('../reviewer_page/images/icon_eye.png')}/>
+                </>
+                ):(
+                  <>
+                  <img
+                  onClick={() =>
+                    this.handleReadBook(opened === 'blog' ? null : 'blog')
+                  }
+                  className="brMark_img_noAni"
+                  src={require('../reviewer_page/images/icon_close_eye.png')}/>
+                </>
+                )}
+                
+
                 <span className="brMark_p">{this.state.readData}</span>
               </div>
 
@@ -225,6 +246,7 @@ class BR_BookcaseList extends React.Component {
             sid={sid}
             opened={opened}
             onHandleOpen={this.handleOpened}
+            title={title}
           />
         )}
         {opened === 'edit' && (

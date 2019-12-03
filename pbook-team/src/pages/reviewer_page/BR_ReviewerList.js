@@ -10,6 +10,7 @@ class BR_ReviewerList extends React.Component {
     this.state = {
       isLogin: JSON.parse(localStorage.getItem('user')) !== null,
       loginUI: false,
+      followDid:false,
     }
   }
 
@@ -38,6 +39,31 @@ class BR_ReviewerList extends React.Component {
         loginUI,
       })
     }
+    // 取消收藏API-------------------------------------------------------------------------
+  handleDelReviewer = () => {
+    let inNumber = JSON.parse(localStorage.getItem('user')).MR_number
+    if (inNumber){
+      axios
+      .post('http://localhost:5555/reviewer/brReviewerDel', {
+        number: inNumber,
+        number_reviewer: this.props.number,
+      })
+      .then(res => {
+        if(res.data.status === 'success'){
+          swal('取消收藏', '', 'success')
+          this.setState({
+            followDid:false
+          })
+          return res
+        } else {
+          swal('取消失敗', '', 'warning')
+          this.setState({
+            followDid:true
+          })
+        }
+      })
+    }
+  }
 
   // 收藏書評家API-------------------------------------------------------------------------
   handleFollowReviewer = () => {
@@ -52,17 +78,26 @@ class BR_ReviewerList extends React.Component {
       .then(res => {
         // this.state.refreshLikeBook()
         if(res.data.status === 'success'){
-          swal('收藏成功', '', 'success')
+          swal('收藏成功','','success')
+          this.setState({
+            followDid:true
+          })
         // console.log('收藏成功data',res)
-        } else {
-          swal('已加入過收藏！', '', 'warning')
+        } 
+        else {
+          swal('已加入過收藏！','','warning')
+          this.setState({
+            followDid:true
+          })
         }
       })
-    } 
+    }
   }
   render() {
     const { loginUI } = this.state
-
+    const { followDid } = this.state
+    console.log('loginUI',loginUI)
+    console.log('followDid',followDid)
     // console.log(this.props)
     ;(function(d, s, id) {
       var js,
@@ -136,6 +171,22 @@ class BR_ReviewerList extends React.Component {
               {/* 達成收藏條件，也不是自己看自己書櫃的話---------------------------------------- */}
               {/* 添加動畫判斷 */}
                 <div onClick={()=> this.handleFollowReviewer()} className="brIconBox borderLineTop">
+                {/* 查看是否收藏過 */}
+                {this.state.followDid ? (
+                  <>
+                  <img
+                    className="brIconFollow_noAni"
+                    // 已收藏過作者
+                    src={require('../reviewer_page/images/icon_followDid.png')}
+                  />
+                  <img
+                    className="brIconFollow_Did" onClick={()=> this.handleDelReviewer()}
+                    // 已收藏過作者
+                    src={require('../reviewer_page/images/icon_followNot.png')}
+                  />
+                  </>
+                ):(
+                  <>
                   <img
                     className="brIconFollow_noAni"
                     // 收藏作者
@@ -146,6 +197,10 @@ class BR_ReviewerList extends React.Component {
                     // 收藏作者
                     src={require('../reviewer_page/images/like.svg')}
                   />
+                  </>
+                  )
+                }
+                  
                 </div>
               </>
             ) : (

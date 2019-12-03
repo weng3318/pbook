@@ -34,12 +34,12 @@ export class Reviewer extends React.Component {
             <img
               className="loadingGif"
               src={require('./reviewer_page/images/ani_LoadingPBook.gif')}
+              alt=""
             />
           </h1>
         </>
       )
 
-    
     return (
       // <div className="HotBookBoxAll_Light">
       // <div className="bg_black">

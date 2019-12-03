@@ -1,8 +1,15 @@
+@import '../../color.scss';
 .acPage {
   .banner {
     height: 500px;
     background-size: cover;
     background-position: center center;
+    @media (max-width: $pad-media) {
+      height: 300px;
+    }
+    @media (max-width: $phone-media) {
+      height: 200px;
+    }
   }
 
   h1 {

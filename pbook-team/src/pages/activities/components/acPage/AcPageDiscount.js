@@ -44,7 +44,7 @@ const AcPageDiscount = props => {
       props.dispatch(getDiscountAmount(memberLevel, getDiscountOfSid))
 
     // 獲取推薦書籍
-    props.dispatch(getRecommendBooks(memberNum, 12))
+    props.dispatch(getRecommendBooks(memberNum, 15))
 
     // 取得購物車
     if (!props.Cart) props.dispatch(cartFetch())
@@ -123,20 +123,18 @@ const AcPageDiscount = props => {
                 }}
               ></article>
 
-              <span className="booksRowInfo mb-5 pb-3">
+              <span className="booksRowInfo mb-5">
                 {allBooksDiscount ? '全品項皆適用　　推薦書籍' : '適用書籍'}
               </span>
-              <section className="books row">
-                {discountBook.books &&
-                  discountBook.books.map(v => {
-                    return (
-                      <BookInfo {...v} key={v.sid} memberLevel={memberLevel} />
-                    )
-                  })}
-              </section>
             </main>
             <AcPageAside />
           </div>
+          <section className="books col-md-11 m-auto row pt-5 d-flex justify-content-center">
+            {discountBook.books &&
+              discountBook.books.map(v => {
+                return <BookInfo {...v} key={v.sid} memberLevel={memberLevel} />
+              })}
+          </section>
           <AcPageFoot sid={acInfo.sid} />
         </div>
       </ScrollToTop>

@@ -28,7 +28,19 @@ const BookBuy = props => {
     props.discountAmount.data &&
     props.discountAmount.data[0].discount
 
-  if (!discount) return 'loading'
+  if (!discount)
+    return (
+      <>
+        <h4>
+          取得資料中...
+          <img
+            className="loadingGif"
+            src={require('../images/ani_LoadingPBook.gif')}
+            alt=""
+          />
+        </h4>
+      </>
+    )
 
   let totalAmount = props.cartToOrder.totalAmount
   let totalPrice = props.cartToOrder.totalPrice
@@ -40,7 +52,19 @@ const BookBuy = props => {
     memberID = 'MR00174'
     favIndex = -1
   } else {
-    if (!props.favoritePayload) return 'loading'
+    if (!props.favoritePayload)
+      return (
+        <>
+          <h4>
+            取得資料中...
+            <img
+              className="loadingGif"
+              src={require('../images/ani_LoadingPBook.gif')}
+              alt=""
+            />
+          </h4>
+        </>
+      )
     memberID = JSON.parse(localStorage.getItem('user')).MR_number
     favIndex = (props.favoritePayload && props.favoritePayload).findIndex(
       favorite => +favorite.isbn === isbn

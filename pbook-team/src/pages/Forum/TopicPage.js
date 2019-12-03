@@ -73,6 +73,7 @@ class TopicPage extends React.Component {
         </h2>
       )
     } else {
+      console.log('render')
       if (this.props.cate !== this.state.cate) {
         this.handleCateChange()
       }
