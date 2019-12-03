@@ -62,10 +62,6 @@ function Bookinfo() {
   //---------------------------------------------------------------------------
 
   //---------------------------------------------------------------------------
-  const All = styled.section`
-    background-image: url('../../images/bg.png');
-    background-repeat: repeat;
-  `
 
   const Main = styled.section`
     margin: -25px auto;
@@ -188,10 +184,10 @@ function Bookinfo() {
 
   return (
     <>
-      <div className="reviews_searchBar">
-        <BookSearch search_result={search_result} />
-      </div>
-      <All>
+      <section className="reviews_MainPage">
+        <div className="reviews_searchBar">
+          <BookSearch search_result={search_result} />
+        </div>
         <Main>
           <Category callback3={callback3} search_result={search_result} />
           <OptionBar>
@@ -245,7 +241,7 @@ function Bookinfo() {
             ''
           )}
         </Main>
-      </All>
+      </section>
     </>
   )
 }

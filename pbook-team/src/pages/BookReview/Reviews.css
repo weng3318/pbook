@@ -2,6 +2,12 @@
 /* #root {
   background-image: url('../../images/bg.png');
 } */
+/* 主頁面背景 */
+.reviews_MainPage {
+  background-image: url('../../images/bg.png');
+  /* z-index: -1; */
+}
+
 /* 右側愛心區塊 */
 .reviews_col {
   display: flex;
@@ -230,14 +236,27 @@
   color: black;
   border: 1px solid #dee2e6;
 }
-
 .reviews_img {
   max-height: 100%;
   max-width: 100%;
   width: 150px;
   height: 150px;
   border: 1px solid #ccc;
+  z-index: 99;
 }
+/* .reviews_img {
+  max-height: 100%;
+  max-width: 100%;
+  width: 150px;
+  height: 150px;
+  border: 1px solid #ccc;
+  transition: 0.5s;
+  z-index: 99;
+} */
+/* .reviews_img:hover {
+  width: 155px;
+  height: 155px;
+} */
 
 /* 文字超連結A標籤 效果 */
 .reviews_list_sid {

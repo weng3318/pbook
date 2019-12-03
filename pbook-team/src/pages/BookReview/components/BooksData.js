@@ -1,10 +1,9 @@
-import React,{useMemo} from 'react'
+import React, { useMemo } from 'react'
 import styled from '@emotion/styled'
 import useSWR from 'swr'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 
 // const fetcher = (url) => fetch(url).then(r => r.json())
-
 
 function BooksData(props) {
   //直排
@@ -29,7 +28,7 @@ function BooksData(props) {
     -webkit-box-orient: vertical;
   `
 
-  const {bookInformation}=props
+  const { bookInformation } = props
 
   return (
     <>
