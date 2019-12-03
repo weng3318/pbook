@@ -21,7 +21,8 @@ const Navbar = props => {
           <div className="brNavbar">
             {/* <BR_PathNow /> */}
             {/* <BR_DateTime /> */}
-            <h5 className="h5_bread">首頁 > 書評家 <span style={{ color: '#FF525B',fontWeight:"bold"}}>{y}</span></h5>
+            <h5><span className="h5_bread" onClick={()=> props.history.push('/')}>首頁</span> > 
+            <span className="h5_bread" onClick={()=> props.history.push('/reviewer')}>書評家</span><span className="h5_path">{y}</span></h5>
           </div>
         </>
           )

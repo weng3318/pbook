@@ -54,6 +54,7 @@ class BR_ReviewerList extends React.Component {
           this.setState({
             followDid:false
           })
+          return res
         } else {
           swal('取消失敗', '', 'warning')
           this.setState({
@@ -82,7 +83,8 @@ class BR_ReviewerList extends React.Component {
             followDid:true
           })
         // console.log('收藏成功data',res)
-        } else {
+        } 
+        else {
           swal('已加入過收藏！','','warning')
           this.setState({
             followDid:true

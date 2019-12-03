@@ -148,7 +148,16 @@ a:hover{
 /* 麵包屑路徑，文字 (置中調整) */
 .h5_bread{
     transform: translateY(18%);
+    cursor: pointer;
     color: #2d3a3a;
+}
+/* 麵包屑，書評家名稱 */
+.h5_path{
+    color: #FF525B;
+    font-weight: bold;
+}
+.h5_bread:hover{
+    color: #ff525b;
 }
 /* 書評列表 (參照背景) */
 .reviewerList {
