@@ -391,6 +391,7 @@
 
 /* 書評輸入欄 */
 .reviews_textarea {
+  outline: 0;
   width: 1000px;
   min-height: 120px;
   border: 1.5px solid #ccc;
@@ -519,6 +520,7 @@
   border-radius: 0.2rem;
   padding: 0.2rem;
   resize: none;
+  outline: 0;
 }
 /* 書評回覆修改回覆表單 */
 .reviews_reply_form {
