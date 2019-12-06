@@ -50,13 +50,13 @@ class BR_ReviewerList extends React.Component {
       })
       .then(res => {
         if(res.data.status === 'success'){
-          swal('取消收藏', '', 'success')
+          swal('取消收藏', '', require('./images/swal_warning.gif'))
           this.setState({
             followDid:false
           })
           return res
         } else {
-          swal('取消失敗', '', 'error')
+          swal('取消失敗', '', require('./images/swal_error.gif'))
           this.setState({
             followDid:true
           })
@@ -78,14 +78,14 @@ class BR_ReviewerList extends React.Component {
       .then(res => {
         // this.state.refreshLikeBook()
         if(res.data.status === 'success'){
-          swal('收藏成功','','success')
+          swal('收藏成功','',require('./images/swal_success.gif'))
           this.setState({
             followDid:true
           })
         // console.log('收藏成功data',res)
         } 
         else {
-          swal('已加入過收藏！','','warning')
+          swal('已加入過收藏！','',require('./images/swal_error.gif'))
           this.setState({
             followDid:true
           })
